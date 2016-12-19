@@ -27,7 +27,7 @@ module globals
   integer, parameter :: NA = 15
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 11
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
@@ -194,7 +194,13 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+      if (ann) then
+        call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+      else
+        ixl = 0
+        ixr = 0
+        varchi = 1d0
+      endif
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_w = (varphi*varchi*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixl, ial, ij_com+1, itp) &
@@ -317,7 +323,13 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+      if (ann) then
+        call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+      else
+        ixl = 0
+        ixr = 0
+        varchi = 1d0
+      endif
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_e = (varphi*varchi*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixl, ial, ij_com+1, itp) &
@@ -438,7 +450,13 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+      if (ann) then
+        call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+      else
+        ixl = 0
+        ixr = 0
+        varchi = 1d0
+      endif
 
       valuefunc_r = (varphi*varchi*EV(0, is_com, ie_com, iw_com, ip_com, ixl, ial, ij_com+1, itp) &
                + varphi*(1d0-varchi)*EV(0, is_com, ie_com, iw_com, ip_com, ixr, ial, ij_com+1, itp) &
