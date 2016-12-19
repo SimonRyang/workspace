@@ -52,7 +52,7 @@ module globals
   integer :: iter
 
   ! macroeconomic variables
-  real*8 :: gy, by
+  real*8:: gy, by
   real*8 :: r(0:TT), w(0:TT), inc_bar(0:TT), psix(JJ, 0:TT), pinv(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), AA(0:TT), LC(0:TT), HH(0:TT)
   real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)

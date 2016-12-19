@@ -1,4 +1,4 @@
-include "globals.f90"
+!include "globals.f90"
 
 program main
 
@@ -10,7 +10,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 8
+  integer, parameter :: numthreads = 4
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
