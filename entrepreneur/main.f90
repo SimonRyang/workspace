@@ -10,7 +10,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 1
+  integer, parameter :: numthreads = 14
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
