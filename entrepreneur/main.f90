@@ -919,7 +919,7 @@ contains
                       ixl = 0
                       ixr = 0
                       varchi = 1d0
-                     endif
+                    endif
 
                     ! interpolate today's pension claims
                     call linint_Equi(pplus(io, is, ie, iw, ip, ix, ia, ij-1, itm), &
@@ -1042,14 +1042,14 @@ contains
                 do is = 1, NS
                   do io = 0, NO
 
+                    call linint_Grow(aplus(io, is, ie, iw, ip, ix, ia, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
                     if (ann) then
-                      call linint_Grow(aplus(io, is, ie, iw, ip, ix, ia, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
+                      call linint_Grow(xplus(io, is, ie, iw, ip, ix, ia, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
                     else
                       ixl = 0
                       ixr = 0
                       varchi = 1d0
                     endif
-                    call linint_Grow(xplus(io, is, ie, iw, ip, ix, ia, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
                               *m(io, is, ie, iw, ip, ix, ia, ij, itm)*pop(ij, itm)/(1d0+n_p)
