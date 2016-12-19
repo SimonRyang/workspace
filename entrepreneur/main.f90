@@ -10,7 +10,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
+  integer, parameter :: numthreads = 14
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -96,7 +96,7 @@ program main
 
   ! size of the annuitiy grid
   x_l    = 0d0
-  x_u    = 256d0
+  x_u    = 1024d0
   x_grow = 1.0d0
 
   ! size of the pension claim grid
