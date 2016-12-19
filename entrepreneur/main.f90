@@ -96,7 +96,7 @@ program main
 
   ! size of the annuitiy grid
   x_l    = 0d0
-  x_u    = 5120
+  x_u    = 512d0
   x_grow = 1.0d0
 
   ! size of the pension claim grid
@@ -317,7 +317,11 @@ contains
     a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
 
     ! initialize annuity grid
-    x = grid_Cons_Grow(x_l, x_u, x_grow, NX)
+    if (ann) then
+      x = grid_Cons_Grow(x_l, x_u, x_grow, NX)
+    else
+      x(0) = 0d0
+    endif
 
     ! initialize pension claim grid
     p = grid_Cons_Equi(p_l, p_u, NP)
@@ -908,8 +912,14 @@ contains
                              a_l, a_u, a_grow, NA, ial, iar, varphi)
 
                     ! interpolate yesterday's annuitized assets
-                    call linint_Grow(xplus(io, is, ie, iw, ip, ix, ia, ij-1, itm), &
+                    if (ann) then
+                      call linint_Grow(xplus(io, is, ie, iw, ip, ix, ia, ij-1, itm), &
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+                    else
+                      ixl = 0
+                      ixr = 0
+                      varchi = 1d0
+                     endif
 
                     ! interpolate today's pension claims
                     call linint_Equi(pplus(io, is, ie, iw, ip, ix, ia, ij-1, itm), &
@@ -1032,7 +1042,13 @@ contains
                 do is = 1, NS
                   do io = 0, NO
 
-                    call linint_Grow(aplus(io, is, ie, iw, ip, ix, ia, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
+                    if (ann) then
+                      call linint_Grow(aplus(io, is, ie, iw, ip, ix, ia, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
+                    else
+                      ixl = 0
+                      ixr = 0
+                      varchi = 1d0
+                    endif
                     call linint_Grow(xplus(io, is, ie, iw, ip, ix, ia, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
