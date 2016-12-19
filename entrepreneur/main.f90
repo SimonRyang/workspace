@@ -1,4 +1,4 @@
-include "globals.f90"
+!include "globals.f90"
 
 program main
 
@@ -96,7 +96,7 @@ program main
 
   ! size of the annuitiy grid
   x_l    = 0d0
-  x_u    = 1024d0
+  x_u    = 5120
   x_grow = 1.0d0
 
   ! size of the pension claim grid
