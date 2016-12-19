@@ -15,7 +15,7 @@ $(TARGET): Build/$(MAINFILE).o
 
 Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
-	$(CC) $(CFLAGS) -I/home/$$USER/workspace/include -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
+	$(CC) $(CFLAGS) $(LIBS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
 
 clean:
 	-rm -rf Build
