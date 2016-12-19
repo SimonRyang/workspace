@@ -182,7 +182,7 @@ contains
       ! determine the government parameters
       call government(0)
 
-      write(*,'(i4,6f8.2,f16.10)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
+      write(*,'(i4,6f8.2,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
@@ -311,7 +311,7 @@ contains
     real*8 :: adj
 
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
-    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent            DIFF'
+    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent          DIFF'
 
     ! initialize asset grid
     a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
