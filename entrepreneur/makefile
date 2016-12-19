@@ -1,6 +1,6 @@
 MAINFILE = main
 LIBS = ~/workspace/include/toolbox.f90 ~/workspace/include/sorting.f90 ~/workspace/include/clock.f90
-CFLAGS = -qopenmp -precise -traceback 
+CFLAGS = -qopenmp -traceback 
 CC = ~/intel/bin/ifort
 TARGET = Build/prog
 
