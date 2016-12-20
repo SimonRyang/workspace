@@ -19,7 +19,7 @@ program main
 	B = 9d0
 	C = 2d0
 
-	!$omp acc_region_loop
+	!$omp acc_region
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -27,7 +27,7 @@ program main
 			enddo
 		enddo
 	enddo
-	!$omp end acc_region_loop
+	!$omp end acc_region
 
 	write(*,*)'  Done!'
 
