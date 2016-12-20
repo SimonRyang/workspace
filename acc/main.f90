@@ -13,6 +13,8 @@ program main
 	integer :: j, i, k
   real*8 :: A(N,M), B(M, L), C(N, L)
 
+	call tic()
+
 	A = 3d0
 	B = 9d0
 	C = 2d0
@@ -25,5 +27,10 @@ program main
 		enddo
 	enddo
 
+	write(*,*)'Done!'
+
+	call toc()
+
+	call sleep(10)
 
 end program
