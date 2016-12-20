@@ -1,4 +1,4 @@
-include "globals.f90"
+!include "globals.f90"
 
 program main
 
@@ -10,7 +10,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 4
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -91,7 +91,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 1024d0
+  a_u    = 256d0
   a_grow = 1.0d0
 
   ! size of the annuitiy grid
@@ -449,7 +449,7 @@ contains
     integer :: it
 
     write(*,'(/a/)')'TRANSITION PATH'
-    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent      DIFF'
+    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent        DIFF'
 
     do it = 1, TT
 
