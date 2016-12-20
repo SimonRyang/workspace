@@ -5,8 +5,8 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
-  integer, parameter :: M = 1000
+  integer, parameter :: numthreads = 14
+  integer, parameter :: M = 10000
   integer, parameter :: L = 2000
   integer, parameter :: N = 4000
 	integer :: j, i, k
