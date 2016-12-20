@@ -1,5 +1,5 @@
 MAINFILE = main
-CFLAGS = -qopenmp -traceback 
+CFLAGS = -fopenmp 
 CC = gfortran
 TARGET = Build/prog
 

@@ -5,7 +5,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
+  integer, parameter :: numthreads = 14
   integer, parameter :: M = 10000
   integer, parameter :: L = 2000
   integer, parameter :: N = 4000
@@ -19,8 +19,8 @@ program main
 	B = 9d0
 	C = 2d0
 
-	!!$omp parallel do num_threads(numthreads)
-	!$omp acc_region_loop
+	!$omp parallel do num_threads(numthreads)
+	!!$omp acc_region_loop
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -28,8 +28,8 @@ program main
 			enddo
 		enddo
 	enddo
-	!$omp end acc_region_loop
-	!!$omp end parallel do
+	!!$omp end acc_region_loop
+	!$omp end parallel do
 
 	write(*,*)'  Done!'
 
