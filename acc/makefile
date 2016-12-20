@@ -1,6 +1,6 @@
 MAINFILE = main
 CFLAGS = -qopenmp -traceback 
-CC = ~/intel/bin/ifort
+CC = gfortran
 TARGET = Build/prog
 
 all: $(TARGET)
