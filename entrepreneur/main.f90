@@ -118,8 +118,6 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  stop
-
   ! set reform parameters
   !pen_debt = .true.
   !smopec = .true.
@@ -221,7 +219,7 @@ contains
     if(.not. lsra_on)then
       call initialize_trn()
     else
-      write(*,'(a)')'ITER  COMP_OLD  EFFICIENCY    DIFF'
+      write(*,'(a)')'ITER  COMP_OLD  EFFICIENCY      DIFF'
     endif
 
     ! start timer
@@ -272,7 +270,7 @@ contains
       else
         write(*,'(i4,3f12.5)')iter, lsra_comp/lsra_all*100d0, &
           (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
-          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 1 .and. lsra_comp/lsra_all > 0.99999d0
+          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
       endif
 
       ! check for convergence
@@ -1484,19 +1482,18 @@ contains
 
     call check_grid(iamax, ixmax, it)
 
-    write(*, '(a,a)')' IJ   CONSw   CONSe   ASSw     ASSe   ASSxw   ASSxe    INCw    INCe    INVe     ENT    ENTs1  ENTs2   ENTs3', &
+    write(21, '(a,a)')' IJ   CONSw   CONSe   ASSw     ASSe   ASSxw   ASSxe    INCw    INCe    INVe     ENT    ENTs1  ENTs2   ENTs3', &
         '    ENTn    WORn     FLC      VALUE  IAMAX  IXMAX'
-    write(*,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
+    write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     do ij = 1, JJ
-      write(*, '(i3, 16f8.3, f11.3, 2i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), inc_coh(0, ij, it), inc_coh(1, ij, it), &
+      write(21, '(i3, 16f8.3, f11.3, 2i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), inc_coh(0, ij, it), inc_coh(1, ij, it), &
           k_coh(ij, it), sum(o_coh(1, :, ij, it)), sum(os_coh(1, :, 1, ij, it)), sum(os_coh(2, :, 2, ij, it)), &
           sum(os_coh(1, :, 3, ij, it)), o_coh(0, 1, ij, it), o_coh(1, 0, ij, it), flc_coh(ij, it), vv_coh(ij, it), iamax(ij), ixmax(ij)
-      if (ij == JR-1) write(*,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
+      if (ij == JR-1) write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     enddo
 
     if (gini_on .and. (it == 0 .or. TT)) then
 
-      write(*,'(a/)')' '
       write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
       write(21,'(a/)')' '
 
