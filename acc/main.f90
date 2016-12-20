@@ -19,7 +19,7 @@ program main
 	B = 9d0
 	C = 2d0
 
-	!$omp parallel do, num_threads(numthreads)
+	!$omp parallel do num_threads(numthreads)
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -27,7 +27,7 @@ program main
 			enddo
 		enddo
 	enddo
-	!$omp parallel do
+	!$omp end parallel do
 
 	write(*,*)'  Done!'
 
