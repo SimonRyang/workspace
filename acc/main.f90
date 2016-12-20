@@ -5,7 +5,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 4
   integer, parameter :: M = 10000
   integer, parameter :: L = 2000
   integer, parameter :: N = 4000
@@ -20,6 +20,7 @@ program main
 	C = 2d0
 
 	!$omp parallel do num_threads(numthreads)
+	
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
