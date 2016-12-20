@@ -19,7 +19,6 @@ program main
 	B = 9d0
 	C = 2d0
 
-	!!$omp parallel do num_threads(numthreads)
 	!$omp acc_region_loop
 	do j = 1, L
 		do i = 1, N
@@ -29,7 +28,6 @@ program main
 		enddo
 	enddo
 	!$omp end acc_region_loop
-	!!$omp end parallel do
 
 	write(*,*)'  Done!'
 
