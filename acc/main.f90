@@ -41,7 +41,7 @@ program main
 		sum = sum + C(j, j)
 	enddo
 
-	write(*,'(f10.0)))'sum = ', sum
+	write(*,'(f10.0)')'sum = ', sum
 
 end program
 	
