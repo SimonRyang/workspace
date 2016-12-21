@@ -1,7 +1,7 @@
 program main
 
   ! modules
-  !use omp_lib
+  use omp_lib
 
   implicit none
 
