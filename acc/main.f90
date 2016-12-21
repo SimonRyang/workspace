@@ -7,11 +7,11 @@ program main
 
   integer, parameter :: numthreads = 14
 	integer, parameter :: L = 1200
-	integer, parameter :: N = 800
-	integer, parameter :: M = 800
+	integer, parameter :: N = 8000
+	integer, parameter :: M = 8000
 	real*8 :: A(N,M), B(M,L), C(L,N,M)
 	integer :: j, i, k
-	real*8 :: seconds, summ
+	real*8 :: seconds
 
 	seconds = omp_get_wtime()
 
@@ -36,12 +36,7 @@ program main
 	seconds = omp_get_wtime() - seconds
 	write(*,*) seconds	
 
-	summ = 0d0
-	do j = 1, L
-		summ = summ + C(j, j)
-	enddo
-
-	write(*,'(a, i10)')'sum = ', int(summ)
+	write(*,'(a, i10)')'sum = ', sum(C)
 
 end program
 	
