@@ -5,10 +5,10 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
+  integer, parameter :: numthreads = 14
 	integer, parameter :: L = 1200
 	integer, parameter :: N = 4000
-	integer, parameter :: M = 300
+	integer, parameter :: M = 3000
 	real*8 :: A(N,M), B(M,L), C(N,L)
 	integer :: j, i, k
 	real*8 :: seconds
@@ -19,6 +19,7 @@ program main
 	B = 2d0
 	C = 0d0
 
+
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -28,7 +29,7 @@ program main
 	enddo
 
 	write(*,*)'  Done!'
-	seconds = seconds - omp_get_wtime()
+	seconds = omp_get_wtime() - seconds
 	write(*,*) seconds	
 
 end program
