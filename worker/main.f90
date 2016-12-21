@@ -545,7 +545,7 @@ contains
             enddo ! ix
           enddo ! ip
         enddo ! is
-				!$omp end parallel
+				!$omp end parallel do
 
       elseif (ij >= 2) then
 
