@@ -1,7 +1,7 @@
 MAINFILE = main
-LIBS = ~/workspace/include/toolbox.90 ~/workspace/include/sorting.90 ~/workspace/include/clock.90
+LIBS = ~/workspace/include/toolbox.f90 ~/workspace/include/sorting.f90 ~/workspace/include/clock.f90
 # Intel Fortran Compiler
-CFLAGS = -qopenmp -O2 -I/home/$$USER/workspace/include
+CFLAGS = -qopenmp -O2
 CC = ~/intel/bin/ifort
 # PGI Fortran Compiler
 #CFLAGS = -mp -Mbackslash -Minfo -I/home/$$USER/workspace/include
@@ -19,7 +19,7 @@ $(TARGET): Build/$(MAINFILE).o
 
 Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
-	$(CC) $(CFLAGS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
+	$(CC) $(CFLAGS) -I/home/$$USER/workspace/include -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
 
 
 clean:
