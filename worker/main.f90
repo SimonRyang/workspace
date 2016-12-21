@@ -527,7 +527,7 @@ contains
 							x(2) = max(l(ia, ix, ip, is, iw, ij, it), 1d-4)
 							x(3) = max(mx(ia, ix, ip, is, iw, ij, it), 1d-4)
 
-							call fminsearch(x, fret, (/a_l, 0d0, a_l/), (/a_u, 1d0, a_u/), valuefunc_w)
+							!call fminsearch(x, fret, (/a_l, 0d0, a_l/), (/a_u, 1d0, a_u/), valuefunc_w)
 
 							! copy decisions
 							aplus(ia, ix, ip, is, :, ij, it) = x(1)
