@@ -2,7 +2,6 @@ program main
 
   ! modules
   use omp_lib
-	use accel_lib
   use globals
   use clock
   use toolbox
