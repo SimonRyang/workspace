@@ -19,9 +19,9 @@ program main
 	B = 2d0
 	C = 0d0
 
-	!!$acc data copyin(A,B) copy(C)
-	!!$acc kernels loop
-	!$omp parallel do collapse(3) num_threads(numthreads)
+	!$acc data copyin(A,B) copy(C)
+	!$acc kernels loop
+	!!$omp parallel do num_threads(numthreads)
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -29,8 +29,8 @@ program main
 			enddo
 		enddo
 	enddo
-	!$omp end parallel do
-	!!$acc end data
+	!!$omp end parallel do
+	!$acc end data
 
 	write(*,*)'  Done!'
 	seconds = omp_get_wtime() - seconds
