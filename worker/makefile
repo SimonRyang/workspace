@@ -21,9 +21,6 @@ Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
 
-Build/globals.mod : globals.f90
-	$(CC) $(CFLAGS) -c globals.f90 -o Build/globals.mod
-
 Build/toolbox.o: toolbox.f90
 	$(CC) $(CFLAGS) -c toolbox.f90 -o Build/toolbox.o
 
@@ -32,6 +29,9 @@ Build/sorting.o: sorting.f90
 
 Build/clock.o: clock.f90
 	$(CC) $(CFLAGS) -c clock.f90 -o Build/clock.o
+
+Build/globals.mod : globals.f90
+	$(CC) $(CFLAGS) -c globals.f90 -o Build/globals.mod
 
 clean:
 	-rm -rf Build
