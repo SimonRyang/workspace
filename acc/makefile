@@ -1,5 +1,5 @@
 MAINFILE = main
-CFLAGS = -mp -ta=tesla:cc30 -Minfo=accel
+CFLAGS = -mp -ta=tesla -Minfo=accel
 CC = /opt/pgi/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
