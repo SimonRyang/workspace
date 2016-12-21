@@ -1,5 +1,5 @@
 MAINFILE = main
-LIBS = toolbox.o sorting.o clock.o
+LIBS = globals.o toolbox.o sorting.o clock.o
 # Intel Fortran Compiler
 CFLAGS = -qopenmp -O2
 CC = ~/intel/bin/ifort
