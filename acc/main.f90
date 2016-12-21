@@ -5,7 +5,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 1
+  integer, parameter :: numthreads = 14
 	integer, parameter :: L = 1200
 	integer, parameter :: N = 1800
 	integer, parameter :: M = 1600
@@ -21,7 +21,7 @@ program main
 
 	!!$acc data copyin(A,B) copy(C)
 	!!$acc kernels loop
-	!$omp parallel do num_threads(numthreads)
+	!$omp parallel do reduction(+:C) num_threads(numthreads)
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
