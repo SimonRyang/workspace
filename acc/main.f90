@@ -6,7 +6,7 @@ program main
   implicit none
 
   integer, parameter :: numthreads = 8
-	integer, parameter :: L = 120
+	integer, parameter :: L = 1200
 	integer, parameter :: N = 4000
 	integer, parameter :: M = 3000
 	real*8 :: A(N,M), B(M,L), C(N,L)
