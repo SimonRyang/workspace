@@ -9,7 +9,7 @@ program main
 	integer, parameter :: L = 1200
 	integer, parameter :: N = 8000
 	integer, parameter :: M = 8000
-	real*8 :: A(N,M), B(M,L), C(N,L)
+	real*8 :: A(N,M), B(M,L), C(L,N,M)
 	integer :: j, i, k
 	real*8 :: seconds, summ
 
@@ -25,7 +25,7 @@ program main
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
-				C(i,j) = C(i,j) + A(i,k)*B(k,j)
+				C(j,i,k) = A(i,k)*B(k,j)
 			enddo
 		enddo
 	enddo
