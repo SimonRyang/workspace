@@ -511,7 +511,7 @@ contains
 							!$omp parallel
               do ia = 0, NA
 
-                call get_decision(ia, ix, ip, is, 1, ij, it)
+
 
                 ! copy decisions
                 aplus(ia, ix, ip, is, :, ij, it) = aplus(ia, ix, ip, is, 1, ij, it)
