@@ -1,5 +1,5 @@
 MAINFILE = main
-LIBS = toolbox.f90 sorting.f90 /clock.f90
+LIBS = toolbox.f90 sorting.f90 clock.f90
 # Intel Fortran Compiler
 CFLAGS = -qopenmp -O2
 CC = ~/intel/bin/ifort
