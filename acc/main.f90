@@ -2,6 +2,7 @@ program main
 
   ! modules
   use omp_lib
+	use accel_lib
 
   implicit none
 
