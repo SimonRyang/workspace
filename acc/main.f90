@@ -19,7 +19,7 @@ program main
 	B = 2d0
 	C = 0d0
 
-	!$acc data copyin(A,B) copy(C)
+	!$acc data copyin(A,B, C)
 	!$acc kernels loop
 	!!$omp parallel do num_threads(numthreads)
 	do j = 1, L
