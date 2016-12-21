@@ -1,5 +1,10 @@
 MAINFILE = main
-CFLAGS = -mp -ta=tesla -Minfo=accel
+LIBS = ~/repo_projects/include/toolbox.o ~/repo_projects/include/sorting.o ~/repo_projects/include/clock.o
+# Intel Fortran Compiler
+#CFLAGS = -O2 -I/home/$$USER/repo_projects/include
+#CC = ~/intel/bin/ifort
+# PGI Fortran Compiler
+CFLAGS = -mp -Minfo -I/home/$$USER/repo_projects/include
 CC = /opt/pgi/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
@@ -10,11 +15,12 @@ all: $(TARGET)
 	-rm -f *.mod
 
 $(TARGET): Build/$(MAINFILE).o
-	$(CC) $(CFLAGS) Build/$(MAINFILE).o -o $(TARGET)
+	$(CC) -O2 -qopenmp $(LIBS) Build/$(MAINFILE).o -o $(TARGET)
 
 Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
-	$(CC) $(CFLAGS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
+	$(CC) -qopenmp $(CFLAGS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
+
 
 clean:
 	-rm -rf Build
