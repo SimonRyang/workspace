@@ -11,8 +11,8 @@ cd ~/workspace/include/
 git pull origin master
 cp * ~/workspace/worker/
 cd ~/workspace/worker/
-rm -r Build
-rm *.mod
+rm -f *.mod
+rm -f *.o
 $2 make
 exit
 EOF
