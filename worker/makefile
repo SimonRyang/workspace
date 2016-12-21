@@ -14,7 +14,7 @@ all: $(TARGET)
 	-rm -f *.mod
 
 $(TARGET): $(MAINFILE).o $(LIBS)
-	$(CC) $(CFLAGS) Build/$(MAINFILE).o $(LIBS) -o $(TARGET) 
+	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
 
 $(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
