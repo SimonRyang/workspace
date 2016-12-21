@@ -19,10 +19,10 @@ $(TARGET): $(MAINFILE).o $(LIBS)
 globals.mod: sorting.mod globals.o globals.f90
 	$(CC) $(CFLAGS) -c globals.f90
 
-toolbox.mod: toolbox.mod toolbox.f90
+toolbox.mod: toolbox.f90
 	$(CC) $(CFLAGS) -c toolbox.f90
 
-sorting.mod: sorting.mod sorting.f90
+sorting.mod: sorting.f90
 	$(CC) $(CFLAGS) -c sorting.f90
 
 
