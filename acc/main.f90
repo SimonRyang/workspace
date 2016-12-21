@@ -8,7 +8,7 @@ program main
   integer, parameter :: numthreads = 4
 	integer, parameter :: L = 1200
 	integer, parameter :: N = 1800
-	integer, parameter :: M = 1600
+	integer, parameter :: M = 800
 	real*8 :: A(N,M), B(M,L), C(N,L)
 	integer :: j, i, k
 	real*8 :: seconds, summ
