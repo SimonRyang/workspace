@@ -58,7 +58,7 @@ program main
   damp  = 0.50d0
   tol   = 1d-6
   itermax = 200
-
+write(*,*)'worker'
   ! turn gini calculation on
   gini_on = .true.
 
