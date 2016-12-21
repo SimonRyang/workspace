@@ -7,8 +7,9 @@ git push origin master
 
 ssh -t -t flh71wr@$1 << EOF
 ulimit -s unlimited
-cd ~/workspace/include/
+cd workspace/
 git pull origin master
+cd ~/workspace/include/
 cp * ~/workspace/worker/
 cd ~/workspace/worker/
 rm -f *.mod
