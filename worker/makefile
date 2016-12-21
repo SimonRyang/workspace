@@ -1,10 +1,10 @@
 MAINFILE = main
 LIBS = ~/repo_projects/include/toolbox.o ~/repo_projects/include/sorting.o ~/repo_projects/include/clock.o
 # Intel Fortran Compiler
-#CFLAGS = -qopenmp -O2 -I/home/$$USER/repo_projects/include
+#CFLAGS = -qopenmp -O2 -I/home/$$USER/workspace/include
 #CC = ~/intel/bin/ifort
 # PGI Fortran Compiler
-CFLAGS = -mp -Minfo -I/home/$$USER/repo_projects/include
+CFLAGS = -mp -Minfo -I/home/$$USER/workspace/include
 CC = /opt/pgi/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
