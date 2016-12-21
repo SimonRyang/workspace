@@ -8,8 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
-  integer :: it
+  integer, parameter :: numthreads = 2
 
   ! set up how many kernels you want to use
   call omp_set_num_threads(numthreads)
@@ -256,7 +255,7 @@ contains
     real*8 :: adj
 
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
-    write(*,'(a)')'ITER   K/Y   C/Y   I/Y     r     w    DIFF'
+    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w      DIFF'
 
     ! initialize asset grid
     a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
@@ -372,7 +371,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: ij, is, it
+    integer :: it
 
     write(*,'(/a/)')'TRANSITION PATH'
     write(*,'(a)')'ITER   K/Y   C/Y   I/Y     r     w    DIFF'
@@ -457,7 +456,6 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: ij
-    real*8 :: dueink
 
     ! calculate factor prices
     if (.not. smopec) then
@@ -504,7 +502,7 @@ contains
       it = year(it_in, ij_in, ij)
 
       if (ij >= JR) then
-				
+
 				ij_com = ij
 				it_com = it
 				iw_com = 1
@@ -601,7 +599,8 @@ contains
 				ix_com = 0
 				ip_com = 0
 
-  	  	!$omp parallel do copyin(ij_com, it_com, ia_com, ix_com, ip_com) collapse(2) schedule(dynamic,1) private(x, fret) num_threads(numthreads)
+  	  	!$omp parallel do copyin(ij_com, it_com, ia_com, ip_com, ix_com) &
+  	  	!$omp       collapse(2) schedule(dynamic,1) private(x, fret) num_threads(numthreads)
         do iw = 1, NW
           do is = 1, NS
 
