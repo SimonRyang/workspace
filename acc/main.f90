@@ -8,7 +8,7 @@ program main
   integer, parameter :: numthreads = 14
 	integer, parameter :: L = 1200
 	integer, parameter :: N = 8000
-	integer, parameter :: M = 800
+	integer, parameter :: M = 8000
 	real*8 :: A(N,M), B(M,L), C(N,L)
 	integer :: j, i, k
 	real*8 :: seconds, summ
@@ -19,9 +19,9 @@ program main
 	B = 2d0
 	C = 0d0
 
-	!$omp parallel do num_threads(numthreads)
-	!!$acc data copyin(A,B) copy(C)
-	!!$acc kernels loop
+	!!$omp parallel do num_threads(numthreads)
+	!$acc data copyin(A,B) copy(C)
+	!$acc kernels loop
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -29,8 +29,8 @@ program main
 			enddo
 		enddo
 	enddo
-	!!$acc end data
-	!$omp end parallel do
+	!$acc end data
+	!!$omp end parallel do
 
 	write(*,*)'  Done!'
 	seconds = omp_get_wtime() - seconds
