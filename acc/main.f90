@@ -25,7 +25,7 @@ program main
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
-				C(j,i,k) = A(i,k)*B(k,j)
+				C(j,i,k) = A(i,k)*B(k,j)/2d0
 			enddo
 		enddo
 	enddo
