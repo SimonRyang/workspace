@@ -24,10 +24,10 @@ Build/$(MAINFILE).o: $(MAINFILE).f90
 Build/toolbox.o: toolbox.f90
 	$(CC) $(CFLAGS) -c toolbox.f90 -o Build/toolbox.o
 
-Build/toolbox.o: sorting.f90
+Build/sorting.o: sorting.f90
 	$(CC) $(CFLAGS) -c sorting.f90 -o Build/sorting.o
 
-Build/toolbox.o: clock.f90
+Build/clock.o: clock.f90
 	$(CC) $(CFLAGS) -c clock.f90 -o Build/clock.o
 
 clean:
