@@ -2,6 +2,7 @@ program main
 
   ! modules
   use omp_lib
+	use accel_lib
   use globals
   use clock
   use toolbox
@@ -552,7 +553,7 @@ contains
 				ij_com = ij
 				it_com = it
 
-  	  	!$omp parallel do copyin(ij_com, it_com) collapse(3) schedule(dynamic,1) private(x, fret) num_threads(numthreads)
+  	  	!$acc parallel do copyin(ij_com, it_com) collapse(3) schedule(dynamic,1) private(x, fret) num_threads(numthreads)
         do iw = 1, NW
           do is = 1, NS
             do ip = 0, NP
@@ -592,7 +593,7 @@ contains
             enddo ! ip
           enddo ! is
         enddo ! iw
-				!$omp end parallel do
+				!$acc end parallel do
 
       elseif (ij == 1) then
 
