@@ -7,7 +7,7 @@ program main
 
   integer, parameter :: numthreads = 14
 	integer, parameter :: L = 600
-	integer, parameter :: N = 800
+	integer, parameter :: N = 500
 	integer, parameter :: M = 700
 	real*8 :: A(N,M), B(M,L), C(L,N,M)
 	integer :: j, i, k
