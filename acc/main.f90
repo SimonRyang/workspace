@@ -20,8 +20,8 @@ program main
 	C = 0d0
 
 	!!$omp parallel do num_threads(numthreads)
-	!!$acc data copyin(A,B) copy(C)
-	!!$acc kernels loop
+	!$acc data copyin(A,B) copy(C)
+	!$acc kernels loop
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -29,7 +29,7 @@ program main
 			enddo
 		enddo
 	enddo
-	!!$acc end data
+	!$acc end data
 	!!$omp end parallel do
 
 	write(*,*)'  Done!'
