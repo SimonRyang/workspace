@@ -636,8 +636,6 @@ contains
       ! interpolate individual value function
       call interpolate(ij, it)
 
-			write(*,*)'Done: age = ', ij
-
     enddo
 
   end subroutine
