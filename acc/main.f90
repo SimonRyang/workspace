@@ -15,9 +15,9 @@ program main
 
 	seconds = omp_get_wtime()
 
-	A = 3d0
-	B = 2d0
-	C = 0d0
+	A = 3
+	B = 2
+	C = 0
 
 	!!$acc data copyin(A,B) copy(C)
 	!!$acc kernels loop
