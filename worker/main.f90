@@ -504,7 +504,8 @@ contains
       it = year(it_in, ij_in, ij)
       
       if (ij >= JR) then
-        
+
+        !$omp parallel do collapse(2) schedule(dynamic, 1) num_threads(numthreads)
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NA
@@ -528,6 +529,7 @@ contains
             enddo ! ix
           enddo ! ip
         enddo ! is
+				!$omp end parallel do
         
       elseif (ij >= 2) then
         
