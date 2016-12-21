@@ -7,8 +7,8 @@ program main
 
   integer, parameter :: numthreads = 28
 	integer, parameter :: L = 1200
-	integer, parameter :: N = 400
-	integer, parameter :: M = 300
+	integer, parameter :: N = 800
+	integer, parameter :: M = 600
 	real*8 :: A(N,M), B(M,L), C(N,L)
 	integer :: j, i, k
 	real*8 :: seconds, sum
@@ -41,7 +41,7 @@ program main
 		sum = sum + C(j, j)
 	enddo
 
-	write(*,*)'sum = ', sum
+	write(*,'(i10)')'sum = ', sum
 
 end program
 	
