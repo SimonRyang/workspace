@@ -1,5 +1,5 @@
 MAINFILE = main
-CFLAGS = -mp -acc
+CFLAGS = -mp
 CC = /opt/pgi/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
