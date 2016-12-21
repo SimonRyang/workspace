@@ -7,7 +7,7 @@ git push origin master
 
 ssh -t -t flh71wr@$1 << EOF
 ulimit -s unlimited
-cd workspace/entrepreneur/
+cd workspace/worker/
 git pull origin master
 rm -r Build
 rm *.mod
