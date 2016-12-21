@@ -497,6 +497,7 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer ::ia, ix, ip, is, iw, ij, it
+		real*8 :: x(3), fret
 
 
     do ij = JJ, 1, -1
@@ -504,32 +505,47 @@ contains
       it = year(it_in, ij_in, ij)
 
       if (ij >= JR) then
+				
+				ij_com = ij
+				it_com = it
 
+  	  	!$omp parallel copyin(ij_com, it_com)
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NA
-							!$omp parallel
               do ia = 0, NA
 
+							! set up communication variables
+							ia_com = ia
+							ix_com = ix
+							ip_com = ip
+							is_com = is
+							iw_com = iw
 
+							! get initial guess for the individual choices
+							x(1) = max(aplus(ia, ix, ip, is, iw, ij, it), 1d-4)
+							x(2) = max(l(ia, ix, ip, is, iw, ij, it), 1d-4)
+							x(3) = max(mx(ia, ix, ip, is, iw, ij, it), 1d-4)
 
-                ! copy decisions
-                aplus(ia, ix, ip, is, :, ij, it) = aplus(ia, ix, ip, is, 1, ij, it)
-                xplus(ia, ix, ip, is, :, ij, it) = xplus(ia, ix, ip, is, 1, ij, it)
-                pplus(ia, ix, ip, is, :, ij, it) = p(ip)
-                c(ia, ix, ip, is, :, ij, it) = c(ia, ix, ip, is, 1, ij, it)
-                l(ia, ix, ip, is, :, ij, it) = 0d0
-                mx(ia, ix, ip, is, :, ij, it) = 0d0
-                pencon(ia, ix, ip, is, :, ij, it) = 0d0
-                inctax(ia, ix, ip, is, :, ij, it) = inctax(ia, ix, ip, is, 1, ij, it)
-                captax(ia, ix, ip, is, :, ij, it) = captax(ia, ix, ip, is, 1, ij, it)
-                VV(ia, ix, ip, is, :, ij, it) = VV(ia, ix, ip, is, 1, ij, it)
+							call fminsearch(x, fret, (/a_l, 0d0, a_l/), (/a_u, 1d0, a_u/), valuefunc_w)
+
+							! copy decisions
+							aplus(ia, ix, ip, is, :, ij, it) = x(1)
+							xplus(ia, ix, ip, is, :, ij, it) = xplus_com
+							pplus(ia, ix, ip, is, :, ij, it) = pplus_com
+							c(ia, ix, ip, is, :, ij, it) = max(c_com, 1d-16)
+							l(ia, ix, ip, is, :, ij, it) = l_com
+							mx(ia, ix, ip, is, :, ij, it) = mx_com
+							pencon(ia, ix, ip, is, :, ij, it) = pencon_com
+							inctax(ia, ix, ip, is, :, ij, it) = inctax_com
+							captax(ia, ix, ip, is, :, ij, it) = captax_com
+							VV(ia, ix, ip, is, iw, :, it) = -fret
 
               enddo ! ia
-		 				!$omp end parallel
             enddo ! ix
           enddo ! ip
         enddo ! is
+				!$omp end parallel
 
       elseif (ij >= 2) then
 
