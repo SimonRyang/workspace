@@ -1,5 +1,5 @@
-MAINFILE = main
-LIBS = toolbox.f90 sorting.f90 clock.f90
+MAINFILE = main toolbox
+LIBS = sorting.f90 clock.f90
 # Intel Fortran Compiler
 CFLAGS = -qopenmp -O2
 CC = ~/intel/bin/ifort
@@ -13,9 +13,6 @@ all: $(TARGET)
 	./$(TARGET)
 	-rm -rf Build
 	-rm -f *.mod
-
-$(TARGET): Build/toolbox.o
-	$(CC) $(CFLAGS) toolbox.f90 Build/toolbox.o -o $(TARGET)	
 
 $(TARGET): Build/$(MAINFILE).o
 	$(CC) $(CFLAGS) $(LIBS) Build/$(MAINFILE).o -o $(TARGET)
