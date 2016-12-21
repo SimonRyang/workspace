@@ -4,7 +4,7 @@ LIBS = globals.o toolbox.o sorting.o clock.o
 #CFLAGS = -qopenmp -O2
 #CC = ~/intel/bin/ifort
 # PGI Fortran Compiler
-CFLAGS = -mp -acc -Mbackslash
+CFLAGS = -mp -acc -Mbackslash -Minfo
 CC = ~/pgi/linux86-64/2016/bin/pgfortran
 TARGET = prog
 
