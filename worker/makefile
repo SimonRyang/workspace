@@ -1,5 +1,5 @@
 MAINFILE = main
-LIBS = ~/workspace/include/toolbox.o ~/workspace/include/sorting.o ~/workspace/include/clock.o
+LIBS = ~/workspace/include/toolbox.90 ~/workspace/include/sorting.90 ~/workspace/include/clock.90
 # Intel Fortran Compiler
 CFLAGS = -qopenmp -O2 -I/home/$$USER/workspace/include
 CC = ~/intel/bin/ifort
