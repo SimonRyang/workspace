@@ -22,7 +22,7 @@ globals.mod: sorting.mod globals.f90
 toolbox.mod: toolbox.f90
 	$(CC) $(CFLAGS) -c toolbox.f90
 
-sorting.mod: sorting.f90
+sorting.mod: toolbox.mod sorting.f90
 	$(CC) $(CFLAGS) -c sorting.f90
 
 clock.mod: clock.f90
