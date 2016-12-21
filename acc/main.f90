@@ -5,7 +5,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 8
 	integer, parameter :: L = 120
 	integer, parameter :: N = 4000
 	integer, parameter :: M = 3000
