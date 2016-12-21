@@ -19,7 +19,7 @@ $(TARGET): Build/$(MAINFILE).o
 
 Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
-	$(CC) $(CFLAGS) -c $(LIBS) $(MAINFILE).f90 -o Build/$(MAINFILE).o
+	$(CC) $(CFLAGS) -c $(LIBS) $(MAINFILE).f90 Build/$(MAINFILE).o
 
 
 clean:
