@@ -10,8 +10,8 @@ program main
 	integer, parameter :: N = 800
 	integer, parameter :: M = 600
 	real*8 :: A(N,M), B(M,L), C(N,L)
-	integer :: j, i, k
-	real*8 :: seconds, sum
+	integer :: j, i, k, sum
+	real*8 :: seconds
 
 	seconds = omp_get_wtime()
 
