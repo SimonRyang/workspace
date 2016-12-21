@@ -21,8 +21,8 @@ Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
 
-Build/globals.o : globals.f90
-	$(CC) $(CFLAGS) -c toolbox.f90 -o Build/toolbox.o
+Build/globals.mod : globals.f90
+	$(CC) $(CFLAGS) -c globals.f90 -o Build/globals.mod
 
 Build/toolbox.o: toolbox.f90
 	$(CC) $(CFLAGS) -c toolbox.f90 -o Build/toolbox.o
