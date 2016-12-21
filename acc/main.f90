@@ -21,7 +21,7 @@ program main
 
 	!!$acc data copyin(A,B) copy(C)
 	!!$acc kernels loop
-	!$omp parallel do reduction(+:C) num_threads(numthreads)
+	!$omp parallel do num_threads(numthreads)
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
