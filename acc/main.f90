@@ -5,7 +5,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 8
+  integer, parameter :: numthreads = 28
 	integer, parameter :: L = 1200
 	integer, parameter :: N = 4000
 	integer, parameter :: M = 3000
@@ -19,8 +19,9 @@ program main
 	B = 2d0
 	C = 0d0
 
-	!$acc data copyin(A,B) copy(C)
-	!$acc kernels loop
+	!!$acc data copyin(A,B) copy(C)
+	!!$acc kernels loop
+	!$omp parallel do copyin(A,B) copy(C) num_threads(numthreads)
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -28,7 +29,8 @@ program main
 			enddo
 		enddo
 	enddo
-	!$acc end data
+	!$omp end parallel do
+	!!$acc end data
 
 	write(*,*)'  Done!'
 	seconds = omp_get_wtime() - seconds
