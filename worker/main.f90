@@ -509,7 +509,7 @@ contains
 				ij_com = ij
 				it_com = it
 
-  	  	!$omp parallel copyin(ij_com, it_com)
+  	  	!$omp parallel do collapse(2) schedule(dynamic,1) copyin(ij_com, it_com) num_threads(numthreads)
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NA
