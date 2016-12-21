@@ -1,7 +1,7 @@
 MAINFILE = main
 LIBS = ~/workspace/include/toolbox.f90 ~/workspace/include/sorting.f90 ~/workspace/include/clock.f90
-CFLAGS = -qopenmp -traceback 
-CC = ~/intel/bin/ifort
+CFLAGS = -mp
+CC = /opt/pgi/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
 all: $(TARGET)
