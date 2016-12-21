@@ -1,22 +1,35 @@
 MAINFILE = main
-LIBS = ~/workspace/include/toolbox.f90 ~/workspace/include/sorting.f90 ~/workspace/include/clock.f90
-CFLAGS = -qopenmp -traceback 
-CC = ~/intel/bin/ifort
-TARGET = Build/prog
+LIBS = globals.o toolbox.o sorting.o clock.o
+
+# PGI Fortran Compiler
+CFLAGS = -mp -acc -Mbackslash
+CC = ~/pgi/linux86-64/2016/bin/pgfortran
+
+TARGET = prog
 
 all: $(TARGET)
 	clear
 	./$(TARGET)
-	-rm -rf Build
 	-rm -f *.mod
 
-$(TARGET): Build/$(MAINFILE).o
-	$(CC) $(CFLAGS) $(LIBS) Build/$(MAINFILE).o -o $(TARGET)
+$(TARGET): $(MAINFILE).o $(LIBS)
+	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
 
-Build/$(MAINFILE).o: $(MAINFILE).f90
-	mkdir -p Build
-	$(CC) $(CFLAGS) -I/home/$$USER/workspace/include -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
+globals.mod: sorting.mod globals.f90
+	$(CC) $(CFLAGS) -c globals.f90
+
+toolbox.mod: toolbox.f90
+	$(CC) $(CFLAGS) -c toolbox.f90
+
+sorting.mod: toolbox.mod sorting.f90
+	$(CC) $(CFLAGS) -c sorting.f90
+
+clock.mod: clock.f90
+	$(CC) $(CFLAGS) -c clock.f90
+
+$(MAINFILE).o: globals.mod toolbox.mod sorting.mod clock.mod $(MAINFILE).f90
+	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
 clean:
-	-rm -rf Build
 	-rm -f *.mod
+	-rm -f *.o
