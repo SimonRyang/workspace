@@ -508,7 +508,7 @@ contains
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NA
-							!$omp parallel do
+							!!$omp parallel do
               do ia = 0, NA
 
                 call get_decision(ia, ix, ip, is, 1, ij, it)
@@ -526,7 +526,7 @@ contains
                 VV(ia, ix, ip, is, :, ij, it) = VV(ia, ix, ip, is, 1, ij, it)
 
               enddo ! ia
-		 				!$omp end parallel do
+		 				!!$omp end parallel do
             enddo ! ix
           enddo ! ip
         enddo ! is
