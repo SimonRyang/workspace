@@ -30,7 +30,7 @@ program main
 		enddo
 	enddo
 	!$acc end data
-	!$omp end parallel do
+	!!$omp end parallel do
 
 	write(*,*)'  Done!'
 	seconds = omp_get_wtime() - seconds
