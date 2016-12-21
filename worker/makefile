@@ -1,11 +1,11 @@
 MAINFILE = main
 LIBS = ~/workspace/include/toolbox.f90 ~/workspace/include/sorting.f90 ~/workspace/include/clock.f90
 # Intel Fortran Compiler
-CFLAGS = -qopenmp -O2
-CC = ~/intel/bin/ifort
+#CFLAGS = -qopenmp -O2
+#CC = ~/intel/bin/ifort
 # PGI Fortran Compiler
-#CFLAGS = -mp -Mbackslash -Minfo -I/home/$$USER/workspace/include
-#CC = ~/pgi/linux86-64/2016/bin/pgfortran
+CFLAGS = -mp -Mbackslash -Minfo -I/home/$$USER/workspace/include
+CC = ~/pgi/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
 all: $(TARGET)
