@@ -7,7 +7,7 @@ program main
 
   integer, parameter :: numthreads = 28
 	integer, parameter :: L = 1200
-	integer, parameter :: N = 400
+	integer, parameter :: N = 4000
 	integer, parameter :: M = 300
 	real*8 :: A(N,M), B(M,L), C(N,L)
 	integer :: j, i, k
@@ -21,7 +21,7 @@ program main
 
 	!!$acc data copyin(A,B) copy(C)
 	!!$acc kernels loop
-	!$omp parallel do private(A,B) num_threads(numthreads)
+	!$omp parallel do reduction(+:C) num_threads(numthreads)
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
