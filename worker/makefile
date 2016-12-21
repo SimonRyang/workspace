@@ -4,7 +4,7 @@ LIBS = ~/workspace/include/toolbox.o ~/workspace/include/sorting.o ~/workspace/i
 #CFLAGS = -qopenmp -O2 -I/home/$$USER/workspace/include
 #CC = ~/intel/bin/ifort
 # PGI Fortran Compiler
-CFLAGS = -traceback -Mbackslash -Minfo -I/home/$$USER/workspace/include
+CFLAGS = -mp -Mbackslash -Minfo -I/home/$$USER/workspace/include
 CC = ~/pgi/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
