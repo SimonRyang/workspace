@@ -1,9 +1,9 @@
 MAINFILE = main
 LIBS = globals.o toolbox.o sorting.o clock.o
 
-# PGI Fortran Compiler
-CFLAGS = -mp -acc -Mbackslash
-CC = ~/pgi/linux86-64/2016/bin/pgfortran
+# Intel Fortran Compiler
+CFLAGS = -qopenmp -O2
+CC = ~/intel/bin/ifort
 
 TARGET = prog
 
@@ -15,7 +15,7 @@ all: $(TARGET)
 $(TARGET): $(MAINFILE).o $(LIBS)
 	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
 
-globals.mod: sorting.mod globals.f90
+globals.mod: toolbox.mod sorting.mod globals.f90
 	$(CC) $(CFLAGS) -c globals.f90
 
 toolbox.mod: toolbox.f90
