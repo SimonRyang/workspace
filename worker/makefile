@@ -5,7 +5,7 @@ LIBS = ~/workspace/include/toolbox.o ~/workspace/include/sorting.o ~/workspace/i
 #CC = ~/intel/bin/ifort
 # PGI Fortran Compiler
 CFLAGS = -mp -acc -Mbackslash -Minfo -I/home/$$USER/workspace/include
-CC = /opt/pgi/linux86-64/2016/bin/pgfortran
+CC = ~/pgi/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
 all: $(TARGET)
