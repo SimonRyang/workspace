@@ -507,7 +507,7 @@ contains
 				ij_com = ij
 				it_com = it
 
-  	  	!$omp parallel do collapse(2) schedule(dynamic,1) copyin(ij_com, it_com) num_threads(numthreads)
+  	  	!$omp parallel do collapse(3) schedule(dynamic,1) copyin(ij_com, it_com) num_threads(numthreads)
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NA
@@ -547,6 +547,7 @@ contains
 
       elseif (ij >= 2) then
 
+				!$omp parallel do collapse(3) schedule(dynamic,1) num_threads(numthreads)
         do iw = 1, NW
           do is = 1, NS
             do ip = 0, NP
@@ -560,9 +561,10 @@ contains
             enddo ! ip
           enddo ! is
         enddo ! iw
+				!$omp end parallel do
 
       elseif (ij == 1) then
-
+			
         do iw = 1, NW
           do is = 1, NS
 

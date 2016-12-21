@@ -32,11 +32,6 @@ $(MAINFILE).o: globals.mod toolbox.mod sorting.mod clock.mod $(MAINFILE).f90
 	mkdir -p Build
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
-
-
-
-
-
 clean:
 	-rm -rf Build
 	-rm -f *.mod
