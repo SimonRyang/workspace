@@ -7,8 +7,8 @@ program main
 
   integer, parameter :: numthreads = 28
 	integer, parameter :: L = 1200
-	integer, parameter :: N = 4000
-	integer, parameter :: M = 3000
+	integer, parameter :: N = 400
+	integer, parameter :: M = 300
 	real*8 :: A(N,M), B(M,L), C(N,L)
 	integer :: j, i, k
 	real*8 :: seconds
