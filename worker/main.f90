@@ -500,6 +500,7 @@ contains
     integer ::ia, ix, ip, is, iw, ij, it
 		real*8 :: x(3), fret
 
+		!$acc routine(fminsearch)
 
     do ij = JJ, 1, -1
 
