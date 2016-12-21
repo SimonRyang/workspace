@@ -9,15 +9,15 @@ program main
 	integer, parameter :: L = 1200
 	integer, parameter :: N = 800
 	integer, parameter :: M = 600
-	integer :: A(N,M), B(M,L), C(N,L)
-	integer :: j, i, k, sum
-	real*8 :: seconds
+	real*8 :: A(N,M), B(M,L), C(N,L)
+	integer :: j, i, k
+	real*8 :: seconds, sum
 
 	seconds = omp_get_wtime()
 
-	A = 3
-	B = 2
-	C = 0
+	A = 3d0
+	B = 2d0
+	C = 0d0
 
 	!!$acc data copyin(A,B) copy(C)
 	!!$acc kernels loop
@@ -41,7 +41,7 @@ program main
 		sum = sum + C(j, j)
 	enddo
 
-	write(*,'(i10)')'sum = ', sum
+	write(*,'(f10.0)))'sum = ', sum
 
 end program
 	
