@@ -8,5 +8,6 @@ git push origin master
 ssh -t -t flh71wr@$1 << EOF
 ulimit -s unlimited
 cd ~/workspace/include/
-
+git pull origin master
+ls
 EOF
