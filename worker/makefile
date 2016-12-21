@@ -14,6 +14,9 @@ all: $(TARGET)
 	-rm -rf Build
 	-rm -f *.mod
 
+$(TARGET): Build/toolbox.o
+	$(CC) $(CFLAGS) toolbox.f90 Build/toolbox.o -o $(TARGET)	
+
 $(TARGET): Build/$(MAINFILE).o
 	$(CC) $(CFLAGS) $(LIBS) Build/$(MAINFILE).o -o $(TARGET)
 
