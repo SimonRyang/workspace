@@ -537,7 +537,7 @@ contains
 							pencon(ia, ix, ip, is, :, ij, it) = pencon_com
 							inctax(ia, ix, ip, is, :, ij, it) = inctax_com
 							captax(ia, ix, ip, is, :, ij, it) = captax_com
-							VV(ia, ix, ip, is, iw, :, it) = -fret
+							VV(ia, ix, ip, is, :, ij, it) = -fret
 
               enddo ! ia
             enddo ! ix
