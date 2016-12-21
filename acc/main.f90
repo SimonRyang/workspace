@@ -6,9 +6,9 @@ program main
   implicit none
 
   integer, parameter :: numthreads = 14
-	integer, parameter :: L = 800
+	integer, parameter :: L = 600
 	integer, parameter :: N = 800
-	integer, parameter :: M = 800
+	integer, parameter :: M = 700
 	real*8 :: A(N,M), B(M,L), C(L,N,M)
 	integer :: j, i, k
 	real*8 :: seconds
