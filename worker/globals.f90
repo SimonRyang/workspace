@@ -12,7 +12,7 @@ module globals
   integer, parameter :: JR = 10
   
   ! number of transition periods
-  integer, parameter :: TT = 12
+  integer, parameter :: TT = 2
 
   ! number of permanent skill classes
   integer, parameter :: NS = 3
@@ -21,7 +21,7 @@ module globals
   integer, parameter :: NW = 5
   
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 11
+  integer, parameter :: NA = 7
   
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
