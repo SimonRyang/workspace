@@ -1,4 +1,4 @@
-iclude "globals.f90"
+include "globals.f90"
 
 program main
 
