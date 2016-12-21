@@ -16,21 +16,25 @@ all: $(TARGET)
 $(TARGET): $(MAINFILE).o $(LIBS)
 	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
 
-$(MAINFILE).o: $(MAINFILE).f90
-	mkdir -p Build
-	$(CC) $(CFLAGS) -c $(MAINFILE).f90 -o $(MAINFILE).o
-
-toolbox.o: toolbox.f90
-	$(CC) $(CFLAGS) -c toolbox.f90 -o toolbox.o
-
-sorting.o: sorting.f90
-	$(CC) $(CFLAGS) -c sorting.f90 -o sorting.o
-
-clock.o: clock.f90
-	$(CC) $(CFLAGS) -c clock.f90 -o clock.o
+globals.mod: globals.o globals.f90
+	$(CC) $(CFLAGS) -c globals.f90
 
 globals.o : globals.f90
-	$(CC) $(CFLAGS) -c globals.f90 -o globals.o
+	$(CC) $(CFLAGS) -c globals.f90
+
+$(MAINFILE).o: globals.mod $(MAINFILE).f90
+	mkdir -p Build
+	$(CC) $(CFLAGS) -c $(MAINFILE).f90
+
+toolbox.o: toolbox.f90
+	$(CC) $(CFLAGS) -c toolbox.f90
+
+sorting.o: sorting.f90
+	$(CC) $(CFLAGS) -c sorting.f90
+
+clock.o: clock.f90
+	$(CC) $(CFLAGS) -c clock.f90
+
 
 clean:
 	-rm -rf Build
