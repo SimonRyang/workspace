@@ -21,13 +21,13 @@ Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
 
-Build/toolbox.0: toolbox.f90
+Build/toolbox.o: toolbox.f90
 	$(CC) $(CFLAGS) -c toolbox.f90 -o Build/toolbox.o
 
-Build/toolbox.0: sorting.f90
+Build/toolbox.o: sorting.f90
 	$(CC) $(CFLAGS) -c sorting.f90 -o Build/sorting.o
 
-Build/toolbox.0: clock.f90
+Build/toolbox.o: clock.f90
 	$(CC) $(CFLAGS) -c clock.f90 -o Build/clock.o
 
 clean:
