@@ -19,7 +19,7 @@ program main
 	B = 2d0
 	C = 0d0
 
-	!$acc loop
+	!!$acc loop
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -27,7 +27,7 @@ program main
 			enddo
 		enddo
 	enddo
-	!$acc end loop
+	!!$acc end loop
 
 	write(*,*)'  Done!'
 	seconds = omp_get_wtime() - seconds
