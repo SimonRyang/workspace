@@ -11,7 +11,7 @@ program main
 	integer, parameter :: M = 600
 	real*8 :: A(N,M), B(M,L), C(N,L)
 	integer :: j, i, k
-	real*8 :: seconds, sum
+	real*8 :: seconds, summ
 
 	seconds = omp_get_wtime()
 
@@ -36,12 +36,12 @@ program main
 	seconds = omp_get_wtime() - seconds
 	write(*,*) seconds	
 
-	sum = 0
+	summ = 0
 	do j = 1, L
-		sum = sum + C(j, j)
+		summ = summ + C(j, j)
 	enddo
 
-	write(*,'(f10.0)')'sum = ', sum
+	write(*,'(f10.8)')'sum = ', summ
 
 end program
 	
