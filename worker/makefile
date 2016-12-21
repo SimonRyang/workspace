@@ -28,7 +28,7 @@ sorting.mod: sorting.mod sorting.f90
 sorting.o: sorting.f90
 	$(CC) $(CFLAGS) -c sorting.f90
 
-globals.mod: globals.o globals.f90
+globals.mod: sorting.mod globals.o globals.f90
 	$(CC) $(CFLAGS) -c globals.f90
 
 globals.o : globals.f90
