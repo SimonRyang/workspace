@@ -6,7 +6,7 @@ program main
   implicit none
 
   integer, parameter :: numthreads = 14
-	integer, parameter :: L = 1200
+	integer, parameter :: L = 120
 	integer, parameter :: N = 4000
 	integer, parameter :: M = 3000
 	real*8 :: A(N,M), B(M,L), C(N,L)
@@ -19,7 +19,7 @@ program main
 	B = 2d0
 	C = 0d0
 
-
+	!$omp acc_region_loop
 	do j = 1, L
 		do i = 1, N
 			do k = 1, M
@@ -27,6 +27,7 @@ program main
 			enddo
 		enddo
 	enddo
+	!$omp end acc_region_loop
 
 	write(*,*)'  Done!'
 	seconds = omp_get_wtime() - seconds
