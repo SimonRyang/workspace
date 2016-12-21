@@ -500,8 +500,6 @@ contains
     integer ::ia, ix, ip, is, iw, ij, it
 		real*8 :: x(3), fret
 
-		!$acc routine(powell)
-
     do ij = JJ, 1, -1
 
       it = year(it_in, ij_in, ij)
@@ -554,8 +552,7 @@ contains
 				ij_com = ij
 				it_com = it
 
-				!$acc parallel loop
-  	  	!!$omp parallel do copyin(ij_com, it_com) collapse(3) schedule(dynamic,1) private(x, fret) num_threads(numthreads)
+  	  	!$omp parallel do copyin(ij_com, it_com) collapse(3) schedule(dynamic,1) private(x, fret) num_threads(numthreads)
         do iw = 1, NW
           do is = 1, NS
             do ip = 0, NP
@@ -595,8 +592,7 @@ contains
             enddo ! ip
           enddo ! is
         enddo ! iw
-				!!$omp end parallel do
-				!$acc end parallel loop
+				!$omp end parallel do
 
       elseif (ij == 1) then
 
@@ -643,53 +639,6 @@ contains
       call interpolate(ij, it)
 
     enddo
-
-  end subroutine
-
-
-
-  !##############################################################################
-  ! SUBROUTINE get_decision
-  !
-  ! Calculates the optimal decision of an individual
-  !##############################################################################
-  subroutine get_decision(ia, ix, ip, is, iw, ij, it)
-
-    implicit none
-
-    !##### INPUT/OUTPUT VARIABLES #############################################
-    integer, intent(in) :: ia, ix, ip, is, iw, ij, it
-
-    !##### OTHER VARIABLES ####################################################
-    real*8 :: x(3), fret
-
-    ! set up communication variables
-    ia_com = ia
-    ix_com = ix
-    ip_com = ip
-    is_com = is
-    iw_com = iw
-    ij_com = ij
-    it_com = it
-
-    ! get initial guess for the individual choices
-    x(1) = max(aplus(ia, ix, ip, is, iw, ij, it), 1d-4)
-    x(2) = max(l(ia, ix, ip, is, iw, ij, it), 1d-4)
-    x(3) = max(mx(ia, ix, ip, is, iw, ij, it), 1d-4)
-
-    call fminsearch(x, fret, (/a_l, 0d0, a_l/), (/a_u, 1d0, a_u/), valuefunc_w)
-
-    ! copy decisions
-    aplus(ia, ix, ip, is, iw, ij, it) = x(1)
-    xplus(ia, ix, ip, is, iw, ij, it) = xplus_com
-    pplus(ia, ix, ip, is, iw, ij, it) = pplus_com
-    c(ia, ix, ip, is, iw, ij, it) = max(c_com, 1d-16)
-    l(ia, ix, ip, is, iw, ij, it) = l_com
-    mx(ia, ix, ip, is, iw, ij, it) = mx_com
-    pencon(ia, ix, ip, is, iw, ij, it) = pencon_com
-    inctax(ia, ix, ip, is, iw, ij, it) = inctax_com
-    captax(ia, ix, ip, is, iw, ij, it) = captax_com
-    VV(ia, ix, ip, is, iw, ij, it) = -fret
 
   end subroutine
 
