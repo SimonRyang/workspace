@@ -1,5 +1,5 @@
 MAINFILE = main
-LIBS = globals.mod toolbox.mod sorting.mod clock.mod
+LIBS = globals.o toolbox.o sorting.o clock.o
 # Intel Fortran Compiler
 CFLAGS = -qopenmp -O2
 CC = ~/intel/bin/ifort
@@ -17,16 +17,16 @@ $(TARGET): $(MAINFILE).o $(LIBS)
 	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
 
 globals.mod: sorting.mod globals.f90
-	$(CC) $(CFLAGS) -c globals.f90 -o globals.mod
+	$(CC) $(CFLAGS) -c globals.f90
 
 toolbox.mod: toolbox.f90
-	$(CC) $(CFLAGS) -c toolbox.f90 -o toolbox.mod
+	$(CC) $(CFLAGS) -c toolbox.f90
 
 sorting.mod: sorting.f90
-	$(CC) $(CFLAGS) -c sorting.f90 -o sorting.mod
+	$(CC) $(CFLAGS) -c sorting.f90
 
 clock.mod: clock.f90
-	$(CC) $(CFLAGS) -c clock.f90 -o clock.mod
+	$(CC) $(CFLAGS) -c clock.f90
 
 $(MAINFILE).o: globals.mod toolbox.mod sorting.mod clock.mod $(MAINFILE).f90
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
