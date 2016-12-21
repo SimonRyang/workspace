@@ -15,11 +15,11 @@ all: $(TARGET)
 	-rm -f *.mod
 
 $(TARGET): Build/$(MAINFILE).o
-	$(CC) $(CFLAGS) Build/$(MAINFILE).o -o $(TARGET)
+	$(CC) $(CFLAGS) $(LIBS) Build/$(MAINFILE).o -o $(TARGET)
 
 Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
-	$(CC) $(CFLAGS) -c $(LIBS) $(MAINFILE).f90 -o Build/$(MAINFILE).o
+	$(CC) $(CFLAGS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
 
 
 clean:
