@@ -23,7 +23,7 @@ all: $(TARGET)
 $(TARGET): $(MAINFILE).o $(LIBS)
 	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
 
-globals.mod: sorting.mod globals.f90
+globals.mod: toolbox.mod sorting.mod globals.f90
 	$(CC) $(CFLAGS) -c globals.f90
 
 toolbox.mod: toolbox.f90
