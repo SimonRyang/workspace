@@ -508,7 +508,7 @@ contains
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NA
-							!$omp parallel do schedule(dynamic, 1) num_threads(numthreads)
+							!$omp parallel do
               do ia = 0, NA
 
                 call get_decision(ia, ix, ip, is, 1, ij, it)
