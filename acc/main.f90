@@ -36,7 +36,7 @@ program main
 	seconds = omp_get_wtime() - seconds
 	write(*,*) seconds	
 
-	write(*,'(a, i10)')'sum = ', sum(C)
+	write(*,'(i10)')'sum = ', int(sum(C))
 
 end program
 	
