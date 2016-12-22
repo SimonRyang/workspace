@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 1
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -374,6 +374,7 @@ contains
     integer :: is, ie, iw, ip, ia, ij
     real*8 :: xy(2), fret, limit
 
+    !$acc kernels
     do ij = JJ, 1, -1
 
       !call tick(calc)
@@ -568,6 +569,7 @@ contains
       !call tock(calc)
 
     enddo
+    !$acc kernels
 
   end subroutine
 
@@ -588,7 +590,6 @@ contains
     integer :: is, ie, iw, ip, ia, ie_p, iw_p
 
     !$omp parallel do collapse(2) schedule(dynamic,1) private(iw_p, ie_p) num_threads(numthreads)
-    !!$acc kernels
     do ia = 0, NA
       do ip = 0, NP
         do iw = 1, NW
@@ -613,7 +614,6 @@ contains
         enddo ! iw
       enddo ! ip
     enddo ! ia
-    !!$acc end kernels
     !$omp end parallel do
 
   end subroutine
