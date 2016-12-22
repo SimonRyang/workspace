@@ -588,7 +588,7 @@ contains
     integer :: is, ie, iw, ip, ia, ie_p, iw_p
 
     !!$omp parallel do collapse(2) schedule(dynamic,1) private(iw_p, ie_p) num_threads(numthreads)
-    !$acc parallel loop
+    !$acc kernels
     do ia = 0, NA
       do ip = 0, NP
         do iw = 1, NW
@@ -613,7 +613,7 @@ contains
         enddo ! iw
       enddo ! ip
     enddo ! ia
-    !$acc end parallel loop
+    !$acc end kernels
     !!$omp end parallel do
 
   end subroutine
