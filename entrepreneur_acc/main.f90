@@ -389,9 +389,8 @@ contains
         ie_com = 1
         io_com = 0
 
-        !$acc parallel loop
-        !!$omp parallel do copyin(ij_com, iw_com, ie_com, io_com) collapse(2) &
-        !!$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        !$omp parallel do copyin(ij_com, iw_com, ie_com, io_com) collapse(2) &
+        !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
         do ia = 0, NA
           do ip = 0, NP
             do is = 1, NS
@@ -421,8 +420,7 @@ contains
             enddo ! is
           enddo ! ip
         enddo ! ia
-        !!$omp end parallel do
-        !$acc end parallel loop
+        !$omp end parallel do
 
       elseif (ij >= 2) then
 
@@ -589,7 +587,8 @@ contains
     !##### OTHER VARIABLES ####################################################
     integer :: is, ie, iw, ip, ia, ie_p, iw_p
 
-    !$omp parallel do collapse(2) schedule(dynamic,1) private(iw_p, ie_p) num_threads(numthreads)
+    !!$omp parallel do collapse(2) schedule(dynamic,1) private(iw_p, ie_p) num_threads(numthreads)
+    !$acc parallel loop
     do ia = 0, NA
       do ip = 0, NP
         do iw = 1, NW
@@ -614,7 +613,8 @@ contains
         enddo ! iw
       enddo ! ip
     enddo ! ia
-    !$omp end parallel do
+    !$acc end parallel loop
+    !!$omp end parallel do
 
   end subroutine
 

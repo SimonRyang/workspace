@@ -4899,7 +4899,6 @@ contains
     end subroutine setiter_min
 
 
-
     !##############################################################################
     ! SUBROUTINE brent
     !
@@ -4908,6 +4907,7 @@ contains
     subroutine brent(xmin, fret, minimum, maximum, func)
 
         implicit none
+
 
         !##### INPUT/OUTPUT VARIABLES #############################################
 
