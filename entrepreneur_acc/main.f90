@@ -569,7 +569,7 @@ contains
       !call tock(calc)
 
     enddo
-    !$acc kernels
+    !$acc end kernels
 
   end subroutine
 
