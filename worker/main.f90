@@ -599,8 +599,8 @@ contains
 				ix_com = 0
 				ip_com = 0
 
-  	  	!$omp parallel do copyin(ij_com, it_com, ia_com, ip_com, ix_com) &
-  	  	!$omp       collapse(2) schedule(dynamic,1) private(x, fret) num_threads(numthreads)
+  	  	!$acc parallel loop copyin(ij_com, it_com, ia_com, ip_com, ix_com) &
+  	  	!$acc       collapse(2) private(x, fret)
         do iw = 1, NW
           do is = 1, NS
 
@@ -629,7 +629,7 @@ contains
 
           enddo ! is
         enddo ! iw
-				!$omp end parallel do
+				!$acc end parallel loop
 
       endif
 
