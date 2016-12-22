@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 4
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -292,11 +292,11 @@ contains
 !    pi_theta(3,:)   = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
 !    pi_theta(4,:)   = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
 
-    call discretize_AR(0.75666d0**5d0, 0.0d0, sigma5(0.75666d0, 0.3538d0), theta(3, :), pi_theta(3, :, :), dist_theta(3, :))
+    call discretize_AR(0.75666d0**5d0, 0.0d0, sigma5(0.75666d0, 0.6538d0), theta(3, :), pi_theta(3, :, :), dist_theta(3, :))
     theta(3, :) = exp(theta(3, :))/sum(dist_theta(3, :)*exp(theta(3, :)))
-    call discretize_AR(0.85687d0**5d0, 0.0d0, sigma5(0.85687d0, 0.2538d0), theta(2, :), pi_theta(2, :, :), dist_theta(2, :))
+    call discretize_AR(0.85687d0**5d0, 0.0d0, sigma5(0.85687d0, 0.6538d0), theta(2, :), pi_theta(2, :, :), dist_theta(2, :))
     theta(2, :) = exp(theta(2, :))/sum(dist_theta(2, :)*exp(theta(2, :)))
-    call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.1538d0), theta(1, :), pi_theta(1, :, :), dist_theta(1, :))
+    call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.6538d0), theta(1, :), pi_theta(1, :, :), dist_theta(1, :))
     theta(1, :) = exp(theta(1, :))/sum(dist_theta(1, :)*exp(theta(1, :)))
 
     ! initial guesses for macro variables
@@ -771,7 +771,7 @@ contains
                               *m(io, is, ie, iw, ip, ia, ij)*pop(ij)
                   else
                     KE = KE + k(io, is, ie, iw, ip, ia, ij)*m(io, is, ie, iw, ip, ia, ij)*pop(ij)
-                    YE = YE + theta(is, ie)*(k(io, is, ie, iw, ip, ia, ij)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                    YE = YE + eff(ij, is)*theta(is, ie)*(k(io, is, ie, iw, ip, ia, ij)**alpha*(l_bar)**(1d0-alpha))**nu &
                               *m(io, is, ie, iw, ip, ia, ij)*pop(ij)
                     if (ij < JR) PC = PC + phi*min(profent(k(io, is, ie, iw, ip, ia, ij), ij, ia, is, ie), sscc*inc_bar) &
                               *m(io, is, ie, iw, ip, ia, ij)*pop(ij)
