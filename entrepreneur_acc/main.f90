@@ -389,7 +389,7 @@ contains
         ie_com = 1
         io_com = 0
 
-        !$acc kernels
+        !$acc parallel loop
         !!$omp parallel do copyin(ij_com, iw_com, ie_com, io_com) collapse(2) &
         !!$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
         do ia = 0, NA
@@ -422,7 +422,7 @@ contains
           enddo ! ip
         enddo ! ia
         !!$omp end parallel do
-        !$acc end kernels
+        !$acc end parallel loop
 
       elseif (ij >= 2) then
 
