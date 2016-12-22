@@ -275,6 +275,11 @@ contains
     close(302)
     eff(JR:, :) = 0d0
 
+    call plot((/(dble(ij), ij = 1, JJ)/), eff(:, 1)**(1d0-alpha)**nu)
+    call plot((/(dble(ij), ij = 1, JJ)/), eff(:, 2)**(1d0-alpha)**nu)
+    call plot((/(dble(ij), ij = 1, JJ)/), eff(:, 3)**(1d0-alpha)**nu)
+    call execplot
+
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(1, :), pi_eta(1, :, :), dist_eta(1, :))
     eta(1, :) = exp(eta(1, :))/sum(dist_eta(1,:)*exp(eta(1, :)))
 
