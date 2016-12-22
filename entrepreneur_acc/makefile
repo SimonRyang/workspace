@@ -6,7 +6,7 @@ LIBS = globals.o toolbox.o sorting.o clock.o
 #CC = ~/intel/bin/ifort
 
 # PGI Fortran Compiler
-CFLAGS = -mp -acc -Mbackslash ta=nvidia
+CFLAGS = -mp -acc -Mbackslash -ta=nvidia, time
 CC = ~/pgi/linux86-64/2016/bin/pgfortran
 
 # GNU Fortran Compiler
