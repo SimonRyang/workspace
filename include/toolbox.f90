@@ -4907,8 +4907,6 @@ contains
     !##############################################################################
     subroutine brent(xmin, fret, minimum, maximum, func)
 
-        !$acc routine gang
-
         implicit none
 
         !##### INPUT/OUTPUT VARIABLES #############################################
