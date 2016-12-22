@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 1
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -81,7 +81,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 128d0
-  a_grow = 1.2d0
+  a_grow = 1.4d0
 
   ! size of the pension claim grid
   p_l  = 0d0
@@ -374,7 +374,6 @@ contains
     integer :: is, ie, iw, ip, ia, ij
     real*8 :: xy(2), fret, limit
 
-    !$acc kernels
     do ij = JJ, 1, -1
 
       !call tick(calc)
@@ -569,7 +568,6 @@ contains
       !call tock(calc)
 
     enddo
-    !$acc end kernels
 
   end subroutine
 
