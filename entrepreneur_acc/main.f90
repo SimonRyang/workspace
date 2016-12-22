@@ -298,16 +298,6 @@ contains
     theta(2, :) = exp(theta(2, :))/sum(dist_theta(2, :)*exp(theta(2, :)))
     call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.1538d0), theta(1, :), pi_theta(1, :, :), dist_theta(1, :))
     theta(1, :) = exp(theta(1, :))/sum(dist_theta(1, :)*exp(theta(1, :)))
-    write(*,'(4f8.5)') theta(1, :)
-    write(*,'(4f8.5)') dist_theta(1, :)
-    write(*,'(4f8.5)') theta(2, :)
-    write(*,'(4f8.5)') dist_theta(2, :)
-    write(*,'(4f8.5)') theta(3, :)
-    write(*,'(4f8.5/)') dist_theta(3, :)
-
-    write(*,'(5f8.5)') dist_eta(1, :)
-    write(*,'(5f8.5)') dist_eta(2, :)
-    write(*,'(5f8.5/)') dist_eta(3, :)
 
     ! initial guesses for macro variables
     inc_bar = 0.58d0
@@ -399,8 +389,9 @@ contains
         ie_com = 1
         io_com = 0
 
-        !$omp parallel do copyin(ij_com, iw_com, ie_com, io_com) collapse(2) &
-        !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        !$acc kernels
+        !!$omp parallel do copyin(ij_com, iw_com, ie_com, io_com) collapse(2) &
+        !!$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
         do ia = 0, NA
           do ip = 0, NP
             do is = 1, NS
@@ -430,9 +421,11 @@ contains
             enddo ! is
           enddo ! ip
         enddo ! ia
-        !$omp end parallel do
+        !!$omp end parallel do
+        !$acc end kernels
 
       elseif (ij >= 2) then
+
 
         !$omp parallel copyin(ij_com) private(xy, fret, limit) num_threads(numthreads)
 
