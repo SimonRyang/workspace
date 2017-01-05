@@ -2,8 +2,12 @@ MAINFILE = main
 LIBS = globals.o toolbox.o sorting.o clock.o
 
 # Intel Fortran Compiler
-CFLAGS = -qopenmp -O2
-CC = ~/intel/bin/ifort
+#CFLAGS = -qopenmp -O2
+#CC = ~/intel/bin/ifort
+
+# PGI Compiler
+CFLAGS = -mp -O2
+CC = ~/pgi/linux86-64/2016/bin/pgfortran
 
 TARGET = prog
 
