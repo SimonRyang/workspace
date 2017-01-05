@@ -42,13 +42,13 @@ logical, private :: tbox_normal_loaded = .false.
 logical, private :: tbox_seed = .true.
 
 ! Level of tolerance for all routines
-real*8,  private  :: tbox_gftol = 1e-8
+real*8,  private  :: tbox_gftol = 1e-10
 
 ! Maximum number of iterations
-integer, private  :: tbox_itermax_min = 500
+integer, private  :: tbox_itermax_min = 1000
 
 ! Maximum number of iterations for brent_pow
-integer, parameter, private  :: tbox_tbox_itermax_pow_b = 500
+integer, parameter, private  :: tbox_tbox_itermax_pow_b = 1000
 
 ! Level of tolerance for all routines
 real*8,  private  :: tbox_gftol_root = 1e-8

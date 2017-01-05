@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 2
+  integer, parameter :: numthreads = 4
 
   ! set up how many kernels you want to use
   call omp_set_num_threads(numthreads)
@@ -55,7 +55,7 @@ program main
 
   ! simulation parameters
   damp  = 0.50d0
-  tol   = 1d-5
+  tol   = 1d-10
   itermax = 200
 
   ! turn gini calculation on
@@ -128,7 +128,7 @@ contains
       ! determine the government parameters
       call government(0)
 
-      write(*,'(i4,5f8.2,f12.6)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
+      write(*,'(i4,5f8.2,f16.10)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
@@ -255,7 +255,7 @@ contains
     real*8 :: adj
 
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
-    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w      DIFF'
+    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w          DIFF'
 
     ! initialize asset grid
     a = grid_Cons_Grow(a_l, a_u, a_grow, NA)

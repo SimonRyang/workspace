@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 2
+  integer, parameter :: numthreads = 4
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -26,21 +26,21 @@ program main
   if(allocated(VV))deallocate(VV)
   if(allocated(EV))deallocate(EV)
   if(allocated(v))deallocate(v)
-  allocate(aplus(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(xplus(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(pplus(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(c(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(l(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(mx(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(k(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(oplus(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(pencon(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(inctax(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(captax(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(m(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(VV(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(EV(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
-  allocate(v(0:1, NS, NE, NW, 0:NP, 0:NX, 0:NA, JJ, 0:TT))
+  allocate(aplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(xplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(pplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(c(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(l(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(mx(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(k(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(oplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(pencon(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(inctax(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(captax(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(m(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(VV(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(EV(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(v(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
 
   ! set compensating payments to zero
   v = 0d0
@@ -89,21 +89,21 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 256d0
-  a_grow = 1.0d0
+  a_u    = 1024d0
+  a_grow = 1.2d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
   x_u    = 512d0
-  x_grow = 1.0d0
+  x_grow = 1.2d0
 
   ! size of the pension claim grid
   p_l  = 0d0
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.60d0
-  tol   = 1d-6
+  damp  = 0.50d0
+  tol   = 1d-4
   itermax = 200
 
   ! compute gini
@@ -115,6 +115,8 @@ program main
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+  stop
 
   ! set reform parameters
   !pen_debt = .true.
@@ -150,7 +152,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: iter
+    integer :: iter, iamax(JJ), ixmax(JJ)
 
     ! initialize remaining variables
     call initialize()
@@ -178,8 +180,11 @@ contains
       ! determine the government parameters
       call government(0)
 
-      write(*,'(i4,6f8.2,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
-        ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, DIFF(0)/YY(0)*100d0
+      ! check the grid
+      call check_grid(iamax, ixmax, 0)
+
+      write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
+        ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
 
@@ -217,7 +222,7 @@ contains
     if(.not. lsra_on)then
       call initialize_trn()
     else
-      write(*,'(a)')'ITER  COMP_OLD  EFFICIENCY      DIFF'
+      write(*,'(/a/)')'ITER    COMP_OLD    EFFICIENCY        DIFF'
     endif
 
     ! start timer
@@ -264,11 +269,11 @@ contains
       if(.not. lsra_on)then
         write(*,'(i4,6f8.2,f12.6)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
           ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), sum(pop_e(:, TT))/(sum(pop_w(:, TT))+sum(pop_e(:, TT)))*100d0, DIFF(itmax)/YY(itmax)*100d0
-        check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 1
+        check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
       else
         write(*,'(i4,3f12.5)')iter, lsra_comp/lsra_all*100d0, &
           (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
-          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
+          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 1 .and. lsra_comp/lsra_all > 0.99999d0
       endif
 
       ! check for convergence
@@ -303,11 +308,11 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ######################################################
-    integer :: is, ie, iw, ip, ix, ia, ij
+    integer :: ia, ix, ip, iw, ie, is, ij
     real*8 :: adj
 
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
-    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent          DIFF'
+    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent  iamax  ixmax          DIFF'
 
     ! initialize asset grid
     a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
@@ -324,20 +329,20 @@ contains
 
     ! get initial guess for savings decision
     do ij = 1, JJ
-      do ia = 0, NA
-        do ix = 0, NX
-          do ip = 0, NP
-            do iw = 1, NW
-              do ie = 1, NE
-                do is = 1, NS
-                  aplus(0, is, ie, iw, ip, ix, ia, ij, 0) = max(a(ia)/2d0, a(1))
-                  aplus(1, is, ie, iw, ip, ix, ia, ij, 0) = max(a(ia)/2d0, a(1))
-                enddo ! is
-              enddo ! ie
-            enddo ! iw
-          enddo ! ip
-        enddo ! ix
-      enddo ! ia
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ia = 0, NA
+                  aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1))
+                  aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1))
+                enddo ! ia
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
     enddo ! ij
 
     ! initial guess for investment decision
@@ -402,16 +407,16 @@ contains
       read(302,'(3f12.8)')eff(ij, :)
     enddo
     close(302)
-    eff(JR:, :) = 0d0
+    eff(JE:, :) = 0d0
 
-    call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(1, :), pi_eta(1, :, :), dist_eta(1, :))
-    eta(1, :) = exp(eta(1, :))/sum(dist_eta(1,:)*exp(eta(1, :)))
+    call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
+    eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*exp(eta(:, 1)))
 
-    call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta(2, :), pi_eta(2, :, :), dist_eta(2, :))
-    eta(2, :) = exp(eta(2, :))/sum(dist_eta(2,:)*exp(eta(2, :)))
+    call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta(:, 2), pi_eta(:, :, 2), dist_eta(:, 2))
+    eta(:, 2) = exp(eta(:, 2))/sum(dist_eta(:, 2)*exp(eta(:, 2)))
 
-    call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.03538d0), eta(3, :), pi_eta(3, :, :), dist_eta(3, :))
-    eta(3, :) = exp(eta(3, :))/sum(dist_eta(3,:)*exp(eta(3, :)))
+    call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.03538d0), eta(:, 3), pi_eta(:, :, 3), dist_eta(:, 3))
+    eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
     theta       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
@@ -589,7 +594,7 @@ contains
     integer, intent(in) :: it_in, ij_in
 
     !##### OTHER VARIABLES ####################################################
-    integer :: is, ie, iw, ip, ix, ia, ij, it
+    integer :: ia, ix, ip, iw, ie, is, ij, it
     real*8 :: xy(3), fret, limit
 
     do ij = JJ, 1, -1
@@ -603,48 +608,144 @@ contains
       ij_com = ij
       it_com = it
 
-      if (ij >= JR) then
+      if (ij >= JE) then
 
         ! set up communication variables
-        iw_com = 1
         ie_com = 1
+        iw_com = 1
         io_com = 0
 
-        !$omp parallel do copyin(ij_com, it_com, iw_com, ie_com, io_com) collapse(2) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
-        do ia = 0, NA
-          do ix = 0, NX
-            do ip = 0, NP
-              do is = 1, NS
+        !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com, it_com) collapse(3) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        do is = 1, NS
+          do ip = 0, NP
+            do ix = 0, NX
+              do ia = 0, NA
 
                 ! set up communication variables
-                ia_com = ia
-                ix_com = ix
-                ip_com = ip
                 is_com = is
+                ip_com = ip
+                ix_com = ix
+                ia_com = ia
 
                 ! get initial guess for the individual choices
-                xy(1) = max(aplus(0, is, 1, 1, ip, ix, ia, ij, it), 1d-4)
+                xy(1) = max(aplus(0, ia, ix, ip, 1, 1, is, ij, it), 1d-4)
 
                 call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
 
                 ! copy decisions
-                aplus(:, is, :, :, ip, ix, ia, ij, it) = xy(1)
-                xplus(:, is, :, :, ip, ix, ia, ij, it) = xplus_com
-                pplus(:, is, :, :, ip, ix, ia, ij, it) = p(ip)
-                c(:, is, :, :, ip, ix, ia, ij, it) = max(c_com, 1d-10)
-                l(:, is, :, :, ip, ix, ia, ij, it) = 0d0
-                k(:, is, :, :, ip, ix, ia, ij, it) = 0d0
-                mx(:, is, :, :, ip, ix, ia, ij, it) = 0d0
-                oplus(:, is, :, :, ip, ix, ia, ij, it) = 0d0
-                pencon(:, is, :, :, ip, ix, ia, ij, it) = 0d0
-                inctax(:, is, :, :, ip, ix, ia, ij, it) = inctax_com
-                captax(:, is, :, :, ip, ix, ia, ij, it) = captax_com
-                VV(:, is, :, :, ip, ix, ia, ij, it) = -fret
+                aplus(:, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
+                xplus(:, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
+                pplus(:, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
+                c(:, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
+                l(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                k(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                mx(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                oplus(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                pencon(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                inctax(:, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
+                captax(:, ia, ix, ip,  :,  :, is, ij, it) = captax_com
+                VV(:, ia, ix, ip,  :,  :, is, ij, it) = -fret
 
-              enddo ! is
-            enddo ! ip
-          enddo ! ix
-        enddo ! ia
+              enddo ! ia
+            enddo ! ix
+          enddo ! ip
+        enddo ! is
+        !$omp end parallel do
+
+      elseif (ij >= JR) then
+
+        if (ent) then
+
+          ! set up communication variables
+          iw_com = 1
+          io_com = 1
+
+          !$omp parallel do copyin(io_com, iw_com, ij_com, it_com) collapse(4) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+          do is = 1, NS
+            do ie = 1, NE
+              do ip = 0, NP
+                do ix = 0, NX
+                  do ia = 0, NA
+
+                    ! set up communication variables
+                    is_com = is
+                    ie_com = ie
+                    ip_com = ip
+                    ix_com = ix
+                    ia_com = ia
+
+                    ! get initial guess for the individual choices
+                    xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
+                    xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
+
+                    limit = max(1.5d0*a(ia), 1d-4)
+
+                    call fminsearch(xy, fret, (/a_l, 0d0, a_l/), (/a_u, limit, a_u/), valuefunc_e)
+
+                    ! copy decisions
+                    aplus(1, ia, ix, ip, :, ie, is, ij, it) = xy(1)
+                    xplus(1, ia, ix, ip, :, ie, is, ij, it) = xplus_com
+                    k(1, ia, ix, ip, :, ie, is, ij, it) = k_com
+                    pplus(1, ia, ix, ip, :, ie, is, ij, it) = pplus_com
+                    c(1, ia, ix, ip, :, ie, is, ij, it) = max(c_com, 1d-10)
+                    l(1, ia, ix, ip, :, ie, is, ij, it) = l_com
+                    mx(1, ia, ix, ip, :, ie, is, ij, it) = mx_com
+                    oplus(1, ia, ix, ip, :, ie, is, ij, it) = oplus_com
+                    pencon(1, ia, ix, ip, :, ie, is, ij, it) = pencon_com
+                    inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
+                    captax(1, ia, ix, ip, :, ie, is, ij, it) = captax_com
+                    VV(1, ia, ix, ip, :, ie, is, ij, it) = -fret
+
+                  enddo ! ia
+                enddo ! ix
+              enddo ! ip
+            enddo ! ie
+          enddo ! is
+          !$omp end parallel do
+
+        endif
+
+        ! set up communication variables
+        ie_com = 1
+        iw_com = 1
+        io_com = 0
+
+        !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com, it_com) collapse(3) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        do is = 1, NS
+          do ip = 0, NP
+            do ix = 0, NX
+              do ia = 0, NA
+
+                ! set up communication variables
+                is_com = is
+                ip_com = ip
+                ix_com = ix
+                ia_com = ia
+
+                ! get initial guess for the individual choices
+                xy(1) = max(aplus(0, ia, ix, ip, 1, 1, is, ij, it), 1d-4)
+
+                call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
+
+                ! copy decisions
+                aplus(0, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
+                xplus(0, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
+                pplus(0, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
+                c(0, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
+                l(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                k(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                mx(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                oplus(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                pencon(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                inctax(0, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
+                captax(0, ia, ix, ip,  :,  :, is, ij, it) = captax_com
+                VV(0, ia, ix, ip,  :,  :, is, ij, it) = -fret
+
+              enddo ! ia
+            enddo ! ix
+          enddo ! ip
+        enddo ! is
         !$omp end parallel do
 
       elseif (ij >= 2) then
@@ -656,51 +757,51 @@ contains
           ! set up communication variables
           io_com = 1
 
-          !$omp do collapse(2) schedule(dynamic, 1)
-          do ia = 0, NA
-            do ix = 0, NX
-              do ip = 0, NP
-                do iw = 1, NW
-                  do ie = 1, NE
-                    do is = 1, NS
+          !$omp do collapse(4) schedule(dynamic, 1)
+          do is = 1, NS
+            do ie = 1, NE
+              do iw = 1, NW
+                do ip = 0, NP
+                  do ix = 0, NX
+                    do ia = 0, NA
 
                       ! set up communication variables
-                      ia_com = ia
-                      ix_com = ix
-                      ip_com = ip
                       is_com = is
-                      iw_com = iw
                       ie_com = ie
+                      iw_com = iw
+                      ip_com = ip
+                      ix_com = ix
+                      ia_com = ia
 
                       ! get initial guess for the individual choices
-                      xy(1) = max(aplus(1, is, ie, iw, ip, ix, ia, ij, it), 1d-4)
-                      xy(2) = max(k(1, is, ie, iw, ip, ix, ia, ij, it), 1d-4)
-                      xy(3) = max(mx(1, is, ie, iw, ip, ix, ia, ij, it), 1d-4)
+                      xy(1) = max(aplus(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                      xy(2) = max(k(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                      xy(3) = max(mx(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
 
                       limit = max(1.5d0*a(ia), 1d-4)
 
                       call fminsearch(xy, fret, (/a_l, 0d0, a_l/), (/a_u, limit, a_u/), valuefunc_e)
 
                       ! copy decisions
-                      aplus(1, is, ie, iw, ip, ix, ia, ij, it) = xy(1)
-                      xplus(1, is, ie, iw, ip, ix, ia, ij, it) = xplus_com
-                      k(1, is, ie, iw, ip, ix, ia, ij, it) = k_com
-                      pplus(1, is, ie, iw, ip, ix, ia, ij, it) = pplus_com
-                      c(1, is, ie, iw, ip, ix, ia, ij, it) = max(c_com, 1d-10)
-                      l(1, is, ie, iw, ip, ix, ia, ij, it) = l_com
-                      mx(1, is, ie, iw, ip, ix, ia, ij, it) = mx_com
-                      oplus(1, is, ie, iw, ip, ix, ia, ij, it) = oplus_com
-                      pencon(1, is, ie, iw, ip, ix, ia, ij, it) = pencon_com
-                      inctax(1, is, ie, iw, ip, ix, ia, ij, it) = inctax_com
-                      captax(1, is, ie, iw, ip, ix, ia, ij, it) = captax_com
-                      VV(1, is, ie, iw, ip, ix, ia, ij, it) = -fret
+                      aplus(1, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                      xplus(1, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                      k(1, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                      pplus(1, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
+                      c(1, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                      l(1, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                      mx(1, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                      oplus(1, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                      pencon(1, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
+                      inctax(1, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                      captax(1, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                      VV(1, ia, ix, ip, iw, ie, is, ij, it) = -fret
 
-                    enddo ! is
-                  enddo ! ie
-                enddo ! iw
-              enddo ! ip
-            enddo ! ix
-          enddo ! ia
+                    enddo ! ia
+                  enddo ! ix
+                enddo ! ip
+              enddo ! iw
+            enddo ! ie
+          enddo ! is
           !$omp end do nowait
 
         endif
@@ -708,92 +809,92 @@ contains
         ! set up communication variables
         io_com = 0
 
-        !$omp do collapse(2) schedule(dynamic, 1)
-        do ia = 0, NA
-          do ix = 0, NX
-            do ip = 0, NP
-              do iw = 1, NW
-                do ie = 1, NE
-                  do is = 1, NS
+        !$omp do collapse(4) schedule(dynamic, 1)
+        do is = 1, NS
+          do ie = 1, NE
+            do iw = 1, NW
+              do ip = 0, NP
+                do ix = 0, NX
+                  do ia = 0, NA
 
                     ! set up communication variables
-                    ia_com = ia
-                    ix_com = ix
-                    ip_com = ip
-                    iw_com = iw
-                    ie_com = ie
                     is_com = is
+                    ie_com = ie
+                    iw_com = iw
+                    ip_com = ip
+                    ix_com = ix
+                    ia_com = ia
 
                     ! get initial guess for the individual choices
-                    xy(1) = max(aplus(0, is, ie, iw, ip, ix, ia, ij, it), 1d-4)
-                    xy(2) = max(l(0, is, ie, iw, ip, ix, ia, ij, it), 1d-4)
+                    xy(1) = max(aplus(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(2) = max(l(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
 
                     call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
                     ! copy decisions
-                    aplus(0, is, ie, iw, ip, ix, ia, ij, it) = xy(1)
-                    xplus(0, is, ie, iw, ip, ix, ia, ij, it) = xplus_com
-                    k(0, is, ie, iw, ip, ix, ia, ij, it) = k_com
-                    pplus(0, is, ie, iw, ip, ix, ia, ij, it) = pplus_com
-                    c(0, is, ie, iw, ip, ix, ia, ij, it) = max(c_com, 1d-10)
-                    l(0, is, ie, iw, ip, ix, ia, ij, it) = l_com
-                    mx(0, is, ie, iw, ip, ix, ia, ij, it) = mx_com
-                    oplus(0, is, ie, iw, ip, ix, ia, ij, it) = oplus_com
-                    pencon(0, is, ie, iw, ip, ix, ia, ij, it) = pencon_com
-                    inctax(0, is, ie, iw, ip, ix, ia, ij, it) = inctax_com
-                    captax(0, is, ie, iw, ip, ix, ia, ij, it) = captax_com
-                    VV(0, is, ie, iw, ip, ix, ia, ij, it) = -fret
+                    aplus(0, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                    xplus(0, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                    k(0, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                    pplus(0, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
+                    c(0, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                    l(0, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                    mx(0, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                    oplus(0, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                    pencon(0, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
+                    inctax(0, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                    captax(0, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                    VV(0, ia, ix, ip, iw, ie, is, ij, it) = -fret
 
-                  enddo ! is
-                enddo ! ie
-              enddo ! iw
-            enddo ! ip
-          enddo ! ix
-        enddo ! ia
+                  enddo ! ia
+                enddo ! ix
+              enddo ! ip
+            enddo ! iw
+          enddo ! ie
+        enddo ! is
         !$omp end do
         !$omp end parallel
 
       elseif (ij == 1) then
 
         ! set up communication variables
-        ia_com = 0
-        ix_com = 0
         ip_com = 0
+        ix_com = 0
+        ia_com = 0
         io_com = 0
 
-	      !$omp parallel do copyin(ij_com, it_com, ia_com, ix_com, ip_com, io_com) collapse(3) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
-        do iw = 1, NW
+	      !$omp parallel do copyin(io_com, ia_com, ix_com, ip_com, ij_com, it_com) collapse(3) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        do is = 1, NS
           do ie = 1, NE
-            do is = 1, NS
+            do iw = 1, NW
 
               ! set up communication variables
-              iw_com = iw
-              ie_com = ie
               is_com = is
+              ie_com = ie
+              iw_com = iw
 
               ! get initial guess for the individual choices
-              xy(1) = max(aplus(0, is, ie, iw, 0, 0, 0, ij, it), 1d-4)
-              xy(2) = max(l(0, is, ie, iw, 0, 0, 0, ij, it), 1d-4)
+              xy(1) = max(aplus(0, 0, 0, 0, iw, ie, is, ij, it), 1d-4)
+              xy(2) = max(l(0, 0, 0, 0, iw, ie, is, ij, it), 1d-4)
 
               call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
               ! copy decisions
-              aplus(:, is, ie, iw, :, :, :, ij, it) = xy(1)
-              xplus(:, is, ie, iw, :, :, :, ij, it) = xplus_com
-              pplus(:, is, ie, iw, :, :, :, ij, it) = pplus_com
-              c(:, is, ie, iw, :, :, :, ij, it) = max(c_com, 1d-10)
-              l(:, is, ie, iw, :, :, :, ij, it) = l_com
-              mx(:, is, ie, iw, :, :, :, ij, it) = mx_com
-              k(:, is, ie, iw, :, :, :, ij, it) = 0d0
-              oplus(:, is, ie, iw, :, :, :, ij, it) = oplus_com
-              pencon(:, is, ie, iw, :, :, :, ij, it) = pencon_com
-              inctax(:, is, ie, iw, :, :, :, ij, it) = inctax_com
-              captax(:, is, ie, iw, :, :, :, ij, it) = captax_com
-              VV(:, is, ie, iw, :, :, :, ij, it) = -fret
+              aplus(:, :, :, :, iw, ie, is, ij, it) = xy(1)
+              xplus(:, :, :, :, iw, ie, is, ij, it) = xplus_com
+              pplus(:, :, :, :, iw, ie, is, ij, it) = pplus_com
+              c(:, :, :, :, iw, ie, is, ij, it) = max(c_com, 1d-10)
+              l(:, :, :, :, iw, ie, is, ij, it) = l_com
+              mx(:, :, :, :, iw, ie, is, ij, it) = mx_com
+              k(:, :, :, :, iw, ie, is, ij, it) = 0d0
+              oplus(:, :, :, :, iw, ie, is, ij, it) = oplus_com
+              pencon(:, :, :, :, iw, ie, is, ij, it) = pencon_com
+              inctax(:, :, :, :, iw, ie, is, ij, it) = inctax_com
+              captax(:, :, :, :, iw, ie, is, ij, it) = captax_com
+              VV(:, :, :, :, iw, ie, is, ij, it) = -fret
 
-            enddo ! is
+            enddo ! iw
           enddo ! ie
-        enddo ! iw
+        enddo ! is
 	      !$omp end parallel do
 
       endif
@@ -822,35 +923,35 @@ contains
     integer, intent(in) :: ij, it
 
     !##### OTHER VARIABLES ####################################################
-    integer :: is, ie, iw, ip, ix, ia, ie_p, iw_p
+    integer :: ia, ix, ip, iw, ie, is, iw_p, ie_p
 
-    !$omp parallel do collapse(2) schedule(dynamic,1) private(iw_p, ie_p) num_threads(numthreads)
-    do ia = 0, NA
-      do ix = 0, NX
-        do ip = 0, NP
-          do iw = 1, NW
-            do ie = 1, NE
-              do is = 1, NS
+    !$omp parallel do collapse(4) schedule(dynamic,1) private(iw_p, ie_p) num_threads(numthreads)
+    do is = 1, NS
+      do ie = 1, NE
+        do iw = 1, NW
+          do ip = 0, NP
+            do ix = 0, NX
+              do ia = 0, NA
 
-                  EV(:, is, ie, iw, ip, ix, ia, ij, it) = 0d0
+                EV(:, ia, ix, ip, iw, ie, is, ij, it) = 0d0
+                do ie_p = 1, NE
                   do iw_p = 1, NW
-                    do ie_p = 1, NE
-                      EV(0, is, ie, iw, ip, ix, ia, ij, it) = EV(0, is, ie, iw, ip, ix, ia, ij, it) &
-                        +pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p)*VV(0, is, ie_p, iw_p, ip, ix, ia, ij, it)
-                      EV(1, is, ie, iw, ip, ix, ia, ij, it) = EV(1, is, ie, iw, ip, ix, ia, ij, it) &
-                        +pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p)*VV(1, is, ie_p, iw_p, ip, ix, ia, ij, it)
-                    enddo ! ie_p
+                    EV(0, ia, ix, ip, iw, ie, is, ij, it) = EV(0, ia, ix, ip, iw, ie, is, ij, it) &
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)*VV(0, ia, ip, ix, iw_p, ie_p, is, ij, it)
+                    EV(1, ia, ix, ip, iw, ie, is, ij, it) = EV(1, ia, ix, ip, iw, ie, is, ij, it) &
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)*VV(1, ia, ip, ix, iw_p, ie_p, is, ij, it)
                   enddo ! iw_p
+                enddo ! ie_p
 
-                  EV(:, is, ie, iw, ip, ix, ia, ij, it) &
-                    = ((1d0-gamma)*EV(:, is, ie, iw, ip, ix, ia, ij, it))**(1d0/(1d0-gamma))
+                EV(:, ia, ix, ip, iw, ie, is, ij, it) &
+                  = ((1d0-gamma)*EV(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
 
-              enddo ! is
-            enddo ! ie
-          enddo ! iw
-        enddo ! ip
-      enddo ! ix
-    enddo ! ia
+              enddo ! ia
+            enddo ! ix
+          enddo ! ip
+        enddo ! iw
+      enddo ! ie
+    enddo ! is
     !$omp end parallel do
 
   end subroutine
@@ -869,8 +970,8 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES ####################################################
-    integer :: io, is, ie, iw, ip, ix, ia, ij, &
-           io_p, ie_p, iw_p, ipl, ipr, ixr, ixl, ial, iar, itm
+    integer :: io, ia, ix, ip, iw, ie, is, ij, &
+               io_p, iw_p, ie_p, ial, iar, ixr, ixl, ipl, ipr, itm
     real*8 :: varpsi, varchi, varphi
 
     ! get yesterdays year
@@ -880,13 +981,13 @@ contains
     m(:, :, :, :, :, :, :, :, it) = 0d0
 
     ! get initial distribution at age 1
-    do iw = 1, NW
+    do is = 1, NS
       do ie = 1, NE
-        do is = 1, NS
-          m(0, is, ie, iw, 0, 0, 0, 1, it) = dist_skill(is)*dist_theta(ie)*dist_eta(is, iw)
-        enddo ! is
+        do iw = 1, NW
+          m(0, 0, 0, 0, iw, ie, is, 1, it) = dist_theta(ie)*dist_eta(iw, is)*dist_skill(is)
+        enddo ! iw
       enddo ! ie
-    enddo ! iw
+    enddo ! is
 
     !write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
 
@@ -895,21 +996,21 @@ contains
 
       ! iterate over yesterdays gridpoints
 
-      do ia = 0, NA
-        do ix = 0, NX
-          do ip = 0, NP
-            do iw = 1, NW
-              do ie = 1, NE
-                do is = 1, NS
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ia = 0, NA
                   do io = 0, NO
 
                     ! interpolate yesterday's savings decision
-                    call linint_Grow(aplus(io, is, ie, iw, ip, ix, ia, ij-1, itm), &
+                    call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                              a_l, a_u, a_grow, NA, ial, iar, varphi)
 
                     ! interpolate yesterday's annuitized assets
                     if (ann) then
-                      call linint_Grow(xplus(io, is, ie, iw, ip, ix, ia, ij-1, itm), &
+                      call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
                     else
                       ixl = 0
@@ -918,61 +1019,59 @@ contains
                     endif
 
                     ! interpolate today's pension claims
-                    call linint_Equi(pplus(io, is, ie, iw, ip, ix, ia, ij-1, itm), &
+                    call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                                        p_l, p_u, NP, ipl, ipr, varpsi)
 
                     ! this year's occupation
-                    io_p = int(oplus(io, is, ie, iw, ip, ix, ia, ij-1, itm))
+                    io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
 
                     ! redistribute households
-                    do iw_p = 1, NW
-                      do ie_p = 1, NE
-                        m(io_p, is, ie_p, iw_p, ipl, ixl, ial, ij, it) = &
-                           m(io_p, is, ie_p, iw_p, ipl, ixl, ial, ij, it) &
-                           +varphi*varchi*varpsi*pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p)&
-                           *psi(is, ij)*m(io, is, ie, iw, ip, ix, ia, ij-1, itm)
-                        m(io_p, is, ie_p, iw_p, ipr, ixl, ial, ij, it) = &
-                           m(io_p, is, ie_p, iw_p, ipr, ixl, ial, ij, it) &
-                           +varphi*varchi*(1d0-varpsi)*pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p) &
-                           *psi(is, ij)*m(io, is, ie, iw, ip, ix, ia, ij-1, itm)
-                        m(io_p, is, ie_p, iw_p, ipl, ixr, ial, ij, it) = &
-                           m(io_p, is, ie_p, iw_p, ipl, ixr, ial, ij, it) &
-                           +varphi*(1d0-varchi)*varpsi*pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p)&
-                           *psi(is, ij)*m(io, is, ie, iw, ip, ix, ia, ij-1, itm)
-                        m(io_p, is, ie_p, iw_p, ipr, ixr, ial, ij, it) = &
-                           m(io_p, is, ie_p, iw_p, ipr, ixr, ial, ij, it) &
-                           +varphi*(1d0-varchi)*(1d0-varpsi)*pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p) &
-                           *psi(is, ij)*m(io, is, ie, iw, ip, ix, ia, ij-1, itm)
-                        m(io_p, is, ie_p, iw_p, ipl, ixl, iar, ij, it) = &
-                           m(io_p, is, ie_p, iw_p, ipl, ixl, iar, ij, it) &
-                           +(1d0-varphi)*varchi*varpsi*pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p) &
-                           *psi(is, ij)*m(io, is, ie, iw, ip, ix, ia, ij-1, itm)
-                        m(io_p, is, ie_p, iw_p, ipr, ixl, iar, ij, it) = &
-                           m(io_p, is, ie_p, iw_p, ipr, ixl, iar, ij, it) &
-                           +(1d0-varphi)*varchi*(1d0-varpsi)*pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p) &
-                           *psi(is, ij)*m(io, is, ie, iw, ip, ix, ia, ij-1, itm)
-                        m(io_p, is, ie_p, iw_p, ipl, ixr, iar, ij, it) = &
-                           m(io_p, is, ie_p, iw_p, ipl, ixr, iar, ij, it) &
-                           +(1d0-varphi)*(1d0-varchi)*varpsi*pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p) &
-                           *psi(is, ij)*m(io, is, ie, iw, ip, ix, ia, ij-1, itm)
-                        m(io_p, is, ie_p, iw_p, ipr, ixr, iar, ij, it) = &
-                           m(io_p, is, ie_p, iw_p, ipr, ixr, iar, ij, it) &
-                           +(1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*pi_eta(is, iw, iw_p)*pi_theta(ie, ie_p) &
-                           *psi(is, ij)*m(io, is, ie, iw, ip, ix, ia, ij-1, itm)
-                      enddo ! ie_p
-                    enddo ! iw_p
+                    do ie_p = 1, NE
+                      do iw_p = 1, NW
+                        m(io_p, ial, ixl, ipl, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, ial, ixl, ipl, iw_p, ie_p, is, ij, it) &
+                           +varphi*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)&
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                        m(io_p, ial, ixl, ipr, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, ial, ixl, ipr, iw_p, ie_p, is, ij, it) &
+                           +varphi*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                        m(io_p, ial, ixr, ipl, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, ial, ixr, ipl, iw_p, ie_p, is, ij, it) &
+                           +varphi*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)&
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                        m(io_p, ial, ixr, ipr, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, ial, ixr, ipr, iw_p, ie_p, is, ij, it) &
+                           +varphi*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                        m(io_p, iar, ixl, ipl, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, iar, ixl, ipl, iw_p, ie_p, is, ij, it) &
+                           +(1d0-varphi)*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                        m(io_p, iar, ixl, ipr, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, iar, ixl, ipr, iw_p, ie_p, is, ij, it) &
+                           +(1d0-varphi)*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                        m(io_p, iar, ixr, ipl, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, iar, ixr, ipl, iw_p, ie_p, is, ij, it) &
+                           +(1d0-varphi)*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                        m(io_p, iar, ixr, ipr, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, iar, ixr, ipr, iw_p, ie_p, is, ij, it) &
+                           +(1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                      enddo ! iw_p
+                    enddo ! ie_p
 
-                  enddo ! io
-                enddo ! is
-              enddo ! ie
+                  enddo ! ia
+                enddo ! ix
+              enddo ! ip
             enddo ! iw
-          enddo ! ip
-        enddo ! ix
-      enddo ! ia
+          enddo ! ie
+        enddo ! is
+      enddo ! io
 
       m(:, :, :, :, :, :, :, ij, it) = m(:, :, :, :, :, :, :, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
-
-      !write(*,*) sum(m(:, :, :, :, :, :, :, ij, it))
 
     enddo ! ij
 
@@ -992,7 +1091,7 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES ####################################################
-    integer :: io, is, ie, iw, ip, ix, ia, ij, ixl, ixr, ial, iar, itm, itp
+    integer :: io, ia, ix, ip, iw, ie, is, ij, ial, iar, ixl, ixr, itm, itp
     real*8 :: LC_old, varchi, varphi
 
     !write(*,*)'Calculate Aggregation:'
@@ -1030,17 +1129,17 @@ contains
     vv_coh(:, it) = 0d0
 
     do ij = 1, JJ
-      do ia = 0, NA
-        do ix = 0, NX
-          do ip = 0, NP
-            do iw = 1, NW
-              do ie = 1, NE
-                do is = 1, NS
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ia = 0, NA
                   do io = 0, NO
 
-                    call linint_Grow(aplus(io, is, ie, iw, ip, ix, ia, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
+                    call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
                     if (ann) then
-                      call linint_Grow(xplus(io, is, ie, iw, ip, ix, ia, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+                      call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
                     else
                       ixl = 0
                       ixr = 0
@@ -1048,59 +1147,59 @@ contains
                     endif
 
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
-                              *m(io, is, ie, iw, ip, ix, ia, ij, itm)*pop(ij, itm)/(1d0+n_p)
+                              *m(io, ia, ix, ip, iw, ie, is, ij, itm)*pop(ij, itm)/(1d0+n_p)
                     x_coh(ij, it) = x_coh(ij, it) + x(ix) &
-                              *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                              *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     bx_coh(ij, it) = bx_coh(ij, it) + x(ix) &
-                             *m(io, is, ie, iw, ip, ix, ia, ij, it)/psi(is, ij)*(1d0-psi(is, ij))*pop(ij, it)
-                    CC(it) = CC(it) + c(io, is, ie, iw, ip, ix, ia, ij, it) &
-                              *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                             *m(io, ia, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))*pop(ij, it)
+                    CC(it) = CC(it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
+                              *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     if (io == 0 .and. ij < JR) then
-                      LC(it) = LC(it) + eff(ij, is)*eta(is, iw)*l(io, is, ie, iw, ip, ix, ia, ij, it) &
-                                *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
-                      HH(it) = HH(it) + l(io, is, ie, iw, ip, ix, ia, ij, it) &
-                                *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
-                      PC(it) = PC(it) + min(w(it)*eff(ij, is)*eta(is, iw)*l(io, is, ie, iw, ip, ix, ia, ij, it), sscc(it)*inc_bar(it)) &
-                                *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                      LC(it) = LC(it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      HH(it) = HH(it) + l(io, ia, ix, ip, iw, ie, is, ij, it) &
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      PC(it) = PC(it) + min(w(it)*eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it), sscc(it)*inc_bar(it)) &
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     else
-                      KE(it) = KE(it) + k(io, is, ie, iw, ip, ix, ia, ij, it)*m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
-                      YE(it) = YE(it) + theta(ie)*(k(io, is, ie, iw, ip, ix, ia, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
-                                *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
-                      if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, is, ie, iw, ip, ix, ia, ij, it), ij, ia, is, ie, it), sscc(it)*inc_bar(it)) &
-                                *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
-                      PE(it) = PE(it) + profent(k(io, is, ie, iw, ip, ix, ia, ij, it), ij, ia, is, ie, it) &
-                                *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                      KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      YE(it) = YE(it) + theta(ie)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it), sscc(it)*inc_bar(it)) &
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      PE(it) = PE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                       if (ij >= JR) then
-                        PRE(it) = PRE(it) + profent(k(io, is, ie, iw, ip, ix, ia, ij, it), ij, ia, is, ie, it) &
-                                  *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                        PRE(it) = PRE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
+                                  *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                       endif
                     endif
-                    PP(it) = PP(it) + pen(ip, ij, it)*m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                    PP(it) = PP(it) + pen(ip, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     bqs(is, it) = bqs(is, it) + (1d0+r(it))*(varphi*a(ial) + (1d0-varphi)*a(iar))*(1d0-psi(is, ij+1)) &
-                                  *m(io, is, ie, iw, ip, ix, ia, ij, itm)*pop(ij, itm)/(1d0+n_p)
-                    TAc(it) = TAc(it) + tauc(it)*c(io, is, ie, iw, ip, ix, ia, ij, it) &
-                              *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
-                    TAr(it) = TAr(it) + captax(io, is, ie, iw, ip, ix, ia, ij, it)*m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
-                    TAw(it) = TAw(it) + inctax(io, is, ie, iw, ip, ix, ia, ij, it)*m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                                  *m(io, ia, ix, ip, iw, ie, is, ij, itm)*pop(ij, itm)/(1d0+n_p)
+                    TAc(it) = TAc(it) + tauc(it)*c(io, ia, ix, ip, iw, ie, is, ij, it) &
+                              *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                    TAr(it) = TAr(it) + captax(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                    TAw(it) = TAw(it) + inctax(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     if (io == 1 .and. ij < JR) then
-                      pop_e(is, it) = pop_e(is, it) + m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
-                    elseif (io == 1 .and. ij > JR) then
-                      pop_re(is, it) = pop_re(is, it) + m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                      pop_e(is, it) = pop_e(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                    elseif (io == 1 .and. ij >= JR) then
+                      pop_re(is, it) = pop_re(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     elseif (io == 0 .and. ij < JR) then
-                      pop_w(is, it) = pop_w(is, it) + m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                      pop_w(is, it) = pop_w(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     else
-                      pop_r(is, it) = pop_r(is, it) + m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                      pop_r(is, it) = pop_r(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     endif
-                    vv_coh(ij, it) = vv_coh(ij, it) + VV(io, is, ie, iw, ip, ix, ia, ij, it) &
-                                    *m(io, is, ie, iw, ip, ix, ia, ij, it)*pop(ij, it)
+                    vv_coh(ij, it) = vv_coh(ij, it) + VV(io, ia, ix, ip, iw, ie, is, ij, it) &
+                                    *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
 
                   enddo ! io
-                enddo ! is
-              enddo ! ie
-            enddo ! iw
-          enddo ! ip
-        enddo ! ix
-      enddo ! ia
+                enddo ! ia
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
     enddo ! ij
 
     ! damping and other quantities
@@ -1208,7 +1307,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: io, is, ie, iw, ip, ix, ia, ij, it
+    integer :: io, ia, ix, ip, iw, ie, is, ij, it
     real*8 :: VV_today, VV_target, dVV_da, v_tilde
     real*8 :: pv_today, pv_target, pv_trans
 
@@ -1230,37 +1329,37 @@ contains
 
                     ! do not do anything for an agent at retirement without pension and savings
                     if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
-                      v(io, is, ie, iw, ip, ix, ia, ij, 1) = 0d0
+                      v(io, ia, ix, ip, iw, ie, is, ij, 1) = 0d0
                       cycle
                     endif
 
                     ! get today's utility
-                    VV_today = VV(io, is, ie, iw, ip, ix, ia, ij, 1)
+                    VV_today = VV(io, ia, ix, ip, iw, ie, is, ij, 1)
 !                    if (VV_today >= 0d0)write(*,*)'VV_today', VV_today
 !                    if (VV_today <= -1d10)write(*,*)'VV_today', VV_today
 
                     ! get target utility
-                    VV_target = VV(io, is, ie, iw, ip, ix, ia, ij, 0)
+                    VV_target = VV(io, ia, ix, ip, iw, ie, is, ij, 0)
 !                    if (VV_target >= 0d0)write(*,*)'VV_target', VV_target
 !                    if (VV_target <= -1d10)write(*,*)'VV_target', VV_target
 
                     ! get derivative of the value function
-                    dVV_da = margu(c(io, is, ie, iw, ip, ix, ia, ij, 1),l(io, is, ie, iw, ip, ix, ia, ij, 1), 1)
+                    dVV_da = margu(c(io, ia, ix, ip, iw, ie, is, ij, 1),l(io, ia, ix, ip, iw, ie, is, ij, 1), 1)
 !                    if (dVV_da < 0d0)write(*,*)'dVV_da', dVV_da
 
                     ! calculate change in transfers
                     v_tilde = (VV_target-VV_today)/dVV_da
 
                     ! check whether individual is already compensated
-                    lsra_all = lsra_all + m(io, is, ie, iw, ip, ix, ia, ij, 1)*pop(ij, 1)
+                    lsra_all = lsra_all + m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
                     if(abs((VV_today-VV_target)/VV_target) < tol) &
-                      lsra_comp = lsra_comp + m(io, is, ie, iw, ip, ix, ia, ij, 1)*pop(ij, 1)
+                      lsra_comp = lsra_comp + m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
 
                     ! calculate total transfer
-                    v(io, is, ie, iw, ip, ix, ia, ij, 1) = v(io, is, ie, iw, ip, ix, ia, ij, 1) + damp*damp*v_tilde
+                    v(io, ia, ix, ip, iw, ie, is, ij, 1) = v(io, ia, ix, ip, iw, ie, is, ij, 1) + damp*damp*v_tilde
 
                     ! aggregate transfers by cohort
-                    SV(1) = SV(1) + v(io, is, ie, iw, ip, ix, ia, ij, 1)*m(io, is, ie, iw, ip, ix, ia, ij, 1)*pop(ij, 1)
+                    SV(1) = SV(1) + v(io, ia, ix, ip, iw, ie, is, ij, 1)*m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
 
                   enddo ! io
                 enddo ! is
@@ -1362,7 +1461,7 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES ####################################################
-    integer :: io, is, ie, iw, ip, ix, ia, ij, io_p, ixmax(JJ), iamax(JJ)
+    integer :: io, ia, ix, ip, iw, ie, is, ij, io_p, ixmax(JJ), iamax(JJ)
     real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
     real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), os_coh(0:1, 0:1, NS, JJ, 0:TT), flc_coh(JJ, 0:TT)
     real*8 :: life_exp(NS), punb(JJ, NS)
@@ -1395,25 +1494,25 @@ contains
                 do is = 1, NS
                   do io = 0, NO
 
-                    c_coh(io, ij, it) = c_coh(io, ij, it) + c(io, is, ie, iw, ip, ix, ia, ij, it) &
-                                        *m(io, is, ie, iw, ip, ix, ia, ij, it)
-                    a_coh(io, ij, it) = a_coh(io, ij, it) + a(ia)*m(io, is, ie, iw, ip, ix, ia, ij, it)
-                    ax_coh(io, ij, it) = ax_coh(io, ij, it) + x(ix)*m(io, is, ie, iw, ip, ix, ia, ij, it)
-                    io_p = int(oplus(io, is, ie, iw, ip, ix, ia, ij, it))
-                    o_coh(io, io_p, ij, it) = o_coh(io, io_p, ij, it) + m(io, is, ie, iw, ip, ix, ia, ij, it)
+                    c_coh(io, ij, it) = c_coh(io, ij, it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
+                                        *m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    a_coh(io, ij, it) = a_coh(io, ij, it) + a(ia)*m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    ax_coh(io, ij, it) = ax_coh(io, ij, it) + x(ix)*m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij, it))
+                    o_coh(io, io_p, ij, it) = o_coh(io, io_p, ij, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     os_coh(io, io_p, is, ij, it) = os_coh(io, io_p, is, ij, it) &
-                                     + m(io, is, ie, iw, ip, ix, ia, ij, it)
+                                     + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 1) then
-                      k_coh(ij, it) = k_coh(ij, it) + k(io, is, ie, iw, ip, ix, ia, ij, it) &
-                                      *m(io, is, ie, iw, ip, ix, ia, ij, it)
-                      inc_coh(io, ij, it) = inc_coh(io, ij, it) + profent(k(io, is, ie, iw, ip, ix, ia, ij, it), ij, ia, is, ie, it) &
-                                            *m(io, is, ie, iw, ip, ix, ia, ij, it)
+                      k_coh(ij, it) = k_coh(ij, it) + k(io, ia, ix, ip, iw, ie, is, ij, it) &
+                                      *m(io, ia, ix, ip, iw, ie, is, ij, it)
+                      inc_coh(io, ij, it) = inc_coh(io, ij, it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
+                                            *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
-                      inc_coh(io, ij, it) = inc_coh(io, ij, it) + w(it)*eff(ij, is)*eta(is, iw)*l(io, is, ie, iw, ip, ix, ia, ij, it) &
-                                            *m(io, is, ie, iw, ip, ix, ia, ij, it)
+                      inc_coh(io, ij, it) = inc_coh(io, ij, it) + w(it)*eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
+                                            *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     endif
-                    if (aplus(io, is, ie, iw, ip, ix, ia, ij, it) <= 1d-10) then
-                      flc_coh(ij, it) = flc_coh(ij, it) + m(io, is, ie, iw, ip, ix, ia, ij, it)
+                    if (aplus(io, ia, ix, ip, iw, ie, is, ij, it) <= 1d-10) then
+                      flc_coh(ij, it) = flc_coh(ij, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     endif
 
                   enddo ! io
@@ -1430,9 +1529,15 @@ contains
       c_coh(1, ij, it) = c_coh(1, ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
       a_coh(0, ij, it) = a_coh(0, ij, it)/sum(m(0, :, :, :, :, :, :, ij, it))
       a_coh(1, ij, it) = a_coh(1, ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
+      ax_coh(0, ij, it) = ax_coh(0, ij, it)/sum(m(0, :, :, :, :, :, :, ij, it))
+      ax_coh(1, ij, it) = ax_coh(1, ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
       inc_coh(0, ij, it) = inc_coh(0, ij, it)/sum(m(0, :, :, :, :, :, :, ij, it))
       inc_coh(1, ij, it) = inc_coh(1, ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
-      k_coh(ij, it) = k_coh(ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
+      k_coh(ij, it) = k_coh(ij, it)
+      do is = 1, NS
+        os_coh(0, :, is, ij, it) = os_coh(0, :, is, ij, it)/sum(m(:, :, :, :, :, :, is, ij, it))
+        os_coh(1, :, is, ij, it) = os_coh(1, :, is, ij, it)/sum(m(:, :, :, :, :, :, is, ij, it))
+      end do ! is
     enddo ! ij
 
     ! Output
@@ -1485,7 +1590,7 @@ contains
     write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     do ij = 1, JJ
       write(21, '(i3, 16f8.3, f11.3, 2i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), inc_coh(0, ij, it), inc_coh(1, ij, it), &
-          k_coh(ij, it), sum(o_coh(1, :, ij, it)), sum(os_coh(1, :, 1, ij, it)), sum(os_coh(2, :, 2, ij, it)), &
+          k_coh(ij, it), sum(o_coh(1, :, ij, it)), sum(os_coh(1, :, 1, ij, it)), sum(os_coh(1, :, 2, ij, it)), &
           sum(os_coh(1, :, 3, ij, it)), o_coh(0, 1, ij, it), o_coh(1, 0, ij, it), flc_coh(ij, it), vv_coh(ij, it), iamax(ij), ixmax(ij)
       if (ij == JR-1) write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     enddo
@@ -1522,7 +1627,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: io, is, ie, iw, ip, ix, ia, ij, it
+    integer :: io, ia, ix, ip, iw, ie, is, ij, it
     real*8 :: HEV(-(JJ-2):TT), HEV_help, mas(-(JJ-2):0), HEVs(0:1, NS, -(JJ-2):0), mass(0:1, NS, (-JJ-2):0)
 
     ! aggregate ex post welfare changes of current generations
@@ -1542,11 +1647,11 @@ contains
                     if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
                       cycle
                     endif
-                    HEV_help = ((VV(io, is, ie, iw, ip, ix, ia, ij, 1)/max(VV(io, is, ie, iw, ip, ix, ia, ij, 0), -1d10))**(1d0/(1d0-gamma))-1d0)*100d0
-                    HEV(-(ij-2)) = HEV(-(ij-2)) + HEV_help*m(io, is, ie, iw, ip, ix, ia, ij, 1)
-                    mas(-(ij-2)) = mas(-(ij-2)) + m(io, is, ie, iw, ip, ix, ia, ij, 1)
-                    HEVs(io, is, -(ij-2)) = HEVs(io, is, -(ij-2)) + HEV_help*m(io, is, ie, iw, ip, ix, ia, ij, 1)
-                    mass(io, is, -(ij-2)) = mass(io, is, -(ij-2)) + m(io, is, ie, iw, ip, ix, ia, ij, 1)
+                    HEV_help = ((VV(io, ia, ix, ip, iw, ie, is, ij, 1)/max(VV(io, ia, ix, ip, iw, ie, is, ij, 0), -1d10))**(1d0/(1d0-gamma))-1d0)*100d0
+                    HEV(-(ij-2)) = HEV(-(ij-2)) + HEV_help*m(io, ia, ix, ip, iw, ie, is, ij, 1)
+                    mas(-(ij-2)) = mas(-(ij-2)) + m(io, ia, ix, ip, iw, ie, is, ij, 1)
+                    HEVs(io, is, -(ij-2)) = HEVs(io, is, -(ij-2)) + HEV_help*m(io, ia, ix, ip, iw, ie, is, ij, 1)
+                    mass(io, is, -(ij-2)) = mass(io, is, -(ij-2)) + m(io, ia, ix, ip, iw, ie, is, ij, 1)
                   enddo ! ie
                 enddo ! iw
               enddo ! is

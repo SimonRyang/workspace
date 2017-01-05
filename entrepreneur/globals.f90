@@ -11,6 +11,9 @@ module globals
   ! number of years a household can be a worker (+1)
   integer, parameter :: JR = 10
 
+  ! number of years a household can be an entrepreneur (+1)
+  integer, parameter :: JE = 13
+
   ! number of transition periods
   integer, parameter :: TT = 48
 
@@ -80,7 +83,7 @@ module globals
 
   ! the shock process
   real*8 :: dist_skill(NS)
-  real*8 :: eta(NS, NW), dist_eta(NS, NW), pi_eta(NS, NW, NW)
+  real*8 :: eta(NW, NS), dist_eta(NW, NS), pi_eta(NW, NW, NS)
   real*8 :: theta(NE), dist_theta(NE), pi_theta(NE, NE)
 
   ! demographic and other model parameters
@@ -105,7 +108,7 @@ module globals
   real*8, allocatable :: v(:, :, :, :, :, :, :, :, :)
 
   ! numerical variables
-  integer :: io_com, is_com, ie_com, iw_com, ip_com, ix_com, ia_com, ij_com, it_com
+  integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com
   real*8 :: c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
 
   ! statistical variables
@@ -119,7 +122,7 @@ module globals
   logical :: labor = .true.   ! .true. = endogenous labor decision of worker
   logical :: pen_debt = .false. ! .true. = pension system can run into debts
 
-  !$omp threadprivate(io_com, is_com, ie_com, iw_com, ip_com, ix_com, ia_com, ij_com, it_com)
+  !$omp threadprivate(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
   !$omp threadprivate(c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
 
 contains
@@ -149,7 +152,7 @@ contains
     if (labor) then
       l_com  = xy(2)
     else
-      l_com = l(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0)
+      l_com = l(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, 0)
     endif
 
     ! today's investment in annuitized assets
@@ -159,10 +162,10 @@ contains
     itp = year(it_com, ij_com, ij_com+1)
 
     ! get lsra transfer payment
-    v_ind = v(0, is_com, ie_com, iw_com, ip_com, ix_com, ia_com, ij_com, it_com)
+    v_ind = v(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
 
     ! calculate the wage rate and next periods pension claims
-    wage = w(it_com)*eff(ij_com, is_com)*eta(is_com, iw_com)
+    wage = w(it_com)*eff(ij_com, is_com)*eta(iw_com, is_com)
     pplus_com = (p(ip_com)*dble(ij_com-1) + mu(it_com)*(lambda(it_com) &
            + (1d0-lambda(it_com))*min(wage*l_com/inc_bar(it_com), sscc(it_com))))/dble(ij_com)
 
@@ -203,28 +206,28 @@ contains
       endif
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
-      valuefunc_w = (varphi*varchi*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixl, ial, ij_com+1, itp) &
-               + varphi*varchi*(1d0-varpsi)*EV(0, is_com, ie_com, iw_com, ipr, ixl, ial, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixr, ial, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, is_com, ie_com, iw_com, ipr, ixr, ial, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixl, iar, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, is_com, ie_com, iw_com, ipr, ixl, iar, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixr, iar, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, is_com, ie_com, iw_com, ipr, ixr, iar, ij_com+1, itp)) &
+      valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*varpsi*EV(0, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*varpsi*EV(0, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
               **(1d0-gamma)/(1d0-gamma)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = (varphi*varchi*varpsi*EV(1, is_com, ie_com, iw_com, ipl, ixl, ial, ij_com+1, itp) &
-                  + varphi*varchi*(1d0-varpsi)*EV(1, is_com, ie_com, iw_com, ipr, ixl, ial, ij_com+1, itp) &
-                  + varphi*(1d0-varchi)*varpsi*EV(1, is_com, ie_com, iw_com, ipl, ixr, ial, ij_com+1, itp) &
-                  + varphi*(1d0-varchi)*(1d0-varpsi)*EV(1, is_com, ie_com, iw_com, ipr, ixr, ial, ij_com+1, itp) &
-                  + (1d0-varphi)*varchi*varpsi*EV(1, is_com, ie_com, iw_com, ipl, ixl, iar, ij_com+1, itp) &
-                  + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, is_com, ie_com, iw_com, ipr, ixl, iar, ij_com+1, itp) &
-                  + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, is_com, ie_com, iw_com, ipl, ixr, iar, ij_com+1, itp) &
-                  + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, is_com, ie_com, iw_com, ipr, ixr, iar, ij_com+1, itp)) &
-                 **(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = (varphi*varchi*varpsi*EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*varchi*(1d0-varpsi)*EV(1, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*varpsi*EV(1, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(1, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*varpsi*EV(1, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
+              **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help - 0.53d0 > valuefunc_w .and. ent) then
@@ -259,8 +262,10 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, profit, v_ind, valuefunc_help, varpsi, varchi, varphi
-    integer :: itp, ial, iar, ixl, ixr, ipl, ipr
+    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help, varpsi, varchi, varphi
+    real*8 :: temp1, temp2
+    integer :: ij, itp, ial, iar, ixl, ixr, ipl, ipr
+    integer :: iij, itj
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -271,11 +276,26 @@ contains
     ! today's investment in annuitized assets
     mx_com = xy(3)
 
+    ! calculate annuities
+    p_hat = 0d0
+    if (ij_com >= JR) then
+    temp1 = 0d0
+    do ij = ij_com, JJ
+      temp2 = 1d0
+      do iij = ij_com+1, ij
+        itj = year(it_com, ij_com, iij)
+        temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
+      enddo
+      temp1 = temp1 + 1d0/temp2
+    enddo
+    p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
+    endif
+
     ! calculate tommorrow's annuitized asset stock
-    if (ann) then
+    if (ann .and. ij_com < JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + mx_com
-    else
-      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
+    elseif (ann .and. ij_com >= JR) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
     endif
 
     ! no investment without any assets
@@ -288,13 +308,17 @@ contains
     itp = year(it_com, ij_com, ij_com+1)
 
     ! get lsra transfer payment
-    v_ind = v(1, is_com, ie_com, iw_com, ip_com, ix_com, ia_com, ij_com, it_com)
+    v_ind = v(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
 
     ! entrepreneur's profit
     profit = theta(ie_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r(it_com)*max(k_com-a(ia_com), 0d0)
 
     ! calculate contribution to pension system
-    pencon_com = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_bar(it_com))
+    if (ij_com < JR) then
+        pencon_com = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_bar(it_com))
+    else
+        pencon_com = 0d0
+    endif
 
     ! calculate income tax
     inctax_com = tarif(max(profit - 0.18d0*profit - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
@@ -303,7 +327,7 @@ contains
     captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_bar(0), 0d0)
 
     ! calculate consumption
-    c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind  &
+    c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
            - captax_com - inctax_com - pencon_com - mx_com - a_plus)*pinv(it_com)
 
     ! calculate next periods pension claims
@@ -332,28 +356,28 @@ contains
       endif
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
-      valuefunc_e = (varphi*varchi*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixl, ial, ij_com+1, itp) &
-               + varphi*varchi*(1d0-varpsi)*EV(0, is_com, ie_com, iw_com, ipr, ixl, ial, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixr, ial, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, is_com, ie_com, iw_com, ipr, ixr, ial, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixl, iar, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, is_com, ie_com, iw_com, ipr, ixl, iar, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, is_com, ie_com, iw_com, ipl, ixr, iar, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, is_com, ie_com, iw_com, ipr, ixr, iar, ij_com+1, itp)) &
+      valuefunc_e = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*varpsi*EV(0, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*varpsi*EV(0, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
               **(1d0-gamma)/(1d0-gamma)
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JR-1) then
+      if (ij_com < JE-1) then
 
-        valuefunc_help = (varphi*varchi*varpsi*EV(1, is_com, ie_com, iw_com, ipl, ixl, ial, ij_com+1, itp) &
-                  + varphi*varchi*(1d0-varpsi)*EV(1, is_com, ie_com, iw_com, ipr, ixl, ial, ij_com+1, itp) &
-                  + varphi*(1d0-varchi)*varpsi*EV(1, is_com, ie_com, iw_com, ipl, ixr, ial, ij_com+1, itp) &
-                  + varphi*(1d0-varchi)*(1d0-varpsi)*EV(1, is_com, ie_com, iw_com, ipr, ixr, ial, ij_com+1, itp) &
-                  + (1d0-varphi)*varchi*varpsi*EV(1, is_com, ie_com, iw_com, ipl, ixl, iar, ij_com+1, itp) &
-                  + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, is_com, ie_com, iw_com, ipr, ixl, iar, ij_com+1, itp) &
-                  + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, is_com, ie_com, iw_com, ipl, ixr, iar, ij_com+1, itp) &
-                  + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, is_com, ie_com, iw_com, ipr, ixr, iar, ij_com+1, itp)) &
-                 **(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = (varphi*varchi*varpsi*EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*varchi*(1d0-varpsi)*EV(1, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*varpsi*EV(1, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(1, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*varpsi*EV(1, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
+              **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
@@ -405,7 +429,7 @@ contains
     itp = year(it_com, ij_com, ij_com+1)
 
     ! get lsra transfer payment
-    v_ind = v(0, is_com, ie_com, iw_com, ip_com, ix_com, ia_com, ij_com, it_com)
+    v_ind = v(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
 
     ! calculate the wage rate and next periods pension claims
     pplus_com = p(ip_com)
@@ -458,10 +482,10 @@ contains
         varchi = 1d0
       endif
 
-      valuefunc_r = (varphi*varchi*EV(0, is_com, ie_com, iw_com, ip_com, ixl, ial, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*EV(0, is_com, ie_com, iw_com, ip_com, ixr, ial, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*EV(0, is_com, ie_com, iw_com, ip_com, ixl, iar, ij_com+1, itp ) &
-               + (1d0-varphi)*(1d0-varchi)*EV(0, is_com, ie_com, iw_com, ip_com, ixr, iar, ij_com+1, itp )) &
+      valuefunc_r = (varphi*varchi*EV(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*EV(0, ial, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*EV(0, iar, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp ) &
+               + (1d0-varphi)*(1d0-varchi)*EV(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) &
                **(1d0-gamma)/(1d0-gamma)
 
     endif
@@ -609,45 +633,46 @@ contains
     integer :: iamax(JJ), ixmax(JJ)
 
     !##### OTHER VARIABLES ####################################################
-    integer :: is, ie, iw, ip, ix, ia, ij
+    integer :: ia, ix, ip, iw, ie, is, ij
 
     iamax = 0
     ixmax = 0
+
     do ij = 1, JJ
 
       ! check for the maximum asset grid point used at a certain age
-      do ia = 0, NA
-        do ix = 0, NX
-          do ip = 0, NP
-            do iw = 1, NW
-              do ie = 1, NE
-                do is = 1, NS
-                  if (m(0, is, ie, iw, ip, ix, ia, ij, it) > 0d0) iamax(ij)=ia
-                  if (m(1, is, ie, iw, ip, ix, ia, ij, it) > 0d0) iamax(ij)=ia
-                enddo ! is
-              enddo ! ie
-            enddo ! iw
-          enddo ! ip
-        enddo ! ix
-      enddo ! ia
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ia = 0, NA
+                do ix = 0, NX
+                  if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
+                  if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
+                enddo ! ia
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
 
-      ! check for the maximum asset grid point used at a certain age
-      do ix = 0, NX
-        do ia = 0, NA
-          do ip = 0, NP
-            do iw = 1, NW
-              do ie = 1, NE
-                do is = 1, NS
-                    if (m(0, is, ie, iw, ip, ix, ia, ij, it) > 0d0) ixmax(ij)=ix
-                    if (m(1, is, ie, iw, ip, ix, ia, ij, it) > 0d0) ixmax(ij)=ix
-                enddo ! is
-              enddo ! ie
-            enddo ! iw
-          enddo ! ip
-        enddo ! ia
-      enddo ! ix
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ia = 0, NA
+                  if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) ixmax(ij)=ix
+                  if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) ixmax(ij)=ix
+                enddo ! ia
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
 
     enddo ! ij
+
 
   end subroutine
 
@@ -820,7 +845,7 @@ contains
 
                   if(m(0, is, ie, iw, ip, ix, ia, ij, it) > 0d0) then
                     ys(ic) = m(0, is, ie, iw, ip, ix, ia, ij, it)
-                    xs(ic) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(is, iw)*l(0, is, ie, iw, ip, ix, ia, ij, it)*w(it)
+                    xs(ic) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(0, is, ie, iw, ip, ix, ia, ij, it)*w(it)
                     ic = ic + 1
                   endif
                   if(m(1, is, ie, iw, ip, ix, ia, ij, it) > 0d0) then

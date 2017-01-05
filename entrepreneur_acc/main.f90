@@ -88,8 +88,8 @@ program main
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.60d0
-  tol   = 1d-6
+  damp  = 0.50d0
+  tol   = 1d-10
   itermax = 200
 
   ! compute gini
@@ -154,7 +154,7 @@ contains
       ! determine the government parameters
       call government
 
-      write(*,'(i4,6f8.2,f14.8)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
+      write(*,'(i4,6f8.2,f16.10)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, DIFF/YY*100d0
 
       if(abs(DIFF/YY)*100d0 < tol)then
@@ -190,7 +190,7 @@ contains
     real*8 :: adj
 
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
-    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent          DIFF'
+    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent            DIFF'
 
     ! initialize asset grid
     a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
@@ -275,11 +275,6 @@ contains
     close(302)
     eff(JR:, :) = 0d0
 
-    call plot((/(dble(ij), ij = 1, JJ)/), eff(:, 1)**(1d0-alpha)**nu)
-    call plot((/(dble(ij), ij = 1, JJ)/), eff(:, 2)**(1d0-alpha)**nu)
-    call plot((/(dble(ij), ij = 1, JJ)/), eff(:, 3)**(1d0-alpha)**nu)
-    call execplot
-
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(1, :), pi_eta(1, :, :), dist_eta(1, :))
     eta(1, :) = exp(eta(1, :))/sum(dist_eta(1,:)*exp(eta(1, :)))
 
@@ -320,7 +315,7 @@ contains
   !##############################################################################
   ! SUBROUTINE get_prices
   !
-  ! Determines factor prices, indiviudal bequests and pensions at time it
+  ! Determines actor prices, indiviudal bequests and pensions at time it
   !##############################################################################
   subroutine get_prices()
 
