@@ -6,12 +6,12 @@ LIBS = globals.o toolbox.o sorting.o clock.o
 #CC = ~/intel/bin/ifort
 
 # PGI Fortran Compiler
-CFLAGS = -mp -O2 -Mbackslash
-CC = ~/pgi/linux86-64/2016/bin/pgfortran
+#CFLAGS = -mp -O2 -Mbackslash
+#CC = ~/pgi/linux86-64/2016/bin/pgfortran
 
 # GFortran Compiler
-#CFLAGS = -fopenmp -O2 -mBackslash
-#CC = gfortran
+CFLAGS = -fopenmp -O2
+CC = gfortran
 
 TARGET = prog
 
