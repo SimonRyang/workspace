@@ -5,7 +5,7 @@ clear
 git commit -a -m "edit"
 git push origin master
 
-ssh -t -t -x11 flh71wr@$1 << EOF
+ssh -t -t -x flh71wr@$1 << EOF
 ulimit -s unlimited
 cd ~/workspace/
 git pull origin master
