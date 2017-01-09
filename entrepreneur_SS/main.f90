@@ -983,6 +983,7 @@ contains
                   o_coh(io, io_p, ij) = o_coh(io, io_p, ij) + m(io, ia, ip, iw, ie, is, ij)
                   os_coh(io, io_p, is, ij) = os_coh(io, io_p, is, ij) &
                                    + m(io, ia, ip, iw, ie, is, ij)
+                  inc_coh(io, ij) = inc_coh(io, ij) + pen(ip, ij)*m(io, ia, ip, iw, ie, is, ij)
                   if (io == 1) then
                     k_coh(ij) = k_coh(ij) + k(io, ia, ip, iw, ie, is, ij) &
                                     *m(io, ia, ip, iw, ie, is, ij)
@@ -1100,6 +1101,19 @@ contains
 
     call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
     call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
+    call execplot
+
+    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
+    call execplot
+
+    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
+    call execplot
+
+    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))
+    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))
+    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))
     call execplot
 
   end subroutine
