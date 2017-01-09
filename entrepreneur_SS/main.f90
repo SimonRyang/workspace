@@ -88,7 +88,7 @@ program main
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.70d0
+  damp  = 0.60d0
   tol   = 1d-6
   itermax = 200
 
@@ -287,10 +287,10 @@ contains
     pi_theta(4,:)   = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
 
     ! initial guesses for macro variables
-    inc_bar = 0.58d0
-    BQ = 0.29d0
-    KC = 4.09d0
-    LC = 5.15d0
+    inc_bar = 0.61d0
+    BQ = 0.50d0
+    KC = 4.93d0
+    LC = 5.25d0
 
     ! open files
     open(21, file='output.out')
