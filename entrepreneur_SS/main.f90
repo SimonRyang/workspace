@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 14
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -23,7 +23,6 @@ program main
   if(allocated(m))deallocate(m)
   if(allocated(VV))deallocate(VV)
   if(allocated(EV))deallocate(EV)
-  if(allocated(v))deallocate(v)
   allocate(aplus(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(pplus(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(c(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
@@ -36,10 +35,6 @@ program main
   allocate(m(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(VV(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(EV(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
-  allocate(v(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
-
-  ! set compensating payments to zero
-  v = 0d0
 
   ! household preference parameters
   gamma  =  0.500d0
@@ -86,19 +81,19 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 1024d0
-  a_grow = 1.2d0
+  a_grow = 3.0d0
 
   ! size of the pension claim grid
   p_l  = 0d0
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.50d0
+  damp  = 0.60d0
   tol   = 1d-6
   itermax = 200
 
   ! compute gini
-  gini_on = .false.
+  gini_on = .true.
 
   ! set switches
   if (NO == 0) ent = .false.
@@ -139,7 +134,7 @@ contains
       call get_prices()
 
       ! solve the household problem
-      call solve_household(1)
+      call solve_household()
 
       ! calculate the distribution of households over state space
       call get_distribution()
@@ -355,12 +350,9 @@ contains
   !
   ! Determines the solution to the household optimization problem
   !##############################################################################
-  subroutine solve_household(ij_in)
+  subroutine solve_household()
 
     implicit none
-
-    !##### INPUT/OUTPUT VARIABLES #############################################
-    integer, intent(in) :: ij_in
 
     !##### OTHER VARIABLES ####################################################
     integer :: ia, ip, iw, ie, is, ij
@@ -381,7 +373,8 @@ contains
         iw_com = 1
         io_com = 0
 
-        !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com) collapse(3) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com) collapse(3) &
+        !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
         do is = 1, NS
           do ip = 0, NP
             do ia = 0, NA
@@ -421,7 +414,8 @@ contains
           iw_com = 1
           io_com = 1
 
-          !$omp parallel do copyin(io_com, iw_com, ij_com) collapse(4) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+          !$omp parallel do copyin(io_com, iw_com, ij_com) collapse(4) &
+          !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
           do is = 1, NS
             do ie = 1, NE
               do ip = 0, NP
@@ -466,7 +460,8 @@ contains
         iw_com = 1
         io_com = 0
 
-        !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com) collapse(3) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com) collapse(3) &
+        !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
         do is = 1, NS
           do ip = 0, NP
             do ia = 0, NA
@@ -600,7 +595,8 @@ contains
         ia_com = 0
         io_com = 0
 
-	      !$omp parallel do copyin(io_com, ia_com, ip_com, ij_com) collapse(3) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+	      !$omp parallel do copyin(io_com, ia_com, ip_com, ij_com) collapse(3) &
+	      !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
@@ -787,7 +783,7 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: io, ia, ip, iw, ie, is, ij, ial, iar
-    real*8 :: LC_old, varchi, varphi
+    real*8 :: LC_old, varphi
 
     !write(*,*)'Calculate Aggregation:'
     !call tick(calc)
@@ -922,7 +918,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: expend, PP_bar, PC_bar
+    real*8 :: expend
 
     ! set government quantities and pension payments
     GG = gy*YY
@@ -1046,7 +1042,8 @@ contains
     write(21,'(a,5f8.2/)')'(in %)  ',(/taup, kappa, PP/YY, PC/YY, BQ/YY/)*100d0
 
     write(21,'(a)')'INCOME     TOTAL     WOR     ENT ENT/WOR     y_w     y_e y_e/y_w'
-    write(21, '(8x,7f8.2)')w*LC + PE + PRE, w*LC, PE + PRE, (PE+PRE)/(w*LC), w*LC/sum(pop_w(:)), (PE + PRE)/(sum(pop_e(:) + pop_re(:))), (PE + PRE)/sum(pop_e(:) + pop_re(:))/w*LC/sum(pop_w(:))
+    write(21, '(8x,7f8.2)')w*LC + PE + PRE, w*LC, PE + PRE, (PE+PRE)/(w*LC), w*LC/sum(pop_w(:)), &
+                           (PE + PRE)/(sum(pop_e(:) + pop_re(:))), (PE + PRE)/sum(pop_e(:) + pop_re(:))/w*LC/sum(pop_w(:))
     write(21, '(a,4f8.2/)')'(in %)  ',(/w*LC + PE + PRE, w*LC, PE + PRE/)/(w*LC + PE + PRE)*100d0, (PE+PRE)/(w*LC)*100d0
 
     write(21,'(a)')'POP        TOTAL     65-     65+ 65+/65-'
@@ -1069,32 +1066,37 @@ contains
 
     write(21, '(a,a)')' IJ   CONSw   CONSe   ASSw     ASSe    INCw    INCe    INVe     ENT    ENTs1  ENTs2   ENTs3', &
         '    ENTn    WORn     FLC      VALUE  IAMAX'
-    write(21,'(a)')'-------------------------------------------------------------------------------------------------------------------------------------'
+    write(21,'(a)')'------------------------------------------------------------------------------------------------&
+                    -------------------------------------'
     do ij = 1, JJ
-      write(21, '(i3, 14f8.3, f11.3, i7)')ij, c_coh(0, ij), c_coh(1, ij), a_coh(0, ij), a_coh(1, ij), inc_coh(0, ij), inc_coh(1, ij), &
-          k_coh(ij), sum(o_coh(1, :, ij)), sum(os_coh(1, :, 1, ij)), sum(os_coh(1, :, 2, ij)), &
+      write(21, '(i3, 14f8.3, f11.3, i7)')ij, c_coh(0, ij), c_coh(1, ij), a_coh(0, ij), a_coh(1, ij), &
+          inc_coh(0, ij), inc_coh(1, ij), k_coh(ij), sum(o_coh(1, :, ij)), sum(os_coh(1, :, 1, ij)), sum(os_coh(1, :, 2, ij)), &
           sum(os_coh(1, :, 3, ij)), o_coh(0, 1, ij), o_coh(1, 0, ij), flc_coh(ij), vv_coh(ij), iamax(ij)
-      if (ij == JR-1) write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------'
+      if (ij == JR-1) write(21,'(a)')'------------------------------------------------------------------------------&
+                                      ------------------------------------------------------'
     enddo
 
     if (gini_on) then
 
-      write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------'
+      write(21,'(a)')'----------------------------------------------------------------------------------------------&
+                      --------------------------------------'
       write(21,'(a/)')' '
 
       call gini_wealth
       call gini_income
 
-      write(21, '(a)')'WEALTH  GINI   1%   5%  10%  20%  40%  60%  FLC'
+      write(21, '(a)')'WEALTH    GINI     1%     5%    10%    20%    40%    60%    FLC'
       write(21,'(4x, f10.3, 8f7.2)')gini_w, percentiles_w(:)*100d0, sum(pop(:)*flc_coh(:))/sum(pop(:))*100d0
 
-      write(21, '(a)')'INCOME  GINI   1%   5%  10%  20%  40%  60%'
+      write(21, '(a)')'INCOME    GINI     1%     5%    10%    20%    40%    60%'
       write(21,'(4x, f10.3, 6f7.2/)')gini_i, percentiles_i(:)*100d0
 
     endif
 
-    write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------'
-    write(21,'(a/)')'------------------------------------------------------------------------------------------------------------------------------------'
+    write(21,'(a)')'------------------------------------------------------------------------------------------------&
+                    ------------------------------------'
+    write(21,'(a/)')'-----------------------------------------------------------------------------------------------&
+                     -------------------------------------'
 
   end subroutine
 

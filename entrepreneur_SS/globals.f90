@@ -91,7 +91,6 @@ module globals
   real*8, allocatable :: VV(:, :, :, :, :, :, :)
   real*8, allocatable :: EV(:, :, :, :, :, :, :)
   real*8, allocatable :: m(:, :, :, :, :, :, :)
-  real*8, allocatable :: v(:, :, :, :, :, :, :)
 
   ! numerical variables
   integer :: io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com
@@ -127,7 +126,7 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     real*8 :: a_plus, wage, valuefunc_help, varphi, varpsi
-    integer :: itp, ial, iar, ipl, ipr
+    integer :: ial, iar, ipl, ipr
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -190,7 +189,7 @@ contains
         if (valuefunc_help - 0.53d0 > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help - 0.53d0
           oplus_com = 1d0
-        elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ip_com, is_com, iw_com, ie_com) > 0d0) then
+        elseif (.not. ent .and. oplus(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com) > 0d0) then
           valuefunc_w = valuefunc_help - 0.53d0
           oplus_com = 1d0
         endif
@@ -200,7 +199,8 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w &
+                    + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
 
@@ -219,9 +219,8 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, profit, v_ind, valuefunc_help, varpsi, varphi
-    integer :: ij, ial, iar, ipl, ipr
-    integer :: iijj
+    real*8 :: a_plus, profit, valuefunc_help, varpsi, varphi
+    integer :: ial, iar, ipl, ipr
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -234,10 +233,6 @@ contains
 
     ! today's fixed labor
     l_com = l_bar
-
-
-    ! get lsra transfer payment
-    v_ind = v(1, ia_com, ip_com, iw_com, ie_com, is_com, ij_com)
 
     ! entrepreneur's profit
     profit = theta(ie_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r*max(k_com-a(ia_com), 0d0)
@@ -256,7 +251,7 @@ contains
     captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_bar, 0d0)
 
     ! calculate consumption
-    c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com) + v_ind  &
+    c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
            - captax_com - inctax_com - pencon_com - a_plus)*pinv
 
     ! calculate next periods pension claims
@@ -297,7 +292,7 @@ contains
         if (valuefunc_help > valuefunc_e .and. ent) then
           valuefunc_e = valuefunc_help
           oplus_com = 1d0
-        elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ip_com, is_com, iw_com, ie_com) > 0d0) then
+        elseif (.not. ent .and. oplus(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com) > 0d0) then
           valuefunc_e = valuefunc_help
           oplus_com = 1d0
         endif
@@ -307,7 +302,8 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e &
+                    + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
 
@@ -326,18 +322,14 @@ contains
     real*8 :: valuefunc_r
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, v_ind, varphi
-    real*8 :: temp1, temp2
-    integer :: ij, iijj, ial, iar
+    real*8 :: a_plus, varphi
+    integer :: ial, iar
 
     ! tomorrow's assets
     a_plus = xy
 
     ! today's labor
     l_com  = 0d0
-
-    ! get lsra transfer payment
-    v_ind = v(0, ia_com, ip_com, iw_com, ie_com, is_com, ij_com)
 
     ! calculate the wage rate and next periods pension claims
     pplus_com = p(ip_com)
@@ -355,7 +347,7 @@ contains
     captax_com = taur*1.055d0*max(r*a(ia_com)-2d0*0.0267d0*inc_bar, 0d0)
 
     ! calculate consumption
-    c_com = ((1d0+r)*a(ia_com) + beq(is_com, ij_com) + pen(ip_com, ij_com)  + v_ind &
+    c_com = ((1d0+r)*a(ia_com) + beq(is_com, ij_com) + pen(ip_com, ij_com) &
          - inctax_com - captax_com - a_plus)*pinv
 
     ! calculate tomorrow's part of the value function and occupational decision
@@ -374,7 +366,8 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r &
+                    + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
 
@@ -557,7 +550,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: is, ie, iw, ip, ia, ij, ic, ICMAX
+    integer :: ia, ip, iw, ie, is, ij, ic, ICMAX
     real*8, allocatable :: xs(:), ys(:), xcum(:), ycum(:)
 
     if(allocated(xs))deallocate(xs)
@@ -573,28 +566,28 @@ contains
     ic = 1
 
     do ij = 1, JJ
-      do ia = 0, NA
-        do ip = 0, NP
+      do is = 1, NS
+        do ie = 1, NE
           do iw = 1, NW
-            do ie = 1, NE
-              do is = 1, NS
+            do ip = 0, NP
+              do ia = 0, NA
 
-                if(m(1, is, ie, iw, ip, ia, ij) > 0d0) then
-                  ys(ic) = m(1, is, ie, iw, ip, ia, ij)
+                if(m(0, ia, ip, iw, ie, is, ij) > 0d0) then
+                  ys(ic) = m(0, ia, ip, iw, ie, is, ij)
                   xs(ic) = a(ia)
                   ic = ic + 1
                 endif
-                if(m(1, is, ie, iw, ip, ia, ij) > 0d0) then
-                  ys(ic) = m(1, is, ie, iw, ip, ia, ij)
+                if(m(1, ia, ip, iw, ie, is, ij) > 0d0) then
+                  ys(ic) = m(1, ia, ip, iw, ie, is, ij)
                   xs(ic) = a(ia)
                   ic = ic + 1
                 endif
 
-              enddo ! is
-            enddo ! ie
+              enddo ! ia
+            enddo ! ip
           enddo ! iw
-        enddo ! ip
-      enddo ! ia
+        enddo ! ie
+      enddo ! is
     enddo ! ij
 
     ! get array size and normalize ys
@@ -605,38 +598,38 @@ contains
     call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
-    xcum(0) = 0d0
-    ycum(0) = 0d0
-    do ic = 1, ICMAX
-      xcum(ic) = xcum(ic-1) + xs(ic)*ys(ic)
-      ycum(ic) = ycum(ic-1) + ys(ic)
+    xcum(1) = 0d0
+    ycum(1) = 0d0
+    do ic = 2, ICMAX+1
+      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic*1)
+      ycum(ic) = ycum(ic-1) + ys(ic-1)
     enddo
 
     gini_w = 0d0
-    do ic = 1, ICMAX
-      gini_w = gini_w + ys(ic)*(xcum(ic-1)+xcum(ic))
+    do ic = 2, ICMAX+1
+      gini_w = gini_w + ys(ic-1)*(xcum(ic-1)+xcum(ic))
     enddo
-    gini_w = 1d0-gini_w/xcum(ICMAX)
+    gini_w = 1d0-gini_w/xcum(ICMAX+1)
 
     percentiles_w = 0d0
-    do ic = ICMAX, 1, -1
+    do ic = ICMAX+1, 2, -1
       if (1d0-ycum(ic) > 0.01 .and. percentiles_w(1) <= 0d0) then
-        percentiles_w(1) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(1) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.05 .and. percentiles_w(2) <= 0d0) then
-        percentiles_w(2) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(2) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.10 .and. percentiles_w(3) <= 0d0) then
-        percentiles_w(3) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(3) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.20 .and. percentiles_w(4) <= 0d0) then
-        percentiles_w(4) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(4) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.40 .and. percentiles_w(5) <= 0d0) then
-        percentiles_w(5) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(5) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.60 .and. percentiles_w(6) <= 0d0) then
-        percentiles_w(6) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(6) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
     enddo
 
@@ -669,29 +662,31 @@ contains
     ic = 1
 
     do ij = 1, JJ
-      do ia = 0, NA
-        do ip = 0, NP
+      do is = 1, NS
+        do ie = 1, NE
           do iw = 1, NW
-            do ie = 1, NE
-              do is = 1, NS
+            do ip = 0, NP
+              do ia = 0, NA
 
-                if(m(0, is, ie, iw, ip, ia, ij) > 0d0) then
-                  ys(ic) = m(0, is, ie, iw, ip, ia, ij)
-                  xs(ic) = a(ia)*r + pen(ip, ij) + eff(ij, is)*eta(iw, is)*l(0, is, ie, iw, ip, ia, ij)*w
+                if(m(0, ia, ip, iw, ie, is, ij) > 0d0) then
+                  ys(ic) = m(0, ia, ip, iw, ie, is, ij)
+                  xs(ic) = a(ia)*r + pen(ip, ij) + eff(ij, is)*eta(iw, is)*l(0, ia, ip, iw, ie, is, ij)*w
                   ic = ic + 1
                 endif
-                if(m(1, is, ie, iw, ip, ia, ij) > 0d0) then
-                  ys(ic) = m(1, is, ie, iw, ip, ia, ij)
-                  xs(ic) = max(a(ia)-k(1, is, ie, iw, ip, ia, ij), 0d0)*r + pen(ip, ij) + profent(k(1, is, ie, iw, ip, ia, ij), ij, ia, is, ie)
+                if(m(1, ia, ip, iw, ie, is, ij) > 0d0) then
+                  ys(ic) = m(1, ia, ip, iw, ie, is, ij)
+                  xs(ic) = max(a(ia)-k(1, ia, ip, iw, ie, is, ij), 0d0)*r + pen(ip, ij) &
+                           + profent(k(1, ia, ip, iw, ie, is, ij), ij, ia, is, ie)
                   ic = ic + 1
                 endif
 
-              enddo ! is
-            enddo ! ie
+              enddo ! ia
+            enddo ! ip
           enddo ! iw
-        enddo ! ip
-      enddo ! ia
+        enddo ! iw
+      enddo ! is
     enddo ! ij
+
 
     ! get array size and normalize ys
     ICMAX = ic - 1
@@ -701,40 +696,42 @@ contains
     call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
-    xcum(0) = 0d0
-    ycum(0) = 0d0
-    do ic = 1, ICMAX
-      xcum(ic) = xcum(ic-1) + xs(ic)*ys(ic)
-      ycum(ic) = ycum(ic-1) + ys(ic)
+    xcum(1) = 0d0
+    ycum(1) = 0d0
+    do ic = 2, ICMAX+1
+      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic*1)
+      ycum(ic) = ycum(ic-1) + ys(ic-1)
     enddo
 
     gini_i = 0d0
-    do ic = 1, ICMAX
-      gini_i = gini_i + ys(ic)*(xcum(ic-1)+xcum(ic))
+    do ic = 2, ICMAX+1
+      gini_i = gini_i + ys(ic-1)*(xcum(ic-1)+xcum(ic))
     enddo
-    gini_i = 1d0-gini_i/xcum(ICMAX)
+    gini_i = 1d0-gini_i/xcum(ICMAX+1)
 
     percentiles_i = 0d0
-    do ic = ICMAX, 1, -1
+    do ic = ICMAX+1, 2, -1
       if (1d0-ycum(ic) > 0.01 .and. percentiles_i(1) <= 0d0) then
-        percentiles_i(1) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+        percentiles_i(1) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.05 .and. percentiles_i(2) <= 0d0) then
-        percentiles_i(2) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+        percentiles_i(2) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.10 .and. percentiles_i(3) <= 0d0) then
-        percentiles_i(3) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+        percentiles_i(3) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.20 .and. percentiles_i(4) <= 0d0) then
-        percentiles_i(4) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+        percentiles_i(4) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.40 .and. percentiles_i(5) <= 0d0) then
-        percentiles_i(5) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+        percentiles_i(5) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.60 .and. percentiles_i(6) <= 0d0) then
-        percentiles_i(6) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+        percentiles_i(6) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
     enddo
 
   end subroutine
+
+
 end module
