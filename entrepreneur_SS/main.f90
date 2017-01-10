@@ -285,13 +285,13 @@ contains
 
     ! initialize productivity shocks
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
-    eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*eta(:, 1))
+    eta(:, 1) = exp(eta(:, 1))!/sum(dist_eta(:, 1)*eta(:, 1))
 
     call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta(:, 2), pi_eta(:, :, 2), dist_eta(:, 2))
-    eta(:, 2) = exp(eta(:, 2))/sum(dist_eta(:, 2)*eta(:, 2))
+    eta(:, 2) = exp(eta(:, 2))!/sum(dist_eta(:, 2)*eta(:, 2))
 
     call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.03538d0), eta(:, 3), pi_eta(:, :, 3), dist_eta(:, 3))
-    eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 2)*eta(:, 2))
+    eta(:, 3) = exp(eta(:, 3))!/sum(dist_eta(:, 3)*eta(:, 3))
 
     ! initialize entrepreneurial ability
     call discretize_AR(0.80d0**5d0, 0.0d0, sigma5(0.80d0, 0.03d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
