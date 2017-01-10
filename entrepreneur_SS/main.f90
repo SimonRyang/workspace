@@ -9,6 +9,8 @@ program main
   implicit none
 
   integer, parameter :: numthreads = 14
+  integer :: ij
+  real*8 :: shares_target(JJ, NS)
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -80,8 +82,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 1024d0
-  a_grow = 3.0d0
+  a_u    = 512d0
+  a_grow = 2.8d0
 
   ! size of the pension claim grid
   p_l  = 0d0
@@ -89,7 +91,7 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-6
+  tol   = 1d-4
   itermax = 200
 
   ! compute gini
@@ -97,6 +99,19 @@ program main
 
   ! set switches
   if (NO == 0) ent = .false.
+
+  ! initialize target shares
+  open(303, file='shares.dat')
+  do ij = 1, JJ
+    read(303,'(3f8.4)')shares_target(ij, :)
+  enddo
+  close(303)
+  shares_target(:, :) = shares_target(:, :)/100d0
+
+!  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1))
+!  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2))
+!  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3))
+!  call execplot
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -233,9 +248,6 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
-    !psi(1, :) = psi(2, :)
-    !psi(3, :) = psi(2, :)
-
     ! set up population structure
     rpop(:, 1) = 1d0
     do ij = 2, JJ
@@ -268,23 +280,65 @@ contains
     enddo
     close(302)
     eff(JE:, :) = 0d0
+    !eff(:, 1) = eff(:, 2)
+    !eff(:, 3) = eff(:, 2)
 
+    ! initialize productivity shocks
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
-    eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*exp(eta(:, 1)))
+    eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*eta(:, 1))
 
     call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta(:, 2), pi_eta(:, :, 2), dist_eta(:, 2))
-    eta(:, 2) = exp(eta(:, 2))/sum(dist_eta(:, 2)*exp(eta(:, 2)))
+    eta(:, 2) = exp(eta(:, 2))/sum(dist_eta(:, 2)*eta(:, 2))
 
     call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.03538d0), eta(:, 3), pi_eta(:, :, 3), dist_eta(:, 3))
-    eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
+    eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 2)*eta(:, 2))
 
     ! initialize entrepreneurial ability
-    theta       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-    dist_theta    = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-    pi_theta(1,:)   = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-    pi_theta(2,:)   = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-    pi_theta(3,:)   = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-    pi_theta(4,:)   = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+    call discretize_AR(0.80d0**5d0, 0.0d0, sigma5(0.80d0, 0.03d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    theta(:, 1) = exp(theta(:, 1))/sum(dist_theta(:, 1)*theta(:, 1))
+
+    call discretize_AR(0.80d0**5d0, 0.0d0, sigma5(0.80d0, 0.05d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    theta(:, 2) = exp(theta(:, 2))
+
+    call discretize_AR(0.98d0**5d0, 0.0d0, sigma5(0.98d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    theta(:, 3) = exp(theta(:, 3))
+
+!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
+!    theta(:, 2)       = theta(:, 1)
+!    theta(:, 3)       = theta(:, 1)
+!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
+!    dist_theta(:, 2)  = dist_theta(:, 1)
+!    dist_theta(:, 3)  = dist_theta(:, 1)
+!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
+!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
+!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
+!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
+!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
+
+    write(*,'(5f8.4)') eta(:, 1)
+    write(*,'(5f8.4)') dist_eta(:, 1)
+    write(*,'(5f8.4)') eta(:, 2)
+    write(*,'(5f8.4)') dist_eta(:, 2)
+    write(*,'(5f8.4)') eta(:, 3)
+    write(*,'(5f8.4)') dist_eta(:, 3)
+
+    write(*,'(f8.4)') sum(eta(:, 1)*dist_eta(:, 1))
+    write(*,'(f8.4)') sum(eta(:, 2)*dist_eta(:, 2))
+    write(*,'(f8.4)') sum(eta(:, 3)*dist_eta(:, 3))
+
+    write(*,'(/a/)')'**********************************************'
+
+    write(*,'(5f8.4)') theta(:, 1)
+    write(*,'(5f8.4)') dist_theta(:, 1)
+    write(*,'(5f8.4)') theta(:, 2)
+    write(*,'(5f8.4)') dist_theta(:, 2)
+    write(*,'(5f8.4)') theta(:, 3)
+    write(*,'(5f8.4)') dist_theta(:, 3)
+
+    write(*,'(f8.4)') sum(theta(:, 1)*dist_theta(:, 1))
+    write(*,'(f8.4)') sum(theta(:, 2)*dist_theta(:, 2))
+    write(*,'(f8.4)') sum(theta(:, 3)*dist_theta(:, 3))
 
     ! initial guesses for macro variables
     inc_bar = 0.61d0
@@ -668,9 +722,9 @@ contains
               do ie_p = 1, NE
                 do iw_p = 1, NW
                   EV(0, ia, ip, iw, ie, is, ij) = EV(0, ia, ip, iw, ie, is, ij) &
-                    +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)*VV(0, ia, ip, iw_p, ie_p, is, ij)
+                    +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(0, ia, ip, iw_p, ie_p, is, ij)
                   EV(1, ia, ip, iw, ie, is, ij) = EV(1, ia, ip, iw, ie, is, ij) &
-                    +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)*VV(1, ia, ip, iw_p, ie_p, is, ij)
+                    +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(1, ia, ip, iw_p, ie_p, is, ij)
                 enddo ! iw_p
               enddo ! ie_p
 
@@ -708,7 +762,7 @@ contains
     do is = 1, NS
       do ie = 1, NE
         do iw = 1, NW
-          m(0, 0, 0, iw, ie, is, 1) = dist_theta(ie)*dist_eta(iw, is)*dist_skill(is)
+          m(0, 0, 0, iw, ie, is, 1) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
         enddo ! iw
       enddo ! ie
     enddo ! is
@@ -741,19 +795,19 @@ contains
                     do iw_p = 1, NW
                       m(io_p, ial, ipl, iw_p, ie_p, is, ij) = &
                          m(io_p, ial, ipl, iw_p, ie_p, is, ij) &
-                         +varphi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)&
+                         +varphi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)&
                          *psi(is, ij)*m(io, ia, ip, iw, ie, is, ij-1)
                       m(io_p, ial, ipr, iw_p, ie_p, is, ij) = &
                          m(io_p, ial, ipr, iw_p, ie_p, is, ij) &
-                         +varphi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                         +varphi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                          *psi(is, ij)*m(io, ia, ip, iw, ie, is, ij-1)
                       m(io_p, iar, ipl, iw_p, ie_p, is, ij) = &
                          m(io_p, iar, ipl, iw_p, ie_p, is, ij) &
-                         +(1d0-varphi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                         +(1d0-varphi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                          *psi(is, ij)*m(io, ia, ip, iw, ie, is, ij-1)
                       m(io_p, iar, ipr, iw_p, ie_p, is, ij) = &
                          m(io_p, iar, ipr, iw_p, ie_p, is, ij) &
-                         +(1d0-varphi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                         +(1d0-varphi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                          *psi(is, ij)*m(io, ia, ip, iw, ie, is, ij-1)
                     enddo ! iw_p
                   enddo ! ie_p
@@ -836,7 +890,7 @@ contains
                               *m(io, ia, ip, iw, ie, is, ij)*pop(ij)
                   else
                     KE = KE + k(io, ia, ip, iw, ie, is, ij)*m(io, ia, ip, iw, ie, is, ij)*pop(ij)
-                    YE = YE + theta(ie)*(k(io, ia, ip, iw, ie, is, ij)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                    YE = YE + theta(ie, is)*(k(io, ia, ip, iw, ie, is, ij)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                               *m(io, ia, ip, iw, ie, is, ij)*pop(ij)
                     if (ij < JR) PC = PC + phi*min(profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, ie), sscc*inc_bar) &
                               *m(io, ia, ip, iw, ie, is, ij)*pop(ij)
@@ -1099,22 +1153,22 @@ contains
     write(21,'(a/)')'-----------------------------------------------------------------------------------------------&
                      --------------------------------------'
 
-    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
-    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
-    call execplot
-
-    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
-    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
-    call execplot
-
-    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
-    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
-    call execplot
+!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
+!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
+!    call execplot
+!
+!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
+!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
+!    call execplot
+!
+!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
+!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
+!    call execplot
 
     call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))
     call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))
     call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))
-    call execplot
+    call execplot()
 
   end subroutine
 
