@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 4
   integer :: ij
   real*8 :: shares_target(JJ, NS)
 
@@ -280,65 +280,57 @@ contains
     enddo
     close(302)
     eff(JE:, :) = 0d0
-    !eff(:, 1) = eff(:, 2)
-    !eff(:, 3) = eff(:, 2)
 
     ! initialize productivity shocks
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
-    eta(:, 1) = exp(eta(:, 1))!/sum(dist_eta(:, 1)*eta(:, 1))
+    eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*exp(eta(:, 1)))
 
     call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta(:, 2), pi_eta(:, :, 2), dist_eta(:, 2))
-    eta(:, 2) = exp(eta(:, 2))!/sum(dist_eta(:, 2)*eta(:, 2))
+    eta(:, 2) = exp(eta(:, 2))/sum(dist_eta(:, 2)*exp(eta(:, 2)))
 
     call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.03538d0), eta(:, 3), pi_eta(:, :, 3), dist_eta(:, 3))
-    eta(:, 3) = exp(eta(:, 3))!/sum(dist_eta(:, 3)*eta(:, 3))
+    eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.80d0**5d0, 0.0d0, sigma5(0.80d0, 0.05d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
-    theta(:, 1) = exp(theta(:, 1))
+    call discretize_AR(0.80d0**5d0, 0.20d0, sigma5(0.80d0, 0.05d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.80d0**5d0, 0.0d0, sigma5(0.80d0, 0.05d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
-    theta(:, 2) = exp(theta(:, 2))
+    call discretize_AR(0.80d0**5d0, 0.20d0, sigma5(0.80d0, 0.05d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.98d0**5d0, 0.0d0, sigma5(0.98d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
-    theta(:, 3) = exp(theta(:, 3))
+    call discretize_AR(0.98d0**5d0, 0.20d0, sigma5(0.98d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
-!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-!    theta(:, 2)       = theta(:, 1)
-!    theta(:, 3)       = theta(:, 1)
-!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-!    dist_theta(:, 2)  = dist_theta(:, 1)
-!    dist_theta(:, 3)  = dist_theta(:, 1)
-!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
-!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
-!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
+    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
+    theta(:, 2)       = theta(:, 1)
+    theta(:, 3)       = theta(:, 1)
+    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
+    dist_theta(:, 2)  = dist_theta(:, 1)
+    dist_theta(:, 3)  = dist_theta(:, 1)
+    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
+    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
+    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
+    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+    pi_theta(:, :, 2) = pi_theta(:, :, 1)
+    pi_theta(:, :, 3) = pi_theta(:, :, 1)
 
-    write(*,'(5f8.4)') eta(:, 1)
-    write(*,'(5f8.4)') dist_eta(:, 1)
-    write(*,'(5f8.4)') eta(:, 2)
-    write(*,'(5f8.4)') dist_eta(:, 2)
-    write(*,'(5f8.4)') eta(:, 3)
-    write(*,'(5f8.4)') dist_eta(:, 3)
-
-    write(*,'(f8.4)') sum(eta(:, 1)*dist_eta(:, 1))
-    write(*,'(f8.4)') sum(eta(:, 2)*dist_eta(:, 2))
-    write(*,'(f8.4)') sum(eta(:, 3)*dist_eta(:, 3))
-
-    write(*,'(/a/)')'**********************************************'
-
-    write(*,'(5f8.4)') theta(:, 1)
-    write(*,'(5f8.4)') dist_theta(:, 1)
-    write(*,'(5f8.4)') theta(:, 2)
-    write(*,'(5f8.4)') dist_theta(:, 2)
-    write(*,'(5f8.4)') theta(:, 3)
-    write(*,'(5f8.4)') dist_theta(:, 3)
-
-    write(*,'(f8.4)') sum(theta(:, 1)*dist_theta(:, 1))
-    write(*,'(f8.4)') sum(theta(:, 2)*dist_theta(:, 2))
-    write(*,'(f8.4)') sum(theta(:, 3)*dist_theta(:, 3))
+!    write(*,'(5f8.4)') eta(:, 1)
+!    write(*,'(5f8.4)') eta(:, 2)
+!    write(*,'(5f8.4)') eta(:, 3)
+!
+!    write(*,'(f8.4)') sum(eta(:, 1)*dist_eta(:, 1))
+!    write(*,'(f8.4)') sum(eta(:, 2)*dist_eta(:, 2))
+!    write(*,'(f8.4)') sum(eta(:, 3)*dist_eta(:, 3))
+!
+!    write(*,'(/a/)')'**********************************************'
+!
+!    write(*,'(5f8.4)') theta(:, 1)
+!    write(*,'(5f8.4)') theta(:, 2)
+!    write(*,'(5f8.4)') theta(:, 3)
+!
+!    write(*,'(f8.4)') sum(theta(:, 1)*dist_theta(:, 1))
+!    write(*,'(f8.4)') sum(theta(:, 2)*dist_theta(:, 2))
+!    write(*,'(f8.4)') sum(theta(:, 3)*dist_theta(:, 3))
 
     ! initial guesses for macro variables
     inc_bar = 0.61d0
@@ -428,7 +420,7 @@ contains
         io_com = 0
 
         !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com) collapse(3) &
-        !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        !$omp             schedule(guided) private(xy, fret) num_threads(numthreads)
         do is = 1, NS
           do ip = 0, NP
             do ia = 0, NA
@@ -469,7 +461,7 @@ contains
           io_com = 1
 
           !$omp parallel do copyin(io_com, iw_com, ij_com) collapse(4) &
-          !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+          !$omp             schedule(guided) private(xy, fret) num_threads(numthreads)
           do is = 1, NS
             do ie = 1, NE
               do ip = 0, NP
@@ -515,7 +507,7 @@ contains
         io_com = 0
 
         !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com) collapse(3) &
-        !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+        !$omp             schedule(guided) private(xy, fret) num_threads(numthreads)
         do is = 1, NS
           do ip = 0, NP
             do ia = 0, NA
@@ -556,7 +548,7 @@ contains
           ! set up communication variables
           io_com = 1
 
-          !$omp do collapse(4) schedule(dynamic, 1)
+          !$omp do collapse(4) schedule(guided)
           do is = 1, NS
             do ie = 1, NE
               do iw = 1, NW
@@ -602,7 +594,7 @@ contains
         ! set up communication variables
         io_com = 0
 
-        !$omp do collapse(4) schedule(dynamic, 1)
+        !$omp do collapse(4) schedule(guided)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
@@ -650,7 +642,7 @@ contains
         io_com = 0
 
 	      !$omp parallel do copyin(io_com, ia_com, ip_com, ij_com) collapse(3) &
-	      !$omp             schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+	      !$omp             schedule(guided) private(xy, fret) num_threads(numthreads)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
@@ -1164,11 +1156,11 @@ contains
 !    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
 !    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
 !    call execplot
-
-    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))
-    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))
-    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))
-    call execplot()
+!
+!    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))
+!    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))
+!    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))
+!    call execplot()
 
   end subroutine
 
