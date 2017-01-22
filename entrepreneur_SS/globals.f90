@@ -235,7 +235,8 @@ contains
     l_com = l_bar
 
     ! entrepreneur's profit
-    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r*max(k_com-a(ia_com), 0d0)
+    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu &
+             - delta*k_com - r*max(k_com-a(ia_com), 0d0)
 
     ! calculate contribution to pension system
     if (ij_com < JR) then
