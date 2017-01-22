@@ -2,12 +2,12 @@ MAINFILE = main
 LIBS = globals.o toolbox.o sorting.o clock.o
 
 # Intel Fortran Compiler
-CFLAGS = -qopenmp -O2
-CC = ~/intel/bin/ifort
+#CFLAGS = -qopenmp -O2
+#CC = ~/intel/bin/ifort
 
 # PGI Fortran Compiler
-#CFLAGS = -mp -O2 -Mbackslash
-#CC = ~/pgi/linux86-64/2016/bin/pgfortran
+CFLAGS = -mp -O2 -Mbackslash
+CC = ~/pgi/linux86-64/2016/bin/pgfortran
 
 # GFortran Compiler
 #CFLAGS = -fopenmp -O2
@@ -38,6 +38,6 @@ clock.mod: clock.f90
 $(MAINFILE).o: globals.mod toolbox.mod sorting.mod clock.mod $(MAINFILE).f90
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
-#clean:
-#	-rm -f *.mod
-#	-rm -f *.o
+clean:
+	-rm -f *.mod
+	-rm -f *.o
