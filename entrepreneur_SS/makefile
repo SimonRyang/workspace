@@ -35,7 +35,7 @@ globals.o: ~/workspace/include/toolbox.o ~/workspace/include/sorting.o globals.f
 ~/workspace/include/clock.o: ~/workspace/include/clock.f90
 	$(CC) $(CFLAGS) -c ~/workspace/include/clock.f90
 
-$(MAINFILE).o: globals.mod ~/workspace/include/toolbox.o ~/workspace/include/sorting.o ~/workspace/include/clock.o $(MAINFILE).f90
+$(MAINFILE).o: globals.o ~/workspace/include/toolbox.o ~/workspace/include/sorting.o ~/workspace/include/clock.o $(MAINFILE).f90
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
 clean:
