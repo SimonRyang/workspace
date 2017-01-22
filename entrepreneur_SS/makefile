@@ -1,5 +1,5 @@
 MAINFILE = main
-LIBS = globals.o ~/workspace/include/toolbox.o ~/workspace/include/sorting.o ~/workspace/include/clock.o
+LIBS = globals.mod ~/workspace/include/toolbox.mod ~/workspace/include/sorting.mod ~/workspace/include/clock.mod
 
 # Intel Fortran Compiler
 CFLAGS = -qopenmp -O2
@@ -38,6 +38,6 @@ globals.mod: ~/workspace/include/toolbox.mod ~/workspace/include/sorting.mod glo
 $(MAINFILE).o: globals.mod ~/workspace/include/toolbox.mod ~/workspace/include/sorting.mod ~/workspace/include/clock.mod $(MAINFILE).f90
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
-#clean:
-#	-rm -f *.mod
-#	-rm -f *.o
+clean:
+	-rm -f *.mod
+	-rm -f *.o
