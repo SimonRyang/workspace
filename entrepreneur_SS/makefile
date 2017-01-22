@@ -23,13 +23,13 @@ all: $(TARGET)
 $(TARGET): $(MAINFILE).o $(LIBS)
 	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
 
-globals.o: ~/workspace/include/toolbox.mod ~/workspace/include/sorting.mod globals.f90
+globals.o: ~/workspace/include/toolbox.o ~/workspace/include/sorting.o globals.f90
 	$(CC) $(CFLAGS) -c globals.f90
 
 ~/workspace/include/toolbox.o: ~/workspace/include/toolbox.f90
 	$(CC) $(CFLAGS) -c ~/workspace/include/toolbox.f90
 
-~/workspace/include/sorting.o: ~/workspace/include/toolbox.mod ~/workspace/include/sorting.f90
+~/workspace/include/sorting.o: ~/workspace/include/toolbox.o ~/workspace/include/sorting.f90
 	$(CC) $(CFLAGS) -c ~/workspace/include/sorting.f90
 
 ~/workspace/include/clock.o: ~/workspace/include/clock.f90
