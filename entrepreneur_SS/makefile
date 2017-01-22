@@ -1,5 +1,5 @@
 MAINFILE = main
-LIBS = globals.o ~/workspace/include/toolbox.o ~/workspace/include/sorting.o ~/workspace/include/clock.o
+LIBS = globals.o toolbox.o sorting.o clock.o
 
 # Intel Fortran Compiler
 CFLAGS = -qopenmp -O2
@@ -23,21 +23,21 @@ all: $(TARGET)
 $(TARGET): $(MAINFILE).o $(LIBS)
 	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
 
-globals.o: ~/workspace/include/toolbox.o ~/workspace/include/sorting.o globals.f90
+globals.mod: toolbox.mod sorting.mod globals.f90
 	$(CC) $(CFLAGS) -c globals.f90
 
-~/workspace/include/toolbox.o: ~/workspace/include/toolbox.f90
-	$(CC) $(CFLAGS) -c ~/workspace/include/toolbox.f90
+toolbox.mod: toolbox.f90
+	$(CC) $(CFLAGS) -c toolbox.f90
 
-~/workspace/include/sorting.o: ~/workspace/include/toolbox.o ~/workspace/include/sorting.f90
-	$(CC) $(CFLAGS) -c ~/workspace/include/sorting.f90
+sorting.mod: toolbox.mod sorting.f90
+	$(CC) $(CFLAGS) -c sorting.f90
 
-~/workspace/include/clock.o: ~/workspace/include/clock.f90
-	$(CC) $(CFLAGS) -c ~/workspace/include/clock.f90
+clock.mod: clock.f90
+	$(CC) $(CFLAGS) -c clock.f90
 
-$(MAINFILE).o: globals.o ~/workspace/include/toolbox.o ~/workspace/include/sorting.o ~/workspace/include/clock.o $(MAINFILE).f90
+$(MAINFILE).o: globals.mod toolbox.mod sorting.mod clock.mod $(MAINFILE).f90
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
-clean:
-	-rm -f *.mod
-	-rm -f *.o
+#clean:
+#	-rm -f *.mod
+#	-rm -f *.o
