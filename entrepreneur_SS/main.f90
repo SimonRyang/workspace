@@ -108,10 +108,10 @@ program main
   close(303)
   shares_target(:, :) = shares_target(:, :)/100d0
 
-!  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1))
-!  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2))
-!  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3))
-!  call execplot
+  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1))
+  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2))
+  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3))
+  call execplot
 
   ! calculate initial equilibrium
   call get_SteadyState()

@@ -30,7 +30,7 @@ module globals
   integer, parameter :: NA = 15
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 0
+  integer, parameter :: NX = 15
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
@@ -84,7 +84,7 @@ module globals
   ! the shock process
   real*8 :: dist_skill(NS)
   real*8 :: eta(NW, NS), dist_eta(NW, NS), pi_eta(NW, NW, NS)
-  real*8 :: theta(NE), dist_theta(NE), pi_theta(NE, NE)
+  real*8 :: theta(NE, NS), dist_theta(NE, NS), pi_theta(NE, NE, NS)
 
   ! demographic and other model parameters
   real*8 :: eff(JJ, NS), rpop(NS, JJ, 0:TT), pop(JJ, 0:TT), psi(NS, JJ+1), beq(NS, JJ, 0:TT), Gama(JJ), n_p
@@ -311,7 +311,7 @@ contains
     v_ind = v(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
 
     ! entrepreneur's profit
-    profit = theta(ie_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r(it_com)*max(k_com-a(ia_com), 0d0)
+    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r(it_com)*max(k_com-a(ia_com), 0d0)
 
     ! calculate contribution to pension system
     if (ij_com < JR) then
@@ -512,7 +512,7 @@ contains
     real*8 :: profent
 
     ! compute profit
-    profent = theta(ie)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r(it)*max(k-a(ia), 0d0)
+    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r(it)*max(k-a(ia), 0d0)
 
   end function
 

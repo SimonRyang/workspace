@@ -89,20 +89,20 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 1024d0
-  a_grow = 1.2d0
+  a_u    = 10240
+  a_grow = 1.8d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
-  x_u    = 512d0
-  x_grow = 1.2d0
+  x_u    = 1024d0
+  x_grow = 1.8d0
 
   ! size of the pension claim grid
   p_l  = 0d0
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.50d0
+  damp  = 0.60d0
   tol   = 1d-4
   itermax = 200
 
@@ -419,18 +419,33 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    theta       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-    dist_theta    = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-    pi_theta(1,:)   = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-    pi_theta(2,:)   = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-    pi_theta(3,:)   = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-    pi_theta(4,:)   = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+    call discretize_AR(0.80d0**5d0, 0.20d0, sigma5(0.80d0, 0.05d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
+
+    call discretize_AR(0.80d0**5d0, 0.20d0, sigma5(0.80d0, 0.05d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
+
+    call discretize_AR(0.98d0**5d0, 0.20d0, sigma5(0.98d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
+
+    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
+    theta(:, 2)       = theta(:, 1)
+    theta(:, 3)       = theta(:, 1)
+    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
+    dist_theta(:, 2)  = dist_theta(:, 1)
+    dist_theta(:, 3)  = dist_theta(:, 1)
+    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
+    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
+    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
+    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+    pi_theta(:, :, 2) = pi_theta(:, :, 1)
+    pi_theta(:, :, 3) = pi_theta(:, :, 1)
 
     ! initial guesses for macro variables
-    inc_bar(0) = 0.58d0
-    BQ(0) = 0.29d0
-    KC(0) = 4.09d0
-    LC(0) = 5.15d0
+    inc_bar(0) = 0.61d0
+    BQ(0) = 0.50d0
+    KC(0) = 4.93d0
+    LC(0) = 5.25d0
 
     ! open files
     open(21, file='output.out')
@@ -937,9 +952,9 @@ contains
                 do ie_p = 1, NE
                   do iw_p = 1, NW
                     EV(0, ia, ix, ip, iw, ie, is, ij, it) = EV(0, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)*VV(0, ia, ip, ix, iw_p, ie_p, is, ij, it)
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(0, ia, ip, ix, iw_p, ie_p, is, ij, it)
                     EV(1, ia, ix, ip, iw, ie, is, ij, it) = EV(1, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)*VV(1, ia, ip, ix, iw_p, ie_p, is, ij, it)
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(1, ia, ip, ix, iw_p, ie_p, is, ij, it)
                   enddo ! iw_p
                 enddo ! ie_p
 
@@ -984,7 +999,7 @@ contains
     do is = 1, NS
       do ie = 1, NE
         do iw = 1, NW
-          m(0, 0, 0, 0, iw, ie, is, 1, it) = dist_theta(ie)*dist_eta(iw, is)*dist_skill(is)
+          m(0, 0, 0, 0, iw, ie, is, 1, it) = dist_theta(ie, is)*dist_eta(iw, is)*dist_skill(is)
         enddo ! iw
       enddo ! ie
     enddo ! is
@@ -1030,35 +1045,35 @@ contains
                       do iw_p = 1, NW
                         m(io_p, ial, ixl, ipl, iw_p, ie_p, is, ij, it) = &
                            m(io_p, ial, ixl, ipl, iw_p, ie_p, is, ij, it) &
-                           +varphi*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)&
+                           +varphi*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)&
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                         m(io_p, ial, ixl, ipr, iw_p, ie_p, is, ij, it) = &
                            m(io_p, ial, ixl, ipr, iw_p, ie_p, is, ij, it) &
-                           +varphi*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           +varphi*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                         m(io_p, ial, ixr, ipl, iw_p, ie_p, is, ij, it) = &
                            m(io_p, ial, ixr, ipl, iw_p, ie_p, is, ij, it) &
-                           +varphi*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p)&
+                           +varphi*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)&
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                         m(io_p, ial, ixr, ipr, iw_p, ie_p, is, ij, it) = &
                            m(io_p, ial, ixr, ipr, iw_p, ie_p, is, ij, it) &
-                           +varphi*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           +varphi*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                         m(io_p, iar, ixl, ipl, iw_p, ie_p, is, ij, it) = &
                            m(io_p, iar, ixl, ipl, iw_p, ie_p, is, ij, it) &
-                           +(1d0-varphi)*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           +(1d0-varphi)*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                         m(io_p, iar, ixl, ipr, iw_p, ie_p, is, ij, it) = &
                            m(io_p, iar, ixl, ipr, iw_p, ie_p, is, ij, it) &
-                           +(1d0-varphi)*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           +(1d0-varphi)*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                         m(io_p, iar, ixr, ipl, iw_p, ie_p, is, ij, it) = &
                            m(io_p, iar, ixr, ipl, iw_p, ie_p, is, ij, it) &
-                           +(1d0-varphi)*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           +(1d0-varphi)*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                         m(io_p, iar, ixr, ipr, iw_p, ie_p, is, ij, it) = &
                            m(io_p, iar, ixr, ipr, iw_p, ie_p, is, ij, it) &
-                           +(1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p) &
+                           +(1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                       enddo ! iw_p
                     enddo ! ie_p
@@ -1163,7 +1178,7 @@ contains
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     else
                       KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
-                      YE(it) = YE(it) + theta(ie)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                      YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                       if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it), sscc(it)*inc_bar(it)) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)

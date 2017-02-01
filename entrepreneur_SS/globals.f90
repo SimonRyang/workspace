@@ -186,11 +186,11 @@ contains
               **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
-        if (valuefunc_help- 1d0 > valuefunc_w .and. ent) then
-          valuefunc_w = valuefunc_help- 1d0
+        if (valuefunc_help - 0.53d0 > valuefunc_w .and. ent) then
+          valuefunc_w = valuefunc_help - 0.53d0
           oplus_com = 1d0
         elseif (.not. ent .and. oplus(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com) > 0d0) then
-          valuefunc_w = valuefunc_help- 1d0
+          valuefunc_w = valuefunc_help - 0.53d0
           oplus_com = 1d0
         endif
 
