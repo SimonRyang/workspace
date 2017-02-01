@@ -68,6 +68,8 @@ module globals
   real*8 :: pop_w(NS), pop_e(NS), pop_r(NS), pop_re(NS)
   real*8 :: bqs(NS)
   real*8 :: vv_coh(JJ) = 0d0
+  real*8 :: c_coh(0:1, JJ), a_coh(0:1, JJ), k_coh(JJ)
+  real*8 :: inc_coh(0:1, JJ), o_coh(0:1, 0:1, JJ), os_coh(0:1, 0:1, NS, JJ), flc_coh(JJ)
 
   ! the shock process
   real*8 :: dist_skill(NS)
