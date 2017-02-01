@@ -141,8 +141,7 @@ program main
 
                     shares_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
 
-                    write(33, *)s1, s2, s3, h1, h2, h3, m1, m2, m3, &
-                        sqrt((share_target-share_result)**2d0+shares_target(:,1))
+                    write(33, *)s1, s2, s3, h1, h2, h3, m1, m2, m3
                         close(33)
                     stop
 
