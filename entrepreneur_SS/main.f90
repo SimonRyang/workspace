@@ -124,7 +124,7 @@ program main
   mu_val(:, 2) = -(/0.00d0, 0.01d0, 0.02d0, 0.04d0, 0.08d0/)
   mu_val(:, 3) = -(/0.00d0, 0.01d0, 0.02d0, 0.04d0, 0.08d0/)
 
-  open(33, file='results.out')
+  open(307, file='results.out')
 
   do s1 = 1, 5
     do s2 = 1, 5
@@ -141,8 +141,8 @@ program main
 
                     shares_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
 
-                    write(*, *)s1, s2, s3, h1, h2, h3, m1, m2, m3
-                        close(33)
+                    write(307, *)s1, s2, s3, h1, h2, h3, m1, m2, m3
+                        close(307)
                     stop
 
                   end do
@@ -155,7 +155,7 @@ program main
     end do
   end do
 
-  close(33)
+  close(307)
 
   ! close files
   close(21)
