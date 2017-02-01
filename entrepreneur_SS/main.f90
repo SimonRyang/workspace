@@ -10,7 +10,9 @@ program main
 
   integer, parameter :: numthreads = 28
   integer :: ij
-  real*8 :: shares_target(JJ, NS)
+  real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
+  real*8 :: sigma_val(5, NS), rho_val(5, NS), mu_val(5, NS)
+  integer :: s1, s2, s3, h1, h2, h3, m1, m2, m3
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -103,18 +105,55 @@ program main
   ! initialize target shares
   open(303, file='shares.dat')
   do ij = 1, JJ
-    read(303,'(3f8.4)')shares_target(ij, :)
+    read(303,'(3f6.2)')shares_target(ij, :)
   enddo
   close(303)
-  shares_target(:, :) = shares_target(:, :)/100d0
+  shares_target(:, :) = shares_target(:, :)
 
-  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1))
-  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2))
-  call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3))
-  call execplot
+  share_target = 10.4035d0
 
-  ! calculate initial equilibrium
-  call get_SteadyState()
+  sigma_val(:, 1) = (/0.01d0, 0.02d0, 0.04d0, 0.08d0, 0.16d0/)
+  sigma_val(:, 2) = (/0.01d0, 0.02d0, 0.04d0, 0.08d0, 0.16d0/)
+  sigma_val(:, 3) = (/0.01d0, 0.02d0, 0.04d0, 0.08d0, 0.16d0/)
+
+  rho_val(:, 1) = 1d0 - (/0.01d0, 0.02d0, 0.04d0, 0.08d0, 0.16d0/)
+  rho_val(:, 2) = 1d0 - (/0.01d0, 0.02d0, 0.04d0, 0.08d0, 0.16d0/)
+  rho_val(:, 3) = 1d0 - (/0.01d0, 0.02d0, 0.04d0, 0.08d0, 0.16d0/)
+
+  mu_val(:, 1) = -(/0.00d0, 0.01d0, 0.02d0, 0.04d0, 0.08d0/)
+  mu_val(:, 2) = -(/0.00d0, 0.01d0, 0.02d0, 0.04d0, 0.08d0/)
+  mu_val(:, 3) = -(/0.00d0, 0.01d0, 0.02d0, 0.04d0, 0.08d0/)
+
+  open(333, file='results.out')
+
+  do s1 = 1, 5
+    do s2 = 1, 5
+      do s3 = 1, 5
+        do h1 = 1, 5
+          do h2 = 1, 5
+            do h3 = 1, 5
+              do m1 = 1, 5
+                do m2 = 1, 5
+                  do m3 = 1, 5
+
+                    ! calculate initial equilibrium
+                    call get_SteadyState()
+
+                    shares_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
+
+                    write(333, '(9i3,f16.10)')s1, s2, s3, h1, h2, h3, m1, m2, m3, &
+                        sqrt((share_target-share_result)**2d0)
+
+                  end do
+                end do
+              end do
+            end do
+          end do
+        end do
+      end do
+    end do
+  end do
+
 
   ! close files
   close(21)
@@ -169,7 +208,7 @@ contains
       if(abs(DIFF/YY)*100d0 < tol)then
 
         call tock(calc)
-        call output
+        !call output
         return
       endif
 
@@ -178,7 +217,7 @@ contains
     enddo
 
     call tock(calc)
-    call output
+    !call output
 
     write(*,*)'No Convergence'
 
@@ -292,27 +331,37 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.80d0**5d0, 0.20d0, sigma5(0.80d0, 0.05d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
-    theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
+    call discretize_AR(rho_val(h1, 1)**5d0, mu_val(m1, 1), sigma5(rho_val(h1, 1), sigma_val(s1, 1)), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    theta(:, 1) = exp(theta(:, 1))
 
-    call discretize_AR(0.80d0**5d0, 0.20d0, sigma5(0.80d0, 0.05d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
-    theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
+    call discretize_AR(rho_val(h2, 2)**5d0, mu_val(m2, 2), sigma5(rho_val(h2, 2), sigma_val(s2, 2)), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    theta(:, 2) = exp(theta(:, 2))
 
-    call discretize_AR(0.98d0**5d0, 0.20d0, sigma5(0.98d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
-    theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
+    call discretize_AR(rho_val(h3, 3)**5d0, mu_val(m3, 3), sigma5(rho_val(h3, 3), sigma_val(s3, 3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    theta(:, 3) = exp(theta(:, 3))
 
-    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-    theta(:, 2)       = theta(:, 1)
-    theta(:, 3)       = theta(:, 1)
-    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-    dist_theta(:, 2)  = dist_theta(:, 1)
-    dist_theta(:, 3)  = dist_theta(:, 1)
-    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
-    pi_theta(:, :, 2) = pi_theta(:, :, 1)
-    pi_theta(:, :, 3) = pi_theta(:, :, 1)
+
+!    call discretize_AR(0.80d0**5d0, -0.30d0, sigma5(0.80d0, 0.05d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+!    theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
+!
+!    call discretize_AR(0.80d0**5d0, -0.25d0, sigma5(0.80d0, 0.05d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+!    theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
+!
+!    call discretize_AR(0.80d0**5d0, -0.15d0, sigma5(0.80d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+!    theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
+
+!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
+!    theta(:, 2)       = theta(:, 1)
+!    theta(:, 3)       = theta(:, 1)
+!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
+!    dist_theta(:, 2)  = dist_theta(:, 1)
+!    dist_theta(:, 3)  = dist_theta(:, 1)
+!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
+!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
+!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
+!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
+!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
 
 !    write(*,'(5f8.4)') eta(:, 1)
 !    write(*,'(5f8.4)') eta(:, 2)
@@ -1156,11 +1205,17 @@ contains
 !    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
 !    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
 !    call execplot
-!
-!    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))
-!    call execplot()
+
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
+
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
+    call execplot()
+
+
 
   end subroutine
 
