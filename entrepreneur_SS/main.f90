@@ -142,7 +142,9 @@ program main
                     shares_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
 
                     write(33, *)s1, s2, s3, h1, h2, h3, m1, m2, m3, &
-                        sqrt((share_target-share_result)**2d0)
+                        sqrt((share_target-share_result)**2d0+shares_target(:,1))
+                        close(33)
+                    stop
 
                   end do
                 end do
@@ -1042,8 +1044,6 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: io, ia, ip, iw, ie, is, ij, io_p, iamax(JJ)
-    real*8 :: c_coh(0:1, JJ), a_coh(0:1, JJ), k_coh(JJ)
-    real*8 :: inc_coh(0:1, JJ), o_coh(0:1, 0:1, JJ), os_coh(0:1, 0:1, NS, JJ), flc_coh(JJ)
     real*8 :: life_exp(NS), punb(JJ, NS)
 
     life_exp = 0d0
