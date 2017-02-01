@@ -145,7 +145,7 @@ program main
                     shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 1, :))*100d0
 
                     write(307, '(9i3, f16.10)')s1, s2, s3, h1, h2, h3, m1, m2, m3, &
-                        sqrt((share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                        sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                               + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                               + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
 
