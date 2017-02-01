@@ -154,6 +154,7 @@ program main
     end do
   end do
 
+  close(333)
 
   ! close files
   close(21)
