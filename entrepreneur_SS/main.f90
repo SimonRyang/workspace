@@ -923,6 +923,9 @@ contains
     pop_e(:) = 0d0
     vv_coh(:) = 0d0
 
+
+	  !$omp parallel do collapse(3) &
+	  !$omp             schedule(guided) reduction(+:AA, CC, LC, HH, KE, YE, PE, PRE, PC, BQ, PP, TAc, TAr, TAw, TAy) num_threads(numthreads)
     do ij = 1, JJ
       do is = 1, NS
         do ie = 1, NE
