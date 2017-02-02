@@ -124,19 +124,17 @@ program main
   mu_val(:, 2) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
   mu_val(:, 3) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
 
-	write(*,*) 'TESSSSSSSSSSSSSSSSSSSSSSSSSSST'
-
   open(307, file='results.out')
 
-  do s1 = 1, 5
-    do s2 = 1, 5
-      do s3 = 1, 5
+  do m1 = 1, 5
+    do m2 = 1, 5
+      do m3 = 1, 5
         do h1 = 1, 5
           do h2 = 1, 5
             do h3 = 1, 5
-              do m1 = 1, 5
-                do m2 = 1, 5
-                  do m3 = 1, 5
+              do s1 = 1, 5
+                do s2 = 1, 5
+                  do s3 = 1, 5
 
                     ! calculate initial equilibrium
                     call get_SteadyState()
