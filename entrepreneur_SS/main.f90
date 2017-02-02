@@ -129,12 +129,12 @@ program main
   do m1 = 1, 3
     do m2 = 1, 3
       do m3 = 1, 3
-        do h1 = 1, 4
-          do h2 = 1, 4
-            do h3 = 1, 4
-              do s1 = 1, 4
-                do s2 = 1, 4
-                  do s3 = 1, 4
+        do s1 = 1, 4
+          do s2 = 1, 4
+            do s3 = 1, 4
+              do h1 = 1, 4
+                do h2 = 1, 4
+                  do h3 = 1, 4
 
                     ! calculate initial equilibrium
                     call get_SteadyState()
