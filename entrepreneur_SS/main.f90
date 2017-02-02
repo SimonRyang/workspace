@@ -120,9 +120,9 @@ program main
   rho_val(:, 2) = 1d0 - (/0.01d0, 0.02d0, 0.04d0, 0.08d0, 0.16d0/)
   rho_val(:, 3) = 1d0 - (/0.01d0, 0.02d0, 0.04d0, 0.08d0, 0.16d0/)
 
-  mu_val(:, 1) = -(/0.00d0, 0.01d0, 0.02d0, 0.04d0, 0.08d0/)
-  mu_val(:, 2) = -(/0.00d0, 0.01d0, 0.02d0, 0.04d0, 0.08d0/)
-  mu_val(:, 3) = -(/0.00d0, 0.01d0, 0.02d0, 0.04d0, 0.08d0/)
+  mu_val(:, 1) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
+  mu_val(:, 2) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
+  mu_val(:, 3) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
 
   open(307, file='results.out')
 
@@ -144,7 +144,7 @@ program main
                     shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 1, :))*100d0
                     shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 1, :))*100d0
 
-                    write(307, '(9i3, f16.10)')s1, s2, s3, h1, h2, h3, m1, m2, m3, &
+                    write(307, '(9i3, 2f8.4)')s1, s2, s3, h1, h2, h3, m1, m2, m3, share_result, &
                         sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                               + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                               + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
