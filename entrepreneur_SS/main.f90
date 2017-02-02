@@ -112,9 +112,9 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:, 1) = -(/0.56d0, 0.48d0, 0.40d0/)
-  mu_val(:, 2) = -(/0.48d0, 0.40d0, 0.32d0/)
-  mu_val(:, 3) = -(/0.32d0, 0.24d0, 0.16d0/)
+  mu_val(:, 1) = -(/0.48d0, 0.56d0, 0.40d0/)
+  mu_val(:, 2) = -(/0.40d0, 0.32d0, 0.48d0/)
+  mu_val(:, 3) = -(/0.16d0, 0.32d0, 0.24d0/)
 
   rho_val(:, 1) = 1d0 - (/0.16d0, 0.08d0, 0.04d0, 0.02d0/)
   rho_val(:, 2) = 1d0 - (/0.16d0, 0.08d0, 0.04d0, 0.02d0/)
@@ -126,15 +126,15 @@ program main
 
   open(307, file='results.out')
 
-  do h1 = 1, 4
-    do h2 = 1, 4
-      do h3 = 1, 4
-        do s1 = 1, 4
-          do s2 = 1, 4
-            do s3 = 1, 4
-              do m1 = 1, 3
-                do m2 = 1, 3
-                  do m3 = 1, 3
+  do m1 = 1, 3
+    do m2 = 1, 3
+      do m3 = 1, 3
+        do h1 = 1, 4
+          do h2 = 1, 4
+            do h3 = 1, 4
+              do s1 = 1, 4
+                do s2 = 1, 4
+                  do s3 = 1, 4
 
                     ! calculate initial equilibrium
                     call get_SteadyState()
