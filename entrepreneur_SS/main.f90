@@ -287,11 +287,11 @@ contains
     dist_skill = (/0.1520d0, 0.5547d0, 0.2933d0/)
 
 		! initialize survival probabilities for middle skilled
-    open(301, file='sp.dat')
+    open(319, file='sp.dat')
     do ij = 1, JJ+1
-      read(301,'(f13.8)')psi(2, ij)
+      read(319,'(f13.8)')psi(2, ij)
     enddo
-    close(301)
+    close(319)
 
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
