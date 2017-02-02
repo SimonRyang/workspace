@@ -139,6 +139,14 @@ program main
                     ! calculate initial equilibrium
                     call get_SteadyState()
 
+										c_coh(:, :) = 0d0
+										a_coh(:, :) = 0d0
+										k_coh(:) = 0d0
+										inc_coh(:, :) = 0d0
+										o_coh(:, :, :) = 0d0
+										os_coh(:, :, :, :) = 0d0
+										flc_coh(:) = 0d0
+
                     share_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
                     shares_result(:, 1) = (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0
                     shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 1, :))*100d0
@@ -214,7 +222,7 @@ contains
       if(abs(DIFF/YY)*100d0 < tol)then
 
         call tock(calc)
-        !call output
+        call output
         return
       endif
 
@@ -223,7 +231,7 @@ contains
     enddo
 
     call tock(calc)
-    !call output
+    call output
 
     write(*,*)'No Convergence'
 
