@@ -93,7 +93,7 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-6
+  tol   = 1d-4
   itermax = 30
 
   ! compute gini
@@ -112,29 +112,29 @@ program main
 
   share_target = 10.4035d0
 
-  sigma_val(:, 1) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
-  sigma_val(:, 2) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
-  sigma_val(:, 3) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
+  mu_val(:, 1) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
+  mu_val(:, 2) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
+  mu_val(:, 3) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
 
   rho_val(:, 1) = 1d0 - (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
   rho_val(:, 2) = 1d0 - (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
   rho_val(:, 3) = 1d0 - (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
 
-  mu_val(:, 1) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
-  mu_val(:, 2) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
-  mu_val(:, 3) = -(/0.32d0, 0.16d0, 0.08d0, 0.04d0, 0.02d0/)
+  sigma_val(:, 1) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
+  sigma_val(:, 2) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
+  sigma_val(:, 3) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0, 0.01d0/)
 
   open(307, file='results.out')
 
-  do m1 = 1, 5
-    do m2 = 1, 5
-      do m3 = 1, 5
-        do h1 = 1, 5
-          do h2 = 1, 5
-            do h3 = 1, 5
-              do s1 = 1, 5
-                do s2 = 1, 5
-                  do s3 = 1, 5
+  do h1 = 1, 5
+    do h2 = 1, 5
+      do h3 = 1, 5
+        do s1 = 1, 5
+          do s2 = 1, 5
+            do s3 = 1, 5
+              do m1 = 1, 5
+                do m2 = 1, 5
+                  do m3 = 1, 5
 
                     ! calculate initial equilibrium
                     call get_SteadyState()
@@ -144,7 +144,7 @@ program main
                     shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 1, :))*100d0
                     shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 1, :))*100d0
 
-                    write(307, '(9i3, 2f8.4)')s1, s2, s3, h1, h2, h3, m1, m2, m3, share_result, &
+                    write(307, '(9i3, 2f8.4)')h1, h2, h3, s1, s2, s3, m1, m2, m3, share_result, &
                         sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                               + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                               + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
