@@ -144,14 +144,14 @@ program main
                     shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 1, :))*100d0
                     shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 1, :))*100d0
 
-										write(*,*)shares_result(:, 1)
-										write(*,*)shares_target(:, 1)
+										write(*,'(16f8.4)')shares_result(:, 1)
+										write(*,'(16f8.4)')shares_target(:, 1)
 
-										write(*,*)shares_result(:, 2)
-										write(*,*)shares_target(:, 2)
+										write(*,'(16f8.4)')shares_result(:, 2)
+										write(*,'(16f8.4)')shares_target(:, 2)
 
-										write(*,*)shares_result(:, 3)
-										write(*,*)shares_target(:, 3)
+										write(*,'(16f8.4)')shares_result(:, 3)
+										write(*,'(16f8.4)')shares_target(:, 3)
 
                     write(307, '(9i3, 2f8.4)')h1, h2, h3, s1, s2, s3, m1, m2, m3, share_result, &
                         sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
