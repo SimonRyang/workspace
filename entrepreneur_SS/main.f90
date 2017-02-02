@@ -986,6 +986,7 @@ contains
         enddo ! ie
       enddo ! is
     enddo ! ij
+		!$omp end parallel do
 
     ! damping and other quantities
     LC = damp*LC + (1d0-damp)*LC_old
