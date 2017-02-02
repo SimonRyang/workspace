@@ -926,8 +926,6 @@ contains
 
     do ij = 1, JJ
       do is = 1, NS
-			  !$omp parallel do collapse(3) &
-			  !$omp             schedule(guided) reduction(+:AA, CC, LC, HH, KE, YE, PE, PRE, PC, BQ, PP, TAc, TAr, TAw, TAy) num_threads(numthreads)
         do ie = 1, NE
           do iw = 1, NW
             do ip = 0, NP
@@ -984,7 +982,6 @@ contains
             enddo ! ip
           enddo ! iw
         enddo ! ie
-				!$omp end parallel do
       enddo ! is
     enddo ! ij
 
