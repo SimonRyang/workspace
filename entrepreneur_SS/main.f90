@@ -141,8 +141,8 @@ program main
 
                     share_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
                     shares_result(:, 1) = (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0
-                    shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 1, :))*100d0
-                    shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 1, :))*100d0
+                    shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0
+                    shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
 
 										write(*,'(16f8.4)')shares_result(:, 1)
 										write(*,'(16f8.4)')shares_target(:, 1)
