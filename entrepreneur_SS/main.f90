@@ -122,7 +122,7 @@ program main
 
   sigma_val(:, 1) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0/)
   sigma_val(:, 2) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0/)
-  sigma_val(:, 3) = (/0.16d0, 0.08d0, 0.04d0, 0.02d0/)
+  sigma_val(:, 3) = (/0.12d0, 0.08d0, 0.04d0, 0.02d0/)
 
   open(307, file='results.out')
 
