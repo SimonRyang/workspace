@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: sigma_val(4, NS), rho_val(3, NS), mu_val(3, NS)
+  real*8 :: sigma_val(3, NS), rho_val(3, NS), mu_val(3, NS)
   integer :: s1, s2, s3, h1, h2, h3, m1, m2, m3
 
   ! allocate arrays
@@ -112,28 +112,28 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:, 1) = -(/0.56d0, 0.48d0, 0.40d0/)
-  mu_val(:, 2) = -(/0.48d0, 0.40d0, 0.32d0/)
-  mu_val(:, 3) = -(/0.40d0, 0.32d0, 0.24d0/)
+  mu_val(:, 1) = -(/0.52d0, 0.48d0, 0.44d0/)
+  mu_val(:, 2) = -(/0.42d0, 0.40d0, 0.38d0/)
+  mu_val(:, 3) = -(/0.24d0, 0.22d0, 0.20d0/)
 
-  rho_val(:, 1) = 1d0 - (/0.08d0, 0.04d0, 0.02d0/)
-  rho_val(:, 2) = 1d0 - (/0.08d0, 0.04d0, 0.02d0/)
-  rho_val(:, 3) = 1d0 - (/0.08d0, 0.04d0, 0.02d0/)
+  rho_val(:, 1) = 1d0 - (/0.10d0, 0.08d0, 0.06d0/)
+  rho_val(:, 2) = 1d0 - (/0.10d0, 0.08d0, 0.06d0/)
+  rho_val(:, 3) = 1d0 - (/0.10d0, 0.08d0, 0.06d0/)
 
-  sigma_val(:, 1) = (/0.12d0, 0.08d0, 0.04d0, 0.02d0/)
-  sigma_val(:, 2) = (/0.12d0, 0.08d0, 0.04d0, 0.02d0/)
-  sigma_val(:, 3) = (/0.12d0, 0.08d0, 0.04d0, 0.02d0/)
+  sigma_val(:, 1) = (/0.06d0, 0.04d0, 0.02d0/)
+  sigma_val(:, 2) = (/0.06d0, 0.04d0, 0.02d0/)
+  sigma_val(:, 3) = (/0.08d0, 0.06d0, 0.04d0/)
 
   open(307, file='results.out')
 
   do m1 = 1, 3
     do m2 = 1, 3
       do m3 = 1, 3
-        do s1 = 1, 4
-          do s2 = 1, 4
-            do s3 = 1, 4
+        do s1 = 1, 3
+          do s2 = 1, 3
+            do s3 = 1, 3
               do h1 = 1, 3
-                do h2 = 1, 3
+                do h2 = 1, 2
                   do h3 = 1, 3
 
                     ! calculate initial equilibrium
@@ -153,7 +153,7 @@ program main
 										write(*,'(16f8.4)')shares_result(:, 3)
 										write(*,'(16f8.4)')shares_target(:, 3)
 
-                    write(307, '(9i3, 2f8.4)')h1, h2, h3, s1, s2, s3, m1, m2, m3, share_result, &
+                    write(307, '(9i3, 2f8.4)')m1, m2, m3, s1, s2, s3, h1, h2, h3, share_result, &
                         sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                               + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                               + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
@@ -167,6 +167,29 @@ program main
       end do
     end do
   end do
+
+!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
+!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
+!    call execplot
+!
+!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
+!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
+!    call execplot
+!
+!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
+!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
+!    call execplot
+
+    write(*,*)share_result
+
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
+
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
+    call execplot()
 
   close(307)
 
@@ -1207,27 +1230,6 @@ contains
                     -------------------------------------'
     write(21,'(a/)')'-----------------------------------------------------------------------------------------------&
                      --------------------------------------'
-
-!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
-!    call execplot
-!
-!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
-!    call execplot
-!
-!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
-!    call execplot
-!
-!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
-!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
-!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
-!
-!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
-!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
-!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
-!    call execplot()
 
   end subroutine
 

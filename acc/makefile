@@ -1,6 +1,6 @@
 MAINFILE = main
 CFLAGS = -mp -ta=tesla -Minfo=accel
-CC = ~/pgi/linux86-64/2016/bin/pgfortran
+CC = ~/intel/linux86-64/2016/bin/pgfortran
 TARGET = Build/prog
 
 all: $(TARGET)
