@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: sigma_val(6, NS), rho_val(3, NS), mu_val(3, NS)
+  real*8 :: sigma_val(4, NS), rho_val(4, NS), mu_val(3, NS)
   integer :: s1, s2, s3, h1, h2, h3, m1, m2, m3
 
   ! allocate arrays
@@ -112,29 +112,29 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:, 1) = -(/0.52d0, 0.48d0, 0.44d0/)
-  mu_val(:, 2) = -(/0.42d0, 0.36d0, 0.32d0/)
-  mu_val(:, 3) = -(/0.24d0, 0.22d0, 0.14d0/)
+  mu_val(:, 1) = -(/0.53d0, 0.52d0, 0.51d0/)
+  mu_val(:, 2) = -(/0.43d0, 0.42d0, 0.41d0/)
+  mu_val(:, 3) = -(/0.25d0, 0.24d0, 0.23d0/)
 
-  sigma_val(:, 1) = (/0.08d0, 0.06d0, 0.04d0, 0.03d0, 0.02d0, 0.01d0/)
-  sigma_val(:, 2) = (/0.08d0, 0.06d0, 0.04d0, 0.03d0, 0.02d0, 0.01d0/)
-  sigma_val(:, 3) = (/0.08d0, 0.06d0, 0.04d0, 0.03d0, 0.02d0, 0.01d0/)
+  sigma_val(:, 1) = (/0.06d0, 0.04d0, 0.03d0, 0.02d0/)
+  sigma_val(:, 2) = (/0.06d0, 0.04d0, 0.03d0, 0.02d0/)
+  sigma_val(:, 3) = (/0.06d0, 0.04d0, 0.03d0, 0.02d0/)
 
-  rho_val(:, 1) = 1d0 - (/0.10d0, 0.08d0, 0.06d0/)
-  rho_val(:, 2) = 1d0 - (/0.10d0, 0.08d0, 0.06d0/)
-  rho_val(:, 3) = 1d0 - (/0.12d0, 0.08d0, 0.06d0/)
+  rho_val(:, 1) = 1d0 - (/0.07d0, 0.06d0, 0.05d0, 0.04d0/)
+  rho_val(:, 2) = 1d0 - (/0.07d0, 0.06d0, 0.05d0, 0.04d0/)
+  rho_val(:, 3) = 1d0 - (/0.07d0, 0.06d0, 0.05d0, 0.04d0/)
 
   open(307, file='results.out')
 
-  do m1 = 1, 1
-    do m2 = 1, 1
-      do m3 = 1, 1
-        do s1 = 1, 6
-          do s2 = 1, 6
-            do s3 = 1, 6
-              do h1 = 3, 3
-                do h2 = 3, 3
-                  do h3 = 3, 3
+  do m1 = 1, 3
+    do m2 = 1, 3
+      do m3 = 1, 3
+        do s1 = 1, 4
+          do s2 = 1, 4
+            do s3 = 1, 4
+              do h1 = 1, 4
+                do h2 = 1, 4
+                  do h3 = 1, 4
 
                     ! calculate initial equilibrium
                     call get_SteadyState()
