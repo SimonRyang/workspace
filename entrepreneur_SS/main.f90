@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: sigma_val(3, NS), rho_val(3, NS), mu_val(3, NS)
+  real*8 :: sigma_val(6, NS), rho_val(3, NS), mu_val(3, NS)
   integer :: s1, s2, s3, h1, h2, h3, m1, m2, m3
 
   ! allocate arrays
@@ -45,8 +45,8 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.318d0
-  phi1   = -2.000d0
-  phi2   =  0.900d0
+  phi1   = -11.600d0
+  phi2   = 11.600d0
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
@@ -84,8 +84,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 512d0
-  a_grow = 2.4d0
+  a_u    = 1024d0
+  a_grow = 2.0d0
 
   ! size of the pension claim grid
   p_l  = 0d0
@@ -113,28 +113,28 @@ program main
   share_target = 10.4035d0
 
   mu_val(:, 1) = -(/0.52d0, 0.48d0, 0.44d0/)
-  mu_val(:, 2) = -(/0.42d0, 0.40d0, 0.38d0/)
-  mu_val(:, 3) = -(/0.24d0, 0.22d0, 0.20d0/)
+  mu_val(:, 2) = -(/0.42d0, 0.36d0, 0.32d0/)
+  mu_val(:, 3) = -(/0.24d0, 0.22d0, 0.14d0/)
 
-  rho_val(:, 1) = 1d0 - (/0.10d0, 0.08d0, 0.06d0/)
-  rho_val(:, 2) = 1d0 - (/0.10d0, 0.08d0, 0.06d0/)
-  rho_val(:, 3) = 1d0 - (/0.10d0, 0.08d0, 0.06d0/)
+  sigma_val(:, 1) = (/0.08d0, 0.06d0, 0.04d0, 0.03d0, 0.02d0, 0.01d0/)
+  sigma_val(:, 2) = (/0.08d0, 0.06d0, 0.04d0, 0.03d0, 0.02d0, 0.01d0/)
+  sigma_val(:, 3) = (/0.08d0, 0.06d0, 0.04d0, 0.03d0, 0.02d0, 0.01d0/)
 
-  sigma_val(:, 1) = (/0.06d0, 0.04d0, 0.02d0/)
-  sigma_val(:, 2) = (/0.06d0, 0.04d0, 0.02d0/)
-  sigma_val(:, 3) = (/0.08d0, 0.06d0, 0.04d0/)
+  rho_val(:, 1) = 1d0 - (/0.10d0, 0.08d0, 0.04d0/)
+  rho_val(:, 2) = 1d0 - (/0.10d0, 0.08d0, 0.05d0/)
+  rho_val(:, 3) = 1d0 - (/0.12d0, 0.08d0, 0.06d0/)
 
   open(307, file='results.out')
 
-  do m1 = 1, 3
-    do m2 = 1, 3
-      do m3 = 1, 3
-        do s1 = 1, 3
-          do s2 = 1, 3
-            do s3 = 1, 3
-              do h1 = 1, 3
-                do h2 = 1, 2
-                  do h3 = 1, 3
+  do m1 = 3, 3
+    do m2 = 3, 3
+      do m3 = 1, 1
+        do s1 = 1, 6
+          do s2 = 1, 6
+            do s3 = 1, 6
+              do h1 = 3, 3
+                do h2 = 3, 3
+                  do h3 = 3, 3
 
                     ! calculate initial equilibrium
                     call get_SteadyState()
@@ -154,9 +154,13 @@ program main
 										write(*,'(16f8.4)')shares_target(:, 3)
 
                     write(307, '(9i3, 2f8.4)')m1, m2, m3, s1, s2, s3, h1, h2, h3, share_result, &
-                        sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                              + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                              + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
+                        sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
+                    write(*, '(9i3, 2f8.4)')m1, m2, m3, s1, s2, s3, h1, h2, h3, share_result, &
+                        sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
 
                   end do
                 end do
@@ -337,16 +341,16 @@ contains
     enddo
 
     ! set distribution of bequests
-    Gama(1) = 0d0*pop(1)
-    Gama(2) = 0d0*pop(2)
-    Gama(3) = 1d0*pop(3)
-    Gama(4) = 2d0*pop(4)
-    Gama(5) = 3d0*pop(5)
-    Gama(6) = 4d0*pop(6)
-    Gama(7) = 3d0*pop(7)
-    Gama(8) = 2d0*pop(8)
-    Gama(9) = 1d0*pop(9)
-    !Gama(1:JR-1) = 1d0
+    Gama(1) = 0.0d0*pop(1)
+    Gama(2) = 0.0d0*pop(2)
+    Gama(3) = 1.0d0*pop(3)
+    Gama(4) = 1.2d0*pop(4)
+    Gama(5) = 1.4d0*pop(5)
+    Gama(6) = 1.6d0*pop(6)
+    Gama(7) = 1.8d0*pop(7)
+    Gama(8) = 1.8d0*pop(8)
+    Gama(9) = 1.6d0*pop(9)
+!    Gama(1:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
     Gama = Gama/sum(Gama)
 
@@ -378,49 +382,9 @@ contains
     call discretize_AR(rho_val(h3, 3)**5d0, mu_val(m3, 3), sigma5(rho_val(h3, 3), sigma_val(s3, 3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))
 
-
-!    call discretize_AR(0.80d0**5d0, -0.30d0, sigma5(0.80d0, 0.05d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
-!    theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
-!
-!    call discretize_AR(0.80d0**5d0, -0.25d0, sigma5(0.80d0, 0.05d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
-!    theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
-!
-!    call discretize_AR(0.80d0**5d0, -0.15d0, sigma5(0.80d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
-!    theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
-
-!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-!    theta(:, 2)       = theta(:, 1)
-!    theta(:, 3)       = theta(:, 1)
-!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-!    dist_theta(:, 2)  = dist_theta(:, 1)
-!    dist_theta(:, 3)  = dist_theta(:, 1)
-!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
-!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
-!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
-
-!    write(*,'(5f8.4)') eta(:, 1)
-!    write(*,'(5f8.4)') eta(:, 2)
-!    write(*,'(5f8.4)') eta(:, 3)
-!
-!    write(*,'(f8.4)') sum(eta(:, 1)*dist_eta(:, 1))
-!    write(*,'(f8.4)') sum(eta(:, 2)*dist_eta(:, 2))
-!    write(*,'(f8.4)') sum(eta(:, 3)*dist_eta(:, 3))
-!
-!    write(*,'(/a/)')'**********************************************'
-!
-!    write(*,'(5f8.4)') theta(:, 1)
-!    write(*,'(5f8.4)') theta(:, 2)
-!    write(*,'(5f8.4)') theta(:, 3)
-!
-!    write(*,'(f8.4)') sum(theta(:, 1)*dist_theta(:, 1))
-!    write(*,'(f8.4)') sum(theta(:, 2)*dist_theta(:, 2))
-!    write(*,'(f8.4)') sum(theta(:, 3)*dist_theta(:, 3))
-
     ! initial guesses for macro variables
     inc_bar = 0.61d0
+    !bqs = (/0.02d0, 0.10d0, 0.20d0/)
     BQ = 0.50d0
     KC = 4.93d0
     LC = 5.25d0

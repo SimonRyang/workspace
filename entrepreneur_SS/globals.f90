@@ -152,7 +152,7 @@ contains
     pencon_com = taup*min(wage*l_com, sscc*inc_bar)
 
     ! calculate income tax
-    inctax_com = tarif(max(wage*l_com - 0.18d0*wage*l_com - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
+    inctax_com = tarif(max(wage*l_com - 0.05d0*wage*l_com - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calculate capital gains tax
     captax_com = taur*1.055d0*max(r*a(ia_com)-2d0*0.0267d0*inc_bar, 0d0)
@@ -188,11 +188,11 @@ contains
               **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
-        if (valuefunc_help - 0.53d0 > valuefunc_w .and. ent) then
-          valuefunc_w = valuefunc_help - 0.53d0
+        if (valuefunc_help - 0.56d0 > valuefunc_w .and. ent) then
+          valuefunc_w = valuefunc_help - 0.56d0
           oplus_com = 1d0
         elseif (.not. ent .and. oplus(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com) > 0d0) then
-          valuefunc_w = valuefunc_help - 0.53d0
+          valuefunc_w = valuefunc_help - 0.56d0
           oplus_com = 1d0
         endif
 
@@ -248,7 +248,7 @@ contains
     endif
 
     ! calculate income tax
-    inctax_com = tarif(max(profit - 0.18d0*profit - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
+    inctax_com = tarif(max(profit - 0.05d0*profit - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calcualte capital gains tax
     captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_bar, 0d0)
