@@ -50,8 +50,8 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.318d0
-  phi1   = -2.000d0
-  phi2   =  0.900d0
+  phi1   = -11.600d0
+  phi2   =  11.600d0
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
@@ -89,8 +89,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 10240
-  a_grow = 1.8d0
+  a_u    = 2048d0
+  a_grow = 2.0d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -103,11 +103,11 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-4
-  itermax = 200
+  tol   = 1d-6
+  itermax = 4
 
   ! compute gini
-  gini_on = .false.
+  gini_on = .true.
 
   ! set switches
   if (NO == 0) ent = .false.
@@ -190,6 +190,7 @@ contains
 
         call tock(calc)
         call output(0)
+        call output_mikrozensus(0)
         return
       endif
 
@@ -199,6 +200,7 @@ contains
 
     call tock(calc)
     call output(0)
+    call output_mikrozensus(0)
 
     write(*,*)'No Convergence'
 
@@ -355,7 +357,7 @@ contains
     mx(:, :, :, :, :, :, :, :, 0) = 0.33d0
 
     ! distribution of skill classes
-    dist_skill = (/0.263d0, 0.545d0, 0.192d0/)
+    dist_skill = (/0.1520d0, 0.5547d0, 0.2933d0/)
 
 		! initialize survival probabilities for middle skilled
     open(301, file='sp.dat')
@@ -373,9 +375,6 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
-    !psi(1, :) = psi(2, :)
-    !psi(3, :) = psi(2, :)
-
     ! set up population structure
     rpop(:, 1, 0) = 1d0
     do ij = 2, JJ
@@ -388,15 +387,15 @@ contains
     enddo
 
     ! set distribution of bequests
-    Gama(1) = 0d0*pop(1, 0)
-    Gama(2) = 0d0*pop(2, 0)
-    Gama(3) = 1d0*pop(3, 0)
-    Gama(4) = 2d0*pop(4, 0)
-    Gama(5) = 3d0*pop(5, 0)
-    Gama(6) = 4d0*pop(6, 0)
-    Gama(7) = 3d0*pop(7, 0)
-    Gama(8) = 2d0*pop(8, 0)
-    Gama(9) = 1d0*pop(9, 0)
+    Gama(1) = 0.0d0*pop(1, 0)
+    Gama(2) = 0.0d0*pop(2, 0)
+    Gama(3) = 1.0d0*pop(3, 0)
+    Gama(4) = 1.2d0*pop(4, 0)
+    Gama(5) = 1.4d0*pop(5, 0)
+    Gama(6) = 1.6d0*pop(6, 0)
+    Gama(7) = 1.8d0*pop(7, 0)
+    Gama(8) = 1.8d0*pop(8, 0)
+    Gama(9) = 1.6d0*pop(9, 0)
     !Gama(1:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
     Gama = Gama/sum(Gama)
@@ -419,27 +418,27 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.80d0**5d0, 0.20d0, sigma5(0.80d0, 0.05d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.93d0**5d0, -0.52d0, sigma5(0.93d0, 0.04d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.80d0**5d0, 0.20d0, sigma5(0.80d0, 0.05d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.94d0**5d0, -0.42d0, sigma5(0.94d0, 0.02d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.98d0**5d0, 0.20d0, sigma5(0.98d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.94d0**5d0, -0.23d0, sigma5(0.94d0, 0.04d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
-    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-    theta(:, 2)       = theta(:, 1)
-    theta(:, 3)       = theta(:, 1)
-    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-    dist_theta(:, 2)  = dist_theta(:, 1)
-    dist_theta(:, 3)  = dist_theta(:, 1)
-    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
-    pi_theta(:, :, 2) = pi_theta(:, :, 1)
-    pi_theta(:, :, 3) = pi_theta(:, :, 1)
+!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
+!    theta(:, 2)       = theta(:, 1)
+!    theta(:, 3)       = theta(:, 1)
+!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
+!    dist_theta(:, 2)  = dist_theta(:, 1)
+!    dist_theta(:, 3)  = dist_theta(:, 1)
+!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
+!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
+!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
+!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
+!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
 
     ! initial guesses for macro variables
     inc_bar(0) = 0.61d0
@@ -1478,7 +1477,7 @@ contains
     !##### OTHER VARIABLES ####################################################
     integer :: io, ia, ix, ip, iw, ie, is, ij, io_p, ixmax(JJ), iamax(JJ)
     real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
-    real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), os_coh(0:1, 0:1, NS, JJ, 0:TT), flc_coh(JJ, 0:TT)
+    real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
     real*8 :: life_exp(NS), punb(JJ, NS)
 
     life_exp = 0d0
@@ -1618,10 +1617,10 @@ contains
       call gini_wealth(it)
       call gini_income(it)
 
-      write(21, '(a)')'WEALTH  GINI   1%   5%  10%  20%  40%  60%  FLC'
+      write(21, '(a)')'WEALTH    GINI     1%     5%    10%    20%    40%    60%    FLC'
       write(21,'(4x, f10.3, 8f7.2)')gini_w(it), percentiles_w(:, it)*100d0, sum(pop(:, it)*flc_coh(:, it))/sum(pop(:, it))*100d0
 
-      write(21, '(a)')'INCOME  GINI   1%   5%  10%  20%  40%  60%'
+      write(21, '(a)')'INCOME    GINI     1%     5%    10%    20%    40%    60%'
       write(21,'(4x, f10.3, 6f7.2/)')gini_i(it), percentiles_i(:, it)*100d0
 
     endif
@@ -1713,6 +1712,37 @@ contains
     enddo
 
     if(lsra_on)write(22, '(/a,f12.6)')'EFFICIENCY GAIN: ', (Vstar**(1d0/(1d0-gamma))-1d0)*100d0
+
+  end subroutine
+
+
+  !##############################################################################
+  ! SUBROUTINE output_mikrozensus
+  !
+  ! Writes output of mikrozensu to file 23
+  !##############################################################################
+  subroutine output_mikrozensus(it)
+
+    implicit none
+
+    !##### INPUT/OUTPUT VARIABLES #############################################
+    integer, intent(in) :: it
+
+    !##### OTHER VARIABLES ####################################################
+    integer :: ij
+
+    do ij = 1, JJ
+      write(*,'(i3, 3f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
+                                   sum(os_coh(1, :, 2, ij, it)), &
+                                   sum(os_coh(1, :, 3, ij, it))/)*100d0
+    enddo
+    write(*,'(a/)')' '
+    write(*,'(3x, 3f8.2)') (/sum(os_coh(0, :, 1, :, it)), &
+                             sum(os_coh(1, :, 2, :, it)), &
+                             sum(os_coh(1, :, 3, :, it))/)*100d0
+    write(*,'(3x, 3f8.2)') (/sum(os_coh(0, :, 1, :9, it)), &
+                             sum(os_coh(1, :, 2, :9, it)), &
+                             sum(os_coh(1, :, 3, :9, it))/)*100d0
 
   end subroutine
 

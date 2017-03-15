@@ -44,9 +44,9 @@ program main
   gamma  =  0.500d0
   ! invert gamma
   gamma = 1d0/gamma
-  sigma  =  0.318d0
+  sigma  =   0.318d0
   phi1   = -11.600d0
-  phi2   = 11.600d0
+  phi2   =  11.600d0
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
@@ -126,15 +126,15 @@ program main
 
   open(307, file='results.out')
 
-  do m1 = 1, 3
-    do m2 = 1, 3
-      do m3 = 1, 3
-        do s1 = 1, 3
-          do s2 = 1, 3
-            do s3 = 1, 3
-              do h1 = 1, 3
-                do h2 = 1, 3
-                  do h3 = 1, 3
+  do m1 = 2, 2
+    do m2 = 2, 2
+      do m3 = 3, 3
+        do s1 = 1, 1
+          do s2 = 3, 3
+            do s3 = 1, 1
+              do h1 = 1, 1
+                do h2 = 2, 2
+                  do h3 = 1, 1
 
                     ! calculate initial equilibrium
                     call get_SteadyState()

@@ -604,7 +604,7 @@ contains
     xcum(1) = 0d0
     ycum(1) = 0d0
     do ic = 2, ICMAX+1
-      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic*1)
+      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
       ycum(ic) = ycum(ic-1) + ys(ic-1)
     enddo
 
@@ -702,7 +702,7 @@ contains
     xcum(1) = 0d0
     ycum(1) = 0d0
     do ic = 2, ICMAX+1
-      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic*1)
+      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
       ycum(ic) = ycum(ic-1) + ys(ic-1)
     enddo
 
@@ -714,22 +714,22 @@ contains
 
     percentiles_i = 0d0
     do ic = ICMAX+1, 2, -1
-      if (1d0-ycum(ic) > 0.01 .and. percentiles_i(1) <= 0d0) then
+      if (1d0-ycum(ic) > 0.01d0 .and. percentiles_i(1) <= 0d0) then
         percentiles_i(1) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.05 .and. percentiles_i(2) <= 0d0) then
+      if (1d0-ycum(ic) > 0.05d0 .and. percentiles_i(2) <= 0d0) then
         percentiles_i(2) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.10 .and. percentiles_i(3) <= 0d0) then
+      if (1d0-ycum(ic) > 0.10d0 .and. percentiles_i(3) <= 0d0) then
         percentiles_i(3) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.20 .and. percentiles_i(4) <= 0d0) then
+      if (1d0-ycum(ic) > 0.20d0 .and. percentiles_i(4) <= 0d0) then
         percentiles_i(4) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.40 .and. percentiles_i(5) <= 0d0) then
+      if (1d0-ycum(ic) > 0.40d0 .and. percentiles_i(5) <= 0d0) then
         percentiles_i(5) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.60 .and. percentiles_i(6) <= 0d0) then
+      if (1d0-ycum(ic) > 0.60d0 .and. percentiles_i(6) <= 0d0) then
         percentiles_i(6) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
     enddo

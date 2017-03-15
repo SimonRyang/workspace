@@ -30,7 +30,7 @@ module globals
   integer, parameter :: NA = 15
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 15
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
@@ -78,7 +78,7 @@ module globals
   ! cohort aggregate variables
   real*8 :: pop_w(NS, 0:TT), pop_e(NS, 0:TT), pop_r(NS, 0:TT), pop_re(NS, 0:TT)
   real*8 :: bqs(NS, 0:TT)
-  real*8 :: x_coh(JJ, 0:TT), bx_coh(JJ, 0:TT)
+  real*8 :: x_coh(JJ, 0:TT), bx_coh(JJ, 0:TT), os_coh(0:1, 0:1, NS, JJ, 0:TT)
   real*8 :: vv_coh(JJ, 0:TT) = 0d0
 
   ! the shock process
@@ -179,7 +179,7 @@ contains
     pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_bar(it_com))
 
     ! calculate income tax
-    inctax_com = tarif(max(wage*l_com - 0.18d0*wage*l_com - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+    inctax_com = tarif(max(wage*l_com - 0.05d0*wage*l_com - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calculate capital gains tax
     captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-2d0*0.0267d0*inc_bar(0), 0d0)
@@ -230,11 +230,11 @@ contains
               **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
-        if (valuefunc_help - 0.53d0 > valuefunc_w .and. ent) then
-          valuefunc_w = valuefunc_help - 0.53d0
+        if (valuefunc_help - 0.56d0 > valuefunc_w .and. ent) then
+          valuefunc_w = valuefunc_help - 0.56d0
           oplus_com = 1d0
         elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0) > 0d0) then
-          valuefunc_w = valuefunc_help - 0.53d0
+          valuefunc_w = valuefunc_help - 0.56d0
           oplus_com = 1d0
         endif
 
@@ -321,7 +321,7 @@ contains
     endif
 
     ! calculate income tax
-    inctax_com = tarif(max(profit - 0.18d0*profit - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+    inctax_com = tarif(max(profit - 0.05d0*profit - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calcualte capital gains tax
     captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_bar(0), 0d0)
@@ -645,8 +645,8 @@ contains
         do ie = 1, NE
           do iw = 1, NW
             do ip = 0, NP
-              do ia = 0, NA
-                do ix = 0, NX
+              do ix = 0, NX
+                do ia = 0, NA
                   if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
                   if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
                 enddo ! ia
@@ -660,12 +660,12 @@ contains
         do ie = 1, NE
           do iw = 1, NW
             do ip = 0, NP
-              do ix = 0, NX
-                do ia = 0, NA
+              do ia = 0, NA
+                do ix = 0, NX
                   if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) ixmax(ij)=ix
                   if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) ixmax(ij)=ix
-                enddo ! ia
-              enddo ! ix
+                enddo ! ix
+              enddo ! ia
             enddo ! ip
           enddo ! iw
         enddo ! ie
@@ -735,30 +735,30 @@ contains
     ic = 1
 
     do ij = 1, JJ
-      do ia = 0, NA
-        do ix = 0, NA
-          do ip = 0, NP
-            do iw = 1, NW
-              do ie = 1, NE
-                do is = 1, NS
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ia = 0, NA
 
-                  if(m(1, is, ie, iw, ip, ix, ia, ij, it) > 0d0) then
-                    ys(ic) = m(1, is, ie, iw, ip, ix, ia, ij, it)
+                  if(m(0, ia, ip, ix, iw, ie, is, ij, it) > 0d0) then
+                    ys(ic) = m(0, ia, ip, ix, iw, ie, is, ij, it)
                     xs(ic) = a(ia)
                     ic = ic + 1
                   endif
-                  if(m(1, is, ie, iw, ip, ix, ia, ij, it) > 0d0) then
-                    ys(ic) = m(1, is, ie, iw, ip, ix, ia, ij, it)
+                  if(m(1, ia, ip, ix, iw, ie, is, ij, it) > 0d0) then
+                    ys(ic) = m(1, ia, ip, ix, iw, ie, is, ij, it)
                     xs(ic) = a(ia)
                     ic = ic + 1
                   endif
 
-                enddo ! is
-              enddo ! ie
-            enddo ! iw
-          enddo ! ip
-        enddo ! ix
-      enddo ! ia
+                enddo ! ia
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
     enddo ! ij
 
     ! get array size and normalize ys
@@ -769,38 +769,38 @@ contains
     call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
-    xcum(0) = 0d0
-    ycum(0) = 0d0
-    do ic = 1, ICMAX
-      xcum(ic) = xcum(ic-1) + xs(ic)*ys(ic)
-      ycum(ic) = ycum(ic-1) + ys(ic)
+    xcum(1) = 0d0
+    ycum(1) = 0d0
+    do ic = 2, ICMAX+1
+      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
+      ycum(ic) = ycum(ic-1) + ys(ic-1)
     enddo
 
     gini_w(it) = 0d0
-    do ic = 1, ICMAX
-      gini_w(it) = gini_w(it) + ys(ic)*(xcum(ic-1)+xcum(ic))
+    do ic = 2, ICMAX+1
+      gini_w(it) = gini_w(it) + ys(ic-1)*(xcum(ic-1)+xcum(ic))
     enddo
-    gini_w(it) = 1d0-gini_w(it)/xcum(ICMAX)
+    gini_w(it) = 1d0-gini_w(it)/xcum(ICMAX+1)
 
     percentiles_w = 0d0
     do ic = ICMAX, 1, -1
       if (1d0-ycum(ic) > 0.01 .and. percentiles_w(1, it) <= 0d0) then
-        percentiles_w(1, it) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(1, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.05 .and. percentiles_w(2, it) <= 0d0) then
-        percentiles_w(2, it) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(2, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.10 .and. percentiles_w(3, it) <= 0d0) then
-        percentiles_w(3, it) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(3, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.20 .and. percentiles_w(4, it) <= 0d0) then
-        percentiles_w(4, it) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(4, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.40 .and. percentiles_w(5, it) <= 0d0) then
-        percentiles_w(5, it) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(5, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
       if (1d0-ycum(ic) > 0.60 .and. percentiles_w(6, it) <= 0d0) then
-        percentiles_w(6, it) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)
+        percentiles_w(6, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
     enddo
 
@@ -836,30 +836,30 @@ contains
     ic = 1
 
     do ij = 1, JJ
-      do ia = 0, NA
-        do ix = 0, NA
-          do ip = 0, NP
-            do iw = 1, NW
-              do ie = 1, NE
-                do is = 1, NS
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ia = 0, NA
 
-                  if(m(0, is, ie, iw, ip, ix, ia, ij, it) > 0d0) then
-                    ys(ic) = m(0, is, ie, iw, ip, ix, ia, ij, it)
-                    xs(ic) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(0, is, ie, iw, ip, ix, ia, ij, it)*w(it)
+                  if(m(0, ia, ip, ix, iw, ie, is, ij, it) > 0d0) then
+                    ys(ic) = m(0, ia, ip, ix, iw, ie, is, ij, it)
+                    xs(ic) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(0, ia, ip, ix, iw, ie, is, ij, it)*w(it)
                     ic = ic + 1
                   endif
-                  if(m(1, is, ie, iw, ip, ix, ia, ij, it) > 0d0) then
-                    ys(ic) = m(1, is, ie, iw, ip, ix, ia, ij, it)
-                    xs(ic) = max(a(ia)-k(1, is, ie, iw, ip, ix, ia, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(1, is, ie, iw, ip, ix, ia, ij, it), ij, ia, is, ie, it)
+                  if(m(1, ia, ip, ix, iw, ie, is, ij, it) > 0d0) then
+                    ys(ic) = m(1, ia, ip, ix, iw, ie, is, ij, it)
+                    xs(ic) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(1, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
                     ic = ic + 1
                   endif
 
-                enddo ! is
-              enddo ! ie
-            enddo ! iw
-          enddo ! ip
-        enddo ! ix
-      enddo ! ia
+                enddo ! ia
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
     enddo ! ij
 
     ! get array size and normalize ys
@@ -870,38 +870,38 @@ contains
     call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
-    xcum(0) = 0d0
-    ycum(0) = 0d0
-    do ic = 1, ICMAX
-      xcum(ic) = xcum(ic-1) + xs(ic)*ys(ic)
-      ycum(ic) = ycum(ic-1) + ys(ic)
+    xcum(1) = 0d0
+    ycum(1) = 0d0
+    do ic = 2, ICMAX+1
+      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
+      ycum(ic) = ycum(ic-1) + ys(ic-1)
     enddo
 
     gini_i(it) = 0d0
-    do ic = 1, ICMAX
-      gini_i(it) = gini_i(it) + ys(ic)*(xcum(ic-1)+xcum(ic))
+    do ic = 2, ICMAX+1
+      gini_i(it) = gini_i(it) + ys(ic-1)*(xcum(ic-1)+xcum(ic))
     enddo
-    gini_i(it) = 1d0-gini_i(it)/xcum(ICMAX)
+    gini_i(it) = 1d0-gini_i(it)/xcum(ICMAX+1)
 
     percentiles_i = 0d0
     do ic = ICMAX, 1, -1
-      if (1d0-ycum(ic) > 0.01 .and. percentiles_i(1, it) <= 0d0) then
-        percentiles_i(1, it) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+      if (1d0-ycum(ic) > 0.01d0 .and. percentiles_i(1, it) <= 0d0) then
+        percentiles_i(1, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.05 .and. percentiles_i(2, it) <= 0d0) then
-        percentiles_i(2, it) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+      if (1d0-ycum(ic) > 0.05d0 .and. percentiles_i(2, it) <= 0d0) then
+        percentiles_i(2, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.10 .and. percentiles_i(3, it) <= 0d0) then
-        percentiles_i(3, it) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+      if (1d0-ycum(ic) > 0.10d0 .and. percentiles_i(3, it) <= 0d0) then
+        percentiles_i(3, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.20 .and. percentiles_i(4, it) <= 0d0) then
-        percentiles_i(4, it) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+      if (1d0-ycum(ic) > 0.20d0 .and. percentiles_i(4, it) <= 0d0) then
+        percentiles_i(4, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.40 .and. percentiles_i(5, it) <= 0d0) then
-        percentiles_i(5, it) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+      if (1d0-ycum(ic) > 0.40d0 .and. percentiles_i(5, it) <= 0d0) then
+        percentiles_i(5, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
-      if (1d0-ycum(ic) > 0.60 .and. percentiles_i(6, it) <= 0d0) then
-        percentiles_i(6, it) = (xcum(ICMAX)-xcum(ic))/xcum(ICMAX)
+      if (1d0-ycum(ic) > 0.60d0 .and. percentiles_i(6, it) <= 0d0) then
+        percentiles_i(6, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
       endif
     enddo
 
