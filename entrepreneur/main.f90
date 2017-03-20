@@ -1340,7 +1340,7 @@ contains
                   do io = 0, NO
 
                     ! do not do anything for an agent at retirement without pension and savings
-                    if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
+                    if(ij >= JR .and. io == 0.and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
                       v(io, ia, ix, ip, iw, ie, is, ij, 1) = 0d0
                       cycle
                     endif
