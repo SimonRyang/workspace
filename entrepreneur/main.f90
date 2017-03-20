@@ -119,8 +119,8 @@ program main
   ! set reform parameters
   !pen_debt = .true.
   !smopec = .true.
-  phi(1:TT) = 1d0
-  !lambda(1:TT) = 1d0
+  !phi(1:TT) = 1d0
+  lambda(1:TT) = 1d0
   !mu(1:TT) = 0d0
   !labor = .false.
   !ent = .false.
@@ -1340,7 +1340,7 @@ contains
                   do io = 0, NO
 
                     ! do not do anything for an agent at retirement without pension and savings
-                    if(ij >= JR .and. io == 0.and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
+                    if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
                       v(io, ia, ix, ip, iw, ie, is, ij, 1) = 0d0
                       cycle
                     endif
@@ -1356,7 +1356,7 @@ contains
 !                    if (VV_target <= -1d10)write(*,*)'VV_target', VV_target
 
                     ! get derivative of the value function
-                    dVV_da = margu(c(io, ia, ix, ip, iw, ie, is, ij, 1),l(io, ia, ix, ip, iw, ie, is, ij, 1), 1)
+                    dVV_da = margu(c(io, ia, ix, ip, iw, ie, is, ij, 1), l(io, ia, ix, ip, iw, ie, is, ij, 1), 1)
 !                    if (dVV_da < 0d0)write(*,*)'dVV_da', dVV_da
 
                     ! calculate change in transfers
@@ -1447,7 +1447,7 @@ contains
       v(0, 0, 0, 0, :, :, :, 1, it) = v(0, 0, 0, 0, :, :, :, 1, it) + v_tilde
 
       ! aggregate transfers
-      SV(it) = SV(it) + v(0, 0, 0, 0, 1, 1, 1, 1, it)
+      SV(it) = SV(it) + v(0, 0, 0, 0, 1, 1, 1, 1, it)*pop(1, it)
 
     enddo
 
