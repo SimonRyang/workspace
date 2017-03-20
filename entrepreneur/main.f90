@@ -1203,7 +1203,7 @@ contains
                       pop_r(is, it) = pop_r(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
                     endif
                     vv_coh(ij, it) = vv_coh(ij, it) + VV(io, ia, ix, ip, iw, ie, is, ij, it) &
-                                    *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                                    *m(io, ia, ix, ip, iw, ie, is, ij, it)
 
                   enddo ! io
                 enddo ! ia
@@ -1398,10 +1398,10 @@ contains
 
       ! get derivative of expected utility function
       dVV_da = 0d0
-      do is = 1, NS
+      do iw = 1, NW
         do ie = 1, NE
-          do iw = 1, NW
-            dVV_da = dVV_da + margu(c(0, is, ie, iw, 0, 0, 0, 1, it), l(0, is, ie, iw, 0, 0, 0, 1, it), it)*m(0, is, ie, iw, 0, 0, 0, 1, it)
+          do is = 1, NS
+            dVV_da = dVV_da + margu(c(0, 0, 0, 0, iw, ie, is, 1, it), l(0, 0, 0, 0, iw, ie, is, 1, it), it)*m(0, 0, 0, 0, iw, ie, is, 1, it)
           enddo ! is
         enddo ! ie
       enddo ! iw
@@ -1410,11 +1410,11 @@ contains
       if(it == TT)then
         pv_today  = VV_today/dVV_da  *(1d0+r(it))/(r(it)-n_p)
         pv_target = VV_target/dVV_da   *(1d0+r(it))/(r(it)-n_p)
-        pv_trans  = v(0, 1, 1, 1, 0, 0, 0, 1, it)*(1d0+r(it))/(r(it)-n_p)
+        pv_trans  = v(0, 0, 0, 0, 1, 1, 1, 1, it)*(1d0+r(it))/(r(it)-n_p)
       else
         pv_today  = pv_today *(1d0+n_p)/(1d0+r(it+1)) + VV_today/dVV_da
         pv_target = pv_target*(1d0+n_p)/(1d0+r(it+1)) + VV_target/dVV_da
-        pv_trans  = pv_trans *(1d0+n_p)/(1d0+r(it+1)) + v(0, 1, 1, 1, 0, 0, 0, 1, it)
+        pv_trans  = pv_trans *(1d0+n_p)/(1d0+r(it+1)) + v(0, 0, 0, 0, 1, 1, 1, 1, it)
       endif
     enddo
 
@@ -1435,7 +1435,7 @@ contains
       do iw = 1, NW
         do ie = 1, NE
           do is = 1, NS
-            dVV_da = dVV_da + margu(c(0, is, ie, iw, 0, 0, 0, 1, it), l(0, is, ie, iw, 0, 0, 0, 1, it), it)*m(0, is, ie, iw, 0, 0, 0, 1, it)
+            dVV_da = dVV_da + margu(c(0, 0, 0, 0, iw, ie, is, 1, it), l(0, 0, 0, 0, iw, ie, is, 1, it), it)*m(0, 0, 0, 0, iw, ie, is, 1, it)
           enddo ! is
         enddo ! ie
       enddo ! iw
@@ -1444,10 +1444,10 @@ contains
       v_tilde = (VV_target-VV_today)/dVV_da
 
       ! calculate cohort transfer level
-      v(0, :, :, :, 0, 0, 0, 1, it) = v(0, :, :, :, 0, 0, 0, 1, it) + v_tilde
+      v(0, 0, 0, 0, :, :, :, 1, it) = v(0, 0, 0, 0, :, :, :, 1, it) + v_tilde
 
       ! aggregate transfers
-      SV(it) = SV(it) + v(0, 1, 1, 1, 0, 0, 0, 1, it)
+      SV(it) = SV(it) + v(0, 0, 0, 0, 1, 1, 1, 1, it)
 
     enddo
 
