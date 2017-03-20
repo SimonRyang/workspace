@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
+  integer, parameter :: numthreads = 56
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -104,7 +104,7 @@ program main
   ! simulation parameters
   damp  = 0.60d0
   tol   = 1d-6
-  itermax = 4
+  itermax = 200
 
   ! compute gini
   gini_on = .true.
@@ -115,8 +115,6 @@ program main
 
   ! calculate initial equilibrium
   call get_SteadyState()
-
-  stop
 
   ! set reform parameters
   !pen_debt = .true.
@@ -418,13 +416,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.93d0**5d0, -0.52d0, sigma5(0.93d0, 0.04d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.93d0**5d0, -0.51d0, sigma5(0.93d0, 0.04d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.94d0**5d0, -0.42d0, sigma5(0.94d0, 0.02d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.93d0**5d0, -0.42d0, sigma5(0.93d0, 0.03d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.94d0**5d0, -0.23d0, sigma5(0.94d0, 0.04d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.96d0**5d0, -0.25d0, sigma5(0.96d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
 !    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
@@ -1731,18 +1729,26 @@ contains
     !##### OTHER VARIABLES ####################################################
     integer :: ij
 
+    write(*,'(/a)')'Shares of entrepreneurs'
     do ij = 1, JJ
       write(*,'(i3, 3f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
                                    sum(os_coh(1, :, 2, ij, it)), &
                                    sum(os_coh(1, :, 3, ij, it))/)*100d0
     enddo
-    write(*,'(a/)')' '
-    write(*,'(3x, 3f8.2)') (/sum(os_coh(0, :, 1, :, it)), &
-                             sum(os_coh(1, :, 2, :, it)), &
-                             sum(os_coh(1, :, 3, :, it))/)*100d0
-    write(*,'(3x, 3f8.2)') (/sum(os_coh(0, :, 1, :9, it)), &
-                             sum(os_coh(1, :, 2, :9, it)), &
-                             sum(os_coh(1, :, 3, :9, it))/)*100d0
+
+    write(*,'(/a)')'Entry rates'
+    do ij = 1, JJ
+      write(*,'(i3, 3f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
+                                           os_coh(0, 1, 2, ij, it), &
+                                           os_coh(0, 1, 3, ij, it)/)*100d0
+    enddo
+
+    write(*,'(/a)')'Exit rates'
+    do ij = 1, JJ
+      write(*,'(i3, 3f8.2)') ij, (/os_coh(1, 0, 1, ij, it), &
+                                           os_coh(1, 0, 2, ij, it), &
+                                           os_coh(1, 0, 3, ij, it)/)*100d0
+    enddo
 
   end subroutine
 

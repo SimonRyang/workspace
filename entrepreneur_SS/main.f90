@@ -93,7 +93,7 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-3
+  tol   = 1d-4
   itermax = 30
 
   ! compute gini
@@ -126,15 +126,15 @@ program main
 
   open(307, file='results.out')
 
-  do m1 = 2, 2
+  do m1 = 3, 3
     do m2 = 2, 2
-      do m3 = 3, 3
+      do m3 = 1, 1
         do s1 = 1, 1
-          do s2 = 3, 3
-            do s3 = 1, 1
+          do s2 = 2, 2
+            do s3 = 2, 2
               do h1 = 1, 1
-                do h2 = 2, 2
-                  do h3 = 1, 1
+                do h2 = 1, 1
+                  do h3 = 3, 3
 
                     ! calculate initial equilibrium
                     call get_SteadyState()
@@ -177,41 +177,40 @@ program main
     end do
   end do
 
-!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
-!    call execplot
-!
-!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
-!    call execplot
-!
-!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
-!    call execplot
+    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
+    call execplot
 
-!    write(*,'(16f8.4)')shares_result(:, 1)
-!    write(*,'(16f8.4)')shares_target(:, 1)
-!
-!    write(*,'(16f8.4)')shares_result(:, 2)
-!    write(*,'(16f8.4)')shares_target(:, 2)
-!
-!    write(*,'(16f8.4)')shares_result(:, 3)
-!    write(*,'(16f8.4)')shares_target(:, 3)
-!
-!    write(*,*)share_result
-!
-!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
-!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
-!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
-!
-!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
-!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
-!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
-!    call execplot()
+    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
+    call execplot
 
-  close(307)
+    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
+    call execplot
+
+    write(*,'(16f8.4)')shares_result(:, 1)
+    write(*,'(16f8.4)')shares_target(:, 1)
+
+    write(*,'(16f8.4)')shares_result(:, 2)
+    write(*,'(16f8.4)')shares_target(:, 2)
+
+    write(*,'(16f8.4)')shares_result(:, 3)
+    write(*,'(16f8.4)')shares_target(:, 3)
+
+    write(*,*)share_result
+
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
+
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
+    call execplot()
 
   ! close files
+  close(307)
   close(21)
 
 contains
@@ -1210,6 +1209,5 @@ contains
                      --------------------------------------'
 
   end subroutine
-
 
 end program
