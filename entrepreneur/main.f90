@@ -119,8 +119,8 @@ program main
   ! set reform parameters
   !pen_debt = .true.
   !smopec = .true.
-  !phi(1:TT) = 1d0
-  lambda(1:TT) = 1d0
+  phi(1:TT) = 1d0
+  !lambda(1:TT) = 1d0
   !mu(1:TT) = 0d0
   !labor = .false.
   !ent = .false.
@@ -222,7 +222,7 @@ contains
     if(.not. lsra_on)then
       call initialize_trn()
     else
-      write(*,'(/a/)')'ITER    COMP_OLD    EFFICIENCY        DIFF'
+      write(*,'(/a/)')'ITER    COMP_OLD  EFFICIENCY        DIFF'
     endif
 
     ! start timer
@@ -271,7 +271,7 @@ contains
           ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), sum(pop_e(:, TT))/(sum(pop_w(:, TT))+sum(pop_e(:, TT)))*100d0, DIFF(itmax)/YY(itmax)*100d0
         check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
       else
-        write(*,'(i4,3f12.5)')iter, lsra_comp/lsra_all*100d0, &
+        write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
           (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
           check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 1 .and. lsra_comp/lsra_all > 0.99999d0
       endif
