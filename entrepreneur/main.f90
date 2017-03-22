@@ -1682,16 +1682,18 @@ contains
 
     write(23,'(/a)')'Mean income (worker)'
     do ij = 1, JJ
-      write(23,'(i3, 3f12.6)') ij, sum(reshape(netinc(0, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 1, ij, it)), &
-                                  sum(reshape(netinc(0, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 2, ij, it)), &
-                                  sum(reshape(netinc(0, :, :, :, :, :, 3, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 3, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 3, ij, it))
+      write(23,'(i3, 4f12.6)') ij, sum(reshape(netinc(0, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 1, ij, it)), &
+                                   sum(reshape(netinc(0, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 2, ij, it)), &
+                                   sum(reshape(netinc(0, :, :, :, :, :, 3, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 3, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 3, ij, it)), &
+                                   sum(reshape(netinc(0, :, :, :, :, :, :, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS/))*reshape(m(0, :, :, :, :, :, :, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS/)))/sum(m(0, :, :, :, :, :, :, ij, it))
     enddo
 
     write(23,'(/a)')'Mean income (entrepreneur)'
     do ij = 1, JJ
-      write(23,'(i3, 3f12.6)') ij, sum(reshape(netinc(1, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 1, ij, it)), &
-                                  sum(reshape(netinc(1, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 2, ij, it)), &
-                                  sum(reshape(netinc(1, :, :, :, :, :, 3, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 3, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 3, ij, it))
+      write(23,'(i3, 4f12.6)') ij, sum(reshape(netinc(1, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 1, ij, it)), &
+                                   sum(reshape(netinc(1, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 2, ij, it)), &
+                                   sum(reshape(netinc(1, :, :, :, :, :, 3, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 3, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 3, ij, it)), &
+                                   sum(reshape(netinc(1, :, :, :, :, :, :, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS/))*reshape(m(1, :, :, :, :, :, :, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS/)))/sum(m(1, :, :, :, :, :, :, ij, it))
     enddo
 
 
