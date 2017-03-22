@@ -138,6 +138,7 @@ program main
   ! close files
   close(21)
   close(22)
+  close(23)
 
 contains
 
@@ -447,6 +448,7 @@ contains
     ! open files
     open(21, file='output.out')
     open(22, file='summary.out')
+    open(23, file='output_mikrozensus2012.out')
 
   end subroutine
 
@@ -1654,37 +1656,37 @@ contains
 
     ! Output Mikrozensus 2012
 
-    write(*,'(/a)')'Shares of entrepreneurs'
+    write(23,'(/a)')'Shares of entrepreneurs'
     do ij = 1, JJ
-      write(*,'(i3, 3f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
+      write(23,'(i3, 3f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
                                    sum(os_coh(1, :, 2, ij, it)), &
                                    sum(os_coh(1, :, 3, ij, it))/)*100d0
     enddo
 
-    write(*,'(/a)')'Entry rates'
+    write(23,'(/a)')'Entry rates'
     do ij = 1, JJ
-      write(*,'(i3, 3f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
+      write(23,'(i3, 3f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
                                    os_coh(0, 1, 2, ij, it), &
                                    os_coh(0, 1, 3, ij, it)/)*100d0
     enddo
 
-    write(*,'(/a)')'Exit rates'
+    write(23,'(/a)')'Exit rates'
     do ij = 1, JJ
-      write(*,'(i3, 3f8.2)') ij, (/os_coh(1, 0, 1, ij, it), &
+      write(23,'(i3, 3f8.2)') ij, (/os_coh(1, 0, 1, ij, it), &
                                    os_coh(1, 0, 2, ij, it), &
                                    os_coh(1, 0, 3, ij, it)/)*100d0
     enddo
 
-    write(*,'(/a)')'Mean income (worker)'
+    write(23,'(/a)')'Mean income (worker)'
     do ij = 1, JJ
-      write(*,'(i3, 3f12.6)') ij, sum(reshape(netinc(0, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 1, ij, it)), &
+      write(23,'(i3, 3f12.6)') ij, sum(reshape(netinc(0, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 1, ij, it)), &
                                   sum(reshape(netinc(0, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 2, ij, it)), &
                                   sum(reshape(netinc(0, :, :, :, :, :, 3, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 3, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 3, ij, it))
     enddo
 
-    write(*,'(/a)')'Mean income (entrepreneur)'
+    write(23,'(/a)')'Mean income (entrepreneur)'
     do ij = 1, JJ
-      write(*,'(i3, 3f12.6)') ij, sum(reshape(netinc(1, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 1, ij, it)), &
+      write(23,'(i3, 3f12.6)') ij, sum(reshape(netinc(1, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 1, ij, it)), &
                                   sum(reshape(netinc(1, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 2, ij, it)), &
                                   sum(reshape(netinc(1, :, :, :, :, :, 3, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 3, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 3, ij, it))
     enddo
