@@ -970,6 +970,7 @@ contains
 
   end function
 
+
   !##############################################################################
   ! FUNCTION gini
   !
@@ -1036,5 +1037,6 @@ contains
     enddo
 
   end function
+
 
 end module

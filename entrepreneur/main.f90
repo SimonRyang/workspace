@@ -190,7 +190,6 @@ contains
 
         call tock(calc)
         call output(0)
-        call output_mikrozensus(0)
         return
       endif
 
@@ -200,7 +199,6 @@ contains
 
     call tock(calc)
     call output(0)
-    call output_mikrozensus(0)
 
     write(*,*)'No Convergence'
 
@@ -1654,6 +1652,35 @@ contains
 
 
 
+    ! Output Mikrozensus 2012
+
+    write(*,'(/a)')'Shares of entrepreneurs'
+    do ij = 1, JJ
+      write(*,'(i3, 3f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
+                                   sum(os_coh(1, :, 2, ij, it)), &
+                                   sum(os_coh(1, :, 3, ij, it))/)*100d0
+    enddo
+
+    write(*,'(/a)')'Entry rates'
+    do ij = 1, JJ
+      write(*,'(i3, 3f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
+                                   os_coh(0, 1, 2, ij, it), &
+                                   os_coh(0, 1, 3, ij, it)/)*100d0
+    enddo
+
+    write(*,'(/a)')'Exit rates'
+    do ij = 1, JJ
+      write(*,'(i3, 3f8.2)') ij, (/os_coh(1, 0, 1, ij, it), &
+                                   os_coh(1, 0, 2, ij, it), &
+                                   os_coh(1, 0, 3, ij, it)/)*100d0
+    enddo
+
+    write(*,'(/a)')'Mean income (worker)'
+    do ij = 1, JJ
+      write(*,'(i3, 3f8.2)') ij, sum(reshape(netinc(0, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(:, :, :, :, :, :, 1, :, it))
+    enddo
+
+
   end subroutine
 
 
@@ -1741,43 +1768,5 @@ contains
 
   end subroutine
 
-
-  !##############################################################################
-  ! SUBROUTINE output_mikrozensus
-  !
-  ! Writes output of mikrozensu to file 23
-  !##############################################################################
-  subroutine output_mikrozensus(it)
-
-    implicit none
-
-    !##### INPUT/OUTPUT VARIABLES #############################################
-    integer, intent(in) :: it
-
-    !##### OTHER VARIABLES ####################################################
-    integer :: ij
-
-    write(*,'(/a)')'Shares of entrepreneurs'
-    do ij = 1, JJ
-      write(*,'(i3, 3f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
-                                   sum(os_coh(1, :, 2, ij, it)), &
-                                   sum(os_coh(1, :, 3, ij, it))/)*100d0
-    enddo
-
-    write(*,'(/a)')'Entry rates'
-    do ij = 1, JJ
-      write(*,'(i3, 3f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
-                                           os_coh(0, 1, 2, ij, it), &
-                                           os_coh(0, 1, 3, ij, it)/)*100d0
-    enddo
-
-    write(*,'(/a)')'Exit rates'
-    do ij = 1, JJ
-      write(*,'(i3, 3f8.2)') ij, (/os_coh(1, 0, 1, ij, it), &
-                                           os_coh(1, 0, 2, ij, it), &
-                                           os_coh(1, 0, 3, ij, it)/)*100d0
-    enddo
-
-  end subroutine
 
 end program
