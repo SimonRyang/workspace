@@ -1636,7 +1636,7 @@ contains
       write(21,'(a/)')' '
 
       write(21, '(a)')'WEALTH    GINI     1%     5%    10%    20%    40%    60%    FLC'
-      write(21,'(4x, f10.3, 8f7.2)')gini(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
+      write(21,'(4x, f10.3, 8f7.2/)')gini(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
                                     percentiles(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.20d0, 0.40d0, 0.60d0/))
 
       write(21, '(a)')'GROSSINC  GINI     1%     5%    10%    20%    40%    60%'
