@@ -1677,7 +1677,9 @@ contains
 
     write(*,'(/a)')'Mean income (worker)'
     do ij = 1, JJ
-      write(*,'(i3, 3f8.2)') ij, sum(reshape(netinc(0, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(:, :, :, :, :, :, 1, :, it))
+      write(*,'(i3, 3f8.2)') ij, sum(reshape(netinc(0, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(:, :, :, :, :, :, 1, ij, it)), &
+                                 sum(reshape(netinc(0, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(:, :, :, :, :, :, 2, ij, it)), &
+                                 sum(reshape(netinc(0, :, :, :, :, :, 3, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 3, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(:, :, :, :, :, :, 3, ij, it))
     enddo
 
 
