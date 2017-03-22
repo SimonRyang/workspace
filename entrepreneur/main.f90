@@ -1656,19 +1656,22 @@ contains
 
     !##### Output Mikrozensus 2012 ############################################
 
+    write(*,*)rpop(1, 3, 0), sum(m(:, :, :, :, :, :, 1, 3, 0))
+    write(*,*)rpop(2, 4, 0), sum(m(:, :, :, :, :, :, 2, 4, 0))
+
     write(23,'(/a)')'Shares of entrepreneurs'
     do ij = 1, JJ
       write(23,'(i3, 4f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
                                     sum(os_coh(1, :, 2, ij, it)), &
-                                    sum(os_coh(1, :, 3, ij, it)), &
-                                    sum(reshape(sum(os_coh(1, :, :, ij, it), 2), (/NS/))*rpop(:, ij, it))/)*100d0
+                                    sum(os_coh(1, :, 3, ij, it)), /)*100d0
     enddo
 
     write(23,'(/a)')'Entry rates'
     do ij = 1, JJ
       write(23,'(i3, 3f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
                                     os_coh(0, 1, 2, ij, it), &
-                                    os_coh(0, 1, 3, ij, it)/)*100d0
+                                    os_coh(0, 1, 3, ij, it), &
+                                    sum(os_coh(0, 1, :, ij, it)*rpop(:, ij, it))/)*100d0
     enddo
 
     write(23,'(/a)')'Exit rates'
