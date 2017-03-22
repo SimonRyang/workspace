@@ -1656,8 +1656,8 @@ contains
 
     !##### Output Mikrozensus 2012 ############################################
 
-    write(*,*)rpop(1, 3, 0), sum(m(:, :, :, :, :, :, 1, 3, 0))
-    write(*,*)rpop(2, 4, 0), sum(m(:, :, :, :, :, :, 2, 4, 0))
+    write(*,*)rpop(1, 3, 0)*dist_skill(1), sum(m(:, :, :, :, :, :, 1, 3, 0))
+    write(*,*)rpop(2, 4, 0)*dist_skill(2), sum(m(:, :, :, :, :, :, 2, 4, 0))
 
     write(23,'(/a)')'Shares of entrepreneurs'
     do ij = 1, JJ
