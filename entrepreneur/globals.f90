@@ -707,7 +707,7 @@ contains
   end function
 
   !##############################################################################
-  ! FUNCTION gini_wealth
+  ! SUBROUTINE gini_wealth
   !
   ! Calculates GINI coefficient of wealth
   !##############################################################################
@@ -808,7 +808,7 @@ contains
 
 
   !##############################################################################
-  ! FUNCTION gini_income
+  ! SUBROUTINE gini_income
   !
   ! Calculates GINI coefficient of income
   !##############################################################################
@@ -907,10 +907,11 @@ contains
 
   end subroutine
 
+
   !##############################################################################
-  ! FUNCTION gini_income
+  ! FUNCTION gini
   !
-  ! Calculates GINI coefficient of income
+  ! Calculates GINI coefficient of x with mass y
   !##############################################################################
   function gini(x, y)
 
@@ -964,6 +965,71 @@ contains
       gini = gini + ys(ic-1)*(xcum(ic-1)+xcum(ic))
     enddo
     gini = 1d0-gini/xcum(ICMAX+1)
+
+  end function
+
+  !##############################################################################
+  ! FUNCTION gini
+  !
+  ! Calculates percentiles p of x with mass y
+  !##############################################################################
+  function percentiles(x, y, p)
+
+    implicit none
+
+    !##### INPUT/OUTPUT VARIABLES #############################################
+    real*8, intent(in) :: x(:), y(:), p(:)
+
+    !##### OTHER VARIABLES ####################################################
+    integer :: ii, ic, ICMAX
+    real*8, allocatable :: xs(:), ys(:), xcum(:), ycum(:)
+    real*8 :: percentiles(size(p))
+
+    if(allocated(xs))deallocate(xs)
+    if(allocated(ys))deallocate(ys)
+    if(allocated(xcum))deallocate(xcum)
+    if(allocated(ycum))deallocate(ycum)
+
+    allocate(xs(size(x)))
+    allocate(ys(size(y)))
+    allocate(xcum(size(x)))
+    allocate(ycum(size(y)))
+
+    ic = 1
+
+    do ii = 1, size(x)
+      if(y(ii) > 0d0) then
+        ys(ic) = y(ii)
+        xs(ic) = x(ii)
+        ic = ic + 1
+      endif
+    enddo ! ii
+
+    ! get array size and normalize ys
+    ICMAX = ic - 1
+    ys(1:ICMAX) = ys(1:ICMAX)/sum(ys(1:ICMAX))
+
+    ! sort array
+    call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
+
+    ! calculate cumulative distributions
+    xcum(1) = 0d0
+    ycum(1) = 0d0
+    do ic = 2, ICMAX+1
+      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
+      ycum(ic) = ycum(ic-1) + ys(ic-1)
+    enddo
+
+    percentiles = 0d0
+    do ic = ICMAX, 1, -1
+      do ii = 1, size(p)
+
+        if (1d0-ycum(ic) >= p(ii) .and. percentiles(ii) <= 0d0) then
+          percentiles(ii) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
+        endif
+
+      end do
+    enddo
 
   end function
 

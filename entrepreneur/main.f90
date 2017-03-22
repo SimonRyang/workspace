@@ -1045,35 +1045,35 @@ contains
                         m(io_p, ial, ixl, ipl, iw_p, ie_p, is, ij, it) = &
                            m(io_p, ial, ixl, ipl, iw_p, ie_p, is, ij, it) &
                            +varphi*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)&
-                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                         m(io_p, ial, ixl, ipr, iw_p, ie_p, is, ij, it) = &
                            m(io_p, ial, ixl, ipr, iw_p, ie_p, is, ij, it) &
                            +varphi*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
-                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                         m(io_p, ial, ixr, ipl, iw_p, ie_p, is, ij, it) = &
                            m(io_p, ial, ixr, ipl, iw_p, ie_p, is, ij, it) &
                            +varphi*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)&
-                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                         m(io_p, ial, ixr, ipr, iw_p, ie_p, is, ij, it) = &
                            m(io_p, ial, ixr, ipr, iw_p, ie_p, is, ij, it) &
                            +varphi*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
-                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                         m(io_p, iar, ixl, ipl, iw_p, ie_p, is, ij, it) = &
                            m(io_p, iar, ixl, ipl, iw_p, ie_p, is, ij, it) &
                            +(1d0-varphi)*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
-                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                         m(io_p, iar, ixl, ipr, iw_p, ie_p, is, ij, it) = &
                            m(io_p, iar, ixl, ipr, iw_p, ie_p, is, ij, it) &
                            +(1d0-varphi)*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
-                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                         m(io_p, iar, ixr, ipl, iw_p, ie_p, is, ij, it) = &
                            m(io_p, iar, ixr, ipl, iw_p, ie_p, is, ij, it) &
                            +(1d0-varphi)*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
-                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                         m(io_p, iar, ixr, ipr, iw_p, ie_p, is, ij, it) = &
                            m(io_p, iar, ixr, ipr, iw_p, ie_p, is, ij, it) &
                            +(1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
-                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                           *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                       enddo ! iw_p
                     enddo ! ie_p
 
@@ -1084,8 +1084,6 @@ contains
           enddo ! ie
         enddo ! is
       enddo ! io
-
-      m(:, :, :, :, :, :, :, ij, it) = m(:, :, :, :, :, :, :, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
 
     enddo ! ij
 
@@ -1161,48 +1159,48 @@ contains
                     endif
 
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
-                              *m(io, ia, ix, ip, iw, ie, is, ij, itm)*pop(ij, itm)/(1d0+n_p)
+                              *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     x_coh(ij, it) = x_coh(ij, it) + x(ix) &
-                              *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                              *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     bx_coh(ij, it) = bx_coh(ij, it) + x(ix) &
-                             *m(io, ia, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))*pop(ij, it)
+                             *m(io, ia, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))
                     CC(it) = CC(it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
-                              *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                              *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 0 .and. ij < JR) then
                       LC(it) = LC(it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
-                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       HH(it) = HH(it) + l(io, ia, ix, ip, iw, ie, is, ij, it) &
-                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       PC(it) = PC(it) + min(w(it)*eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it), sscc(it)*inc_bar(it)) &
-                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
-                      KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
-                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it), sscc(it)*inc_bar(it)) &
-                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       PE(it) = PE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
-                                *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                                *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       if (ij >= JR) then
                         PRE(it) = PRE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
-                                  *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                                  *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       endif
                     endif
-                    PP(it) = PP(it) + pen(ip, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                    PP(it) = PP(it) + pen(ip, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                     bqs(is, it) = bqs(is, it) + (1d0+r(it))*(varphi*a(ial) + (1d0-varphi)*a(iar))*(1d0-psi(is, ij+1)) &
-                                  *m(io, ia, ix, ip, iw, ie, is, ij, itm)*pop(ij, itm)/(1d0+n_p)
+                                  *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     TAc(it) = TAc(it) + tauc(it)*c(io, ia, ix, ip, iw, ie, is, ij, it) &
-                              *m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
-                    TAr(it) = TAr(it) + captax(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
-                    TAw(it) = TAw(it) + inctax(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                              *m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    TAr(it) = TAr(it) + captax(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    TAw(it) = TAw(it) + inctax(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 1 .and. ij < JR) then
-                      pop_e(is, it) = pop_e(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      pop_e(is, it) = pop_e(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     elseif (io == 1 .and. ij >= JR) then
-                      pop_re(is, it) = pop_re(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      pop_re(is, it) = pop_re(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     elseif (io == 0 .and. ij < JR) then
-                      pop_w(is, it) = pop_w(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      pop_w(is, it) = pop_w(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
-                      pop_r(is, it) = pop_r(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)*pop(ij, it)
+                      pop_r(is, it) = pop_r(is, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     endif
                     vv_coh(ij, it) = vv_coh(ij, it) + VV(io, ia, ix, ip, iw, ie, is, ij, it) &
                                     *m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1214,7 +1212,11 @@ contains
           enddo ! iw
         enddo ! ie
       enddo ! is
+
+      vv_coh(ij, it) = vv_coh(ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
+
     enddo ! ij
+
 
     ! damping and other quantities
     LC(it) = damp*LC(it) + (1d0-damp)*LC_old
@@ -1516,6 +1518,7 @@ contains
                 do is = 1, NS
                   do io = 0, NO
 
+                    ! Cohort average variables
                     c_coh(io, ij, it) = c_coh(io, ij, it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
                                         *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     a_coh(io, ij, it) = a_coh(io, ij, it) + a(ia)*m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1537,6 +1540,7 @@ contains
                       flc_coh(ij, it) = flc_coh(ij, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     endif
 
+                    ! Individual variables
                     if (io == 0) then
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ip, ix, iw, ie, is, ij, it)*w(it)
                     else
@@ -1563,7 +1567,8 @@ contains
       ax_coh(1, ij, it) = ax_coh(1, ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
       inc_coh(0, ij, it) = inc_coh(0, ij, it)/sum(m(0, :, :, :, :, :, :, ij, it))
       inc_coh(1, ij, it) = inc_coh(1, ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
-      k_coh(ij, it) = k_coh(ij, it)
+      k_coh(ij, it) = k_coh(ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
+      flc_coh(ij, it) = flc_coh(ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
       do is = 1, NS
         os_coh(0, :, is, ij, it) = os_coh(0, :, is, ij, it)/sum(m(:, :, :, :, :, :, is, ij, it))
         os_coh(1, :, is, ij, it) = os_coh(1, :, is, ij, it)/sum(m(:, :, :, :, :, :, is, ij, it))
@@ -1631,13 +1636,14 @@ contains
       write(21,'(a/)')' '
 
       write(21, '(a)')'WEALTH    GINI     1%     5%    10%    20%    40%    60%    FLC'
-      write(21,'(4x, f10.3, 8f7.2)')gini(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)))
+      write(21,'(4x, f10.3, 8f7.2)')gini(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
+                                    percentiles(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.20d0, 0.40d0, 0.60d0/))
 
-      write(21, '(a)')'GROSSINC  GINI     1%     5%    10%    20%    40%    60%'
-      write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)))
+      !write(21, '(a)')'GROSSINC  GINI     1%     5%    10%    20%    40%    60%'
+      !write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)))
 
-      write(21, '(a)')'NETINC    GINI     1%     5%    10%    20%    40%    60%'
-      write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)))
+      !write(21, '(a)')'NETINC    GINI     1%     5%    10%    20%    40%    60%'
+      !write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)))
 
     endif
 
@@ -1711,7 +1717,7 @@ contains
 
     ! current generations
     do ij = -(JJ-2), 0
-      write(22,'(i3,88x,3f8.2,20x,3f8.2,20x,f8.2)')ij,HEVs(0, :, ij),HEVs(1, :, ij),HEV(ij)
+      write(22,'(i3,88x,3f8.2,20x,3f8.2,20x,f8.2)')ij, HEVs(0, :, ij), HEVs(1, :, ij), HEV(ij)
     enddo
 
     write(22,'(a)')'-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
