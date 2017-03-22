@@ -375,14 +375,14 @@ contains
     enddo
 
     ! set up population structure
-    rpop(:, 1, 0) = 1d0
+    rpop(:, 1, 0) = dist_skill(is)
     do ij = 2, JJ
-      rpop(:, ij, 0) = psi(:, ij)*rpop(:, ij-1, 0)/(1d0+n_p)
+      rpop(:, ij, 0) = psi(:, ij)*rpop(:, ij-1, 0)/(1d0+n_p)*dist_skill(is)
     enddo
 
     pop = 0d0
     do is = 1, NS
-      pop(:, 0) = pop(:, 0) + rpop(is, :, 0)*dist_skill(is)
+      pop(:, 0) = pop(:, 0) + rpop(is, :, 0)
     enddo
 
     ! set distribution of bequests
@@ -565,9 +565,9 @@ contains
     endif
 
     ! calculate individual bequests
-    beq(1, :, it) = Gama(:)*bqs(1, it)/rpop(1, :, it)/dist_skill(1)
-    beq(2, :, it) = Gama(:)*bqs(2, it)/rpop(2, :, it)/dist_skill(2)
-    beq(3, :, it) = Gama(:)*bqs(3, it)/rpop(3, :, it)/dist_skill(3)
+    beq(1, :, it) = Gama(:)*bqs(1, it)/rpop(1, :, it)
+    beq(2, :, it) = Gama(:)*bqs(2, it)/rpop(2, :, it)
+    beq(3, :, it) = Gama(:)*bqs(3, it)/rpop(3, :, it)
 
     ! calculate individual pensions
     pen(:, :, it) = 0d0
@@ -1656,14 +1656,12 @@ contains
 
     !##### Output Mikrozensus 2012 ############################################
 
-    write(*,*)rpop(1, 3, 0)*dist_skill(1), sum(m(:, :, :, :, :, :, 1, 3, 0))
-    write(*,*)rpop(2, 4, 0)*dist_skill(2), sum(m(:, :, :, :, :, :, 2, 4, 0))
-
     write(23,'(/a)')'Shares of entrepreneurs'
     do ij = 1, JJ
       write(23,'(i3, 4f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
                                     sum(os_coh(1, :, 2, ij, it)), &
-                                    sum(os_coh(1, :, 3, ij, it))/)*100d0
+                                    sum(os_coh(1, :, 3, ij, it)), &
+                                    sum(sum(os_coh(1, :, :, ij, it), 2)*rpop(:, ij, it))/)*100d0
     enddo
 
     write(23,'(/a)')'Entry rates'
