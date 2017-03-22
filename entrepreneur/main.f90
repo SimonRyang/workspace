@@ -377,7 +377,7 @@ contains
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(is)
     do ij = 2, JJ
-      rpop(:, ij, 0) = psi(:, ij)*rpop(:, ij-1, 0)/(1d0+n_p)*dist_skill(is)
+      rpop(:, ij, 0) = psi(:, ij)*rpop(:, ij-1, 0)/(1d0+n_p)
     enddo
 
     pop = 0d0
@@ -1666,7 +1666,7 @@ contains
 
     write(23,'(/a)')'Entry rates'
     do ij = 1, JJ
-      write(23,'(i3, 3f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
+      write(23,'(i3, 4f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
                                     os_coh(0, 1, 2, ij, it), &
                                     os_coh(0, 1, 3, ij, it), &
                                     sum(os_coh(0, 1, :, ij, it)*rpop(:, ij, it))/)*100d0
@@ -1674,9 +1674,10 @@ contains
 
     write(23,'(/a)')'Exit rates'
     do ij = 1, JJ
-      write(23,'(i3, 3f8.2)') ij, (/os_coh(1, 0, 1, ij, it), &
+      write(23,'(i3, 4f8.2)') ij, (/os_coh(1, 0, 1, ij, it), &
                                    os_coh(1, 0, 2, ij, it), &
-                                   os_coh(1, 0, 3, ij, it)/)*100d0
+                                   os_coh(1, 0, 3, ij, it), &
+                                   sum(os_coh(1, 0, :, ij, it)*rpop(:, ij, it))/)*100d0
     enddo
 
     write(23,'(/a)')'Mean income (worker)'
