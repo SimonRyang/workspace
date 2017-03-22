@@ -1661,7 +1661,7 @@ contains
       write(23,'(i3, 4f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
                                     sum(os_coh(1, :, 2, ij, it)), &
                                     sum(os_coh(1, :, 3, ij, it)), &
-                                    sum(os_coh(1, :, :, ij, it)*reshape(rpop(:, ij, it), rpop(:, ij, it)/), (/2, NS/)))/pop(ij, it)/)*100d0
+                                    sum(os_coh(1, :, :, ij, it)*reshape((/rpop(:, ij, it), rpop(:, ij, it)/), (/2, NS/)))/pop(ij, it)/)*100d0
     enddo
 
     write(23,'(/a)')'Entry rates'
