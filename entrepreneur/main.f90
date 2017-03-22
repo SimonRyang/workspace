@@ -1661,7 +1661,7 @@ contains
       write(23,'(i3, 4f8.2)') ij, (/sum(os_coh(1, :, 1, ij, it)), &
                                     sum(os_coh(1, :, 2, ij, it)), &
                                     sum(os_coh(1, :, 3, ij, it)), &
-                                    sum(os_coh(1, :, :, ij, it)*reshape(rpop(:, ij, it), (/2, NS/)))/pop(ij, it)/)*100d0
+                                    sum(os_coh(1, :, :, ij, it)*reshape(rpop(:, ij, it), rpop(:, ij, it)/), (/2, NS/)))/pop(ij, it)/)*100d0
     enddo
 
     write(23,'(/a)')'Entry rates'
@@ -1669,7 +1669,7 @@ contains
       write(23,'(i3, 4f8.2)') ij, (/os_coh(0, 1, 1, ij, it), &
                                     os_coh(0, 1, 2, ij, it), &
                                     os_coh(0, 1, 3, ij, it), &
-                                    sum(os_coh(0, 1, :, ij, it)*rpop(:, ij, it))/)*100d0
+                                    sum(os_coh(0, 1, :, ij, it)*rpop(:, ij, it))/pop(ij, it)/)*100d0
     enddo
 
     write(23,'(/a)')'Exit rates'
@@ -1677,7 +1677,7 @@ contains
       write(23,'(i3, 4f8.2)') ij, (/os_coh(1, 0, 1, ij, it), &
                                    os_coh(1, 0, 2, ij, it), &
                                    os_coh(1, 0, 3, ij, it), &
-                                   sum(os_coh(1, 0, :, ij, it)*rpop(:, ij, it))/)*100d0
+                                   sum(os_coh(1, 0, :, ij, it)*rpop(:, ij, it))/pop(ij, it)/)*100d0
     enddo
 
     write(23,'(/a)')'Mean income (worker)'
