@@ -104,7 +104,7 @@ program main
   ! simulation parameters
   damp  = 0.60d0
   tol   = 1d-6
-  itermax = 200
+  itermax = 5
 
   ! compute gini
   gini_on = .true.
@@ -115,6 +115,8 @@ program main
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+  stop
 
   ! set reform parameters
   !pen_debt = .true.
@@ -273,7 +275,7 @@ contains
       else
         write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
           (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
-          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 1 .and. lsra_comp/lsra_all > 0.99999d0
+          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
       endif
 
       ! check for convergence
@@ -563,9 +565,9 @@ contains
     endif
 
     ! calculate individual bequests
-    beq(1, :, it) = Gama*bqs(1, it)/rpop(1, :, it)/dist_skill(1)
-    beq(2, :, it) = Gama*bqs(2, it)/rpop(2, :, it)/dist_skill(2)
-    beq(3, :, it) = Gama*bqs(3, it)/rpop(3, :, it)/dist_skill(3)
+    beq(1, :, it) = Gama(:)*bqs(1, it)/rpop(1, :, it)/dist_skill(1)
+    beq(2, :, it) = Gama(:)*bqs(2, it)/rpop(2, :, it)/dist_skill(2)
+    beq(3, :, it) = Gama(:)*bqs(3, it)/rpop(3, :, it)/dist_skill(3)
 
     ! calculate individual pensions
     pen(:, :, it) = 0d0
@@ -1476,7 +1478,15 @@ contains
     integer :: io, ia, ix, ip, iw, ie, is, ij, io_p, ixmax(JJ), iamax(JJ)
     real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
     real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
+    real*8, allocatable :: wealth(:, :, :, :, :, :, :, :), grossinc(:, :, :, :, :, :, :, :), netinc(:, :, :, :, :, :, :, :)
     real*8 :: life_exp(NS), punb(JJ, NS)
+
+    if(allocated(wealth))deallocate(wealth)
+    if(allocated(grossinc))deallocate(grossinc)
+    if(allocated(netinc))deallocate(netinc)
+    allocate(wealth(0:NO, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ))
+    allocate(grossinc(0:NO, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ))
+    allocate(netinc(0:NO, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ))
 
     life_exp = 0d0
     do is = 1, NS
@@ -1526,6 +1536,14 @@ contains
                     if (aplus(io, ia, ix, ip, iw, ie, is, ij, it) <= 1d-10) then
                       flc_coh(ij, it) = flc_coh(ij, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     endif
+
+                    if (io == 0) then
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ip, ix, iw, ie, is, ij, it)*w(it)
+                    else
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
+                    endif
+                    netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
+                    wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia)
 
                   enddo ! io
                 enddo ! is
@@ -1612,19 +1630,21 @@ contains
       write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
       write(21,'(a/)')' '
 
-      call gini_wealth(it)
-      call gini_income(it)
-
       write(21, '(a)')'WEALTH    GINI     1%     5%    10%    20%    40%    60%    FLC'
-      write(21,'(4x, f10.3, 8f7.2)')gini_w(it), percentiles_w(:, it)*100d0, sum(pop(:, it)*flc_coh(:, it))/sum(pop(:, it))*100d0
+      write(21,'(4x, f10.3, 8f7.2)')gini(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)))
 
-      write(21, '(a)')'INCOME    GINI     1%     5%    10%    20%    40%    60%'
-      write(21,'(4x, f10.3, 6f7.2/)')gini_i(it), percentiles_i(:, it)*100d0
+      write(21, '(a)')'GROSSINC  GINI     1%     5%    10%    20%    40%    60%'
+      write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)))
+
+      write(21, '(a)')'NETINC    GINI     1%     5%    10%    20%    40%    60%'
+      write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)))
 
     endif
 
     write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     write(21,'(a/)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
+
+
 
   end subroutine
 
@@ -1686,8 +1706,8 @@ contains
     enddo
 
     ! headline
-    write(22,'(/a,a)')'      A    KK    KC    KE    LC   l_bar     r     w   inc     C     I',  &
-      '    YY    YC    YE  tauc  taup    PP    BQ   ent  ent1  ent2  ent3   HEV    DIFF'
+    write(22,'(/a,a)')'          A      KK      KC      KE      LC     l_bar       r       w     inc       C       I',  &
+      '      YY      YC      YE    tauc    taup      PP      BQ     ent    ent1    ent2    ent3     HEV      DIFF'
 
     ! current generations
     do ij = -(JJ-2), 0

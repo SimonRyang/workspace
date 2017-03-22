@@ -906,4 +906,65 @@ contains
     enddo
 
   end subroutine
+
+  !##############################################################################
+  ! FUNCTION gini_income
+  !
+  ! Calculates GINI coefficient of income
+  !##############################################################################
+  function gini(x, y)
+
+    implicit none
+
+    !##### INPUT/OUTPUT VARIABLES #############################################
+    real*8, intent(in) :: x(:), y(:)
+
+    !##### OTHER VARIABLES ####################################################
+    integer :: ii, ic, ICMAX
+    real*8, allocatable :: xs(:), ys(:), xcum(:), ycum(:)
+    real*8 :: gini
+
+    if(allocated(xs))deallocate(xs)
+    if(allocated(ys))deallocate(ys)
+    if(allocated(xcum))deallocate(xcum)
+    if(allocated(ycum))deallocate(ycum)
+
+    allocate(xs(size(x)))
+    allocate(ys(size(y)))
+    allocate(xcum(size(x)))
+    allocate(ycum(size(y)))
+
+    ic = 1
+
+    do ii = 1, size(x)
+      if(y(ii) > 0d0) then
+        ys(ic) = y(ii)
+        xs(ic) = x(ii)
+        ic = ic + 1
+      endif
+    enddo ! ii
+
+    ! get array size and normalize ys
+    ICMAX = ic - 1
+    ys(1:ICMAX) = ys(1:ICMAX)/sum(ys(1:ICMAX))
+
+    ! sort array
+    call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
+
+    ! calculate cumulative distributions
+    xcum(1) = 0d0
+    ycum(1) = 0d0
+    do ic = 2, ICMAX+1
+      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
+      ycum(ic) = ycum(ic-1) + ys(ic-1)
+    enddo
+
+    gini = 0d0
+    do ic = 2, ICMAX+1
+      gini = gini + ys(ic-1)*(xcum(ic-1)+xcum(ic))
+    enddo
+    gini = 1d0-gini/xcum(ICMAX+1)
+
+  end function
+
 end module
