@@ -1015,11 +1015,13 @@ contains
     call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
-    xcum(1) = 0d0
-    ycum(1) = 0d0
-    do ic = 2, ICMAX+1
-      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
-      ycum(ic) = ycum(ic-1) + ys(ic-1)
+    xcum = 0d0
+    ycum = 0d0
+    xcum(1) = xs(1)*ys(1)
+    ycum(1) = ys(1)
+    do ic = 2, ICMAX
+      xcum(ic) = xcum(ic-1) + xs(ic)*ys(ic)
+      ycum(ic) = ycum(ic-1) + ys(ic)
     enddo
 
     percentiles = 0d0
