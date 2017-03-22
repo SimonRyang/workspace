@@ -953,8 +953,8 @@ contains
     call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
-    xcum(1) = 0d0
-    ycum(1) = 0d0
+    xcum(0) = 0d0
+    ycum(0) = 0d0
     do ic = 2, ICMAX+1
       xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
       ycum(ic) = ycum(ic-1) + ys(ic-1)
@@ -1025,7 +1025,7 @@ contains
       do ii = 1, size(p)
 
         if (1d0-ycum(ic) >= p(ii) .and. percentiles(ii) <= 0d0) then
-          percentiles(ii) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
+          percentiles(ii) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)*100d0
         endif
 
       end do
