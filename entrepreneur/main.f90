@@ -375,7 +375,7 @@ contains
     enddo
 
     ! set up population structure
-    rpop(:, 1, 0) = dist_skill(is)
+    rpop(:, 1, 0) = dist_skill(:)
     do ij = 2, JJ
       rpop(:, ij, 0) = psi(:, ij)*rpop(:, ij-1, 0)/(1d0+n_p)
     enddo
