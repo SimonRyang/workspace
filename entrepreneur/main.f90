@@ -1680,7 +1680,7 @@ contains
                                    sum(os_coh(1, 0, :, ij, it)*rpop(:, ij, it))/pop(ij, it)/)*100d0
     enddo
 
-    write(23,'(/a)')'Mean income (worker)'
+    write(23,'(/a)')'Mean netinc (worker)'
     do ij = 1, JJ
       write(23,'(i3, 4f12.6)') ij, sum(reshape(netinc(0, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 1, ij, it)), &
                                    sum(reshape(netinc(0, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(0, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(0, :, :, :, :, :, 2, ij, it)), &
@@ -1688,7 +1688,7 @@ contains
                                    sum(reshape(netinc(0, :, :, :, :, :, :, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS/))*reshape(m(0, :, :, :, :, :, :, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS/)))/sum(m(0, :, :, :, :, :, :, ij, it))
     enddo
 
-    write(23,'(/a)')'Mean income (entrepreneur)'
+    write(23,'(/a)')'Mean netinc (entrepreneur)'
     do ij = 1, JJ
       write(23,'(i3, 4f12.6)') ij, sum(reshape(netinc(1, :, :, :, :, :, 1, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 1, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 1, ij, it)), &
                                    sum(reshape(netinc(1, :, :, :, :, :, 2, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/))*reshape(m(1, :, :, :, :, :, 2, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE/)))/sum(m(1, :, :, :, :, :, 2, ij, it)), &
@@ -1696,6 +1696,19 @@ contains
                                    sum(reshape(netinc(1, :, :, :, :, :, :, ij), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS/))*reshape(m(1, :, :, :, :, :, :, ij, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS/)))/sum(m(1, :, :, :, :, :, :, ij, it))
     enddo
 
+    write(23,'(/a)')'GINI (netinc)'
+    write(23,'(i3, 4f8.2)') ij, gini(reshape(netinc(0, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(0, :, :, :, :, :, 2, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(0, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(0, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
+    write(23,'(i3, 4f8.2)') ij, gini(reshape(netinc(1, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(1, :, :, :, :, :, 2, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(1, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(1, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(1, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
+    write(23,'(i3, 4f8.2)') ij, gini(reshape(netinc(:, :, :, :, :, :, 1, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 1, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(:, :, :, :, :, :, 2, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 2, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(:, :, :, :, :, :, 3, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                                gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
 
   end subroutine
 
