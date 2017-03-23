@@ -116,7 +116,7 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  !stop
+  stop
 
   ! set reform parameters
   !pen_debt = .true.
