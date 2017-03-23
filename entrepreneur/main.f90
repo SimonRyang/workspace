@@ -186,7 +186,7 @@ contains
 
       write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
-
+write(*,*)maxval(aplus)
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
 
         call tock(calc)
