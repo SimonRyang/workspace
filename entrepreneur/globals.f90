@@ -647,8 +647,8 @@ contains
             do iw = 1, NW
               do ip = 0, NP
                 do ix = 0, NX
-                    if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
-                    if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
+                  if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
+                  if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
                 enddo ! ix
               enddo ! ip
             enddo ! iw
@@ -656,20 +656,20 @@ contains
         enddo ! is
       enddo ! ia
 
-      do is = 1, NS
-        do ie = 1, NE
-          do iw = 1, NW
-            do ip = 0, NP
-              do ia = 0, NA
-                do ix = 0, NX
+      do ix = 0, NX
+        do is = 1, NS
+          do ie = 1, NE
+            do iw = 1, NW
+              do ip = 0, NP
+                do ia = 0, NA
                   if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) ixmax(ij)=ix
                   if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) ixmax(ij)=ix
-                enddo ! ix
-              enddo ! ia
-            enddo ! ip
-          enddo ! iw
-        enddo ! ie
-      enddo ! is
+                enddo ! ia
+              enddo ! ip
+            enddo ! iw
+          enddo ! ie
+        enddo ! is
+      enddo ! ix
 
     enddo ! ij
 
