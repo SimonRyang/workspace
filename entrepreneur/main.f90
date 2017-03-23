@@ -426,18 +426,18 @@ contains
     call discretize_AR(0.96d0**5d0, -0.25d0, sigma5(0.96d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
-    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-    theta(:, 2)       = theta(:, 1)
-    theta(:, 3)       = theta(:, 1)
-    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-    dist_theta(:, 2)  = dist_theta(:, 1)
-    dist_theta(:, 3)  = dist_theta(:, 1)
-    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
-    pi_theta(:, :, 2) = pi_theta(:, :, 1)
-    pi_theta(:, :, 3) = pi_theta(:, :, 1)
+!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
+!    theta(:, 2)       = theta(:, 1)
+!    theta(:, 3)       = theta(:, 1)
+!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
+!    dist_theta(:, 2)  = dist_theta(:, 1)
+!    dist_theta(:, 3)  = dist_theta(:, 1)
+!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
+!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
+!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
+!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
+!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
 
     ! initial guesses for macro variables
     inc_bar(0) = 0.61d0
@@ -1635,17 +1635,17 @@ contains
       write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
       write(21,'(a/)')' '
 
-      write(21, '(a)')'WEALTH    GINI     1%     5%    10%    25%    50%    75%    FLC'
-      write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
-                                    percentiles(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0/))
+      write(21, '(a)')'WEALTH    GINI     1%     5%    10%    25%    50%    75%    90%    95%    99%'
+      write(21,'(4x, f10.3, 9f7.2/)')gini(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
+                                    percentiles(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
 
-      write(21, '(a)')'GROSSINC  GINI     1%     5%    10%    25%    50%    75%'
-      write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
-                                     percentiles(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0/))
+      write(21, '(a)')'GROSSINC  GINI     1%     5%    10%    25%    50%    75%    90%    95%    99%'
+      write(21,'(4x, f10.3, 9f7.2/)')gini(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
+                                     percentiles(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
 
-      write(21, '(a)')'NETINC    GINI     1%     5%    10%    25%    50%    75%'
-      write(21,'(4x, f10.3, 6f7.2/)')gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
-                                     percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0/))
+      write(21, '(a)')'NETINC    GINI     1%     5%    10%    25%    50%    75%    90%    95%    99%'
+      write(21,'(4x, f10.3, 9f7.2/)')gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
+                                     percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
 
     endif
 
