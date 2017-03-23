@@ -1710,6 +1710,23 @@ contains
                         gini(reshape(netinc(:, :, :, :, :, :, 3, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
                         gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
 
+    write(23,'(/a)')'Mean (worktime)'
+    write(23,'(i3, 4f12.6)') ij, sum(reshape(l(0, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 1, :, it)), &
+    write(23,'(i3, 4f12.6)') ij, sum(reshape(l(0, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 1, :, it)), &
+                                 sum(reshape(l(0, :, :, :, :, :, 2, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 2, :, it)), &
+                                 sum(reshape(l(0, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 3, :, it)), &
+                                 sum(reshape(l(0, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/))*reshape(m(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))/sum(m(0, :, :, :, :, :, :, :, it))
+    write(23,'(i3, 4f12.6)') ij, sum(reshape(l(1, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(1, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(1, :, :, :, :, :, 1, :, it)), &
+                                 sum(reshape(l(1, :, :, :, :, :, 2, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(1, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(1, :, :, :, :, :, 2, :, it)), &
+                                 sum(reshape(l(1, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(1, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(1, :, :, :, :, :, 3, :, it)), &
+                                 sum(reshape(l(1, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/))*reshape(m(1, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))/sum(m(1, :, :, :, :, :, :, :, it))
+    write(23,'(i3, 4f12.6)') ij, sum(reshape(l(:, :, :, :, :, :, 1, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(:, :, :, :, :, :, 1, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(:, :, :, :, :, :, 1, :, it)), &
+                                 sum(reshape(l(:, :, :, :, :, :, 2, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(:, :, :, :, :, :, 2, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(:, :, :, :, :, :, 2, :, it)), &
+                                 sum(reshape(l(:, :, :, :, :, :, 3, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(:, :, :, :, :, :, 3, :, it)), &
+                                 sum(reshape(l(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/))*reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))/sum(m(:, :, :, :, :, :, :, :, it))
+
+
+
   end subroutine
 
 
