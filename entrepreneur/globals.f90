@@ -1026,12 +1026,12 @@ contains
     enddo
 
     percentiles = 0d0
-    do ic = 1, ICMAX
+    do ic = ICMAX, 1, -1
       do ii = 1, size(p)
 
-        if (ycum(ic) >= p(ii) .and. percentiles(ii) <= 0d0) then
-          !percentiles(ii) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)*100d0
-          percentiles(ii) = xs(ic)
+        if (1d0-ycum(ic) >= p(ii) .and. percentiles(ii) <= 0d0) then
+          percentiles(ii) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)*100d0
+          !percentiles(ii) = xs(ic)
         endif
 
       end do
