@@ -1026,7 +1026,7 @@ contains
     enddo
 
     percentiles = 0d0
-    do ic = ICMAX, 1, -1
+    do ic = 1, ICMAX
       do ii = 1, size(p)
 
         if (ycum(ic) >= p(ii) .and. percentiles(ii) <= 0d0) then
