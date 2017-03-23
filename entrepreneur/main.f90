@@ -417,13 +417,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.93d0**5d0, -0.51d0, sigma5(0.93d0, 0.04d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.93d0**5d0, -0.51d0*2d0, sigma5(0.93d0, 0.04d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.93d0**5d0, -0.42d0, sigma5(0.93d0, 0.03d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.93d0**5d0, -0.42d0*2d0, sigma5(0.93d0, 0.03d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.96d0**5d0, -0.25d0, sigma5(0.96d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.96d0**5d0, -0.25d0*2d0, sigma5(0.96d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
 !    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
@@ -1697,18 +1697,18 @@ contains
     enddo
 
     write(23,'(/a)')'GINI (netinc)'
-    write(23,'(i3, 4f8.2)') ij, gini(reshape(netinc(0, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(0, :, :, :, :, :, 2, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(0, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(0, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
-    write(23,'(i3, 4f8.2)') ij, gini(reshape(netinc(1, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(1, :, :, :, :, :, 2, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(1, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(1, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(1, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
-    write(23,'(i3, 4f8.2)') ij, gini(reshape(netinc(:, :, :, :, :, :, 1, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 1, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(:, :, :, :, :, :, 2, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 2, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(:, :, :, :, :, :, 3, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
-                                gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
+    write(23,'(4f8.4)') gini(reshape(netinc(0, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(0, :, :, :, :, :, 2, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(0, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(0, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(0, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
+    write(23,'(4f8.4)') gini(reshape(netinc(1, :, :, :, :, :, 1, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(1, :, :, :, :, :, 2, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(1, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(1, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(1, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
+    write(23,'(4f8.4)') gini(reshape(netinc(:, :, :, :, :, :, 1, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 1, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(:, :, :, :, :, :, 2, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 2, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(:, :, :, :, :, :, 3, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
+                        gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
 
   end subroutine
 
