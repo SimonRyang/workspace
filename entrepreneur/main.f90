@@ -1712,7 +1712,6 @@ contains
 
     write(23,'(/a)')'Mean (worktime)'
     write(23,'(4f12.6)') sum(reshape(l(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 1, :, it)), &
-    write(23,'(4f12.6)') sum(reshape(l(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 1, :, it)), &
                          sum(reshape(l(0, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 2, :, it)), &
                          sum(reshape(l(0, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 3, :, it)), &
                          sum(reshape(l(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/))*reshape(m(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))/sum(m(0, :, :, :, :, :, :, :, it))
