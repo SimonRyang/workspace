@@ -116,6 +116,8 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
+  stop
+
   ! set reform parameters
   !pen_debt = .true.
   !smopec = .true.
@@ -1707,6 +1709,20 @@ contains
                         gini(reshape(netinc(:, :, :, :, :, :, 2, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 2, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
                         gini(reshape(netinc(:, :, :, :, :, :, 3, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))), &
                         gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))
+
+    write(23,'(/a)')'Percentiles (netinc)'
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(0, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(1, :, :, :, :, :, :, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(1, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, 1, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 1, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, 2, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 2, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, 3, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+    write(23,'(9f8.4)') percentiles(reshape(netinc(:, :, :, :, :, :, :, :), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
 
     write(23,'(/a)')'Mean (worktime)'
     write(23,'(4f12.6)') sum(reshape(l(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 1, :, it)), &
