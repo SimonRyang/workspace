@@ -30,13 +30,13 @@ module globals
   integer, parameter :: NA = 15
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 0
+  integer, parameter :: NX = 15
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
 
   ! number of occupations (-1)
-  integer, parameter :: NO = 0
+  integer, parameter :: NO = 1
 
   ! household parameters
   real*8 :: gamma, sigma, beta, l_bar, phi1, phi2, sigmaq
