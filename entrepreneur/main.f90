@@ -1490,7 +1490,7 @@ contains
     real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
     real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
     real*8, allocatable :: wealth(:, :, :, :, :, :, :, :), grossinc(:, :, :, :, :, :, :, :), netinc(:, :, :, :, :, :, :, :)
-    real*8 :: life_exp(NS), punb(JJ, NS)
+    real*8 :: life_exp(NS), punb(NS, JJ)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
@@ -1511,11 +1511,11 @@ contains
 
     life_exp = 0d0
     do is = 1, NS
-      punb(1, is) = psi(is, 1)
-      life_exp(is) = life_exp(is) + dble(1)*punb(1,is)*(1d0-psi(is, 2))
+      punb(is, 1) = psi(is, 1)
+      life_exp(is) = life_exp(is) + dble(1)*punb(is, 1)*(1d0-psi(is, 2))
       do ij = 2, JJ
-        punb(ij, is) = punb(ij-1, is)*psi(is, ij)
-        life_exp(is) = life_exp(is) + 5d0*dble(ij-1)*punb(ij, is)*(1d0-psi(is, ij+1))
+        punb(ij, is) = punb(is, ij-1)*psi(is, ij)
+        life_exp(is) = life_exp(is) + 5d0*dble(ij)*punb(is, ij)*(1d0-psi(is, ij+1))
       enddo ! ij
     enddo ! is
 
