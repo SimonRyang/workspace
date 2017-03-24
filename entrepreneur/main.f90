@@ -357,8 +357,9 @@ contains
 
     ! distribution of skill classes
     dist_skill(:) = (/0.1520d0, 0.5547d0, 0.2933d0/)
-    !* error check *!
-    if (sum(dist_skill(:)) .NEQ. 1d0) error('initialize', 'distribution of skill classes in not equal to one')
+
+    !* check for error *!
+    if (sum(dist_skill(:)) /= 1d0) call error('initialize', 'distribution of skill classes in not equal to one')
 
 		! initialize survival probabilities for middle skilled
     open(301, file='sp.dat')
