@@ -1002,7 +1002,7 @@ contains
     do is = 1, NS
       !do ie = 1, NE
         !do iw = 1, NW
-          m(0, 0, 0, 0, 3, 3, is, 1, it) = dist_skill(is)
+          m(0, 0, 0, 0, 4, 4, is, 1, it) = dist_skill(is)
         !enddo ! iw
       !enddo ! ie
     enddo ! is
