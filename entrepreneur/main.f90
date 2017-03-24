@@ -372,7 +372,7 @@ contains
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
     psi(:, JJ+1) = 0d0
-    adj = 22d0
+    adj = 21d0
     do ij = 2, JJ
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
@@ -1498,16 +1498,6 @@ contains
     allocate(wealth(0:NO, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ))
     allocate(grossinc(0:NO, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ))
     allocate(netinc(0:NO, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ))
-
-    life_exp = 0d0
-    do is = 1, NS
-      punb(1, is) = psi(is, 1)
-      life_exp(is) = life_exp(is) + 2.5d0*dble(1)*punb(1,is)*(1d0-psi(is, 2))
-      do ij = 2, JJ
-        punb(ij, is) = punb(ij-1, is)*psi(is, ij)
-        life_exp(is) = life_exp(is) + (2.5d0 + 5d0*dble(ij-1))*punb(ij, is)*(1d0-psi(is, ij+1))
-      enddo ! ij
-    enddo ! is
 
     life_exp = 0d0
     do is = 1, NS
