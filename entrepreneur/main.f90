@@ -76,7 +76,7 @@ program main
   tauc   = 0.10d0
   taur   = 0.25d0
   tauy   = 0.15d0
-  kappa  = 0.55d0
+  kappa  = 0.443d0
   sscc   = 2d0
   mu     = 1d0
   lambda = 0d0
