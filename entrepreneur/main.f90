@@ -389,7 +389,7 @@ contains
       pop(:, 0) = pop(:, 0) + rpop(is, :, 0)
     enddo
 
-    write(*,*)sum(pop(:, JR:))/sum(pop(:, :JR-1))
+    write(*,*)sum(pop(JR:, 0))/sum(pop(:JR-1, 0))
 
     ! set distribution of bequests
     Gama(1) = 0.0d0*pop(1, 0)
