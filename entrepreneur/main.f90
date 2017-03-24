@@ -1127,10 +1127,12 @@ contains
     KE(it)  = 0d0
     YE(it)  = 0d0
     PE(it)  = 0d0
-    PRE(it)   = 0d0
+    PRE(it) = 0d0
     PC(it)  = 0d0
     BQ(it)  = 0d0
     PP(it)  = 0d0
+    AX(it)  = 0d0
+    XB(it)  = 0d0
     TAc(it)   = 0d0
     TAr(it)   = 0d0
     TAw(it)   = 0d0
