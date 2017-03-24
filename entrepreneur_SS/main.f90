@@ -11,8 +11,8 @@ program main
   integer, parameter :: numthreads = 56
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(3, NS), sigma_val(3, NS), rho_val(3, NS)
-  integer :: s1, s2, s3, h1, h2, h3, m1, m2, m3
+  real*8 :: mu_val(3, NS), sigma_val(5), rho_val(5), costs(5)
+  integer :: c1, s1, h1, m1, m2, m3
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -44,13 +44,13 @@ program main
   gamma  =  0.500d0
   ! invert gamma
   gamma = 1d0/gamma
-  sigma  =   0.318d0
+  sigma  =   0.320d0
   phi1   = -11.600d0
   phi2   =  11.600d0
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
-  beta   =  0.998d0
+  beta   =  0.988d0
   ! convert variables into per period values
   beta = beta**5d0
 
@@ -58,12 +58,12 @@ program main
   alpha = 0.36d0
   delta = 0.06d0
   nu = 0.88d0
-  l_bar = .41d0
+  l_bar = .47d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
   ! demographic parameters
-  n_p   = 0.0064d0
+  n_p   = 0.007d0
   ! convert variables into per period values
   n_p = (1d0+n_p)**5-1d0
 
@@ -71,14 +71,14 @@ program main
   tauc   = 0.10d0
   taur   = 0.25d0
   tauy   = 0.15d0
-  kappa  = 0.55d0
+  kappa  = 0.53d0
   sscc   = 2d0
   mu     = 1d0
   lambda = 0d0
   phi    = 0d0
   taup   = 0.10d0
   gy     = 0.19d0
-  by     = 0.80d0
+  by     = 0.70d0
   ! convert variables into per period values
   by = by/5d0
 
@@ -116,60 +116,54 @@ program main
   mu_val(:, 2) = -(/0.43d0, 0.42d0, 0.41d0/)
   mu_val(:, 3) = -(/0.25d0, 0.24d0, 0.23d0/)
 
-  sigma_val(:, 1) = (/0.04d0, 0.03d0, 0.02d0/)
-  sigma_val(:, 2) = (/0.04d0, 0.03d0, 0.02d0/)
-  sigma_val(:, 3) = (/0.04d0, 0.03d0, 0.02d0/)
+  sigma_val(:) = (/0.04d0, 0.035d0, 0.03d0, 0.025d0, 0.02d0/)
 
-  rho_val(:, 1) = 1d0 - (/0.07d0, 0.06d0, 0.05d0/)
-  rho_val(:, 2) = 1d0 - (/0.07d0, 0.06d0, 0.05d0/)
-  rho_val(:, 3) = 1d0 - (/0.06d0, 0.05d0, 0.04d0/)
+  rho_val(:) = (/0.96d0, 0.955d0, 0.95d0, 0.945d0, 0.940d0/)
+
+  costs = (/0.55d0, 0.60d0, 0.65d0, 0.70d0, 0.75d0/)
 
   open(307, file='results.out')
 
-  do m1 = 3, 3
-    do m2 = 2, 2
-      do m3 = 1, 1
-        do s1 = 1, 1
-          do s2 = 2, 2
-            do s3 = 2, 2
-              do h1 = 1, 1
-                do h2 = 1, 1
-                  do h3 = 3, 3
+  do c1 = 3, 3
+    do m1 = 2, 2
+      do m2 = 2, 2
+        do m3 = 2, 2
+          do s1 = 3, 3
+            do h1 = 3, 3
 
-                    ! calculate initial equilibrium
-                    call get_SteadyState()
+              suc = costs(c1)
 
-                    share_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
-                    shares_result(:, 1) = (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0
-                    shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0
-                    shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
+              ! calculate initial equilibrium
+              call get_SteadyState()
+
+              share_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
+              shares_result(:, 1) = (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0
+              shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0
+              shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
 
 
-                    write(307, '(9i3, 8f8.4)')m1, m2, m3, s1, s2, s3, h1, h2, h3, share_result, &
-                        sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                        sqrt(1d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                        sqrt(2d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                        sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                        sqrt(8d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                        sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                        sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
-                  end do
-                end do
-              end do
+              write(307, '(6i3, 8f8.4)')c1, m1, m2, m3, s1, h1, share_result, &
+                  sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                  sqrt(1d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                  sqrt(2d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                  sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                  sqrt(8d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                  sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                  sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
             end do
           end do
         end do
@@ -386,13 +380,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(rho_val(h1, 1)**5d0, mu_val(m1, 1), sigma5(rho_val(h1, 1), sigma_val(s1, 1)), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR((rho_val(h1)-0.03d0)**5d0, mu_val(m1, 1), sigma5(rho_val(h1)-0.03d0, sigma_val(s1)), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))
 
-    call discretize_AR(rho_val(h2, 2)**5d0, mu_val(m2, 2), sigma5(rho_val(h2, 2), sigma_val(s2, 2)), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(rho_val(h1)**5d0, mu_val(m2, 2), sigma5(rho_val(h1), sigma_val(s1)), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))
 
-    call discretize_AR(rho_val(h3, 3)**5d0, mu_val(m3, 3), sigma5(rho_val(h3, 3), sigma_val(s3, 3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR((rho_val(h1)+0.03d0)**5d0, mu_val(m3, 3), sigma5(rho_val(h1)+0.03d0, sigma_val(s1)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))
 
     ! initial guesses for macro variables
