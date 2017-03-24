@@ -55,7 +55,7 @@ program main
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
-  beta   =  0.998d0
+  beta   =  0.990d0
   ! convert variables into per period values
   beta = beta**5d0
 
