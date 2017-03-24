@@ -1733,18 +1733,18 @@ contains
     write(23,'(9f8.4)') percentiles(reshape(netinc(1, :, :, :, :, :, 3, :), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), reshape(m(1, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
 
     write(23,'(/a)')'Mean (worktime)'
-    write(23,'(4f8.4)') sum(reshape(l(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 1, :, it)), &
-                        sum(reshape(l(0, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 2, :, it)), &
-                        sum(reshape(l(0, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(0, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(0, :, :, :, :, :, 3, :, it)), &
-                        sum(reshape(l(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/))*reshape(m(0, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))/sum(m(0, :, :, :, :, :, :, :, it))
-    write(23,'(4f8.4)') sum(reshape(l(1, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(1, :, :, :, :, :, 1, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(1, :, :, :, :, :, 1, :, it)), &
-                        sum(reshape(l(1, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(1, :, :, :, :, :, 2, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(1, :, :, :, :, :, 2, :, it)), &
-                        sum(reshape(l(1, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(1, :, :, :, :, :, 3, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(1, :, :, :, :, :, 3, :, it)), &
-                        sum(reshape(l(1, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/))*reshape(m(1, :, :, :, :, :, :, :, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))/sum(m(1, :, :, :, :, :, :, :, it))
-    write(23,'(4f8.4)') sum(reshape(l(:, :, :, :, :, :, 1, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(:, :, :, :, :, :, 1, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(:, :, :, :, :, :, 1, :, it)), &
-                        sum(reshape(l(:, :, :, :, :, :, 2, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(:, :, :, :, :, :, 2, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(:, :, :, :, :, :, 2, :, it)), &
-                        sum(reshape(l(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/))*reshape(m(:, :, :, :, :, :, 3, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*JJ/)))/sum(m(:, :, :, :, :, :, 3, :, it)), &
-                        sum(reshape(l(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/))*reshape(m(:, :, :, :, :, :, :, :, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*JJ/)))/sum(m(:, :, :, :, :, :, :, :, it))
+    write(23,'(4f8.4)') sum(reshape(l(0, :, :, :, :, :, 1, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(0, :, :, :, :, :, 1, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(0, :, :, :, :, :, 1, :JR-1, it)), &
+                        sum(reshape(l(0, :, :, :, :, :, 2, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(0, :, :, :, :, :, 2, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(0, :, :, :, :, :, 2, :JR-1, it)), &
+                        sum(reshape(l(0, :, :, :, :, :, 3, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(0, :, :, :, :, :, 3, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(0, :, :, :, :, :, 3, :JR-1, it)), &
+                        sum(reshape(l(0, :, :, :, :, :, :, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(0, :, :, :, :, :, :, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(0, :, :, :, :, :, :, :JR-1, it))
+    write(23,'(4f8.4)') sum(reshape(l(1, :, :, :, :, :, 1, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(1, :, :, :, :, :, 1, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(1, :, :, :, :, :, 1, :JR-1, it)), &
+                        sum(reshape(l(1, :, :, :, :, :, 2, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(1, :, :, :, :, :, 2, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(1, :, :, :, :, :, 2, :JR-1, it)), &
+                        sum(reshape(l(1, :, :, :, :, :, 3, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(1, :, :, :, :, :, 3, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(1, :, :, :, :, :, 3, :JR-1, it)), &
+                        sum(reshape(l(1, :, :, :, :, :, :, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(1, :, :, :, :, :, :, :JR-1, it), (/(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(1, :, :, :, :, :, :, :JR-1, it))
+    write(23,'(4f8.4)') sum(reshape(l(:, :, :, :, :, :, 1, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(:, :, :, :, :, :, 1, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(:, :, :, :, :, :, 1, :JR-1, it)), &
+                        sum(reshape(l(:, :, :, :, :, :, 2, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(:, :, :, :, :, :, 2, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(:, :, :, :, :, :, 2, :JR-1, it)), &
+                        sum(reshape(l(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(:, :, :, :, :, :, 3, :JR-1, it)), &
+                        sum(reshape(l(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(:, :, :, :, :, :, :, :JR-1, it))
 
   end subroutine
 
