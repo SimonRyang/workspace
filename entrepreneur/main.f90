@@ -421,13 +421,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.93d0**5d0, -0.51d0, sigma5(0.93d0, 0.03d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.93d0**5d0, -0.51d0, sigma5(0.93d0, 0.04d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
     call discretize_AR(0.93d0**5d0, -0.42d0, sigma5(0.93d0, 0.03d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.93d0**5d0, -0.25d0, sigma5(0.93d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.93d0**5d0, -0.25d0, sigma5(0.96d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
 !    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
@@ -1619,7 +1619,7 @@ contains
     write(21, '(a, 9f8.2/)')'(in %)  ',(/sum(pop_w(:, it)+pop_e(:, it)), sum(pop_w(:, it)), sum(pop_e(:, it))/)/(sum(pop_w(:, it)+pop_e(:, it)))*100d0, &
                 (/pop_w(1, it), pop_e(1, it)/)/(pop_w(1, it)+pop_e(1, it))*100d0, &
                 (/pop_w(2, it), pop_e(2, it)/)/(pop_w(2, it)+pop_e(2, it))*100d0, &
-                (/pop_w(3, it), pop_e(3, it)/)/(pop_w(2, it)+pop_e(2, it))*100d0
+                (/pop_w(3, it), pop_e(3, it)/)/(pop_w(3, it)+pop_e(3, it))*100d0
 
     write(21,'(a)')'LIFE       j_bar  j_bar1  j_bar2  j_bar3'
     write(21,'(8x,4f8.2/)')sum(life_exp*dist_skill), life_exp(:)
