@@ -1596,9 +1596,9 @@ contains
 
     write(21,'(a)')'GOV         TAUC    TAUR    TAUW    TAUY   TOTAL      GG      BB      BF'
     write(21,'(8x,8f8.2)')TAc(it), TAr(it), TAw(it), TAy(it), TAc(it)+TAr(it)+TAw(it)+TAy(it), GG(it), BB(it), BF(it)
-    write(21,'(a,8f8.2)')'(in %)  ',(/TAc(it), TAr(it), TAw(it), TAy(it), TAc(it)+TAr(it)+TAw(it)+TAy(it), &
-               GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
-    write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur(it), 0d0, tauy(it)/)*100d0
+    write(21,'(a,8f8.2)')'(in %)  ',(/TAc(it), TAr(it), TAw(it), TAy(it), TAc(it)+TAr(it)+TAw(it)+TAy(it)/)/(TAc(it)+TAr(it)+TAw(it)+TAy(it)), &
+               (/GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
+    write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur(it), TAw(it)/(w(it)*LC(it)+ PE(it) + PRE(it)), tauy(it)/)*100d0
 
     write(21,'(a)')'PENS        TAUP     PEN      PP      PC      BQ'
     write(21,'(8x,5f8.2)')taup(it)*PC(it), PP(it)/sum(pop(JR:, it)), PP(it), PC(it), BQ(it)
