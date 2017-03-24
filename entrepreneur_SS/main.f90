@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 56
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(3, NS), sigma_val(5), rho_val(5), costs(5)
+  real*8 :: mu_val(5, NS), sigma_val(5), rho_val(5), costs(5)
   integer :: c1, s1, h1, m1, m2, m3
 
   ! allocate arrays
@@ -84,7 +84,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 2048d0
+  a_u    = 16483d0
   a_grow = 2.0d0
 
   ! size of the pension claim grid
@@ -93,7 +93,7 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-4
+  tol   = 1d-3
   itermax = 30
 
   ! compute gini
@@ -112,9 +112,9 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:, 1) = -(/0.53d0, 0.52d0, 0.51d0/)
-  mu_val(:, 2) = -(/0.43d0, 0.42d0, 0.41d0/)
-  mu_val(:, 3) = -(/0.25d0, 0.24d0, 0.23d0/)
+  mu_val(:, 1) = -(/0.20d0, 0.25d0, 0.30d0, 0.35d0, 0.40d0/)
+  mu_val(:, 2) = -(/0.20d0, 0.25d0, 0.30d0, 0.35d0, 0.40d0/)
+  mu_val(:, 3) = -(/0.00d0, 0.025d0, 0.05d0, 0.10d0, 0.15d0/)
 
   sigma_val(:) = (/0.04d0, 0.035d0, 0.03d0, 0.025d0, 0.02d0/)
 
@@ -124,7 +124,7 @@ program main
 
   open(307, file='results.out')
 
-  do c1 = 3, 3
+  do c1 = 4, 4
     do m1 = 2, 2
       do m2 = 2, 2
         do m3 = 2, 2
@@ -380,13 +380,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR((rho_val(h1)-0.03d0)**5d0, mu_val(m1, 1), sigma5(rho_val(h1)-0.03d0, sigma_val(s1)), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR((rho_val(h1)-0.005d0)**5d0, mu_val(m1, 1), sigma5(rho_val(h1)-0.005d0, sigma_val(s1)), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))
 
     call discretize_AR(rho_val(h1)**5d0, mu_val(m2, 2), sigma5(rho_val(h1), sigma_val(s1)), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))
 
-    call discretize_AR((rho_val(h1)+0.03d0)**5d0, mu_val(m3, 3), sigma5(rho_val(h1)+0.03d0, sigma_val(s1)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR((rho_val(h1)+0.005d0)**5d0, mu_val(m3, 3), sigma5(rho_val(h1)+0.005d0, sigma_val(s1)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))
 
     ! initial guesses for macro variables
