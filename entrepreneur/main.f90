@@ -82,7 +82,7 @@ program main
   lambda = 0d0
   phi    = 0d0
   taup   = 0.10d0
-  gy     = 0.214d0
+  gy     = 0.190d0
   by     = 0.703d0
   ! convert variables into per period values
   by = by/5d0
