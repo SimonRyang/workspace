@@ -90,7 +90,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 16384d0
-  a_grow = 1.5d0
+  a_grow = 1.9d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -377,11 +377,6 @@ contains
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
-
-    call plot((/(dble(ij), ij=1, JJ)/), psi(1, :JJ))
-    call plot((/(dble(ij), ij=1, JJ)/), psi(2, :JJ))
-    call plot((/(dble(ij), ij=1, JJ)/), psi(3, :JJ))
-    call execplot
 
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
