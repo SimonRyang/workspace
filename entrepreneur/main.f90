@@ -1000,11 +1000,11 @@ contains
 
     ! get initial distribution at age 1
     do is = 1, NS
-      do ie = 1, NE
-        do iw = 1, NW
-          m(0, 0, 0, 0, iw, ie, is, 1, it) = dist_theta(ie, is)*dist_eta(iw, is)*dist_skill(is)
-        enddo ! iw
-      enddo ! ie
+      !do ie = 1, NE
+        !do iw = 1, NW
+          m(0, 0, 0, 0, 3, 3, is, 1, it) = dist_skill(is)
+        !enddo ! iw
+      !enddo ! ie
     enddo ! is
 
     !write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
