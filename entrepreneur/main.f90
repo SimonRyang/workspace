@@ -421,13 +421,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.93d0**5d0, -0.2d0, sigma5(0.93d0, 0.03d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.93d0**5d0, -0.35d0, sigma5(0.93d0, 0.03d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.93d0**5d0, -0.2d0, sigma5(0.93d0, 0.03d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.93d0**5d0, -0.30d0, sigma5(0.93d0, 0.03d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.96d0**5d0, -0.00d0, sigma5(0.96d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.93d0**5d0, -0.00d0, sigma5(0.93d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
 !    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
@@ -1000,11 +1000,11 @@ contains
 
     ! get initial distribution at age 1
     do is = 1, NS
-      !do ie = 1, NE
-        !do iw = 1, NW
-          m(0, 0, 0, 0, 4, 4, is, 1, it) = dist_skill(is)
-        !enddo ! iw
-      !enddo ! ie
+      do ie = 1, NE
+        do iw = 1, NW
+          m(0, 0, 0, 0, iw, ie, is, 1, it) = dist_theta(ie, is)*dist_eta(iw, is)*dist_skill(is)
+        enddo ! iw
+      enddo ! ie
     enddo ! is
 
     !write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
