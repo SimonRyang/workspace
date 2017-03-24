@@ -1616,8 +1616,10 @@ contains
     write(21,'(a)')'           WORFO     WOR     ENT    WOR1    ENT1    WOR2    ENT2    WOR3    ENT3'
     write(21,'(8x,9f8.2)')sum(pop_w(:, it))+sum(pop_e(:, it)), sum(pop_w(:, it)), sum(pop_e(:, it)), &
                 pop_w(1, it), pop_e(1, it), pop_w(2, it), pop_e(2, it), pop_w(3, it), pop_e(3, it)
-    write(21, '(a, 9f8.2/)')'(in %)  ',(/sum(pop_w(:, it)+pop_e(:, it)), sum(pop_w(:, it)), sum(pop_e(:, it)), &
-                pop_w(1, it), pop_e(1, it), pop_w(2, it), pop_e(2, it), pop_w(3, it), pop_e(3, it)/)/(sum(pop_w(:, it)+pop_e(:, it)))*100d0
+    write(21, '(a, 9f8.2/)')'(in %)  ',(/sum(pop_w(:, it)+pop_e(:, it)), sum(pop_w(:, it)), sum(pop_e(:, it))/)/(sum(pop_w(:, it)+pop_e(:, it)))*100d0, &
+                (/pop_w(1, it), pop_e(1, it)/)/(pop_w(1, it)+pop_e(1, it))*100d0, &
+                (/pop_w(2, it), pop_e(2, it)/)/(pop_w(2, it)+pop_e(2, it))*100d0, &
+                (/pop_w(3, it), pop_e(3, it)/)/(pop_w(2, it)+pop_e(2, it))*100d0
 
     write(21,'(a)')'LIFE       j_bar  j_bar1  j_bar2  j_bar3'
     write(21,'(8x,4f8.2/)')sum(life_exp*dist_skill), life_exp(:)
