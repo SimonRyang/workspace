@@ -63,12 +63,12 @@ program main
   alpha = 0.36d0
   delta = 0.065d0
   nu = 0.88d0
-  l_bar = .41d0
+  l_bar = .47d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
   ! demographic parameters
-  n_p   = 0.0067d0
+  n_p   = 0.007d0
   ! convert variables into per period values
   n_p = (1d0+n_p)**5-1d0
 
