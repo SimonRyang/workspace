@@ -55,13 +55,13 @@ program main
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
-  beta   =  0.985d0
+  beta   =  0.988d0
   ! convert variables into per period values
   beta = beta**5d0
 
   ! production parameters
   alpha = 0.36d0
-  delta = 0.063d0
+  delta = 0.065d0
   nu = 0.88d0
   l_bar = .41d0
   ! convert variables into per period values
