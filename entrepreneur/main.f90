@@ -62,7 +62,7 @@ program main
   ! production parameters
   alpha = 0.36d0
   delta = 0.065d0
-  nu = 0.88d0
+  nu = 1d0!0.88d0
   l_bar = .47d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
@@ -82,8 +82,8 @@ program main
   lambda = 0d0
   phi    = 0d0
   taup   = 0.10d0
-  gy     = 0.214d0
-  by     = 0.703d0
+  gy     = 0.19d0
+  by     = 0.70d0
   ! convert variables into per period values
   by = by/5d0
 
