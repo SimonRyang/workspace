@@ -1514,7 +1514,7 @@ contains
       punb(is, 1) = psi(is, 1)
       life_exp(is) = life_exp(is) + dble(1)*punb(is, 1)*(1d0-psi(is, 2))
       do ij = 2, JJ
-        punb(ij, is) = punb(is, ij-1)*psi(is, ij)
+        punb(is, ij) = punb(is, ij-1)*psi(is, ij)
         life_exp(is) = life_exp(is) + 5d0*dble(ij)*punb(is, ij)*(1d0-psi(is, ij+1))
       enddo ! ij
     enddo ! is
