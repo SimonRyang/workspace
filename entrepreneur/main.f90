@@ -378,9 +378,9 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
-    call plot((/(dble(ij), ij=1, JJ)/), psi(1, :))
-    call plot((/(dble(ij), ij=1, JJ)/), psi(2, :))
-    call plot((/(dble(ij), ij=1, JJ)/), psi(3, :))
+    call plot((/(dble(ij), ij=1, JJ)/), psi(1, :JJ))
+    call plot((/(dble(ij), ij=1, JJ)/), psi(2, :JJ))
+    call plot((/(dble(ij), ij=1, JJ)/), psi(3, :JJ))
     call execplot
 
     ! set up population structure
@@ -1506,6 +1506,16 @@ contains
       do ij = 2, JJ
         punb(ij, is) = punb(ij-1, is)*psi(is, ij)
         life_exp(is) = life_exp(is) + (2.5d0 + 5d0*dble(ij-1))*punb(ij, is)*(1d0-psi(is, ij+1))
+      enddo ! ij
+    enddo ! is
+
+    life_exp = 0d0
+    do is = 1, NS
+      punb(1, is) = psi(is, 1)
+      life_exp(is) = life_exp(is) + dble(1)*punb(1,is)*(1d0-psi(is, 2))
+      do ij = 2, JJ
+        punb(ij, is) = punb(ij-1, is)*psi(is, ij)
+        life_exp(is) = life_exp(is) + 5d0*dble(ij-1))punb(ij, is)*(1d0-psi(is, ij+1))
       enddo ! ij
     enddo ! is
 
