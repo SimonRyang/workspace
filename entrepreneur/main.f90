@@ -68,7 +68,7 @@ program main
   delta = 1d0 - (1d0-delta)**5d0
 
   ! demographic parameters
-  n_p   = 0.0064d0
+  n_p   = 0.0055d0
   ! convert variables into per period values
   n_p = (1d0+n_p)**5-1d0
 
