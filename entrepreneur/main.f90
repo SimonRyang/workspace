@@ -49,7 +49,7 @@ program main
   gamma  =  0.500d0
   ! invert gamma
   gamma = 1d0/gamma
-  sigma  =  0.300d0
+  sigma  =  0.318d0
   phi1   = -11.600d0
   phi2   =  11.600d0
   ! invert phi2
@@ -68,7 +68,7 @@ program main
   delta = 1d0 - (1d0-delta)**5d0
 
   ! demographic parameters
-  n_p   = 0.0083d0
+  n_p   = 0.0068d0
   ! convert variables into per period values
   n_p = (1d0+n_p)**5-1d0
 
@@ -389,7 +389,7 @@ contains
       pop(:, 0) = pop(:, 0) + rpop(is, :, 0)
     enddo
 
-    write(*,*)sum(pop(JR:, 0))/sum(pop(:JR-1, 0))
+    write(*,*)sum(pop(JR:, 0))/sum(pop(:JR-1, 0))*100d0
 
     ! set distribution of bequests
     Gama(1) = 0.0d0*pop(1, 0)
