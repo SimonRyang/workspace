@@ -76,7 +76,7 @@ program main
   tauc   = 0.10d0
   taur   = 0.25d0
   tauy   = 0.15d0
-  kappa  = 0.55d0
+  kappa  = 0.53d0
   sscc   = 2d0
   mu     = 1d0
   lambda = 0d0
@@ -389,8 +389,6 @@ contains
       pop(:, 0) = pop(:, 0) + rpop(is, :, 0)
     enddo
 
-    write(*,*)sum(pop(JR:, 0))/sum(pop(:JR-1, 0))*100d0
-
     ! set distribution of bequests
     Gama(1) = 0.0d0*pop(1, 0)
     Gama(2) = 0.0d0*pop(2, 0)
@@ -423,13 +421,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.93d0**5d0, -0.51d0, sigma5(0.93d0, 0.04d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.93d0**5d0, -0.51d0, sigma5(0.93d0, 0.03d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
     call discretize_AR(0.93d0**5d0, -0.42d0, sigma5(0.93d0, 0.03d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.96d0**5d0, -0.25d0, sigma5(0.96d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.93d0**5d0, -0.25d0, sigma5(0.93d0, 0.03d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
 !    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
