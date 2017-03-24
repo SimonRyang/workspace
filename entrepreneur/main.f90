@@ -49,7 +49,7 @@ program main
   gamma  =  0.500d0
   ! invert gamma
   gamma = 1d0/gamma
-  sigma  =  0.318d0
+  sigma  =  0.300d0
   phi1   = -11.600d0
   phi2   =  11.600d0
   ! invert phi2
