@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 56
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(5, NS), sigma_val(6), rho_val(5), costs(6)
+  real*8 :: mu_val(5, NS), sigma_val(4), rho_val(4), costs(5)
   integer :: c1, s1, h1, m1, m2, m3
 
   ! allocate arrays
@@ -112,24 +112,24 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:, 1) = -(/0.25d0, 0.30d0, 0.35d0, 0.40d0, 0.45d0/)
-  mu_val(:, 2) = -(/0.25d0, 0.30d0, 0.35d0, 0.40d0, 0.45d0/)
-  mu_val(:, 3) = -(/0.00d0, 0.025d0, 0.05d0, 0.10d0, 0.15d0/)
+  mu_val(:, 1) = -(/0.38d0, 0.39d0, 0.40d0, 0.41d0, 0.42d0/)
+  mu_val(:, 2) = -(/0.33d0, 0.34d0, 0.35d0, 0.36d0, 0.37d0/)
+  mu_val(:, 3) = 0d0
 
-  sigma_val(:) = (/0.04d0, 0.035d0, 0.0325d0, 0.03d0, 0.0275d0, 0.025d0/)
+  sigma_val(:) = (/0.036d0, 0.035d0, 0.034d0, 0.033d0/)
 
-  rho_val(:) = (/0.96d0, 0.955d0, 0.95d0, 0.945d0, 0.940d0/)
+  rho_val(:) = (/0.9425d0, 0.940d0, 0.9375d0, 0.935d0/)
 
-  costs = (/0.65d0, 0.675d0, 0.70d0, 0.725d0, 0.75d0, 0.775d0/)
+  costs = (/0.55d0, 0.60d0, 0.625d0, 0.65d0, 0.675d0/)
 
   open(307, file='results.out')
 
-  do c1 = 1, 6
+  do c1 = 1, 5
     do m1 = 1, 5
       do m2 = 1, 5
-        do m3 = 1, 5
-          do s1 = 1, 6
-            do h1 = 1, 5
+        do m3 = 1, 1
+          do s1 = 1, 4
+            do h1 = 1, 4
 
               suc = costs(c1)
 
