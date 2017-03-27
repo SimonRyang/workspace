@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 56
+  integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
   real*8 :: mu_val(5, NS), sigma_val(4), rho_val(4), costs(5)
