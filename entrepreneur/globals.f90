@@ -173,7 +173,7 @@ contains
     k_com = 0d0
 
     ! calculate tomorrow's annuitized capital stock
-    xplus_com = 0d0 !x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
+    xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
 
     ! calculate contribution to pension system
     pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_bar(it_com))
@@ -204,7 +204,6 @@ contains
         ixr = 0
         varchi = 1d0
       endif
-
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -275,22 +274,22 @@ contains
     k_com = xy(2)
 
     ! today's investment in annuitized assets
-    mx_com = 0d0 !xy(3)
+    mx_com = xy(3)
 
     ! calculate annuities
     p_hat = 0d0
-!    if (ij_com >= JR) then
-!      temp1 = 0d0
-!      do ij = ij_com, JJ
-!        temp2 = 1d0
-!        do iij = ij_com+1, ij
-!          itj = year(it_com, ij_com, iij)
-!          temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
-!        enddo
-!        temp1 = temp1 + 1d0/temp2
-!      enddo
-!      p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
-!    endif
+    if (ij_com >= JR) then
+      temp1 = 0d0
+      do ij = ij_com, JJ
+        temp2 = 1d0
+        do iij = ij_com+1, ij
+          itj = year(it_com, ij_com, iij)
+          temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
+        enddo
+        temp1 = temp1 + 1d0/temp2
+      enddo
+      p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
+    endif
 
     ! calculate tommorrow's annuitized asset stock
     if (ann .and. ij_com < JR) then
@@ -298,7 +297,6 @@ contains
     elseif (ann .and. ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
     endif
-    xplus_com = 0d0
 
     ! no investment without any assets
     if (ia_com == 0) k_com = 0d0
@@ -356,7 +354,6 @@ contains
         ixr = 0
         varchi = 1d0
       endif
-
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_e = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -443,19 +440,18 @@ contains
     ! calculate annuities
     p_hat = 0d0
     temp1 = 0d0
-!    do ij = ij_com, JJ
-!      temp2 = 1d0
-!      do iij = ij_com+1, ij
-!        itj = year(it_com, ij_com, iij)
-!        temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
-!      enddo
-!      temp1 = temp1 + 1d0/temp2
-!    enddo
-!    p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
+    do ij = ij_com, JJ
+      temp2 = 1d0
+      do iij = ij_com+1, ij
+        itj = year(it_com, ij_com, iij)
+        temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
+      enddo
+      temp1 = temp1 + 1d0/temp2
+    enddo
+    p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
 
     ! calculate tomorrow's annuitized asset stock
-    !xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
-    xplus_com = 0d0
+    xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
 
     ! calculate contribution to pension system
     pencon_com = 0d0
