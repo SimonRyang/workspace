@@ -651,7 +651,7 @@ contains
 
                 ! copy decisions
                 aplus(:, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
-                xplus(:, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
+                xplus(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 pplus(:, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
                 c(:, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
                 l(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
@@ -702,12 +702,12 @@ contains
 
                     ! copy decisions
                     aplus(1, ia, ix, ip, :, ie, is, ij, it) = xy(1)
-                    xplus(1, ia, ix, ip, :, ie, is, ij, it) = xplus_com
+                    xplus(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
                     k(1, ia, ix, ip, :, ie, is, ij, it) = k_com
                     pplus(1, ia, ix, ip, :, ie, is, ij, it) = pplus_com
                     c(1, ia, ix, ip, :, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, ix, ip, :, ie, is, ij, it) = l_com
-                    mx(1, ia, ix, ip, :, ie, is, ij, it) = mx_com
+                    mx(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
                     oplus(1, ia, ix, ip, :, ie, is, ij, it) = oplus_com
                     pencon(1, ia, ix, ip, :, ie, is, ij, it) = pencon_com
                     inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
@@ -747,7 +747,7 @@ contains
 
                 ! copy decisions
                 aplus(0, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
-                xplus(0, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
+                xplus(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 pplus(0, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
                 c(0, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
                 l(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
@@ -800,12 +800,12 @@ contains
 
                     ! copy decisions
                     aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(1, ia, :, ip, iw, ie, is, ij, it) = xplus_com
+                    xplus(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
                     k(1, ia, :, ip, iw, ie, is, ij, it) = k_com
                     pplus(1, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                     c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
-                    mx(1, ia, :, ip, iw, ie, is, ij, it) = mx_com
+                    mx(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
                     oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                     pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
@@ -848,12 +848,12 @@ contains
 
                     ! copy decisions
                     aplus(0, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(0, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                    xplus(0, ia, ix, ip, iw, ie, is, ij, it) = 0d0
                     k(0, ia, ix, ip, iw, ie, is, ij, it) = k_com
                     pplus(0, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
                     c(0, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                     l(0, ia, ix, ip, iw, ie, is, ij, it) = l_com
-                    mx(0, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                    mx(0, ia, ix, ip, iw, ie, is, ij, it) = 0d0
                     oplus(0, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
                     pencon(0, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
                     inctax(0, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
@@ -1032,9 +1032,7 @@ contains
                       ixr = 0
                       varchi = 1d0
                     endif
-        ixl = 0
-        ixr = 0
-        varchi = 1d0
+
                     ! interpolate today's pension claims
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                                        p_l, p_u, NP, ipl, ipr, varpsi)
@@ -1162,9 +1160,7 @@ contains
                       ixr = 0
                       varchi = 1d0
                     endif
-        ixl = 0
-        ixr = 0
-        varchi = 1d0
+
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     x_coh(ij, it) = x_coh(ij, it) + x(ix) &
