@@ -27,7 +27,7 @@ module globals
   integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 31
+  integer, parameter :: NA = 15
 
   ! number of points on the annuitized asset grid (-1)
   integer, parameter :: NX = 0
@@ -273,7 +273,7 @@ contains
     ! today's investment
     k_com = xy(2)
 
-    ! today's investment in annuitized assets
+    ! today's investment in annuitized asset stock
     mx_com = xy(3)
 
     ! calculate annuities
@@ -292,8 +292,10 @@ contains
     endif
 
     ! calculate tommorrow's annuitized asset stock
-    if (ann .and. ij_com < JR) then
+    if (ann .and. ij_com < JR-1) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
+    elseif (ann .and. ij_com == JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + mx_com
     elseif (ann .and. ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
     endif
