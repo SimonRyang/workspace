@@ -637,7 +637,7 @@ contains
         !$omp parallel do copyin(io_com, iw_com, ie_com, ij_com, it_com) collapse(3) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
         do is = 1, NS
           do ip = 0, NP
-            do ix = 0, NX
+            do ix = 0, 0
               do ia = 0, NA
 
                 ! set up communication variables
@@ -683,7 +683,7 @@ contains
           do is = 1, NS
             do ie = 1, NE
               do ip = 0, NP
-                do ix = 0, NX
+                do ix = 0, 0
                   do ia = 0, NA
 
                     ! set up communication variables
