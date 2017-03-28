@@ -823,45 +823,43 @@ contains
 
         ! set up communication variables
         io_com = 0
+        ix_com = 0
 
         !$omp do collapse(4) schedule(dynamic, 1)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
               do ip = 0, NP
-                do ix = 0, NX
                   do ia = 0, NA
 
-                    ! set up communication variables
-                    is_com = is
-                    ie_com = ie
-                    iw_com = iw
-                    ip_com = ip
-                    ix_com = ix
-                    ia_com = ia
+                  ! set up communication variables
+                  is_com = is
+                  ie_com = ie
+                  iw_com = iw
+                  ip_com = ip
+                  ia_com = ia
 
-                    ! get initial guess for the individual choices
-                    xy(1) = max(aplus(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
-                    xy(2) = max(l(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                  ! get initial guess for the individual choices
+                  xy(1) = max(aplus(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                  xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
+                  call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
-                    ! copy decisions
-                    aplus(0, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(0, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
-                    k(0, ia, ix, ip, iw, ie, is, ij, it) = k_com
-                    pplus(0, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
-                    c(0, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
-                    l(0, ia, ix, ip, iw, ie, is, ij, it) = l_com
-                    mx(0, ia, ix, ip, iw, ie, is, ij, it) = mx_com
-                    oplus(0, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
-                    pencon(0, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
-                    inctax(0, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
-                    captax(0, ia, ix, ip, iw, ie, is, ij, it) = captax_com
-                    VV(0, ia, ix, ip, iw, ie, is, ij, it) = -fret
+                  ! copy decisions
+                  aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
+                  xplus(0, ia, :, ip, iw, ie, is, ij, it) = xplus_com
+                  k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
+                  pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
+                  c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                  l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
+                  mx(0, ia, :, ip, iw, ie, is, ij, it) = mx_com
+                  oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
+                  pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
+                  inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
+                  captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
+                  VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
 
                   enddo ! ia
-                enddo ! ix
               enddo ! ip
             enddo ! iw
           enddo ! ie
