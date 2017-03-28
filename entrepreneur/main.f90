@@ -792,20 +792,20 @@ contains
                     ! get initial guess for the individual choices
                     xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                    !xy(3) = max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
                     limit = max(1.5d0*a(ia), 1d-4)
 
-                    call fminsearch(xy, fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
+                    call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, limit, x_u/), valuefunc_e)
 
                     ! copy decisions
                     aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
+                    xplus(1, ia, :, ip, iw, ie, is, ij, it) = xplus_com
                     k(1, ia, :, ip, iw, ie, is, ij, it) = k_com
                     pplus(1, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                     c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
-                    mx(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
+                    mx(1, ia, :, ip, iw, ie, is, ij, it) = mx_com
                     if (ij < JR-1 .and. mx_com > 1d-4) write(*,*)ij, ix, ia, mx_com
                     oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                     pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
@@ -850,12 +850,12 @@ contains
 
                     ! copy decisions
                     aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
+                    xplus(0, ia, :, ip, iw, ie, is, ij, it) = xplus_com
                     k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
                     pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                     c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                     l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
-                    mx(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
+                    mx(0, ia, :, ip, iw, ie, is, ij, it) = mx_com
                     oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                     pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                     inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
