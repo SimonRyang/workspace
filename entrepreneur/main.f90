@@ -1032,7 +1032,9 @@ contains
                       ixr = 0
                       varchi = 1d0
                     endif
-
+        ixl = 0
+        ixr = 0
+        varchi = 1d0
                     ! interpolate today's pension claims
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                                        p_l, p_u, NP, ipl, ipr, varpsi)
@@ -1160,7 +1162,9 @@ contains
                       ixr = 0
                       varchi = 1d0
                     endif
-
+        ixl = 0
+        ixr = 0
+        varchi = 1d0
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     x_coh(ij, it) = x_coh(ij, it) + x(ix) &
