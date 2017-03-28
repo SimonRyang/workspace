@@ -842,24 +842,24 @@ contains
                     ia_com = ia
 
                     ! get initial guess for the individual choices
-                    xy(1) = max(aplus(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                    xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(1) = max(aplus(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(2) = max(l(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
 
                     call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
                     ! copy decisions
-                    aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(0, ia, :, ip, iw, ie, is, ij, it) = xplus_com
-                    k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
-                    pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
-                    c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
-                    l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
-                    mx(0, ia, :, ip, iw, ie, is, ij, it) = mx_com
-                    oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
-                    pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
-                    inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
-                    captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
-                    VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
+                    aplus(0, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                    xplus(0, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                    k(0, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                    pplus(0, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
+                    c(0, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                    l(0, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                    mx(0, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                    oplus(0, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                    pencon(0, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
+                    inctax(0, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                    captax(0, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                    VV(0, ia, ix, ip, iw, ie, is, ij, it) = -fret
 
                   enddo ! ia
                 enddo ! ix
