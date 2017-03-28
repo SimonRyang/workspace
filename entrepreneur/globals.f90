@@ -292,8 +292,10 @@ contains
     endif
 
     ! calculate tommorrow's annuitized asset stock
-    if (ann .and. ij_com < JR) then
+    if (ann .and. ij_com < JR-1) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) !+ mx_com
+    elseif (ann .and. ij_com == JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + mx_com
     elseif (ann .and. ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
     endif
