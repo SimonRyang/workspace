@@ -844,7 +844,7 @@ contains
 
                   ! get initial guess for the individual choices
                   xy(1) = max(aplus(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                  xy(2) = 0d0 !max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                  xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
                   call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
