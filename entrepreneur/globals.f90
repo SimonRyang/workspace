@@ -30,7 +30,7 @@ module globals
   integer, parameter :: NA = 15
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 0
+  integer, parameter :: NX = 15
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
@@ -293,7 +293,7 @@ contains
 
     ! calculate tommorrow's annuitized asset stock
     if (ann .and. ij_com < JR) then
-      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + mx_com
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + !mx_com
     elseif (ann .and. ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
     endif
