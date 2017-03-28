@@ -173,7 +173,7 @@ contains
     k_com = 0d0
 
     ! calculate tomorrow's annuitized capital stock
-    xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
+    xplus_com = 0d0 !x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
 
     ! calculate contribution to pension system
     pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_bar(it_com))
