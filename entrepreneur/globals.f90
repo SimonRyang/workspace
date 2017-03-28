@@ -199,6 +199,9 @@ contains
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
       if (ann) then
         call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+        ixl = 0
+        ixr = 0
+        varchi = 1d0
       else
         ixl = 0
         ixr = 0
@@ -350,6 +353,9 @@ contains
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
       if (ann) then
         call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+                ixl = 0
+        ixr = 0
+        varchi = 1d0
       else
         ixl = 0
         ixr = 0
