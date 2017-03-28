@@ -1019,7 +1019,7 @@ contains
         do ie = 1, NE
           do iw = 1, NW
             do ip = 0, NP
-              do ix = 0, NX
+              do ix = 0, 0
                 do ia = 0, NA
                   do io = 0, NO
 
