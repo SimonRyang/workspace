@@ -824,14 +824,13 @@ contains
 
         ! set up communication variables
         io_com = 0
-        ix_com = 0
 
         !$omp do collapse(4) schedule(dynamic, 1)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
               do ip = 0, NP
-                !do ix = 0, NX
+                do ix = 0, NX
                   do ia = 0, NA
 
                     ! set up communication variables
@@ -839,7 +838,7 @@ contains
                     ie_com = ie
                     iw_com = iw
                     ip_com = ip
-                    !ix_com = ix
+                    ix_com = ix
                     ia_com = ia
 
                     ! get initial guess for the individual choices
@@ -863,7 +862,7 @@ contains
                     VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
 
                   enddo ! ia
-                !enddo ! ix
+                enddo ! ix
               enddo ! ip
             enddo ! iw
           enddo ! ie
