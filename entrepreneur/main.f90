@@ -808,6 +808,8 @@ contains
                       c(1, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                       l(1, ia, ix, ip, iw, ie, is, ij, it) = l_com
                       mx(1, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+
+                      if (mx_com > 1d-10) write(*,*) ix, ia, mx_com
                       oplus(1, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
                       pencon(1, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
                       inctax(1, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
