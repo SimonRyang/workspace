@@ -840,7 +840,6 @@ contains
                   ie_com = ie
                   iw_com = iw
                   ip_com = ip
-                  ix_com = ix
                   ia_com = ia
 
                   ! get initial guess for the individual choices
