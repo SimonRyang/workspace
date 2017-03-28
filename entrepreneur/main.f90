@@ -112,7 +112,6 @@ program main
   ! set switches
   if (NO == 0) ent = .false.
   if (NX == 0) ann = .false.
-  ann = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -322,7 +321,6 @@ contains
     ! initialize annuity grid
     if (ann) then
       x = grid_Cons_Grow(x_l, x_u, x_grow, NX)
-      write(*,*)x
     else
       x = 0d0
     endif
