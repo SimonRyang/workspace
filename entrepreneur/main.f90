@@ -595,6 +595,7 @@ contains
       if (x_coh(ij, it) > 0d0) psix(ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
+
   end subroutine
 
 
@@ -787,6 +788,7 @@ contains
                       ie_com = ie
                       iw_com = iw
                       ip_com = ip
+                      ix_com = ix
                       ia_com = ia
 
                       ! get initial guess for the individual choices
