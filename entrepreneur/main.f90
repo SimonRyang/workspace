@@ -895,11 +895,11 @@ contains
 
               ! copy decisions
               aplus(:, :, :, :, iw, ie, is, ij, it) = xy(1)
-              xplus(:, :, :, :, iw, ie, is, ij, it) = xplus_com
+              xplus(:, :, :, :, iw, ie, is, ij, it) = 0d0
               pplus(:, :, :, :, iw, ie, is, ij, it) = pplus_com
               c(:, :, :, :, iw, ie, is, ij, it) = max(c_com, 1d-10)
               l(:, :, :, :, iw, ie, is, ij, it) = l_com
-              mx(:, :, :, :, iw, ie, is, ij, it) = mx_com
+              mx(:, :, :, :, iw, ie, is, ij, it) = 0d0
               k(:, :, :, :, iw, ie, is, ij, it) = 0d0
               oplus(:, :, :, :, iw, ie, is, ij, it) = oplus_com
               pencon(:, :, :, :, iw, ie, is, ij, it) = pencon_com
