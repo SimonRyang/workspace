@@ -297,6 +297,7 @@ contains
     elseif (ann .and. ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
     endif
+    xplus_com = 0d0
 
     ! no investment without any assets
     if (ia_com == 0) k_com = 0d0
@@ -452,6 +453,7 @@ contains
 
     ! calculate tomorrow's annuitized asset stock
     !xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
+    xplus_com = 0d0
 
     ! calculate contribution to pension system
     pencon_com = 0d0
