@@ -173,7 +173,7 @@ contains
     k_com = 0d0
 
     ! calculate tomorrow's annuitized capital stock
-    xplus_com = 0d0!x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
+    xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
 
     ! calculate contribution to pension system
     pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_bar(it_com))
@@ -274,7 +274,7 @@ contains
     k_com = xy(2)
 
     ! today's investment in annuitized assets
-    mx_com = 0d0 !xy(3)
+    mx_com = xy(3)
 
     ! calculate annuities
     p_hat = 0d0
@@ -293,11 +293,11 @@ contains
 
     ! calculate tommorrow's annuitized asset stock
     xplus_com = 0d0
-    !if (ann .and. ij_com == JR-1) then
-     ! xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + mx_com
-    !elseif (ann .and. ij_com >= JR) then
-     ! xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
-    !endif
+    if (ann .and. ij_com == JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + mx_com
+    elseif (ann .and. ij_com >= JR) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
+    endif
 
     ! no investment without any assets
     if (ia_com == 0) k_com = 0d0
