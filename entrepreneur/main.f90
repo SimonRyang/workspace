@@ -321,7 +321,6 @@ contains
     ! initialize annuity grid
     if (ann) then
       x = grid_Cons_Grow(x_l, x_u, x_grow, NX)
-      write(*,*)x
     else
       x(0) = 0d0
     endif
