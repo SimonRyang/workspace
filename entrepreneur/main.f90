@@ -103,7 +103,7 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-3
+  tol   = 1d-6
   itermax = 200
 
   ! compute gini
@@ -322,7 +322,7 @@ contains
     if (ann) then
       x = grid_Cons_Grow(x_l, x_u, x_grow, NX)
     else
-      x = 0d0
+      x(0) = 0d0
     endif
 
     ! initialize pension claim grid
@@ -595,7 +595,6 @@ contains
       if (x_coh(ij, it) > 0d0) psix(ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
-
   end subroutine
 
 
@@ -791,9 +790,9 @@ contains
                     ia_com = ia
 
                     ! get initial guess for the individual choices
-                    xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                    xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                    xy(3) = 0d0 !max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(1) = max(aplus(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(2) = max(k(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
 
                     limit = max(1.5d0*a(ia), 1d-4)
 
@@ -807,8 +806,6 @@ contains
                     c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
                     mx(1, ia, :, ip, iw, ie, is, ij, it) = mx_com
-
-                    if (mx_com > 0.001d0) write(*,*) ij, ia, mx_com
                     oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                     pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
@@ -816,7 +813,7 @@ contains
                     VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
 
                   enddo ! ia
-              enddo ! ip
+                enddo ! ip
               enddo ! iw
             enddo ! ie
           enddo ! is
@@ -826,44 +823,45 @@ contains
 
         ! set up communication variables
         io_com = 0
-        ix_com = 0
 
         !$omp do collapse(4) schedule(dynamic, 1)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
               do ip = 0, NP
-                do ia = 0, NA
+                do ix = 0, NX
+                  do ia = 0, NA
 
-                  ! set up communication variables
-                  is_com = is
-                  ie_com = ie
-                  iw_com = iw
-                  ip_com = ip
-                  ia_com = ia
+                    ! set up communication variables
+                    is_com = is
+                    ie_com = ie
+                    iw_com = iw
+                    ip_com = ip
+                    ix_com = ix
+                    ia_com = ia
 
-                  ! get initial guess for the individual choices
-                  xy(1) = max(aplus(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                  xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    ! get initial guess for the individual choices
+                    xy(1) = max(aplus(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(2) = max(l(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
 
-                  call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
+                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
-                  ! copy decisions
-                  aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                  xplus(0, ia, :, ip, iw, ie, is, ij, it) = xplus_com
-                  k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
-                  pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
-                  c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
-                  l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
-                  mx(0, ia, :, ip, iw, ie, is, ij, it) = mx_com
-                  oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
-                  pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
-                  inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
-                  captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
-                  VV(0, ia, ix, :, iw, ie, is, ij, it) = -fret
+                    ! copy decisions
+                    aplus(0, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                    xplus(0, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                    k(0, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                    pplus(0, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
+                    c(0, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                    l(0, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                    mx(0, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                    oplus(0, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                    pencon(0, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
+                    inctax(0, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                    captax(0, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                    VV(0, ia, ix, ip, iw, ie, is, ij, it) = -fret
 
-                enddo ! ia
-
+                  enddo ! ia
+                enddo ! ix
               enddo ! ip
             enddo ! iw
           enddo ! ie

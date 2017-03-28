@@ -27,10 +27,10 @@ module globals
   integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 15
+  integer, parameter :: NA = 31
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 15
+  integer, parameter :: NX = 16
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
@@ -279,22 +279,20 @@ contains
     ! calculate annuities
     p_hat = 0d0
     if (ij_com >= JR) then
-    temp1 = 0d0
-    do ij = ij_com, JJ
-      temp2 = 1d0
-      do iij = ij_com+1, ij
-        itj = year(it_com, ij_com, iij)
-        temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
+      temp1 = 0d0
+      do ij = ij_com, JJ
+        temp2 = 1d0
+        do iij = ij_com+1, ij
+          itj = year(it_com, ij_com, iij)
+          temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
+        enddo
+        temp1 = temp1 + 1d0/temp2
       enddo
-      temp1 = temp1 + 1d0/temp2
-    enddo
-    p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
+      p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
     endif
 
     ! calculate tommorrow's annuitized asset stock
-    if (ann .and. ij_com < JR-1) then
-      xplus_com = 0d0
-    elseif (ann .and. ij_com == JR-1) then
+    if (ann .and. ij_com < JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + mx_com
     elseif (ann .and. ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
