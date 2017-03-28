@@ -204,6 +204,9 @@ contains
         ixr = 0
         varchi = 1d0
       endif
+              ixl = 0
+        ixr = 0
+        varchi = 1d0
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -355,6 +358,9 @@ contains
         ixr = 0
         varchi = 1d0
       endif
+              ixl = 0
+        ixr = 0
+        varchi = 1d0
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_e = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -478,6 +484,9 @@ contains
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
       if (ann) then
         call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+                ixl = 0
+        ixr = 0
+        varchi = 1d0
       else
         ixl = 0
         ixr = 0
