@@ -252,6 +252,8 @@ contains
       ! aggregate individual decisions
       call aggregation()
 
+      write(*,*)YY, YC, YE, AA, KK, KC, KE
+
       ! determine the government parameters
       call government()
 

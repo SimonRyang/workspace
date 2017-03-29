@@ -177,6 +177,8 @@ contains
       ! aggregate individual decisions
       call aggregation(0)
 
+      write(*,*)YY(0), YC(0), YE(0), AA(0), KK(0), KC(0), KE(0)
+
       ! determine the government parameters
       call government(0)
 
