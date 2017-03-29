@@ -202,14 +202,14 @@ program main
 !
 !    write(*,*)share_result
 
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
-
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
-    call execplot()
+!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
+!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
+!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
+!
+!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
+!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
+!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
+!    call execplot()
 
   ! close files
   close(307)
@@ -241,6 +241,8 @@ contains
 
       !call tick(calc)
 
+      write(*,*)r, w, tauc, taup, inc_bar
+
       ! get factor and other prices
       call get_prices()
 
@@ -258,8 +260,6 @@ contains
 
       ! check the grid
       call check_grid(iamax)
-
-      write(*,*)r, w, tauc, taup, inc_bar
 
       write(*,'(i4,6f8.2,i7,f14.8)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
