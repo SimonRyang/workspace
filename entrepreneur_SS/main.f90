@@ -68,7 +68,6 @@ program main
   n_p = (1d0+n_p)**5-1d0
 
   ! tax and transfers
-  tauc   = 0.10d0
   taur   = 0.25d0
   tauy   = 0.15d0
   kappa  = 0.53d0
@@ -76,7 +75,7 @@ program main
   mu     = 1d0
   lambda = 0d0
   phi    = 0d0
-  taup   = 0.10d0
+
   gy     = 0.19d0
   by     = 0.70d0
   ! convert variables into per period values
@@ -399,6 +398,8 @@ contains
     theta(:, 3) = exp(theta(:, 3))
 
     ! initial guesses for macro variables
+    taup   = 0.10d0
+    tauc   = 0.19d0
     inc_bar = 0.61d0
     bqs = (/0.02d0, 0.10d0, 0.20d0/)
     BQ = 0.50d0
@@ -422,7 +423,6 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: ij
-    real*8 :: dueink
 
     ! calculate inverse goods price
     pinv = 1d0/(1d0+tauc)
@@ -445,11 +445,9 @@ contains
     enddo
 
     ! determine the income tax system
-    dueink = inc_bar
-
-    r1 = 0.286d0*dueink*2d0
-    r2 = 0.456d0*dueink*2d0
-    r3 = 1.786d0*dueink*2d0
+    r1 = 0.286d0*inc_bar*2d0
+    r2 = 0.456d0*inc_bar*2d0
+    r3 = 1.786d0*inc_bar*2d0
 
     b1 = (t2-t1)/(r2-r1)
     b2 = (t3-t2)/(r3-r2)

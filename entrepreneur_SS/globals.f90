@@ -44,9 +44,6 @@ module globals
   real*8 :: damp, tol
   integer :: itermax
 
-  ! counter variables
-  integer :: iter
-
   ! macroeconomic variables
   real*8 :: r, w, inc_bar, pinv
   real*8:: gy, by
