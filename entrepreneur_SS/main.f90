@@ -92,7 +92,7 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-3
+  tol   = 1d-4
   itermax = 20
 
   ! compute gini
@@ -121,9 +121,9 @@ program main
 
   suc = 0.625d0
 
-  do m3 = 1, 4
-    do s3 = 1, 4
-      do h3 = 1, 4
+  do m3 = 1, 1
+    do s3 = 1, 1
+      do h3 = 4, 4
 
         write(*,*)m3, s3, h3
 
