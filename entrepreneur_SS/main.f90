@@ -111,7 +111,7 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:) = -(/0d0, 0.005d0, 0.010d0, 0.015d0, 0.02d0/)
+  mu_val(:) = -(/0.005d0, 0.010d0, 0.015d0, 0.02d0, 0.025d0/)
 
   sigma_val(:) = (/0.037d0, 0.0365d0, 0.036d0, 0.0355d0, 0.035d0/)
 
@@ -121,9 +121,9 @@ program main
 
   suc = 0.625d0
 
-  do m3 = 1, 4
-    do s3 = 1, 4
-      do h3 = 1, 4
+  do m3 = 1, 5
+    do s3 = 1, 5
+      do h3 = 1, 5
 
         write(*,*)m3, s3, h3
 
@@ -451,7 +451,6 @@ contains
 
     b1 = (t2-t1)/(r2-r1)
     b2 = (t3-t2)/(r3-r2)
-
 
   end subroutine
 
