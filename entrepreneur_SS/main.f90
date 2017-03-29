@@ -121,9 +121,9 @@ program main
 
   suc = 0.625d0
 
-  do m3 = 1, 5
-    do s3 = 1, 5
-      do h3 = 1, 5
+  do m3 = 1, 1
+    do s3 = 1, 1
+      do h3 = 1, 2
 
         write(*,*)m3, s3, h3
 
@@ -259,6 +259,8 @@ contains
       ! check the grid
       call check_grid(iamax)
 
+      write(*,*)YY, CC, II, GG
+
       write(*,'(i4,6f8.2,i7,f14.8)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
 
@@ -338,7 +340,7 @@ contains
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
     psi(:, JJ+1) = 0d0
-    adj = 22d0
+    adj = 23d0
     do ij = 2, JJ
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
