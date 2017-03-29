@@ -75,7 +75,6 @@ program main
   mu     = 1d0
   lambda = 0d0
   phi    = 0d0
-
   gy     = 0.19d0
   by     = 0.70d0
   ! convert variables into per period values
