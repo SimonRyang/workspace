@@ -405,6 +405,7 @@ contains
     inc_bar = 0.61d0
     bqs = (/0.02d0, 0.10d0, 0.20d0/)
     BQ = 0.50d0
+    BB = 0d0
     KC = 4.93d0
     LC = 5.25d0
 
