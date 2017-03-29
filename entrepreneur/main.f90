@@ -88,8 +88,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 8192d0
-  a_grow = 2.0d0
+  a_u    = 16384d0
+  a_grow = 1.8d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -448,7 +448,7 @@ contains
     inc_bar(0) = 0.61d0
     bqs(:, 0) = (/0.02d0, 0.10d0, 0.20d0/)
     BQ(0) = 0.50d0
-    BB(0) = 0.00d0
+    BB(0) = 0.80d0
     KC(0) = 4.93d0
     LC(0) = 5.25d0
 
