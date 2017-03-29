@@ -61,7 +61,7 @@ program main
 
   ! production parameters
   alpha = 0.36d0
-  delta = 0.065d0
+  delta = 0.06d0
   nu = 1d0!0.88d0
   l_bar = 0.47d0
   suc = 0.625d0
