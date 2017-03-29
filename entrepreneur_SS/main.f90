@@ -112,7 +112,7 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:) = -(/0d0, 0.005d0, 0.010d0, 0.015d0, 0.02d0, 0.9d0/)
+  mu_val(:) = -(/0d0, 0.005d0, 0.010d0, 0.015d0, 0.02d0, 0.025d0/)
 
   sigma_val(:) = (/0.039d0, 0.038d0, 0.037d0, 0.036d0, 0.035d0, 0.034d0/)
 
@@ -120,7 +120,7 @@ program main
 
   open(307, file='results.out')
 
-  suc = 0.65d0
+  suc = 0.625d0
 
   do m3 = 6, 6
     do s3 = 6, 6
@@ -382,7 +382,7 @@ contains
     call discretize_AR(0.935d0**5d0, -0.410d0, sigma5(0.935d0, 0.036d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))
 
-    call discretize_AR(0.940d0**5d0, 0.345d0, sigma5(0.940d0, 0.036d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.940d0**5d0, -0.345d0, sigma5(0.940d0, 0.036d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))
 
     call discretize_AR((rho_val(h3))**5d0, mu_val(m3), sigma5(rho_val(h3), sigma_val(s3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
