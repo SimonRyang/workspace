@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(6), sigma_val(6), rho_val(6)
+  real*8 :: mu_val(5), sigma_val(5), rho_val(5)
   integer :: s3, h3, m3
 
   ! allocate arrays
@@ -112,19 +112,19 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:) = -(/0d0, 0.005d0, 0.010d0, 0.015d0, 0.02d0, 0.025d0/)
+  mu_val(:) = -(/0d0, 0.005d0, 0.010d0, 0.015d0, 0.02d0/)
 
-  sigma_val(:) = (/0.037d0, 0.0365d0, 0.036d0, 0.0355d0, 0.035d0, 0.0345d0/)
+  sigma_val(:) = (/0.037d0, 0.0365d0, 0.036d0, 0.0355d0, 0.035d0/)
 
-  rho_val(:) = (/0.950d0, 0.945d0, 0.94d0, 0.935d0, 0.930d0, 0.925d0/)
+  rho_val(:) = (/0.950d0, 0.945d0, 0.94d0, 0.935d0, 0.930d0/)
 
   open(307, file='results.out')
 
   suc = 0.625d0
 
-  do m3 = 3, 3
-    do s3 = 1, 1
-      do h3 = 2, 2
+  do m3 = 1, 5
+    do s3 = 1, 5
+      do h3 = 1, 5
 
         write(*,*)m3, s3, h3
 
