@@ -123,8 +123,8 @@ program main
   suc = 0.625d0
 
   do m3 = 6, 1, -1
-    do s3 = 6, 1, -1
-      do h3 = 6, 1, -1
+    do s3 = 1, 6
+      do h3 = 1, 6
 
         write(*,*)m3, s3, h3
 
