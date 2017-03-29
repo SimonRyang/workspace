@@ -122,8 +122,8 @@ program main
 
   suc = 0.625d0
 
-  do m3 = 4, 6
-    do s3 = 1, 6
+  do m3 = 1, 6
+    do s3 = 4, 6
       do h3 = 1, 6
 
         write(*,*)m3, s3, h3
@@ -165,6 +165,16 @@ program main
             sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                       + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                       + 64d0*sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
+
+          write(*,'(16f8.4)')shares_result(:, 1)
+          write(*,'(16f8.4)')shares_target(:, 1)
+
+          write(*,'(16f8.4)')shares_result(:, 2)
+          write(*,'(16f8.4)')shares_target(:, 2)
+
+          write(*,'(16f8.4)')shares_result(:, 3)
+          write(*,'(16f8.4)')shares_target(:, 3)
+
       end do
     end do
   end do
@@ -182,16 +192,16 @@ program main
 !    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
 !    call execplot
 
-    write(*,'(16f8.4)')shares_result(:, 1)
-    write(*,'(16f8.4)')shares_target(:, 1)
-
-    write(*,'(16f8.4)')shares_result(:, 2)
-    write(*,'(16f8.4)')shares_target(:, 2)
-
-    write(*,'(16f8.4)')shares_result(:, 3)
-    write(*,'(16f8.4)')shares_target(:, 3)
-
-    write(*,*)share_result
+!    write(*,'(16f8.4)')shares_result(:, 1)
+!    write(*,'(16f8.4)')shares_target(:, 1)
+!
+!    write(*,'(16f8.4)')shares_result(:, 2)
+!    write(*,'(16f8.4)')shares_target(:, 2)
+!
+!    write(*,'(16f8.4)')shares_result(:, 3)
+!    write(*,'(16f8.4)')shares_target(:, 3)
+!
+!    write(*,*)share_result
 
 !    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
 !    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
