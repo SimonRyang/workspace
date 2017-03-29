@@ -110,7 +110,7 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:) = -(/0.010d0, 0.015d0, 0.02d0, 0.025d0, 0.03d0/)
+  mu_val(:) = -(/0.02d0, 0.03d0, 0.05d0, 0.07d0, 0.1d0/)
 
   sigma_val(:) = (/0.037d0, 0.0365d0, 0.036d0, 0.0355d0, 0.035d0/)
 
@@ -120,9 +120,9 @@ program main
 
   suc = 0.625d0
 
-  do m3 = 5, 5
-    do s3 = 5, 5
-      do h3 = 5, 5
+  do m3 = 1, 5
+    do s3 = 1, 5
+      do h3 = 1, 5
 
         write(*,*)m3, s3, h3
 
