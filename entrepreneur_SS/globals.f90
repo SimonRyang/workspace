@@ -36,7 +36,7 @@ module globals
   real*8 :: gamma, sigma, beta, l_bar, phi1, phi2, sigmaq
 
   ! production parameters
-  real*8 :: alpha, delta, nu
+  real*8 :: alpha, delta, nu, suc
 
   ! numerical parameters
   real*8 :: a_l, a_u, a_grow
@@ -109,8 +109,6 @@ module globals
 
   !$omp threadprivate(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com)
   !$omp threadprivate(c_com, l_com, k_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
-
-  real*8 :: suc
 
 contains
 
