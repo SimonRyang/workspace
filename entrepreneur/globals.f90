@@ -27,10 +27,10 @@ module globals
   integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 15
+  integer, parameter :: NA = 19
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 15
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
@@ -230,11 +230,11 @@ contains
               **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
-        if (valuefunc_help - 0.73d0 > valuefunc_w .and. ent) then
-          valuefunc_w = valuefunc_help - 0.73d0
+        if (valuefunc_help - 0.625d0 > valuefunc_w .and. ent) then
+          valuefunc_w = valuefunc_help - 0.625d0
           oplus_com = 1d0
         elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0) > 0d0) then
-          valuefunc_w = valuefunc_help - 0.73d0
+          valuefunc_w = valuefunc_help - 0.625d0
           oplus_com = 1d0
         endif
 

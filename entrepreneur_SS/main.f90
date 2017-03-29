@@ -11,8 +11,8 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(4, NS), sigma_val(4), rho_val(4), costs(3)
-  integer :: c1, s1, h1, m1, m2, m3
+  real*8 :: mu_val(6), sigma_val(6), rho_val(6), costs(6)
+  integer :: s3, h3, m3
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -112,64 +112,62 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(:, 1) = -(/0.40d0, 0.405d0, 0.41d0, 0.415d0/)
-  mu_val(:, 2) = -(/0.34d0, 0.345d0, 0.35d0, 0.355d0/)
-  mu_val(:, 3) = -(/0d0, 0.01d0, 0.02d0, 0.03d0/)
+  mu_val(:) = -(/0d0, 0.005d0, 0.010d0, 0.015d0, 0.02d0, 0.03d0/)
 
-  sigma_val(:) = (/0.037d0, 0.036d0, 0.035d0, 0.034d0/)
+  sigma_val(:) = (/0.039d0, 0.038d0, 0.037d0, 0.036d0, 0.035d0, 0.034d0/)
 
-  rho_val(:) = (/0.9425d0, 0.940d0, 0.9375d0, 0.935d0/)
-
-  costs = (/0.625d0, 0.65d0, 0.675d0/)
+  rho_val(:) = (/0.950d0, 9450d0, 0.94d0, 0.935d0, 0.930d0, 0.925d0/)
 
   open(307, file='results.out')
 
-  do c1 = 1, 1
-    do m1 = 3, 3
-      do m2 = 2, 2
-        do m3 = 2, 2
-          do s1 = 2, 2
-            do h1 = 2, 2
 
-              suc = costs(c1)
+  do m3 = 1, 6
+    do s3 = 1, 6
+      do r3 = 1, 6
 
-              ! calculate initial equilibrium
-              call get_SteadyState()
+        suc = 0.625d0
 
-              share_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
-              shares_result(:, 1) = (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0
-              shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0
-              shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
+        ! calculate initial equilibrium
+        call get_SteadyState()
+
+        share_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
+        shares_result(:, 1) = (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0
+        shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0
+        shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
 
 
-              write(307, '(6i3, 8f8.4)')c1, m1, m2, m3, s1, h1, share_result, &
-                  sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                  sqrt(1d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                  sqrt(2d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                  sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                  sqrt(8d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                  sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                  sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                            + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                            + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
-            end do
-          end do
-        end do
+        write(307, '(6i3, 8f8.4)')m3, s3, r3, share_result, &
+            sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+            sqrt(1d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+            sqrt(2d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+            sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+            sqrt(8d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+            sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+            sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+            sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + 16d0*sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+            sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                      + 64d0*sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
       end do
     end do
   end do
+
 
 !    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
 !    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
@@ -380,13 +378,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR((rho_val(h1)-0.005d0)**5d0, mu_val(m1, 1), sigma5(rho_val(h1)-0.005d0, sigma_val(s1)), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.935d0**5d0, -0.410d0, sigma5(0.935d0, 0.036d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))
 
-    call discretize_AR(rho_val(h1)**5d0, mu_val(m2, 2), sigma5(rho_val(h1), sigma_val(s1)), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.940d0**5d0, 0.345d0, sigma5(0.940d0, 0.036d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))
 
-    call discretize_AR((rho_val(h1)+0.005d0)**5d0, mu_val(m3, 3), sigma5(rho_val(h1)+0.005d0, sigma_val(s1)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR((rho_val(h3))**5d0, mu_val(m3), sigma5(rho_val(h3), sigma_val(s3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))
 
     ! initial guesses for macro variables
