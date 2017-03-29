@@ -122,9 +122,9 @@ program main
 
   suc = 0.625d0
 
-  do m3 = 1, 5
-    do s3 = 1, 5
-      do h3 = 1, 5
+  do m3 = 1, 1
+    do s3 = 1, 1
+      do h3 = 4, 4
 
         write(*,*)m3, s3, h3
 
@@ -400,7 +400,7 @@ contains
 
     ! initial guesses for macro variables
     inc_bar = 0.61d0
-    !bqs = (/0.02d0, 0.10d0, 0.20d0/)
+    bqs = (/0.02d0, 0.10d0, 0.20d0/)
     BQ = 0.50d0
     KC = 4.93d0
     LC = 5.25d0
