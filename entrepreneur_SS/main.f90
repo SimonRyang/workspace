@@ -120,7 +120,7 @@ program main
 
   open(307, file='results.out')
 
-  suc = 0.625d0
+  suc = 0.65d0
 
   do m3 = 6, 6
     do s3 = 6, 6
