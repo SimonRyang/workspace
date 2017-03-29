@@ -177,15 +177,11 @@ contains
       ! aggregate individual decisions
       call aggregation(0)
 
-      write(*,*)YY(0), YC(0), YE(0), AA(0), KK(0), KC(0), KE(0)
-
       ! determine the government parameters
       call government(0)
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
-
-      write(*,*)r(0), w(0), taup(0), tauc(0)
 
       write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
@@ -851,8 +847,9 @@ contains
                   ! get initial guess for the individual choices
                   xy(1) = max(aplus(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                   xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                  xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                  call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
+                  call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, 1d0, x_l/), valuefunc_w)
 
                   ! copy decisions
                   aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
