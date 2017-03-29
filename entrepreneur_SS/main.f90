@@ -397,9 +397,6 @@ contains
     call discretize_AR(rho_val(h3)**5d0, mu_val(m3), sigma5(rho_val(h3), sigma_val(s3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))
 
-    write(*,*) theta
-    stop
-
     ! initial guesses for macro variables
     taup   = 0.10d0
     tauc   = 0.19d0
