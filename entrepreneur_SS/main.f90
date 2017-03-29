@@ -126,7 +126,7 @@ program main
     do s3 = 1, 6
       do r3 = 1, 6
 
-        write(*,*)m3, s3, r3,
+        write(*,*)m3, s3, r3
 
         ! calculate initial equilibrium
         call get_SteadyState()
