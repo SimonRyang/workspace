@@ -124,12 +124,12 @@ program main
 
   open(307, file='results.out')
 
-  do c1 = 1, 3
-    do m1 = 1, 4
-      do m2 = 1, 4
-        do m3 = 1, 4
-          do s1 = 1, 4
-            do h1 = 1, 4
+  do c1 = 1, 1
+    do m1 = 3, 3
+      do m2 = 2, 2
+        do m3 = 2, 2
+          do s1 = 2, 2
+            do h1 = 2, 2
 
               suc = costs(c1)
 
