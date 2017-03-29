@@ -116,7 +116,7 @@ program main
 
   sigma_val(:) = (/0.039d0, 0.038d0, 0.037d0, 0.036d0, 0.035d0, 0.034d0/)
 
-  rho_val(:) = (/0.950d0, 9450d0, 0.94d0, 0.935d0, 0.930d0, 0.925d0/)
+  rho_val(:) = (/0.950d0, 0.945d0, 0.94d0, 0.935d0, 0.930d0, 0.925d0/)
 
   open(307, file='results.out')
 
@@ -379,7 +379,7 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.935d0**5d0, -0.410d0, sigma5(0.935d0, 0.036d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.935d0**5d0, -0.410d0, sigma5(0.939d0, 0.036d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))
 
     call discretize_AR(0.940d0**5d0, -0.345d0, sigma5(0.940d0, 0.036d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
