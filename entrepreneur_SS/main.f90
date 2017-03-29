@@ -120,12 +120,13 @@ program main
 
   open(307, file='results.out')
 
+  suc = 0.625d0
 
   do m3 = 1, 6
     do s3 = 1, 6
       do r3 = 1, 6
 
-        suc = 0.625d0
+        write(*,*)m3, s3, r3,
 
         ! calculate initial equilibrium
         call get_SteadyState()
@@ -136,7 +137,7 @@ program main
         shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
 
 
-        write(307, '(6i3, 8f8.4)')m3, s3, r3, share_result, &
+        write(307, '(3i3, 10f8.4)')m3, s3, r3, share_result, &
             sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                       + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                       + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
@@ -192,14 +193,14 @@ program main
 
     write(*,*)share_result
 
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
-
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
-    call execplot()
+!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
+!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
+!    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
+!
+!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
+!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
+!    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
+!    call execplot()
 
   ! close files
   close(307)

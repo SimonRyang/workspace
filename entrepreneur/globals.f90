@@ -27,7 +27,7 @@ module globals
   integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 19
+  integer, parameter :: NA = 15
 
   ! number of points on the annuitized asset grid (-1)
   integer, parameter :: NX = 0
@@ -42,7 +42,7 @@ module globals
   real*8 :: gamma, sigma, beta, l_bar, phi1, phi2, sigmaq
 
   ! production parameters
-  real*8 :: alpha, delta, nu
+  real*8 :: alpha, delta, nu, suc
 
   ! numerical parameters
   real*8 :: a_l, a_u, a_grow
@@ -56,7 +56,7 @@ module globals
 
   ! macroeconomic variables
   real*8:: gy, by
-  real*8 :: r(0:TT), w(0:TT), inc_bar(0:TT), psix(JJ, 0:TT), pinv(0:TT)
+  real*8 :: r(0:TT), w(0:TT), inc_bar(0:TT), psix(NS, JJ, 0:TT), pinv(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), AA(0:TT), AX(0:TT), XB(0:TT), LC(0:TT), HH(0:TT)
   real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
   real*8 :: BB(0:TT), BF(0:TT), BQ(0:TT)
@@ -142,7 +142,7 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, v_ind, valuefunc_help, varphi, varchi, varpsi
+    real*8 :: a_plus, wage, v_ind, valuefunc_help, varpsi, varchi, varphi
     integer :: itp, ial, iar, ixl, ixr, ipl, ipr
 
     ! tomorrow's assets
@@ -157,6 +157,14 @@ contains
 
     ! today's investment in annuitized assets
     mx_com = 0d0
+    if (ij_com == JR-1) mx_com = xy(3)
+
+    ! calculate tommorrow's annuitized asset stock
+    if (ann .and. ij_com < JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)
+    elseif (ann .and. ij_com == JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) !+ mx_com
+    endif
 
     ! get tomorrow's year
     itp = year(it_com, ij_com, ij_com+1)
@@ -172,9 +180,6 @@ contains
     ! worker do not invest
     k_com = 0d0
 
-    ! calculate tomorrow's annuitized capital stock
-    xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
-
     ! calculate contribution to pension system
     pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_bar(it_com))
 
@@ -186,7 +191,7 @@ contains
 
     ! calculate consumption
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
-         - pencon_com - inctax_com - captax_com - a_plus)*pinv(it_com)
+         - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
@@ -230,11 +235,11 @@ contains
               **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
-        if (valuefunc_help - 0.625d0 > valuefunc_w .and. ent) then
-          valuefunc_w = valuefunc_help - 0.625d0
+        if (valuefunc_help - suc > valuefunc_w .and. ent) then
+          valuefunc_w = valuefunc_help - suc
           oplus_com = 1d0
         elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0) > 0d0) then
-          valuefunc_w = valuefunc_help - 0.625d0
+          valuefunc_w = valuefunc_help - suc
           oplus_com = 1d0
         endif
 
@@ -274,7 +279,8 @@ contains
     k_com = xy(2)
 
     ! today's investment in annuitized assets
-    mx_com = xy(3)
+    mx_com = 0d0
+    if (ij_com == JR-1) mx_com = xy(3)
 
     ! calculate annuities
     p_hat = 0d0
@@ -284,20 +290,20 @@ contains
         temp2 = 1d0
         do iij = ij_com+1, ij
           itj = year(it_com, ij_com, iij)
-          temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
+          temp2 = temp2*(1d0+r(itj))*psix(is_com, iij, itj)
         enddo
         temp1 = temp1 + 1d0/temp2
       enddo
-      p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
+      p_hat = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)/temp1
     endif
 
     ! calculate tommorrow's annuitized asset stock
     if (ann .and. ij_com < JR-1) then
-      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)
     elseif (ann .and. ij_com == JR-1) then
-      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) + mx_com
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) !+ mx_com
     elseif (ann .and. ij_com >= JR) then
-      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) - p_hat
     endif
 
     ! no investment without any assets
@@ -446,14 +452,14 @@ contains
       temp2 = 1d0
       do iij = ij_com+1, ij
         itj = year(it_com, ij_com, iij)
-        temp2 = temp2*(1d0+r(itj))*psix(iij, itj)
+        temp2 = temp2*(1d0+r(itj))*psix(is_com, iij, itj)
       enddo
       temp1 = temp1 + 1d0/temp2
     enddo
-    p_hat = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com)/temp1
+    p_hat = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)/temp1
 
     ! calculate tomorrow's annuitized asset stock
-    xplus_com = x(ix_com)*(1d0+r(it_com))*psix(ij_com, it_com) - p_hat
+    xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) - p_hat
 
     ! calculate contribution to pension system
     pencon_com = 0d0
