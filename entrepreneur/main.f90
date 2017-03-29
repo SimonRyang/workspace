@@ -112,15 +112,17 @@ program main
   if (NO == 0) ent = .false.
   if (NX == 0) ann = .false.
 
+  ann = .false.
+
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  stop
+  ann = .true.
 
   ! set reform parameters
   !pen_debt = .true.
   !smopec = .true.
-  phi(1:TT) = 1d0
+  !phi(1:TT) = 1d0
   !lambda(1:TT) = 1d0
   !mu(1:TT) = 0d0
   !labor = .false.
