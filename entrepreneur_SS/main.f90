@@ -121,9 +121,9 @@ program main
 
   suc = 0.625d0
 
-  do m3 = 1, 1
-    do s3 = 1, 1
-      do h3 = 1, 2
+  do m3 = 1, 5
+    do s3 = 1, 5
+      do h3 = 1, 5
 
         write(*,*)m3, s3, h3
 
@@ -258,8 +258,6 @@ contains
 
       ! check the grid
       call check_grid(iamax)
-
-      write(*,*)YY, YC, YE, KK, KC, KE, AA
 
       write(*,'(i4,6f8.2,i7,f14.8)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
