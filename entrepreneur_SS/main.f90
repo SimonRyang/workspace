@@ -124,9 +124,9 @@ program main
 
   do m3 = 1, 6
     do s3 = 1, 6
-      do r3 = 1, 6
+      do h3 = 1, 6
 
-        write(*,*)m3, s3, r3
+        write(*,*)m3, s3, h3
 
         ! calculate initial equilibrium
         call get_SteadyState()
@@ -137,7 +137,7 @@ program main
         shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
 
 
-        write(307, '(3i3, 10f8.4)')m3, s3, r3, share_result, &
+        write(307, '(3i3, 10f8.4)')m3, s3, h3, share_result, &
             sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                       + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                       + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
