@@ -74,7 +74,6 @@ program main
   n_p = (1d0+n_p)**5-1d0
 
   ! tax and transfers
-  tauc   = 0.10d0
   taur   = 0.25d0
   tauy   = 0.15d0
   kappa  = 0.53d0
@@ -82,7 +81,6 @@ program main
   mu     = 1d0
   lambda = 0d0
   phi    = 0d0
-  taup   = 0.10d0
   gy     = 0.19d0
   by     = 0.70d0
   ! convert variables into per period values
@@ -428,7 +426,7 @@ contains
     call discretize_AR(0.94d0**5d0, -0.345d0, sigma5(0.94d0, 0.036d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.9405d0**5d0, -0.01d0, sigma5(0.9405d0, 0.036d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.93d0**5d0, -0.005d0, sigma5(0.93d0, 0.036d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
 !    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
@@ -445,8 +443,12 @@ contains
 !    pi_theta(:, :, 3) = pi_theta(:, :, 1)
 
     ! initial guesses for macro variables
+    taup(0) = 0.10d0
+    tauc(0) = 0.19d0
     inc_bar(0) = 0.61d0
+    bqs(:, 0) = (/0.02d0, 0.10d0, 0.20d0/)
     BQ(0) = 0.50d0
+    BB(0) = 3.50d0
     KC(0) = 4.93d0
     LC(0) = 5.25d0
 

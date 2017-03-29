@@ -121,9 +121,9 @@ program main
 
   suc = 0.625d0
 
-  do m3 = 1, 5
-    do s3 = 1, 5
-      do h3 = 1, 5
+  do m3 = 1, 1
+    do s3 = 3, 3
+      do h3 = 5, 5
 
         write(*,*)m3, s3, h3
 
