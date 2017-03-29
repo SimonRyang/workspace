@@ -478,7 +478,7 @@ contains
       r(it) = r(0)
       w(it) = w(0)
       inc_bar(it) = inc_bar(0)
-      psix(JJ, it) = psix(JJ, 0)
+      psix(:, JJ, it) = psix(:, JJ, 0)
       pinv(it) = pinv(0)
 
       KK(it) = KK(0)
@@ -592,8 +592,8 @@ contains
 
     ! calculate interests of annuities
     do ij = 1, JJ
-      psix(ij, it) = 1d0
-      if (x_coh(ij, it) > 0d0) psix(ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
+      psix(:, ij, it) = 1d0
+      if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
   end subroutine
