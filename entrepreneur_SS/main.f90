@@ -259,7 +259,7 @@ contains
       ! check the grid
       call check_grid(iamax)
 
-      write(*,*)YY, CC, II, GG
+      write(*,*)r, w, tauc, taup, inc_bar
 
       write(*,'(i4,6f8.2,i7,f14.8)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
