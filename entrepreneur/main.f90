@@ -832,7 +832,7 @@ contains
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
-              do ip = 0, NX
+              do ip = 0, NP
                 do ia = 0, NA
 
                   ! set up communication variables
@@ -843,8 +843,8 @@ contains
                   ia_com = ia
 
                   ! get initial guess for the individual choices
-                  xy(1) = max(aplus(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
-                  xy(2) = max(l(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                  xy(1) = max(aplus(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                  xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
                   call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
