@@ -232,14 +232,14 @@ contains
                + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma)
-
+              **(1d0-gamma)/(1d0-gamma) - suc
+ 
         ! set next period's occupational decision
-        if (valuefunc_help - suc > valuefunc_w .and. ent) then
-          valuefunc_w = valuefunc_help - suc
+        if (valuefunc_help > valuefunc_w .and. ent) then
+          valuefunc_w = valuefunc_help
           oplus_com = 1d0
         elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0) > 0d0) then
-          valuefunc_w = valuefunc_help - suc
+          valuefunc_w = valuefunc_help
           oplus_com = 1d0
         endif
 
