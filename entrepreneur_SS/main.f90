@@ -11,8 +11,8 @@ program main
   integer, parameter :: numthreads = 56
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(5), sigma_val(5), rho_val(5)
-  integer :: s3, h3, m3
+  real*8 :: mu_val(NS, 10)
+  integer :: m3, m2, m3
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
