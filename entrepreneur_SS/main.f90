@@ -8,11 +8,11 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 56
+  integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
   real*8 :: mu_val(NS, 20)
-  integer :: m3, m2, m3
+  integer :: m1, m2, m3
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
