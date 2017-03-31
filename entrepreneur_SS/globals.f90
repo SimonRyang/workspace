@@ -277,7 +277,7 @@ contains
                + varphi*(1d0-varpsi)*EV(0, ial, ipr, iw_com, ie_com, is_com, ij_com+1) &
                + (1d0-varphi)*varpsi*EV(0, iar, ipl, iw_com, ie_com, is_com, ij_com+1) &
                + (1d0-varphi)*(1d0-varpsi)*EV(0, iar, ipr, iw_com, ie_com, is_com, ij_com+1)) &
-              **(1d0-gamma)/(1d0-gamma)
+              **(1d0-gamma)/(1d0-gamma) - suc
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
