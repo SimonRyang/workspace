@@ -386,7 +386,7 @@ contains
     call discretize_AR(0.940d0**5d0, -0.345d0/1.2d0, sigma5(0.940d0, 0.036d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))
 
-    call discretize_AR(rho_val(h3)**5d0, mu_val(m3)/4.5d0, sigma5(rho_val(h3), sigma_val(s3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(rho_val(h3)**5d0, 0d0, sigma5(rho_val(h3), sigma_val(s3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))
 
     ! initial guesses for macro variables
