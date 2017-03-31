@@ -135,7 +135,7 @@ program main
         shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
 
 
-        write(307, '(3i3, 10f8.4)')m3, s3, h3, share_result, &
+        write(307, '(3i3, 8f8.4)')m3, s3, h3, share_result, &
             sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                       + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                       + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
@@ -156,14 +156,7 @@ program main
                                                       + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
             sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                       + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-            sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + 16d0*sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-            sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + 64d0*sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
-
+                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
           write(*,'(16f8.4)')shares_result(:, 1)
           write(*,'(16f8.4)')shares_target(:, 1)
 
