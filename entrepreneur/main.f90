@@ -62,7 +62,7 @@ program main
   ! production parameters
   alpha = 0.36d0
   delta = 0.06d0
-  nu = 1d0!0.88d0
+  nu = 0.88d0
   l_bar = 0.47d0
   suc = 0.625d0
   ! convert variables into per period values
@@ -112,12 +112,8 @@ program main
   if (NO == 0) ent = .false.
   if (NX == 0) ann = .false.
 
-  ann = .false.
-
   ! calculate initial equilibrium
   call get_SteadyState()
-
-  ann = .true.
 
   ! set reform parameters
   !pen_debt = .true.
