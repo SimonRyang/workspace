@@ -21,10 +21,10 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of transitory shock process values (worker)
-  integer, parameter :: NW = 7
+  integer, parameter :: NW = 5
 
   ! number of transitory shock process values (entrepreneur)
-  integer, parameter :: NE = 5
+  integer, parameter :: NE = 4
 
   ! number of points on the asset grid (-1)
   integer, parameter :: NA = 31
@@ -372,7 +372,7 @@ contains
                + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma)
+              **(1d0-gamma)/(1d0-gamma) - suc
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
