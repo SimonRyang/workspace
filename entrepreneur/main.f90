@@ -442,6 +442,11 @@ contains
 !    pi_theta(:, :, 2) = pi_theta(:, :, 1)
 !    pi_theta(:, :, 3) = pi_theta(:, :, 1)
 
+
+    write(*,*)theta(:, 1)
+    write(*,*)theta(:, 2)
+    write(*,*)theta(:, 3)
+
     ! initial guesses for macro variables
     taup(0) = 0.10d0
     tauc(0) = 0.19d0
