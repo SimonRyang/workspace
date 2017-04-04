@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 56
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -76,7 +76,7 @@ program main
   ! tax and transfers
   taur   = 0.25d0
   tauy   = 0.15d0
-  kappa  = 0.55d0
+  kappa  = 0.53d0
   sscc   = 2d0
   mu     = 1d0
   lambda = 0d0
@@ -94,7 +94,7 @@ program main
   ! size of the annuitiy grid
   x_l    = 0d0
   x_u    = 1024d0
-  x_grow = 1.8d0
+  x_grow = 2.0d0
 
   ! size of the pension claim grid
   p_l  = 0d0
