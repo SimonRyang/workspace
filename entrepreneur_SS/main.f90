@@ -122,7 +122,7 @@ program main
     do m2 = 17, 17
       do m3 = 6, 6
 
-        write(*,*)m1, m2, m3
+        write(*,*)mu_val(1, m1), mu_val(2, m2), mu_val(3, m3)
 
         ! calculate initial equilibrium
         call get_SteadyState()
