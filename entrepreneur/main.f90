@@ -109,6 +109,9 @@ program main
   gini_on = .true.
 
   ! set switches
+  ent = .false.
+
+  ! set max iterations
   io_max = 1
   if (.not. ent) io_max = 0
   if (NO == 0) ent = .false.
@@ -116,6 +119,8 @@ program main
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+  stop
 
   ! set reform parameters
   !pen_debt = .true.
@@ -1023,7 +1028,7 @@ contains
             do ip = 0, NP
               do ix = 0, NX
                 do ia = 0, NA
-                  do io = 0, NO
+                  do io = 0, io_max
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
@@ -1156,7 +1161,7 @@ contains
             do ip = 0, NP
               do ix = 0, NX
                 do ia = 0, NA
-                  do io = 0, NO
+                  do io = 0, io_max
 
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
                     if (ann) then
@@ -1350,7 +1355,7 @@ contains
             do iw = 1, NW
               do ie = 1, NE
                 do is = 1, NS
-                  do io = 0, NO
+                  do io = 0, io_max
 
                     ! do not do anything for an agent at retirement without pension and savings
                     if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
@@ -1525,7 +1530,7 @@ contains
             do iw = 1, NW
               do ie = 1, NE
                 do is = 1, NS
-                  do io = 0, NO
+                  do io = 0, io_max
 
                     ! Cohort average variables
                     c_coh(io, ij, it) = c_coh(io, ij, it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
@@ -1771,7 +1776,7 @@ contains
     HEVs = 0d0
     mass = 0d0
 
-    do io = 0, NO
+    do io = 0, io_max
       do ij = JJ, 2, -1
         do ia = 0, NA
           do ix = 0, NX
@@ -1796,7 +1801,7 @@ contains
       enddo ! ij
     enddo ! io
 
-    do io = 0, NO
+    do io = 0, io_max
       do is = 1, NS
         HEVs(io, is, -(JJ-2):0) = HEVs(io, is, -(JJ-2):0)/mass(io, is, -(JJ-2):0)
       enddo ! is

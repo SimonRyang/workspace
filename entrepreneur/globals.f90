@@ -36,7 +36,7 @@ module globals
   integer, parameter :: NP = 4
 
   ! number of occupations (-1)
-  integer, parameter :: NO = 0
+  integer, parameter :: NO = 1
 
   ! household parameters
   real*8 :: gamma, sigma, beta, l_bar, phi1, phi2, sigmaq
@@ -117,9 +117,9 @@ module globals
 
   ! switches
   logical :: smopec = .false.   ! .true. = economcy is smopec
-  logical :: ann = .true.    ! .true. = wealth of an old entrepreneur is annuitized
-  logical :: ent = .true.     ! .true. = endogenous decision to become an entrepreneur
-  logical :: labor = .true.   ! .true. = endogenous labor decision of worker
+  logical :: ann = .true.       ! .true. = wealth can be annuitized
+  logical :: ent = .true.       ! .true. = endogenous decision to become an entrepreneur
+  logical :: labor = .true.     ! .true. = endogenous labor decision of worker
   logical :: pen_debt = .false. ! .true. = pension system can run into debts
 
   !$omp threadprivate(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
