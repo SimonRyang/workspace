@@ -1116,6 +1116,8 @@ contains
                 do ia = 0, NA
                   do io = 0, NO
 
+                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm)>0d0) then
+
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                              a_l, a_u, a_grow, NA, ial, iar, varphi)
@@ -1174,6 +1176,8 @@ contains
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                       enddo ! iw_p
                     enddo ! ie_p
+              
+                  endif
 
                   enddo ! ia
                 enddo ! ix
