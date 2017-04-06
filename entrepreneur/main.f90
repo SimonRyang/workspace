@@ -1129,8 +1129,8 @@ contains
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                                        p_l, p_u, NP, ipl, ipr, varpsi)
 
-                    if (varpsi > 1d0)write(*,*)'varpsi', varpsi, 1d0-varpsi
-                    if (varphi > 1d0)write(*,*)'varphi', varphi, 1d0-varphi
+                    if (varpsi > 1d0)write(*,*)'varpsi', varpsi, 1d0-varpsi, 1d0-1d0
+                    if (varphi > 1d0)write(*,*)'varphi', varphi, 1d0-varphi, 1d0-1d0
 
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
