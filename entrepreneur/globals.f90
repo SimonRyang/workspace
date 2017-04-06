@@ -30,7 +30,7 @@ module globals
   integer, parameter :: NA = 31
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 15
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 4
@@ -296,6 +296,8 @@ contains
       enddo
       p_hat = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)/temp1
     endif
+
+if (p_hat > x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com))write(*,*)p_hat, x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)
 
     xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
