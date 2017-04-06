@@ -1013,6 +1013,8 @@ contains
 
     enddo
 
+    write(*,*)minval(aplus)
+
   end subroutine
 
 
