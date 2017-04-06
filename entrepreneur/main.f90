@@ -1117,14 +1117,9 @@ contains
                              a_l, a_u, a_grow, NA, ial, iar, varphi)
 
                     ! interpolate yesterday's annuitized assets
-                    if (ann) then
-                      call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
+                    call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-                    else
-                      ixl = 0
-                      ixr = 0
-                      varchi = 1d0
-                    endif
+                    if (xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) write(*,*)xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), ixl, ixr, varchi
 
                     ! interpolate today's pension claims
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
