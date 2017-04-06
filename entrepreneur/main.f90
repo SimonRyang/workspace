@@ -1111,7 +1111,7 @@ contains
                   do io = 0, NO
   
                     ! skip if there is no household
-                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
+                    !if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
@@ -1131,10 +1131,12 @@ contains
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                                        p_l, p_u, NP, ipl, ipr, varpsi)
 
+
+
           
-                    varphi = min(varphi, 1d0)
-                    varchi = min(varchi, 1d0)
-                    varpsi = min(varpsi, 1d0)
+                    !varphi = min(varphi, 1d0)
+                    !varchi = min(varchi, 1d0)
+                    !varpsi = min(varpsi, 1d0)
 
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
@@ -1251,7 +1253,7 @@ contains
                 do ia = 0, NA
                   do io = 0, NO
 
-                    if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(io, ia, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
+                    !if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(io, ia, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
                     if (ann) then
@@ -1262,8 +1264,8 @@ contains
                       varchi = 1d0
                     endif
 
-                    varphi = min(varphi, 1d0)
-                    varchi = min(varchi, 1d0)
+                    !varphi = min(varphi, 1d0)
+                    !varchi = min(varchi, 1d0)
 
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
