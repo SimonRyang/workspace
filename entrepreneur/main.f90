@@ -114,7 +114,6 @@ program main
   ! set max iterations
   io_max = 1
   if (.not. ent) io_max = 0
-  if (NO == 0) ent = .false.
   if (NX == 0) ann = .false.
 
   ! calculate initial equilibrium
