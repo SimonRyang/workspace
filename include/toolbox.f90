@@ -1166,7 +1166,7 @@ contains
             'growth rate must be greater than zero')
 
         ! calculate factor
-        h = (right-left)/((1+growth)**n-1d0)
+        h = (right-left)/((1d0+growth)**n-1d0)
 
         ! calculate grid value
         grid_Inv_Grow_1 = log((x-left)/h+1d0)/log(1d0+growth)
@@ -1589,7 +1589,7 @@ contains
         xr = h*((1+growth)**dble(ir)-1d0)+left
 
         ! get share on the left point
-        phi = max(min((xr-x)/(xr-xl), 1d0), 0d0)
+        phi = (xr-x)/(xr-xl)
 
     end subroutine linint_Grow_1
 
