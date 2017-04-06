@@ -156,7 +156,8 @@ contains
     endif
 
     ! today's investment in annuitized assets
-    mx_com = xy(3)
+    mx_com = 0d0
+    if (ij_com == JR-1) mx_com = xy(3)
 
     xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
@@ -279,7 +280,8 @@ contains
     k_com = xy(2)
 
     ! today's investment in annuitized assets
-    mx_com = xy(3)
+    mx_com = 0d0
+    if (ij_com == JR-1) mx_com = xy(3)
 
     ! calculate annuities
     p_hat = 0d0
