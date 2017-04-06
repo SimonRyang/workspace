@@ -109,7 +109,7 @@ program main
   gini_on = .true.
 
   ! set switches
-  ent = .false.
+  !ent = .false.
 
   ! set max iterations
   io_max = 1
