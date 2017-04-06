@@ -114,7 +114,7 @@ program main
   ! set max iterations
   io_max = 1
   if (.not. ent) io_max = 0
-  if (NX == 0) ann = .false.
+  ann = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()

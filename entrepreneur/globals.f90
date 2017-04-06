@@ -155,12 +155,17 @@ contains
       l_com = l(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, 0)
     endif
 
-    ! calculate tommorrow's annuitized asset stock
+    ! today's investment in annuitized assets
     mx_com = 0d0
-    if (ann .and. ij_com == JR-1) then
+    if (ij_com == JR-1) then
       mx_com = xy(3)
     endif
-    xplus_com = mx_com
+
+    ! calculate tommorrow's annuitized asset stock
+    xplus_com = 0d0
+    if (ann .and. ij_com == JR-1) then
+      xplus_com = mx_com
+    endif
 
     ! get tomorrow's year
     itp = year(it_com, ij_com, ij_com+1)
@@ -267,7 +272,7 @@ contains
 
     ! today's investment in annuitized assets
     mx_com = 0d0
-    if (ann .and. ij_com == JR-1) then
+    if (ij_com == JR-1) then
       mx_com = xy(3)
     endif
 
@@ -286,8 +291,8 @@ contains
       p_hat = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)/temp1
     endif
 
-    xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
+    xplus_com = 0d0
     if (ann .and. ij_com == JR-1) then
       xplus_com = mx_com
     elseif (ann .and. ij_com >= JR) then
