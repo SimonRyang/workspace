@@ -172,9 +172,10 @@ contains
       ! solve the household problem
       call solve_household(1, 0)
       call tock(calc)
+      call tick(calc)
       ! calculate the distribution of households over state space
       call get_distribution(0)
-
+      call tock(calc)
       call tick(calc)
       ! aggregate individual decisions
       call aggregation(0)
