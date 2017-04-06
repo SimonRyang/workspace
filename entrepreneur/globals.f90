@@ -108,7 +108,7 @@ module globals
   real*8, allocatable :: v(:, :, :, :, :, :, :, :, :)
 
   ! numerical variables
-  integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com, io_max
+  integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com
   real*8 :: c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
 
   ! statistical variables
@@ -117,9 +117,9 @@ module globals
 
   ! switches
   logical :: smopec = .false.   ! .true. = economcy is smopec
-  logical :: ann = .true.       ! .true. = wealth can be annuitized
-  logical :: ent = .true.       ! .true. = endogenous decision to become an entrepreneur
-  logical :: labor = .true.     ! .true. = endogenous labor decision of worker
+  logical :: ann = .true.    ! .true. = wealth of an old entrepreneur is annuitized
+  logical :: ent = .true.     ! .true. = endogenous decision to become an entrepreneur
+  logical :: labor = .true.   ! .true. = endogenous labor decision of worker
   logical :: pen_debt = .false. ! .true. = pension system can run into debts
 
   !$omp threadprivate(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
@@ -156,13 +156,14 @@ contains
     endif
 
     ! today's investment in annuitized assets
-    mx_com = 0d0
-    if (ij_com == JR-1) mx_com = xy(3)
+    mx_com = xy(3)
 
-    ! calculate tommorrow's annuitized asset stock
     xplus_com = 0d0
-    if (ann .and. ij_com == JR-1) then
-      xplus_com = mx_com
+    ! calculate tommorrow's annuitized asset stock
+    if (ann .and. ij_com < JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)
+    elseif (ann .and. ij_com == JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) + mx_com
     endif
 
     ! get tomorrow's year
@@ -278,8 +279,7 @@ contains
     k_com = xy(2)
 
     ! today's investment in annuitized assets
-    mx_com = 0d0
-    if (ij_com == JR-1) mx_com = xy(3)
+    mx_com = xy(3)
 
     ! calculate annuities
     p_hat = 0d0
@@ -296,10 +296,12 @@ contains
       p_hat = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)/temp1
     endif
 
-    ! calculate tommorrow's annuitized asset stock
     xplus_com = 0d0
-    if (ann .and. ij_com == JR-1) then
-      xplus_com = mx_com
+    ! calculate tommorrow's annuitized asset stock
+    if (ann .and. ij_com < JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)
+    elseif (ann .and. ij_com == JR-1) then
+      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) + mx_com
     elseif (ann .and. ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) - p_hat
     endif

@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 14
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -89,7 +89,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 16384d0
-  a_grow = 1.4d0
+  a_grow = 1.8d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -109,17 +109,11 @@ program main
   gini_on = .true.
 
   ! set switches
-  !ent = .false.
-
-  ! set max iterations
-  io_max = 1
-  if (.not. ent) io_max = 0
-  ann = .false.
+  if (NO == 0) ent = .false.
+  if (NX == 0) ann = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
-
-  stop
 
   ! set reform parameters
   !pen_debt = .true.
@@ -433,6 +427,19 @@ contains
     call discretize_AR(0.930d0**5d0, 0.125d0, sigma5(0.930d0, 0.0360d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
+!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
+!    theta(:, 2)       = theta(:, 1)
+!    theta(:, 3)       = theta(:, 1)
+!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
+!    dist_theta(:, 2)  = dist_theta(:, 1)
+!    dist_theta(:, 3)  = dist_theta(:, 1)
+!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
+!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
+!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
+!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
+!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
+!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
+
     ! initial guesses for macro variables
     taup(0) = 0.10d0
     tauc(0) = 0.19d0
@@ -611,7 +618,7 @@ contains
     do ij = JJ, 1, -1
 
       !call tick(calc)
-      write(*,*)'Optimize for age: ', ij
+      !write(*,*)'Optimize for age: ', ij
 
       it = year(it_in, ij_in, ij)
 
@@ -688,10 +695,11 @@ contains
                     ! get initial guess for the individual choices
                     xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
 
                     limit = max(1.5d0*a(ia), 1d-4)
 
-                    call fminsearch(xy(2:), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
+                    call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, limit, x_u/), valuefunc_e)
 
                     ! copy decisions
                     aplus(1, ia, ix, ip, :, ie, is, ij, it) = xy(1)
@@ -700,7 +708,7 @@ contains
                     pplus(1, ia, ix, ip, :, ie, is, ij, it) = pplus_com
                     c(1, ia, ix, ip, :, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, ix, ip, :, ie, is, ij, it) = l_com
-                    mx(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
+                    mx(1, ia, ix, ip, :, ie, is, ij, it) = mx_com
                     oplus(1, ia, ix, ip, :, ie, is, ij, it) = oplus_com
                     pencon(1, ia, ix, ip, :, ie, is, ij, it) = pencon_com
                     inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
@@ -772,39 +780,42 @@ contains
             do ie = 1, NE
               do iw = 1, NW
                 do ip = 0, NP
-                  do ia = 0, NA
+                  do ix = 0, NX
+                    do ia = 0, NA
 
-                    ! set up communication variables
-                    is_com = is
-                    ie_com = ie
-                    iw_com = iw
-                    ix_com = 0
-                    ip_com = ip
-                    ia_com = ia
+                      ! set up communication variables
+                      is_com = is
+                      ie_com = ie
+                      iw_com = iw
+                      ip_com = ip
+                      ix_com = ix
+                      ia_com = ia
 
-                    ! get initial guess for the individual choices
-                    xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                    xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                      ! get initial guess for the individual choices
+                      xy(1) = max(aplus(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                      xy(2) = max(k(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                      xy(3) = max(mx(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
 
-                    limit = max(1.5d0*a(ia), 1d-4)
+                      limit = max(1.5d0*a(ia), 1d-4)
 
-                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
+                      call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, limit, x_u/), valuefunc_e)
 
-                    ! copy decisions
-                    aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                    k(1, ia, :, ip, iw, ie, is, ij, it) = k_com
-                    pplus(1, ia, :, ip, iw, ie, is, ij, it) = pplus_com
-                    c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
-                    l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
-                    mx(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                    oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
-                    pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
-                    inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
-                    captax(1, ia, :, ip, iw, ie, is, ij, it) = captax_com
-                    VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
+                      ! copy decisions
+                      aplus(1, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                      xplus(1, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                      k(1, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                      pplus(1, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
+                      c(1, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                      l(1, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                      mx(1, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                      oplus(1, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                      pencon(1, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
+                      inctax(1, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                      captax(1, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                      VV(1, ia, ix, ip, iw, ie, is, ij, it) = -fret
 
-                  enddo ! ia
+                    enddo ! ia
+                  enddo ! ix
                 enddo ! ip
               enddo ! iw
             enddo ! ie
@@ -821,7 +832,7 @@ contains
           do ie = 1, NE
             do iw = 1, NW
               do ip = 0, NP
-                do ix = 0, 0
+                do ix = 0, NX
                   do ia = 0, NA
 
                     ! set up communication variables
@@ -829,28 +840,29 @@ contains
                     ie_com = ie
                     iw_com = iw
                     ip_com = ip
-                    ix_com = 0
+                    ix_com = ix
                     ia_com = ia
 
                     ! get initial guess for the individual choices
-                    xy(1) = max(aplus(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                    xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(1) = max(aplus(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(2) = max(l(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
 
-                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
+                    call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, 1d0, x_u/), valuefunc_w)
 
                     ! copy decisions
-                    aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                    k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
-                    pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
-                    c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
-                    l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
-                    mx(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                    oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
-                    pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
-                    inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
-                    captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
-                    VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
+                    aplus(0, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                    xplus(0, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                    k(0, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                    pplus(0, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
+                    c(0, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                    l(0, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                    mx(0, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                    oplus(0, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                    pencon(0, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
+                    inctax(0, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                    captax(0, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                    VV(0, ia, ix, ip, iw, ie, is, ij, it) = -fret
 
                   enddo ! ia
                 enddo ! ix
@@ -1009,7 +1021,7 @@ contains
             do ip = 0, NP
               do ix = 0, NX
                 do ia = 0, NA
-                  do io = 0, io_max
+                  do io = 0, NO
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
@@ -1142,7 +1154,7 @@ contains
             do ip = 0, NP
               do ix = 0, NX
                 do ia = 0, NA
-                  do io = 0, io_max
+                  do io = 0, NO
 
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
                     if (ann) then
@@ -1336,7 +1348,7 @@ contains
             do iw = 1, NW
               do ie = 1, NE
                 do is = 1, NS
-                  do io = 0, io_max
+                  do io = 0, NO
 
                     ! do not do anything for an agent at retirement without pension and savings
                     if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
@@ -1511,7 +1523,7 @@ contains
             do iw = 1, NW
               do ie = 1, NE
                 do is = 1, NS
-                  do io = 0, io_max
+                  do io = 0, NO
 
                     ! Cohort average variables
                     c_coh(io, ij, it) = c_coh(io, ij, it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
@@ -1757,7 +1769,7 @@ contains
     HEVs = 0d0
     mass = 0d0
 
-    do io = 0, io_max
+    do io = 0, NO
       do ij = JJ, 2, -1
         do ia = 0, NA
           do ix = 0, NX
@@ -1782,7 +1794,7 @@ contains
       enddo ! ij
     enddo ! io
 
-    do io = 0, io_max
+    do io = 0, NO
       do is = 1, NS
         HEVs(io, is, -(JJ-2):0) = HEVs(io, is, -(JJ-2):0)/mass(io, is, -(JJ-2):0)
       enddo ! is
