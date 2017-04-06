@@ -1262,11 +1262,9 @@ contains
 
                     if (varphi > 1d0)write(*,*)'varphi'
                     if (varchi > 1d0)write(*,*)'varchi'
-                    if (varpsi > 1d0)write(*,*)'varpsi'
 
                     varphi = min(varphi, 1d0)
                     varchi = min(varchi, 1d0)
-                    varpsi = min(varpsi, 1d0)
 
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
