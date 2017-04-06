@@ -88,7 +88,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 16384d0
+  a_u    = 8192d0
   a_grow = 0.5d0
 
   ! size of the annuitiy grid
@@ -427,28 +427,15 @@ contains
     call discretize_AR(0.930d0**5d0, 0.125d0, sigma5(0.930d0, 0.0360d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
-!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-!    theta(:, 2)       = theta(:, 1)
-!    theta(:, 3)       = theta(:, 1)
-!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-!    dist_theta(:, 2)  = dist_theta(:, 1)
-!    dist_theta(:, 3)  = dist_theta(:, 1)
-!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
-!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
-!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
-
     ! initial guesses for macro variables
-    taup(0) = 0.10d0
-    tauc(0) = 0.19d0
-    inc_bar(0) = 0.61d0
+    taup(0) = 0.18d0
+    tauc(0) = 0.15d0
+    inc_bar(0) = 0.50d0
     bqs(:, 0) = (/0.02d0, 0.10d0, 0.20d0/)
-    BQ(0) = 0.50d0
-    BB(0) = 0.50d0
-    KC(0) = 4.93d0
-    LC(0) = 5.25d0
+    BQ(0) = 0.35d0
+    BB(0) = 0.90d0
+    KC(0) = 3.70d0
+    LC(0) = 5.00d0
 
     ! open files
     open(21, file='output.out')
