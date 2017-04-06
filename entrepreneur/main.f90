@@ -1110,7 +1110,7 @@ contains
                 do ia = 0, NA
                   do io = 0, NO
 
-                    !if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
+                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) < 0d0) write(*,*)m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
