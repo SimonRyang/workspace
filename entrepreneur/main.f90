@@ -607,7 +607,7 @@ contains
     do ij = JJ, 1, -1
 
       !call tick(calc)
-      write(*,*)'Optimize for age: ', ij
+      !write(*,*)'Optimize for age: ', ij
 
       it = year(it_in, ij_in, ij)
 
@@ -1110,7 +1110,7 @@ contains
                 do ia = 0, NA
                   do io = 0, NO
 
-                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
+                    !if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
