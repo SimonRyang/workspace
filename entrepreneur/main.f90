@@ -173,12 +173,13 @@ contains
 
       ! calculate the distribution of households over state space
       call get_distribution(0)
-write(*,*)'*******************************'
+
       write(*,*) taup(0), tauc(0), inc_bar(0), bqs(:, 0), BQ(0), BB(0), KC(0), LC(0), r(0), w(0)
 
 
       ! aggregate individual decisions
       call aggregation(0)
+write(*,*)'*******************************'
       write(*,*) taup(0), tauc(0), inc_bar(0), bqs(:, 0), BQ(0), BB(0), KC(0), LC(0), r(0), w(0)
 
 
