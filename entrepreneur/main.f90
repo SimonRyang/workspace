@@ -1083,6 +1083,8 @@ contains
     ! get yesterdays year
     itm = year(it, 2, 1)
 
+write(*,*)itm
+
     ! set distribution to zero
     m(:, :, :, :, :, :, :, :, it) = 0d0
 
@@ -1095,7 +1097,8 @@ contains
       enddo ! ie
     enddo ! is
 
-    !write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
+    write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
+    write(*,*) minvalue(m(:, :, :, :, :, :, :, 1, it))
 
     ! successively compute distribution over ages
     do ij = 2, JJ
@@ -1117,9 +1120,14 @@ contains
                              a_l, a_u, a_grow, NA, ial, iar, varphi)
 
                     ! interpolate yesterday's annuitized assets
-                    call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
+                    if (ann) then
+                      call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-                    if (xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) write(*,*)xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), ixl, ixr, varchi
+                    else
+                      ixl = 0
+                      ixr = 0
+                      varchi = 1d0
+                    endif
 
                     ! interpolate today's pension claims
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
