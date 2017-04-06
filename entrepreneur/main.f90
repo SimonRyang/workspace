@@ -579,7 +579,7 @@ write(*,*)'*******************************'
     enddo
 
     ! determine the income tax system
-    dueink = inc_bar(0)
+    dueink = 0.5047d0!inc_bar(0)
 
     r1 = 0.286d0*dueink*2d0
     r2 = 0.456d0*dueink*2d0
