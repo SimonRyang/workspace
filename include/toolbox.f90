@@ -1584,9 +1584,9 @@ contains
         ir = il+1
 
         ! determine left and right gridpoint
-        h = (right-left)/((1+growth)**n-1)
-        xl = h*((1+growth)**dble(il)-1d0)+left
-        xr = h*((1+growth)**dble(ir)-1d0)+left
+        h = (right-left)/((1d0+growth)**n-1)
+        xl = h*((1d0+growth)**dble(il)-1d0)+left
+        xr = h*((1d0+growth)**dble(ir)-1d0)+left
 
         ! get share on the left point
         phi = (xr-x)/(xr-xl)
