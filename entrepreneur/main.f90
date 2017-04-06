@@ -109,7 +109,7 @@ program main
   gini_on = .true.
 
   ! set switches
-  !ent = .false.
+  ent = .false.
 
   ! set max iterations
   io_max = 1
@@ -688,7 +688,6 @@ contains
                     ! get initial guess for the individual choices
                     xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
-                    xy(3) = max(mx(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
 
                     limit = max(1.5d0*a(ia), 1d-4)
 
@@ -701,7 +700,7 @@ contains
                     pplus(1, ia, ix, ip, :, ie, is, ij, it) = pplus_com
                     c(1, ia, ix, ip, :, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, ix, ip, :, ie, is, ij, it) = l_com
-                    mx(1, ia, ix, ip, :, ie, is, ij, it) = mx_com
+                    mx(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
                     oplus(1, ia, ix, ip, :, ie, is, ij, it) = oplus_com
                     pencon(1, ia, ix, ip, :, ie, is, ij, it) = pencon_com
                     inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
