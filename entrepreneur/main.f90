@@ -1098,7 +1098,7 @@ write(*,*)itm
     enddo ! is
 
     write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
-    write(*,*) minvalue(m(:, :, :, :, :, :, :, 1, it))
+    write(*,*) minval(m(:, :, :, :, :, :, :, 1, it))
 
     ! successively compute distribution over ages
     do ij = 2, JJ
