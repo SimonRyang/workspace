@@ -174,19 +174,11 @@ contains
       ! calculate the distribution of households over state space
       call get_distribution(0)
 
-      write(*,*) taup(0), tauc(0), inc_bar(0), bqs(:, 0), BQ(0), BB(0), KC(0), LC(0), r(0), w(0)
-
-
       ! aggregate individual decisions
       call aggregation(0)
-write(*,*)'*******************************'
-      write(*,*) taup(0), tauc(0), inc_bar(0), bqs(:, 0), BQ(0), BB(0), KC(0), LC(0), r(0), w(0)
-
 
       ! determine the government parameters
       call government(0)
-write(*,*)'*******************************'
-      write(*,*) taup(0), tauc(0), inc_bar(0), bqs(:, 0), BQ(0), BB(0), KC(0), LC(0), r(0), w(0)
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
@@ -579,7 +571,7 @@ write(*,*)'*******************************'
     enddo
 
     ! determine the income tax system
-    dueink = 0.5047d0!inc_bar(0)
+    dueink = inc_bar(0)
 
     r1 = 0.286d0*dueink*2d0
     r2 = 0.456d0*dueink*2d0
@@ -1226,11 +1218,11 @@ write(*,*)'*******************************'
     LC(it) = damp*LC(it) + (1d0-damp)*LC_old
 
     if (smopec) then
-      KC(it) = damp*(LC(it)*((r(it)/(1d0-tauy(it))+delta)/alpha)**(1d0/(alpha-1d0)))+(1d0-damp)*KC(it)
+      KC(it) = damp*(LC(it)*((r(it)/(1d0-tauy(it))+delta)/alpha)**(1d0/(alpha-1d0))) + (1d0-damp)*KC(it)
       BF(it) = AA(it) - KE(it) - KC(it) - BB(it) - BP(it) - BA(it)
       NEX(it) = (n_p-r(it))*BF(it)
     else
-      KC(it) = damp*(AA(it) - KE(it) - BB(it) - BP(it) - BA(it))+(1d0-damp)*KC(it)
+      KC(it) = damp*(AA(it) - KE(it) - BB(it) - BP(it) - BA(it)) + (1d0-damp)*KC(it)
       BF(it) = 0d0
       NEX(it) = 0d0
     endif
