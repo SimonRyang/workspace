@@ -155,15 +155,12 @@ contains
       l_com = l(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, 0)
     endif
 
-    ! today's investment in annuitized assets
-    mx_com = xy(3)
-    if (ij_com < JR-1) mx_com = 0d0
-
-    xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
+    mx_com = 0d0
     if (ann .and. ij_com == JR-1) then
-      xplus_com = mx_com
+      mx_com = xy(3)
     endif
+    xplus_com = mx_com
 
     ! get tomorrow's year
     itp = year(it_com, ij_com, ij_com+1)
@@ -201,13 +198,7 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      if (ann .and. ij_com == JR-1) then
-        call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      else
-        ixl = 0
-        ixr = 0
-        varchi = 1d0
-      endif
+      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
