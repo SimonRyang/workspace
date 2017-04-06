@@ -160,8 +160,8 @@ contains
 
     xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
-     if (ann .and. ij_com == JR-1) then
-      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) + mx_com
+    if (ann .and. ij_com == JR-1) then
+      xplus_com = mx_com
     endif
 
     ! get tomorrow's year
