@@ -159,8 +159,8 @@ contains
     mx_com = 0d0
     if (ij_com == JR-1) mx_com = xy(3)
 
-    xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
+    xplus_com = 0d0
     if (ann .and. ij_com == JR-1) then
       xplus_com = mx_com
     endif
@@ -296,8 +296,8 @@ contains
       p_hat = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)/temp1
     endif
 
-    xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
+    xplus_com = 0d0
     if (ann .and. ij_com == JR-1) then
       xplus_com = mx_com
     elseif (ann .and. ij_com >= JR) then
