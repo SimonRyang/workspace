@@ -433,19 +433,6 @@ contains
     call discretize_AR(0.930d0**5d0, 0.125d0, sigma5(0.930d0, 0.0360d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
-!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-!    theta(:, 2)       = theta(:, 1)
-!    theta(:, 3)       = theta(:, 1)
-!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-!    dist_theta(:, 2)  = dist_theta(:, 1)
-!    dist_theta(:, 3)  = dist_theta(:, 1)
-!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
-!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
-!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
-
     ! initial guesses for macro variables
     taup(0) = 0.10d0
     tauc(0) = 0.19d0
@@ -893,42 +880,39 @@ contains
             do ie = 1, NE
               do iw = 1, NW
                 do ip = 0, NP
-                  do ix = 0, 0
-                    do ia = 0, NA
+                  do ia = 0, NA
 
-                      ! set up communication variables
-                      is_com = is
-                      ie_com = ie
-                      iw_com = iw
-                      ip_com = ip
-                      ix_com = 0
-                      ia_com = ia
+                    ! set up communication variables
+                    is_com = is
+                    ie_com = ie
+                    iw_com = iw
+                    ip_com = ip
+                    ia_com = ia
 
-                      ! get initial guess for the individual choices
-                      xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                      xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                      xy(3) = max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    ! get initial guess for the individual choices
+                    xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                      limit = max(1.5d0*a(ia), 1d-4)
+                    limit = max(1.5d0*a(ia), 1d-4)
 
-                      call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
+                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
-                      ! copy decisions
-                      aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                      xplus(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                      k(1, ia, :, ip, iw, ie, is, ij, it) = k_com
-                      pplus(1, ia, :, ip, iw, ie, is, ij, it) = pplus_com
-                      c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
-                      l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
-                      mx(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                      oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
-                      pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
-                      inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
-                      captax(1, ia, :, ip, iw, ie, is, ij, it) = captax_com
-                      VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
+                    ! copy decisions
+                    aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
+                    xplus(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
+                    k(1, ia, :, ip, iw, ie, is, ij, it) = k_com
+                    pplus(1, ia, :, ip, iw, ie, is, ij, it) = pplus_com
+                    c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                    l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
+                    mx(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
+                    oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
+                    pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
+                    inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
+                    captax(1, ia, :, ip, iw, ie, is, ij, it) = captax_com
+                    VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
 
-                    enddo ! ia
-                  enddo ! ix
+                  enddo ! ia
                 enddo ! ip
               enddo ! iw
             enddo ! ie

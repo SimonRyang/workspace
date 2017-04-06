@@ -343,13 +343,7 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      if (ann) then
-        call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      else
-        ixl = 0
-        ixr = 0
-        varchi = 1d0
-      endif
+      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_e = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -363,7 +357,7 @@ contains
               **(1d0-gamma)/(1d0-gamma) - suc
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JE-1) then
+      if (ij_com < JE-1 .and. ent) then
 
         valuefunc_help = (varphi*varchi*varpsi*EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + varphi*varchi*(1d0-varpsi)*EV(1, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -376,10 +370,7 @@ contains
               **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_e .and. ent) then
-          valuefunc_e = valuefunc_help
-          oplus_com = 1d0
-        elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0) > 0d0) then
+        if (valuefunc_help > valuefunc_e) then
           valuefunc_e = valuefunc_help
           oplus_com = 1d0
         endif
