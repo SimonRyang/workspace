@@ -911,7 +911,7 @@ contains
 
                       limit = max(1.5d0*a(ia), 1d-4)
 
-                      call fminsearch(xy, fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
+                      call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
                       ! copy decisions
                       aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -961,7 +961,7 @@ contains
                     xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                     xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                    call fminsearch(xy, fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
+                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
                     ! copy decisions
                     aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
