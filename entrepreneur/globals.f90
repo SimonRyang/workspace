@@ -27,7 +27,7 @@ module globals
   integer, parameter :: NE = 4
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 32
+  integer, parameter :: NA = 31
 
   ! number of points on the annuitized asset grid (-1)
   integer, parameter :: NX = 0
