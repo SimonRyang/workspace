@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -89,7 +89,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 16384d0
-  a_grow = 2.4d0
+  a_grow = 0.5d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
