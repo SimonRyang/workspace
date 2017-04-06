@@ -1108,7 +1108,7 @@ contains
                 do ia = 0, NA
                   do io = 0, NO
 
-                    !if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) < 0d0) cycle
+                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) < 0d0) cycle
 
 
                     ! interpolate yesterday's savings decision
@@ -1133,9 +1133,6 @@ contains
                     varphi = min(varphi, 1d0)
                     varchi = min(varchi, 1d0)
                     varpsi = min(varpsi, 1d0)
-
-                    if (varpsi > 1d0)write(*,*)'varpsi', varpsi, 1d0-varpsi, 1d0-1d0
-                    if (varphi > 1d0)write(*,*)'varphi', varphi, 1d0-varphi, 1d0-1d0
 
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
