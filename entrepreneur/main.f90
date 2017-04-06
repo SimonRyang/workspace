@@ -1129,6 +1129,11 @@ contains
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                                        p_l, p_u, NP, ipl, ipr, varpsi)
 
+          
+                    varphi = min(varphi, 1d0)
+                    varchi = min(varchi, 1d0)
+                    varpsi = min(varpsi, 1d0)
+
                     if (varpsi > 1d0)write(*,*)'varpsi', varpsi, 1d0-varpsi, 1d0-1d0
                     if (varphi > 1d0)write(*,*)'varphi', varphi, 1d0-varphi, 1d0-1d0
 
