@@ -1083,6 +1083,8 @@ contains
     ! get yesterdays year
     itm = year(it, 2, 1)
 
+write(*,*)itm
+
     ! set distribution to zero
     m(:, :, :, :, :, :, :, :, it) = 0d0
 
@@ -1095,7 +1097,7 @@ contains
       enddo ! ie
     enddo ! is
 
-    !write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
+    write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
 
     ! successively compute distribution over ages
     do ij = 2, JJ
