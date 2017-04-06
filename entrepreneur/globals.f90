@@ -212,7 +212,7 @@ contains
               **(1d0-gamma)/(1d0-gamma)
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JR-1) then
+      if (ij_com < JR-1 .and. ent) then
 
         valuefunc_help = (varphi*varchi*varpsi*EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + varphi*varchi*(1d0-varpsi)*EV(1, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -225,10 +225,7 @@ contains
               **(1d0-gamma)/(1d0-gamma) - suc
  
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_w .and. ent) then
-          valuefunc_w = valuefunc_help
-          oplus_com = 1d0
-        elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0) > 0d0) then
+        if (valuefunc_help > valuefunc_w) then
           valuefunc_w = valuefunc_help
           oplus_com = 1d0
         endif
@@ -269,7 +266,10 @@ contains
     k_com = xy(2)
 
     ! today's investment in annuitized assets
-    mx_com = xy(3)
+    mx_com = 0d0
+    if (ann .and. ij_com == JR-1) then
+      mx_com = xy(3)
+    endif
 
     ! calculate annuities
     p_hat = 0d0
@@ -288,10 +288,8 @@ contains
 
     xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
-    if (ann .and. ij_com < JR-1) then
-      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com)
-    elseif (ann .and. ij_com == JR-1) then
-      xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) + mx_com
+    if (ann .and. ij_com == JR-1) then
+      xplus_com = mx_com
     elseif (ann .and. ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) - p_hat
     endif
