@@ -1083,8 +1083,6 @@ contains
     ! get yesterdays year
     itm = year(it, 2, 1)
 
-write(*,*)itm
-
     ! set distribution to zero
     m(:, :, :, :, :, :, :, :, it) = 0d0
 
@@ -1096,11 +1094,6 @@ write(*,*)itm
         enddo ! iw
       enddo ! ie
     enddo ! is
-
-    write(*,*) sum(m(:, :, :, :, :, :, :, 1, it))
-    write(*,*) minval(m(:, :, :, :, :, :, :, 1, it))
-
-    write(*,*)'************************'
 
     ! successively compute distribution over ages
     do ij = 2, JJ
@@ -1117,7 +1110,6 @@ write(*,*)itm
 
                     if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) < 0d0) cycle
 
-                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) < 0d0) write(*,*)m(io, ia, ix, ip, iw, ie, is, ij-1, itm), io, ia, ix, ip, iw, ie, is, ij-1, itm
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
