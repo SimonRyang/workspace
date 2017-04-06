@@ -1589,7 +1589,7 @@ contains
         xr = h*((1+growth)**dble(ir)-1d0)+left
 
         ! get share on the left point
-        phi = (xr-x)/(xr-xl)
+        phi = max(min((xr-x)/(xr-xl), 1d0), 0d0)
 
     end subroutine linint_Grow_1
 
