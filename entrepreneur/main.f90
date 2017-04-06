@@ -1115,7 +1115,7 @@ write(*,*)itm
                 do ia = 0, NA
                   do io = 0, NO
 
-                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) < 0d0) write(*,*)m(io, ia, ix, ip, iw, ie, is, ij-1, itm), io, ia, ix, ip, iw, ie, is, ij-1, itm
+                    !if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) < 0d0) write(*,*)m(io, ia, ix, ip, iw, ie, is, ij-1, itm), io, ia, ix, ip, iw, ie, is, ij-1, itm
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
@@ -1137,6 +1137,9 @@ write(*,*)itm
 
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
+
+                    if (varphi < 0d0) write(*,*)'varchi', varphi
+                    if (varpsi < 0d0) write(*,*)'varchi', varpsi
 
                     ! redistribute households
                     do ie_p = 1, NE
