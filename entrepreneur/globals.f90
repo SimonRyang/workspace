@@ -108,7 +108,7 @@ module globals
   real*8, allocatable :: v(:, :, :, :, :, :, :, :, :)
 
   ! numerical variables
-  integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com, io_max, ix_max
+  integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com
   real*8 :: c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
 
   ! statistical variables
