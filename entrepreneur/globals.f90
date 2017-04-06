@@ -283,7 +283,7 @@ contains
 
     ! calculate annuities
     p_hat = 0d0
-    if (ij_com >= JR) then
+    if (ann .and. ij_com >= JR) then
       temp1 = 0d0
       do ij = ij_com, JJ
         temp2 = 1d0
