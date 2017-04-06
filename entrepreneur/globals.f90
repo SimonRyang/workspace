@@ -279,7 +279,7 @@ contains
     k_com = xy(2)
 
     ! today's investment in annuitized assets
-    mx_com = 0d0!xy(3)
+    mx_com = xy(3)
 
     ! calculate annuities
     p_hat = 0d0
