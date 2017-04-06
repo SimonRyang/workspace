@@ -1130,7 +1130,7 @@ contains
                                        p_l, p_u, NP, ipl, ipr, varpsi)
 
                     if (varphi > 1d0)write(*,*)'varphi', 1d0-varphi, aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm)
-                    if (varpci > 1d0)write(*,*)'varphi', 1d0-varchi, xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                    if (varchi > 1d0)write(*,*)'varphi', 1d0-varchi, xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm)
                     if (varpsi > 1d0)write(*,*)'varphi', 1d0-varpsi, pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm)
 
           
