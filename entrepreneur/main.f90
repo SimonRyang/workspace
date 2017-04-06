@@ -432,13 +432,13 @@ write(*,*) taup(0), tauc(0), inc_bar(0), bqs(:, 0), BQ(0), BB(0), KC(0), LC(0)
 
     ! initial guesses for macro variables
     taup(0) = 0.1837d0
-    tauc(0) = 0.1569d0
-    inc_bar(0) = 0.5128d0
-    bqs(:, 0) = (/0.0210d0, 0.1123d0, 0.2899d0/)
-    BQ(0) = 0.4243d0
-    BB(0) = 0.9307d0
-    KC(0) = 3.7662d0
-    LC(0) = 5.2042d0
+    tauc(0) = 0.1566d0
+    inc_bar(0) = 0.5047d0
+    bqs(:, 0) = (/0.0216d0, 0.1168d0, 0.2888d0/)
+    BQ(0) = 0.4266d0
+    BB(0) = 0.9174d0
+    KC(0) = 3.7344d0
+    LC(0) = 5.2214d0
 
     ! open files
     open(21, file='output.out')
