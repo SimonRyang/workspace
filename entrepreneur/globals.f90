@@ -202,7 +202,7 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      if (ann) then
+      if (ann .and. ij_com == JR-1) then
         call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
       else
         ixl = 0

@@ -1144,7 +1144,6 @@ contains
                     if (ann) then
                       call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-                      if (xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm) < 1d-16)write(*,*)xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), ixl, ixr, varchi
                     else
                       ixl = 0
                       ixr = 0
