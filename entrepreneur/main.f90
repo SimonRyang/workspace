@@ -168,15 +168,17 @@ contains
       ! get factor and other prices
       call get_prices(0)
 
+      call tick(calc)
       ! solve the household problem
       call solve_household(1, 0)
-
+      call tock(calc)
       ! calculate the distribution of households over state space
       call get_distribution(0)
 
+      call tick(calc)
       ! aggregate individual decisions
       call aggregation(0)
-
+      call tock(calc)
       ! determine the government parameters
       call government(0)
 
