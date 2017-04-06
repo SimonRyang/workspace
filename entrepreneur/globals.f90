@@ -36,7 +36,7 @@ module globals
   integer, parameter :: NP = 4
 
   ! number of occupations (-1)
-  integer, parameter :: NO = 1
+  integer, parameter :: NO = 0
 
   ! household parameters
   real*8 :: gamma, sigma, beta, l_bar, phi1, phi2, sigmaq
