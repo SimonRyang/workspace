@@ -1031,7 +1031,7 @@ contains
     !##### OTHER VARIABLES ####################################################
     integer :: ia, ix, ip, iw, ie, is, iw_p, ie_p
 
-    !$omp parallel do collapse(4) schedule(dynamic,1) private(iw_p, ie_p) num_threads(numthreads)
+    !!$omp parallel do collapse(4) schedule(dynamic,1) private(iw_p, ie_p) num_threads(numthreads)
     do is = 1, NS
       do ie = 1, NE
         do iw = 1, NW
@@ -1058,7 +1058,7 @@ contains
         enddo ! iw
       enddo ! ie
     enddo ! is
-    !$omp end parallel do
+    !!$omp end parallel do
 
   end subroutine
 
@@ -1117,14 +1117,8 @@ contains
                              a_l, a_u, a_grow, NA, ial, iar, varphi)
 
                     ! interpolate yesterday's annuitized assets
-                    if (ann) then
-                      call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
+                    call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-                    else
-                      ixl = 0
-                      ixr = 0
-                      varchi = 1d0
-                    endif
 
                     ! interpolate today's pension claims
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
