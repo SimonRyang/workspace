@@ -108,12 +108,16 @@ program main
   ! compute gini
   gini_on = .true.
 
-  ! set switches
-  if (NO == 0) ent = .false.
-  if (NX == 0) ann = .false.
+  ! set max. iterations
+  io_max = 1
+  ix_max = NX
+  if (.not. ent) io_max = 0
+  if (.not. ann) ix_max = 0
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+  stop
 
   ! set reform parameters
   !pen_debt = .true.
@@ -426,19 +430,6 @@ contains
 
     call discretize_AR(0.930d0**5d0, 0.125d0, sigma5(0.930d0, 0.0360d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
-
-!    theta(:, 1)       = (/0.000d0, 0.290d0, 1.000d0, 1.710d0/)*1.880d0
-!    theta(:, 2)       = theta(:, 1)
-!    theta(:, 3)       = theta(:, 1)
-!    dist_theta(:, 1)  = (/0.554d0, 0.283d0, 0.099d0, 0.064d0/)
-!    dist_theta(:, 2)  = dist_theta(:, 1)
-!    dist_theta(:, 3)  = dist_theta(:, 1)
-!    pi_theta(1, :, 1) = (/0.780d0, 0.220d0, 0.000d0, 0.000d0/)
-!    pi_theta(2, : ,1) = (/0.430d0, 0.420d0, 0.150d0, 0.000d0/)
-!    pi_theta(3, :, 1) = (/0.000d0, 0.430d0, 0.420d0, 0.150d0/)
-!    pi_theta(4, :, 1) = (/0.000d0, 0.000d0, 0.220d0, 0.780d0/)
-!    pi_theta(:, :, 2) = pi_theta(:, :, 1)
-!    pi_theta(:, :, 3) = pi_theta(:, :, 1)
 
     ! initial guesses for macro variables
     taup(0) = 0.10d0
@@ -765,6 +756,113 @@ contains
           enddo ! ip
         enddo ! is
         !$omp end parallel do
+
+      elseif (ij == JR-1) then
+
+        !$omp parallel copyin(ij_com, it_com) private(xy, fret, limit) num_threads(numthreads)
+
+        if (ent) then
+
+          ! set up communication variables
+          io_com = 1
+
+          !$omp do collapse(4) schedule(dynamic, 1)
+          do is = 1, NS
+            do ie = 1, NE
+              do iw = 1, NW
+                do ip = 0, NP
+                  do ix = 0, NX
+                    do ia = 0, NA
+
+                      ! set up communication variables
+                      is_com = is
+                      ie_com = ie
+                      iw_com = iw
+                      ip_com = ip
+                      ix_com = ix
+                      ia_com = ia
+
+                      ! get initial guess for the individual choices
+                      xy(1) = max(aplus(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                      xy(2) = max(k(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                      xy(3) = max(mx(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+
+                      limit = max(1.5d0*a(ia), 1d-4)
+
+                      call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, limit, x_u/), valuefunc_e)
+
+                      ! copy decisions
+                      aplus(1, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                      xplus(1, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                      k(1, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                      pplus(1, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
+                      c(1, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                      l(1, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                      mx(1, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                      oplus(1, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                      pencon(1, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
+                      inctax(1, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                      captax(1, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                      VV(1, ia, ix, ip, iw, ie, is, ij, it) = -fret
+
+                    enddo ! ia
+                  enddo ! ix
+                enddo ! ip
+              enddo ! iw
+            enddo ! ie
+          enddo ! is
+          !$omp end do nowait
+
+        endif
+
+        ! set up communication variables
+        io_com = 0
+
+        !$omp do collapse(4) schedule(dynamic, 1)
+        do is = 1, NS
+          do ie = 1, NE
+            do iw = 1, NW
+              do ip = 0, NP
+                do ix = 0, NX
+                  do ia = 0, NA
+
+                    ! set up communication variables
+                    is_com = is
+                    ie_com = ie
+                    iw_com = iw
+                    ip_com = ip
+                    ix_com = ix
+                    ia_com = ia
+
+                    ! get initial guess for the individual choices
+                    xy(1) = max(aplus(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(2) = max(l(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(0, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+
+                    call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, 1d0, x_u/), valuefunc_w)
+
+                    ! copy decisions
+                    aplus(0, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                    xplus(0, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                    k(0, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                    pplus(0, ia, ix, ip, iw, ie, is, ij, it) = pplus_com
+                    c(0, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                    l(0, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                    mx(0, ia, ix, ip, iw, ie, is, ij, it) = mx_com
+                    oplus(0, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                    pencon(0, ia, ix, ip, iw, ie, is, ij, it) = pencon_com
+                    inctax(0, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                    captax(0, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                    VV(0, ia, ix, ip, iw, ie, is, ij, it) = -fret
+
+                  enddo ! ia
+                enddo ! ix
+              enddo ! ip
+            enddo ! iw
+          enddo ! ie
+        enddo ! is
+        !$omp end do
+        !$omp end parallel
 
       elseif (ij >= 2) then
 
