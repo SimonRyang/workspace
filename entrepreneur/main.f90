@@ -224,8 +224,6 @@ contains
       write(*,'(/a/)')'ITER    COMP_OLD  EFFICIENCY          DIFF'
     endif
 
-    write(*,*)'trat'
-
     ! start timer
     call tick(calc)
 
@@ -583,7 +581,7 @@ contains
     ! calculate interests of annuities
     do ij = 1, JJ
       psix(:, ij, it) = 1d0
-      if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
+      !if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
   end subroutine
