@@ -758,11 +758,13 @@ contains
 
         !$omp parallel copyin(ij_com, it_com) private(xy, fret, limit) num_threads(numthreads)
 
+        ! set up communication variables
+        ix_com = 0
+
         if (ent) then
 
           ! set up communication variables
           io_com = 1
-          ix_com = 0
 
           !$omp do collapse(4) schedule(dynamic, 1)
           do is = 1, NS
@@ -812,7 +814,6 @@ contains
 
         ! set up communication variables
         io_com = 0
-        ix_com = 0
 
         !$omp do collapse(4) schedule(dynamic, 1)
         do is = 1, NS
