@@ -157,7 +157,7 @@ contains
 
     ! today's investment in annuitized assets
     mx_com = 0d0
-    !if (ij_com == JR-1 .and. ann) mx_com = xy(3)
+    if (ij_com == JR-1 .and. ann) mx_com = xy(3)
 
     xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
