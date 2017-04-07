@@ -109,7 +109,7 @@ program main
   gini_on = .true.
 
   ! set switches
-  ann = .false.
+!  ann = .false.
   ent = .false.
 
   ! calculate initial equilibrium
@@ -266,11 +266,11 @@ contains
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
       if(.not. lsra_on)then
-        write(*,'(i4,6f8.2,f12.6)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
+        write(*,'(i4,6f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
           ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), sum(pop_e(:, TT))/(sum(pop_w(:, TT))+sum(pop_e(:, TT)))*100d0, DIFF(itmax)/YY(itmax)*100d0
         check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
       else
-        write(*,'(i4,2f12.6,f16.10)')iter, lsra_comp/lsra_all*100d0, &
+        write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
           (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
           check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
       endif
