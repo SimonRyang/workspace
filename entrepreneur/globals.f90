@@ -157,11 +157,11 @@ contains
 
     ! today's investment in annuitized assets
     mx_com = 0d0
-    if (ij_com == JR-1) mx_com = xy(3)
+    if (ij_com == JR-1 .and. ann) mx_com = xy(3)
 
     xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
-    if (ann .and. ij_com == JR-1) then
+    if (ij_com == JR-1 .and. ann) then
       xplus_com = mx_com
     endif
 
@@ -279,11 +279,11 @@ contains
 
     ! today's investment in annuitized assets
     mx_com = 0d0
-    if (ij_com == JR-1) mx_com = xy(3)
+    if (ij_com == JR-1 .and. ann) mx_com = xy(3)
 
     ! calculate annuities
     p_hat = 0d0
-    if (ann .and. ij_com >= JR) then
+    if (ij_com >= JR .and. ann) then
       temp1 = 0d0
       do ij = ij_com, JJ
         temp2 = 1d0
@@ -298,9 +298,9 @@ contains
 
     xplus_com = 0d0
     ! calculate tommorrow's annuitized asset stock
-    if (ann .and. ij_com == JR-1) then
+    if (ij_com == JR-1 .and. ann) then
       xplus_com = mx_com
-    elseif (ann .and. ij_com >= JR) then
+    elseif (ij_com >= JR .and. ann) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) - p_hat
     endif
 

@@ -754,7 +754,7 @@ contains
         enddo ! is
         !$omp end parallel do
 
-      elseif (ij == JR-1) then
+      elseif (ij == JR-1 .and. ann) then
 
         !$omp parallel copyin(ij_com, it_com) private(xy, fret, limit) num_threads(numthreads)
 
