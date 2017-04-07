@@ -106,7 +106,7 @@ program main
   itermax = 200
 
   ! compute gini
-  gini_on = .true.
+  gini_on = .false.
 
   ! set switches
   ! ann = .false.
