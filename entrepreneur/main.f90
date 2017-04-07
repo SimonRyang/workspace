@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 14
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -1109,7 +1109,7 @@ contains
                   do io = 0, NO
   
                     ! skip if there is no household
-                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) write(*,*) m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
+                    if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
@@ -1253,7 +1253,7 @@ contains
                 do ia = 0, NA
                   do io = 0, NO
 
-                    !if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(io, ia, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
+                    if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(io, ia, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
                     if (ann) then
