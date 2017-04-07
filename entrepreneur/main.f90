@@ -109,8 +109,8 @@ program main
   gini_on = .true.
 
   ! set switches
-!  ann = .false.
-  ent = .false.
+  ! ann = .false.
+  ! ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -223,6 +223,8 @@ contains
     else
       write(*,'(/a/)')'ITER    COMP_OLD  EFFICIENCY          DIFF'
     endif
+
+    write(*,*)'trat'
 
     ! start timer
     call tick(calc)
