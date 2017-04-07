@@ -109,8 +109,7 @@ program main
   gini_on = .true.
 
   ! set switches
-  if (NO == 0) ent = .false.
-  if (NX == 0) ann = .false.
+  ann = .false.  
 
   ! calculate initial equilibrium
   call get_SteadyState()

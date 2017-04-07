@@ -117,9 +117,9 @@ module globals
 
   ! switches
   logical :: smopec = .false.   ! .true. = economcy is smopec
-  logical :: ann = .true.    ! .true. = wealth of an old entrepreneur is annuitized
-  logical :: ent = .true.     ! .true. = endogenous decision to become an entrepreneur
-  logical :: labor = .true.   ! .true. = endogenous labor decision of worker
+  logical :: ann = .true.       ! .true. = wealth can be annuitized
+  logical :: ent = .true.       ! .true. = endogenous decision to become an entrepreneur
+  logical :: labor = .true.     ! .true. = endogenous labor decision of worker
   logical :: pen_debt = .false. ! .true. = pension system can run into debts
 
   !$omp threadprivate(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
