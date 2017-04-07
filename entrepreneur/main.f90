@@ -221,7 +221,7 @@ contains
     if(.not. lsra_on)then
       call initialize_trn()
     else
-      write(*,'(/a/)')'ITER    COMP_OLD  EFFICIENCY        DIFF'
+      write(*,'(/a/)')'ITER    COMP_OLD  EFFICIENCY          DIFF'
     endif
 
     ! start timer
@@ -270,7 +270,7 @@ contains
           ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), sum(pop_e(:, TT))/(sum(pop_w(:, TT))+sum(pop_e(:, TT)))*100d0, DIFF(itmax)/YY(itmax)*100d0
         check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
       else
-        write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
+        write(*,'(i4,2f12.6,f16.10)')iter, lsra_comp/lsra_all*100d0, &
           (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
           check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
       endif
@@ -757,13 +757,11 @@ contains
 
         !$omp parallel copyin(ij_com, it_com) private(xy, fret, limit) num_threads(numthreads)
 
-        ! set up communication variables
-        ix_com = 0
-
         if (ent) then
 
           ! set up communication variables
           io_com = 1
+          ix_com = 0
 
           !$omp do collapse(4) schedule(dynamic, 1)
           do is = 1, NS
@@ -813,6 +811,7 @@ contains
 
         ! set up communication variables
         io_com = 0
+        ix_com = 0
 
         !$omp do collapse(4) schedule(dynamic, 1)
         do is = 1, NS
