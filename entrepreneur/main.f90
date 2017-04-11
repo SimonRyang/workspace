@@ -261,7 +261,7 @@ contains
       ! determine the government parameters
       do it = 1, TT
         call government(it)
-      enddo
+      end
 
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
