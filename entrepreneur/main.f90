@@ -264,7 +264,7 @@ contains
       end
 
       ! write screen output
-      itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
+      !itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
       if(.not. lsra_on)then
         write(*,'(i4,6f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
           ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), sum(pop_e(:, TT))/(sum(pop_w(:, TT))+sum(pop_e(:, TT)))*100d0, DIFF(itmax)/YY(itmax)*100d0
