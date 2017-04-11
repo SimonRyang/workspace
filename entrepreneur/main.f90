@@ -582,7 +582,7 @@ contains
     do ij = 1, JJ
       psix(:, ij, it) = 1d0
       psix(:, ij, it) = 1d0/psi(:, ij)
-      !if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
+      if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
   end subroutine
