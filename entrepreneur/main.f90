@@ -109,13 +109,13 @@ program main
   gini_on = .false.
 
   ! set switches
-  !ann = .false.
+  ann = .false.
   !ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  ann = .false.
+  !ann = .true.
 
   ! set reform parameters
   !pen_debt = .true.
@@ -317,11 +317,7 @@ contains
     a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
 
     ! initialize annuity grid
-    if (ann) then
-      x = grid_Cons_Grow(x_l, x_u, x_grow, NX)
-    else
-      x(0) = 0d0
-    endif
+    x = grid_Cons_Grow(x_l, x_u, x_grow, NX)
 
     ! initialize pension claim grid
     p = grid_Cons_Equi(p_l, p_u, NP)
