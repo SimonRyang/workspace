@@ -581,8 +581,8 @@ contains
     ! calculate interests of annuities
     do ij = 1, JJ
       psix(:, ij, it) = 1d0
-      psix(:, ij, it) = 1d0/psi(:, ij)
-      !if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
+      !psix(:, ij, it) = 1d0/psi(:, ij)
+      if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
   end subroutine
@@ -693,12 +693,12 @@ contains
                     aplus(1, ia, ix, ip, :, ie, is, ij, it) = xy(1)
                     xplus(1, ia, ix, ip, :, ie, is, ij, it) = xplus_com
                     k(1, ia, ix, ip, :, ie, is, ij, it) = k_com
-                    pplus(1, ia, ix, ip, :, ie, is, ij, it) = pplus_com
+                    pplus(1, ia, ix, ip, :, ie, is, ij, it) = p(ip)
                     c(1, ia, ix, ip, :, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, ix, ip, :, ie, is, ij, it) = l_com
-                    mx(1, ia, ix, ip, :, ie, is, ij, it) = mx_com
+                    mx(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
                     oplus(1, ia, ix, ip, :, ie, is, ij, it) = oplus_com
-                    pencon(1, ia, ix, ip, :, ie, is, ij, it) = pencon_com
+                    pencon(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
                     inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
                     captax(1, ia, ix, ip, :, ie, is, ij, it) = captax_com
                     VV(1, ia, ix, ip, :, ie, is, ij, it) = -fret
@@ -892,12 +892,12 @@ contains
 
                     ! copy decisions
                     aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                    xplus(1, ia, :, ip, iw, ie, is, ij, it) = xplus_com
+                    xplus(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
                     k(1, ia, :, ip, iw, ie, is, ij, it) = k_com
                     pplus(1, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                     c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
-                    mx(1, ia, :, ip, iw, ie, is, ij, it) = mx_com
+                    mx(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
                     oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                     pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
@@ -940,12 +940,12 @@ contains
 
                   ! copy decisions
                   aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                  xplus(0, ia, :, ip, iw, ie, is, ij, it) = xplus_com
+                  xplus(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
                   k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
                   pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                   c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                   l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
-                  mx(0, ia, :, ip, iw, ie, is, ij, it) = mx_com
+                  mx(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
                   oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                   pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                   inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
@@ -986,7 +986,7 @@ contains
 
               ! copy decisions
               aplus(:, :, :, :, iw, ie, is, ij, it) = xy(1)
-              xplus(:, :, :, :, iw, ie, is, ij, it) = xplus_com
+              xplus(:, :, :, :, iw, ie, is, ij, it) = 0d0
               pplus(:, :, :, :, iw, ie, is, ij, it) = pplus_com
               c(:, :, :, :, iw, ie, is, ij, it) = max(c_com, 1d-10)
               l(:, :, :, :, iw, ie, is, ij, it) = l_com
@@ -1116,14 +1116,8 @@ contains
                              a_l, a_u, a_grow, NA, ial, iar, varphi)
 
                     ! interpolate yesterday's annuitized assets
-                    if (ann) then
-                      call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
+                    call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-                    else
-                      ixl = 0
-                      ixr = 0
-                      varchi = 1d0
-                    endif
 
                     ! interpolate today's pension claims
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
@@ -1247,13 +1241,7 @@ contains
                     if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(io, ia, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
-                    if (ann) then
-                      call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-                    else
-                      ixl = 0
-                      ixr = 0
-                      varchi = 1d0
-                    endif
+                    call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
                     AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)

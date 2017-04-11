@@ -201,13 +201,7 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      if (ann) then
-        call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      else
-        ixl = 0
-        ixr = 0
-        varchi = 1d0
-      endif
+      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -283,7 +277,7 @@ contains
 
     ! calculate annuities
     p_hat = 0d0
-    if (ij_com >= JR .and. ann) then
+    if (ij_com >= JR) then
       temp1 = 0d0
       do ij = ij_com, JJ
         temp2 = 1d0
@@ -300,7 +294,7 @@ contains
     ! calculate tommorrow's annuitized asset stock
     if (ij_com == JR-1 .and. ann) then
       xplus_com = mx_com
-    elseif (ij_com >= JR .and. ann) then
+    elseif (ij_com >= JR) then
       xplus_com = x(ix_com)*(1d0+r(it_com))*psix(is_com, ij_com, it_com) - p_hat
     endif
 
@@ -353,13 +347,7 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      if (ann) then
-        call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      else
-        ixl = 0
-        ixr = 0
-        varchi = 1d0
-      endif
+      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
       valuefunc_e = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -480,13 +468,7 @@ contains
 
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      if (ann) then
-        call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      else
-        ixl = 0
-        ixr = 0
-        varchi = 1d0
-      endif
+      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
       valuefunc_r = (varphi*varchi*EV(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
                + varphi*(1d0-varchi)*EV(0, ial, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
