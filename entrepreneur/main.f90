@@ -1239,8 +1239,10 @@ contains
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
                     call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
-                    AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar) + varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
-                              *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar)) &
+                                      *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    AX(it) = AX(it) + (varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
+                                      *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     x_coh(ij, it) = x_coh(ij, it) + x(ix) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     bx_coh(ij, it) = bx_coh(ij, it) + x(ix) &
@@ -1303,10 +1305,10 @@ contains
 
     if (smopec) then
       KC(it) = damp*(LC(it)*((r(it)/(1d0-tauy(it))+delta)/alpha)**(1d0/(alpha-1d0))) + (1d0-damp)*KC(it)
-      BF(it) = AA(it) - KE(it) - KC(it) - BB(it) - BP(it) - BA(it)
+      BF(it) = AA(it)+ AX(it) - KE(it) - KC(it) - BB(it) - BP(it) - BA(it)
       NEX(it) = (n_p-r(it))*BF(it)
     else
-      KC(it) = damp*(AA(it) - KE(it) - BB(it) - BP(it) - BA(it)) + (1d0-damp)*KC(it)
+      KC(it) = damp*(AA(it) + AX(it) - KE(it) - BB(it) - BP(it) - BA(it)) + (1d0-damp)*KC(it)
       BF(it) = 0d0
       NEX(it) = 0d0
     endif
@@ -1657,9 +1659,9 @@ contains
 
     ! Output
     write(21,'(a, i3/)')'EQUILIBRIUM YEAR ', it
-    write(21,'(a)')'CAPITAL       KK      KC      KE      AA       r    p.a.'
-    write(21,'(8x,6f8.2)')KK(it), KC(it), KE(it), AA(it), r(it), ((1d0+r(it))**(1d0/5d0)-1d0)*100d0
-    write(21,'(a,4f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it)/)/YY(it)*500d0
+    write(21,'(a)')'CAPITAL       KK      KC      KE      AA      AX       r    p.a.'
+    write(21,'(8x,7f8.2)')KK(it), KC(it), KE(it), AA(it), AX(it), r(it), ((1d0+r(it))**(1d0/5d0)-1d0)*100d0
+    write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*500d0
 
     write(21,'(a)')'LABOR         LC       w     inc   l_bar'
     write(21,'(8x,4f8.2/)')LC(it), w(it), inc_bar(it), HH(it)/sum(pop_w(:, it))
@@ -1880,7 +1882,7 @@ contains
     enddo
 
     ! headline
-    write(22,'(/a,a)')'          A      KK      KC      KE      LC     l_bar       r       w     inc       C       I',  &
+    write(22,'(/a,a)')'         AA      AX      KK      KC      KE      LC   l_bar       r       w     inc       C       I',  &
       '      YY      YC      YE    tauc    taup      PP      BQ     ent    ent1    ent2    ent3     HEV      DIFF'
 
     ! current generations
@@ -1892,7 +1894,7 @@ contains
 
     ! future generations
     do it = 1, TT
-      write(22,'(i3,23f8.2,f10.5)')it,(/AA(it)/AA(0)-1d0, KK(it)/KK(0)-1d0, KC(it)/KC(0)-1d0, KE(it)/KE(0)-1d0, LC(it)/LC(0)-1d0, &
+      write(22,'(i3,24f8.2,f10.5)')it,(/AA(it)/AA(0)-1d0, AX(it)/AX(0)-1d0, KK(it)/KK(0)-1d0, KC(it)/KC(0)-1d0, KE(it)/KE(0)-1d0, LC(it)/LC(0)-1d0, &
         HH(it)/sum(pop_w(:, it))/(HH(0)/sum(pop_w(:, 0)))-1d0, &
         (1d0+r(it))**0.2d0-(1d0+r(0))**0.2d0, w(it)/w(0)-1d0, inc_bar(it)/inc_bar(0)-1d0, CC(it)/CC(0)-1d0, &
         II(it)/II(0)-1d0, YY(it)/YY(0)-1d0, YC(it)/YC(0)-1d0, YE(it)/YE(0)-1d0, tauc(it)-tauc(0), taup(it)-taup(0), PP(it)/YY(it)-PP(0)/YY(0), &
