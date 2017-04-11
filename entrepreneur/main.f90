@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -89,7 +89,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 32768d0
-  a_grow = 1.8d0
+  a_grow = 1.9d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -1107,7 +1107,7 @@ contains
               do ix = 0, NX
                 do ia = 0, NA
                   do io = 0, NO
-  
+
                     ! skip if there is no household
                     if (m(io, ia, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
 
