@@ -21,13 +21,13 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of transitory shock process values (worker)
-  integer, parameter :: NW = 7
+  integer, parameter :: NW = 5
 
   ! number of transitory shock process values (entrepreneur)
-  integer, parameter :: NE = 5
+  integer, parameter :: NE = 4
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 31
+  integer, parameter :: NA = 15
 
   ! number of points on the annuitized asset grid (-1)
   integer, parameter :: NX = 15
@@ -232,7 +232,7 @@ contains
                + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
               **(1d0-gamma)/(1d0-gamma) - suc
- 
+
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
