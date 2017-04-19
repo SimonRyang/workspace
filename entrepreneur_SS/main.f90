@@ -118,9 +118,9 @@ program main
 
   suc = 0.625d0
 
-  do m1 = 8, 8
-    do m2 = 8, 8
-      do m3 = 6, 6
+  do m1 = 1, 10
+    do m2 = 1, 10
+      do m3 = 1, 10
 
         write(*,*)m1, m2, m3
 
