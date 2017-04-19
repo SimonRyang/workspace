@@ -1188,8 +1188,8 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES ####################################################
-    integer :: io, ia, ix, ip, iw, ie, is, ij, ial, iar, ixl, ixr, itm, itp
-    real*8 :: LC_old, varchi, varphi
+    integer :: io, ia, ix, ip, iw, ie, is, ij, itm, itp
+    real*8 :: LC_old
 
     !write(*,*)'Calculate Aggregation:'
     !call tick(calc)
