@@ -11,8 +11,8 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(NS, 10)
-  integer :: m1, m2, m3
+  real*8 :: mu_val(NS, 10), sig_val(10), rho_val(10)
+  integer :: s1, s2, s3, m1, m2, m3, rh1, rh2, rh3
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -113,6 +113,8 @@ program main
   mu_val(1, :) =  grid_Cons_Equi(0.25d0, 0.35d0, 10)
   mu_val(2, :) =  grid_Cons_Equi(0.20d0, 0.30d0, 10)
   mu_val(3, :) =  grid_Cons_Equi(-0.20d0, -0.10d0, 10)
+  rho_val(:) = grid_Cons_Equi(0.93d0, 0.94d0, 10)
+  sig_val(:) = grid_Cons_Equi(0.030d0, 0.040d0, 10)
 
   open(307, file='results.out')
 
@@ -121,8 +123,14 @@ program main
   do m1 = 1, 10
     do m2 = 1, 10
       do m3 = 1, 10
+        do s1 = 1, 10
+          s2 = s1
+          do s3 = 1, 10
+            do rh1 = 1, 10
+              rh1 = rh2
+              do rh3 = 1, 10
 
-        write(*,*)m1, m2, m3
+        write(*,*)m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
 
         ! calculate initial equilibrium
         call get_SteadyState()
@@ -133,7 +141,7 @@ program main
         shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
 
 
-        write(307, '(3i3, 8f8.4)')m1, m2, m3, share_result, &
+        write(307, '(9i3, 8f8.4)')m1, m2, m3, s1, s2, s3, rh1, rh2, rh3, share_result, &
             sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                       + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                       + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
@@ -378,13 +386,13 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.935d0**5d0, -mu_val(1, m1), sigma5(0.935d0, 0.036d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(rho_val(rh1)**5d0, -mu_val(1, m1), sigma5(rho_val(rh1), sig_val(s1)), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))
 
-    call discretize_AR(0.935d0**5d0, -mu_val(2, m2), sigma5(0.935d0, 0.036d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(rho_val(rh2)**5d0, -mu_val(2, m2), sigma5(rho_val(rh2), sig_val(s2)), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))
 
-    call discretize_AR(0.930d0**5d0, -mu_val(3, m3), sigma5(0.930d0, 0.036d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(rho_val(rh3)**5d0, -mu_val(3, m3), sigma5(rho_val(rh3), sig_val(s3)), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))
 
     ! initial guesses for macro variables
