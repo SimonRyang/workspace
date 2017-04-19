@@ -89,7 +89,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 32768d0
-  a_grow = 2.0d0
+  a_grow = 1.6d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -101,7 +101,7 @@ program main
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.70d0
+  damp  = 0.60d0
   tol   = 1d-6
   itermax = 200
 
