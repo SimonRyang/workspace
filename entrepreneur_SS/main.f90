@@ -110,11 +110,11 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(1, :) =  grid_Cons_Equi(0.25d0, 0.35d0, 10)
-  mu_val(2, :) =  grid_Cons_Equi(0.20d0, 0.30d0, 10)
+  mu_val(1, :) =  grid_Cons_Equi(0.20d0, 0.35d0, 10)
+  mu_val(2, :) =  grid_Cons_Equi(0.15d0, 0.30d0, 10)
   mu_val(3, :) =  grid_Cons_Equi(-0.20d0, -0.10d0, 10)
   rho_val(:) = grid_Cons_Equi(0.93d0, 0.94d0, 6)
-  sig_val(:) = grid_Cons_Equi(0.030d0, 0.040d0, 6)
+  sig_val(:) = grid_Cons_Equi(0.030d0, 0.040d0, 3)
 
   open(307, file='results.out')
 
@@ -123,9 +123,9 @@ program main
   do m1 = 1, 10
     do m2 = 1, 10
       do m3 = 1, 10
-        do s1 = 1, 6
+        do s1 = 1, 3
           s2 = s1
-          do s3 = 1, 6
+          do s3 = 1, 3
             do rh1 = 1, 5
               rh2 = rh1
               do rh3 = 1, 5
