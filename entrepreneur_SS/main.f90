@@ -130,48 +130,53 @@ program main
               rh1 = rh2
               do rh3 = 1, 10
 
-        write(*,*)m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
+                write(*,*)m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
 
-        ! calculate initial equilibrium
-        call get_SteadyState()
+                ! calculate initial equilibrium
+                call get_SteadyState()
 
-        share_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
-        shares_result(:, 1) = (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0
-        shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0
-        shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
+                share_result = sum(pop_e(:))/(sum(pop_w(:)+pop_e(:)))*100d0
+                shares_result(:, 1) = (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0
+                shares_result(:, 2) = (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0
+                shares_result(:, 3) = (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0
 
 
-        write(307, '(9i3, 8f8.4)')m1, m2, m3, s1, s2, s3, rh1, rh2, rh3, share_result, &
-            sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-            sqrt(1d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-            sqrt(2d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-            sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-            sqrt(8d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-            sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-            sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                      + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                      + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
-          write(*,'(16f8.4)')shares_result(:, 1)
-          write(*,'(16f8.4)')shares_target(:, 1)
+                write(307, '(9i3, 8f8.4)')m1, m2, m3, s1, s2, s3, rh1, rh2, rh3, share_result, &
+                    sqrt(0d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                              + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                              + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                    sqrt(1d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                              + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                              + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                    sqrt(2d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                              + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                              + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                    sqrt(4d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                              + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                              + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                    sqrt(8d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                              + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                              + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                    sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                              + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                              + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
+                    sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
+                                                              + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
+                                                              + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
+                  write(*,'(16f8.4)')shares_result(:, 1)
+                  write(*,'(16f8.4)')shares_target(:, 1)
 
-          write(*,'(16f8.4)')shares_result(:, 2)
-          write(*,'(16f8.4)')shares_target(:, 2)
+                  write(*,'(16f8.4)')shares_result(:, 2)
+                  write(*,'(16f8.4)')shares_target(:, 2)
 
-          write(*,'(16f8.4)')shares_result(:, 3)
-          write(*,'(16f8.4)')shares_target(:, 3)
+                  write(*,'(16f8.4)')shares_result(:, 3)
+                  write(*,'(16f8.4)')shares_target(:, 3)
 
+                end do
+              end do
+            end do
+          end do
+        end do
       end do
     end do
   end do
