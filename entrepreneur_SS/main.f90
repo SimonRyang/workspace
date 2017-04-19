@@ -82,8 +82,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 16384d0
-  a_grow = 2.0d0
+  a_u    = 32768d0
+  a_grow = 1.6d0
 
   ! size of the pension claim grid
   p_l  = 0d0
@@ -95,7 +95,7 @@ program main
   itermax = 20
 
   ! compute gini
-  gini_on = .true.
+  gini_on = .false.
 
   ! set switches
   if (NO == 0) ent = .false.
