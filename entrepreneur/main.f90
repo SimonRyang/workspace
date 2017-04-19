@@ -1279,7 +1279,7 @@ contains
                     endif
                     PP(it) = PP(it) + pen(ip, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                     !bqs(is, it) = bqs(is, it) + (1d0+r(it))*(varphi*a(ial) + (1d0-varphi)*a(iar))*(1d0-psi(is, ij+1)) &
-                    bqs(is, it) = bqs(is, it) + aplus(io, ia, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1)) &
+                    bqs(is, it) = bqs(is, it) + (1d0+r(it))*aplus(io, ia, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1)) &
                                   *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     TAc(it) = TAc(it) + tauc(it)*c(io, ia, ix, ip, iw, ie, is, ij, it) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
