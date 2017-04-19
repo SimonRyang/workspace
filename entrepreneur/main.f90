@@ -1238,13 +1238,19 @@ contains
 
                     if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(io, ia, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
-                    call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
-                    call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+                    !call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij, itm), a_l, a_u, a_grow, NA, ial, iar, varphi)
+                    !call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij, itm), x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
-                    AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar)) &
+                    !AA(it) = AA(it) + (varphi*a(ial) + (1d0-varphi)*a(iar)) &
+                    !                  *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    !AX(it) = AX(it) + (varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
+                    !                  *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+
+                    AA(it) = AA(it) + aplus(io, ia, ix, ip, iw, ie, is, ij, itm) &
                                       *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    AX(it) = AX(it) + (varchi*x(ixl) + (1d0-varchi)*x(ixr)) &
+                    AX(it) = AX(it) + xplus(io, ia, ix, ip, iw, ie, is, ij, itm) &
                                       *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+
                     x_coh(ij, it) = x_coh(ij, it) + x(ix) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     bx_coh(ij, it) = bx_coh(ij, it) + x(ix) &
