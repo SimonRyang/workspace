@@ -388,14 +388,14 @@ contains
     theta(:, 3) = exp(theta(:, 3))
 
     ! initial guesses for macro variables
-    taup   = 0.10d0
-    tauc   = 0.19d0
-    inc_bar = 0.61d0
-    bqs = (/0.02d0, 0.10d0, 0.20d0/)
-    BQ = 0.50d0
-    BB = 0d0
-    KC = 4.93d0
-    LC = 5.25d0
+    taup   = 0.1837d0
+    tauc   = 0.1566d0
+    inc_bar = 0.5047d0
+    bqs = (/0.0216d0, 0.1168d0, 0.2888d0/)
+    BQ = 0.4266d0
+    BB = 0.9174d0
+    KC = 3.7344d0
+    LC = 5.2214d0
 
     ! open files
     open(21, file='output.out')
