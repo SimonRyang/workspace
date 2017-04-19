@@ -110,7 +110,7 @@ program main
 
   ! set switches
   ann = .false.
-  !ent = .false.
+  ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -122,7 +122,7 @@ program main
   !smopec = .true.
   !phi(1:TT) = 1d0
   !lambda(1:TT) = 1d0
-  !mu(1:TT) = 0d0
+  mu(1:TT) = 0d0
   !labor = .false.
   !ent = .false.
 
