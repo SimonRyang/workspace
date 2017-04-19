@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(NS, 20)
+  real*8 :: mu_val(NS, 10)
   integer :: m1, m2, m3
 
   ! allocate arrays
@@ -110,9 +110,9 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(1, :) =  grid_Cons_Equi(0d0, 0.4d0, 20)
-  mu_val(2, :) =  grid_Cons_Equi(0d0, 0.35d0, 20)
-  mu_val(3, :) =  grid_Cons_Equi(-0.2d0, 0.1d0, 20)
+  mu_val(1, :) =  grid_Cons_Equi(0.25d0, 0.35d0, 10)
+  mu_val(2, :) =  grid_Cons_Equi(0.20d0, 0.30d0, 10)
+  mu_val(3, :) =  grid_Cons_Equi(-0.20d0, -0.10d0, 10)
 
   open(307, file='results.out')
 
@@ -883,8 +883,8 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: io, ia, ip, iw, ie, is, ij, ial, iar
-    real*8 :: LC_old, varphi
+    integer :: io, ia, ip, iw, ie, is, ij
+    real*8 :: LC_old
 
     !write(*,*)'Calculate Aggregation:'
     !call tick(calc)
@@ -923,9 +923,7 @@ contains
               do ia = 0, NA
                 do io = 0, NO
 
-                  call linint_Grow(aplus(io, ia, ip, iw, ie, is, ij), a_l, a_u, a_grow, NA, ial, iar, varphi)
-
-                  AA = AA + (varphi*a(ial) + (1d0-varphi)*a(iar)) &
+                  AA = AA + aplus(io, ia, ip, iw, ie, is, ij) &
                             *m(io, ia, ip, iw, ie, is, ij)/(1d0+n_p)
                   CC = CC + c(io, ia, ip, iw, ie, is, ij) &
                             *m(io, ia, ip, iw, ie, is, ij)
@@ -950,7 +948,7 @@ contains
                     endif
                   endif
                   PP = PP + pen(ip, ij)*m(io, ia, ip, iw, ie, is, ij)
-                  bqs(is) = bqs(is) + (1d0+r)*(varphi*a(ial) + (1d0-varphi)*a(iar))*(1d0-psi(is, ij+1)) &
+                  bqs(is) = bqs(is) + (1d0+r)*aplus(io, ia, ip, iw, ie, is, ij)*(1d0-psi(is, ij+1)) &
                                 *m(io, ia, ip, iw, ie, is, ij)/(1d0+n_p)
                   TAc = TAc + tauc*c(io, ia, ip, iw, ie, is, ij) &
                             *m(io, ia, ip, iw, ie, is, ij)
