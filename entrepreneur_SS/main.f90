@@ -113,7 +113,7 @@ program main
   mu_val(1, :) =  grid_Cons_Equi(0.25d0, 0.35d0, 10)
   mu_val(2, :) =  grid_Cons_Equi(0.20d0, 0.30d0, 10)
   mu_val(3, :) =  grid_Cons_Equi(-0.20d0, -0.10d0, 10)
-  rho_val(:) = grid_Cons_Equi(0.93d0, 0.94d0, 10)
+  rho_val(:) = grid_Cons_Equi(0.93d0, 0.94d0, 5)
   sig_val(:) = grid_Cons_Equi(0.030d0, 0.040d0, 10)
 
   open(307, file='results.out')
@@ -126,9 +126,9 @@ program main
         do s1 = 1, 10
           s2 = s1
           do s3 = 1, 10
-            do rh1 = 1, 10
-              rh1 = rh2
-              do rh3 = 1, 10
+            do rh1 = 1, 5
+              rh2 = rh1
+              do rh3 = 1, 5
 
                 write(*,*)m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
 
