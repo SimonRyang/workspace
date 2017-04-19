@@ -110,10 +110,12 @@ program main
 
   ! set switches
   ann = .false.
-  ent = .false.
+  !ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+  stop
 
   ann = .true.
 
