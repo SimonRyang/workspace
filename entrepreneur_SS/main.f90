@@ -120,15 +120,15 @@ program main
 
   suc = 0.625d0
 
-  do m1 = 1, 5
-    do m2 = 1, 5
-      do m3 = 1, 5
-        do s1 = 1, 3
+  do m1 = 5, 5
+    do m2 = 2, 2
+      do m3 = 6, 6
+        do s1 = 3, 3
           s2 = s1
-          do s3 = 1, 3
-            do rh1 = 1, 3
+          do s3 = 3, 3
+            do rh1 = 3, 3
               rh2 = rh1
-              do rh3 = 1, 3
+              do rh3 = 3, 3
 
                 write(*,*)m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
 
