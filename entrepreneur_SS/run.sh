@@ -13,5 +13,5 @@ cd ~/workspace/include/
 cp * ~/workspace/entrepreneur_SS/
 cd ~/workspace/entrepreneur_SS/
 $2 make
-exit
+#exit
 EOF
