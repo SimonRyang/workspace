@@ -121,7 +121,7 @@ program main
   suc = 0.625d0
 
   do m1 = 5, 5
-    do m2 = 3, 3
+    do m2 = 2, 2
       do m3 = 6, 6
         do s1 = 3, 3
           s2 = s1
