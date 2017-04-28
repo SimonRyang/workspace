@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(NS, 10), sig_val(10), rho_val(10)
+  real*8 :: mu_val(NS, 4), sig_val(3), rho_val(3)
   integer :: s1, s2, s3, m1, m2, m3, rh1, rh2, rh3
 
   ! allocate arrays
@@ -110,25 +110,25 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(1, :) =  grid_Cons_Equi(0.30d0, 0.35d0, 5)
-  mu_val(2, :) =  grid_Cons_Equi(0.15d0, 0.25d0, 5)
-  mu_val(3, :) =  grid_Cons_Equi(-0.10d0, 0.05d0, 5)
-  rho_val(:) = grid_Cons_Equi(0.935d0, 0.945d0, 3)
-  sig_val(:) = grid_Cons_Equi(0.035d0, 0.045d0, 3)
+  mu_val(1, :) =  grid_Cons_Equi(0.31d0, 0.33d0, 4)
+  mu_val(2, :) =  grid_Cons_Equi(0.15d0, 0.25d0, 4)
+  mu_val(3, :) =  grid_Cons_Equi(-0.05d0, 0.00d0, 4)
+  sig_val(:) = grid_Cons_Equi(0.035d0, 0.045d0, 4)
+  rho_val(:) = grid_Cons_Equi(0.936d0, 0.945d0, 4)
 
   open(307, file='results.out')
 
   suc = 0.625d0
 
-  do m1 = 3, 3
-    do m2 = 5, 5
-      do m3 = 2, 2
-        do s1 = 2, 2
+  do m1 = 1, 4
+    do m2 = 1, 4
+      do m3 = 1, 4
+        do s1 = 1, 4
           s2 = s1
-          do s3 = 3, 3
-            do rh1 = 2, 2
+          do s3 = 1, 4
+            do rh1 = 1, 4
               rh2 = rh1
-              do rh3 = 3, 3
+              do rh3 = 1, 4
 
                 write(*,*) m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
                 write(*,*) mu_val(1,m1), mu_val(2,m2), mu_val(3,m3), sig_val(s1), sig_val(s2), sig_val(s3), rho_val(rh1), rho_val(rh2), rho_val(rh3)
