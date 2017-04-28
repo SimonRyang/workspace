@@ -110,9 +110,9 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(1, :) =  grid_Cons_Equi(0.30d0, 0.35d0, 4)
-  mu_val(2, :) =  grid_Cons_Equi(0.15d0, 0.25d0, 4)
-  mu_val(3, :) =  grid_Cons_Equi(-0.10d0, 0.05d0, 4)
+  mu_val(1, :) =  grid_Cons_Equi(0.30d0, 0.35d0, 5)
+  mu_val(2, :) =  grid_Cons_Equi(0.15d0, 0.25d0, 5)
+  mu_val(3, :) =  grid_Cons_Equi(-0.10d0, 0.05d0, 5)
   rho_val(:) = grid_Cons_Equi(0.935d0, 0.945d0, 3)
   sig_val(:) = grid_Cons_Equi(0.035d0, 0.045d0, 3)
 
