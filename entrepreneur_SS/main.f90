@@ -120,13 +120,13 @@ program main
 
   suc = 0.625d0
 
-  do m1 = 3, 3
-    do m2 = 5, 5
+  do m1 = 4, 4
+    do m2 = 4, 4
       do m3 = 2, 2
-        do s1 = 1, 1
+        do s1 = 3, 3
           s2 = s1
-          do s3 = 3, 3
-            do rh1 = 3, 3
+          do s3 = 2, 2
+            do rh1 = 2, 2
               rh2 = rh1
               do rh3 = 3, 3
 
