@@ -123,10 +123,10 @@ program main
   do m1 = 3, 3
     do m2 = 5, 5
       do m3 = 2, 2
-        do s1 = 2, 2
+        do s1 = 1, 1
           s2 = s1
           do s3 = 3, 3
-            do rh1 = 2, 2
+            do rh1 = 3, 3
               rh2 = rh1
               do rh3 = 3, 3
 
