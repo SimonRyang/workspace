@@ -8,4 +8,5 @@ cp * ~/workspace/entrepreneur_SS/
 cd ~/workspace/entrepreneur_SS/
 rm *.o
 rm *.mod
+
 make
