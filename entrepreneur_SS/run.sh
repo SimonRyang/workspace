@@ -17,6 +17,4 @@ rm *.mod
 exit
 EOF
 
-echo "Test!"
-
-ssh -t -t -X flh71wr@$1 "/home/flh71wr/workspace/entrepreneur_SS/run.sh"
+ssh -t -t -X flh71wr@$1 "/home/flh71wr/workspace/entrepreneur_SS/sshrun.sh"
