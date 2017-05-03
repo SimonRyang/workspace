@@ -135,7 +135,7 @@ program main
                   do rh3 = 1, 3
 
                     write(*,*) m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
-                    write(*,*) mu_val(1,m1), mu_val(2,m2), mu_val(3,m3), sig_val(s1), sig_val(s2), sig_val(s3), rho_val(rh1), rho_val(rh2), rho_val(rh3)
+                    write(*,*) mu_val(1,m1), mu_val(2,m2), mu_val(3,m3), sig_val(1,s1), sig_val(2,s2), sig_val(3,s3), rho_val(1,rh1), rho_val(2,rh2), rho_val(3,rh3)
 
                     ! calculate initial equilibrium
                     call get_SteadyState()
