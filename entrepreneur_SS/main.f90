@@ -182,14 +182,14 @@ program main
     end do
 
 
-!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
-!    call execplot
-!
-!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
-!    call execplot
-!
+    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
+    call execplot
+
+    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
+    call execplot
+
     call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
     call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
     call execplot
