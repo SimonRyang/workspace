@@ -17,5 +17,6 @@ rm *.mod
 exit
 EOF
 
-cd
 echo "Test!"
+
+ssh -t -t -X flh71wr@$1:/home/flh71wr/workspace/entrepreneur_SS/ "make"
