@@ -14,5 +14,6 @@ cp * ~/workspace/entrepreneur_SS/
 cd ~/workspace/entrepreneur_SS/
 rm *.mod
 rm *.o
-exit
 EOF
+
+cd
