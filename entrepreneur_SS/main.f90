@@ -329,8 +329,8 @@ contains
     l(:, :, :, :, :, :, :) = 0.33d0
 
     ! distribution of skill classes
-    dist_skill(:) = (/0.2600d0, 0.5500d0, 0.1900d0/)
-    ! dist_skill = (/0.1520d0, 0.5547d0, 0.2933d0/)
+    ! dist_skill(:) = (/0.2600d0, 0.5500d0, 0.1900d0/)
+    dist_skill(:) = (/0.1520d0, 0.5547d0, 0.2933d0/)
 
 		! initialize survival probabilities for middle skilled
     open(319, file='sp.dat')
