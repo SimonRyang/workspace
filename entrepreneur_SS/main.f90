@@ -120,15 +120,15 @@ program main
 
   suc = 0.625d0
 
-  do m1 = 1, 4
-    do m2 = 1, 4
-      do m3 = 1, 4
-        do s1 = 1, 4
+  do m1 = 3, 3
+    do m2 = 4, 4
+      do m3 = 1, 1
+        do s1 = 3, 3
           s2 = s1
-          do s3 = 1, 4
-            do rh1 = 1, 4
+          do s3 = 3, 3
+            do rh1 = 1, 1
               rh2 = rh1
-              do rh3 = 1, 4
+              do rh3 = 3, 3
 
                 write(*,*) m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
                 write(*,*) mu_val(1,m1), mu_val(2,m2), mu_val(3,m3), sig_val(s1), sig_val(s2), sig_val(s3), rho_val(rh1), rho_val(rh2), rho_val(rh3)
