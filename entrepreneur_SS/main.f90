@@ -112,7 +112,7 @@ program main
 
   mu_val(1, :) =  (/0.3195d0, 0.3200d0, 0.3205d0/)
   mu_val(2, :) =  (/0.2245d0, 0.2250d0, 0.2255d0/)
-  mu_val(3, :) =  (/-0.0500d0, -0.0505d0, -0.0510d0/)
+  mu_val(3, :) =  (/-0.040d0, -0.0450d0, -0.0500d0/)
   sig_val(1, :) = (/0.0370d0, 0.0375d0, 0.0380d0/)
   sig_val(2, :) = (/0.0370d0, 0.0375d0, 0.0380d0/)
   sig_val(3, :) = (/0.0395d0, 0.0400d0, 0.0405d0/)
@@ -208,7 +208,7 @@ program main
     !
     ! write(*,'(16f8.4)')shares_result(:, 3)
     ! write(*,'(16f8.4)')shares_target(:, 3)
-    ! 
+    !
     ! write(*,*)share_result
     !
     ! call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
