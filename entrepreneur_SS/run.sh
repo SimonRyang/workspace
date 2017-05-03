@@ -16,4 +16,4 @@ rm *.mod
 rm *.o
 EOF
 
-$2 make
+ssh -t -t -X flh71wr@$1: $2 make
