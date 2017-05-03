@@ -126,7 +126,7 @@ program main
         do s1 = 2, 2
           s2 = s1
           do s3 = 3, 3
-            do rh1 = 3, 3
+            do rh1 = 1, 1
               rh2 = rh1
               do rh3 = 3, 3
 
