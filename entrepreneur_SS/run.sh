@@ -12,5 +12,7 @@ git pull origin master
 cd ~/workspace/include/
 cp * ~/workspace/entrepreneur_SS/
 cd ~/workspace/entrepreneur_SS/
+rm *.mod
+rm *.o
 $2 make
 EOF
