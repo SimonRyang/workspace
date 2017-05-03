@@ -16,5 +16,3 @@ rm *.mod
 rm *.o
 exit
 EOF
-
-ssh -t -t -X flh71wr@$1: cd
