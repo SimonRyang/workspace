@@ -190,9 +190,9 @@ program main
 !    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
 !    call execplot
 !
-!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
-!    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
-!    call execplot
+    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
+    call execplot
 
 !    write(*,'(16f8.4)')shares_result(:, 1)
 !    write(*,'(16f8.4)')shares_target(:, 1)
