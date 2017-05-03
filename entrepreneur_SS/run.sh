@@ -14,6 +14,7 @@ cp * ~/workspace/entrepreneur_SS/
 cd ~/workspace/entrepreneur_SS/
 rm *.mod
 rm *.o
+exit
 EOF
 
 ssh -t -t -X flh71wr@$1: $2 make
