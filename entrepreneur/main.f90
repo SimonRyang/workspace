@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 8
+  integer, parameter :: numthreads = 4
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -115,7 +115,7 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  stop
+  ! stop
 
   ann = .true.
 
@@ -124,7 +124,7 @@ program main
   !smopec = .true.
   !phi(1:TT) = 1d0
   !lambda(1:TT) = 1d0
-  mu(1:TT) = 0d0
+  !mu(1:TT) = 0d0
   !labor = .false.
   !ent = .false.
 
