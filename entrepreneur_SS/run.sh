@@ -17,4 +17,4 @@ rm *.o
 exit
 EOF
 
-ssh -t -t -X flh71wr@$1: $2 make
+ssh -t -t -X flh71wr@$1:/home/flh71wr/workspace/entrepreneur_SS/ $2 make
