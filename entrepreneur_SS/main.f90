@@ -126,10 +126,10 @@ program main
 
   do m1 = 1, 1
     do m2 = 1, 1
-      do m3 = 1, 1
+      do m3 = 3, 3
         do s1 = 1, 1
           do s2 = 1, 1
-            do s3 = 3, 3
+            do s3 = 1, 1
               do rh1 = 1, 1
                 do rh2 = 1, 1
                   do rh3 = 3, 3
@@ -210,7 +210,7 @@ program main
     ! write(*,'(16f8.4)')shares_target(:, 3)
     !
     ! write(*,*)share_result
-    
+
     call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
     call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
     call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
