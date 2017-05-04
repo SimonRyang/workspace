@@ -15,5 +15,4 @@ cd ~/workspace/entrepreneur_SS/
 rm *.o
 rm *.mod
 EOF
-
 ssh -t -t -X flh71wr@$1 "/home/flh71wr/workspace/entrepreneur_SS/sshrun.sh"
