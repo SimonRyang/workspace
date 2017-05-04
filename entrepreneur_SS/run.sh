@@ -14,7 +14,8 @@ cp * ~/workspace/entrepreneur_SS/
 cd ~/workspace/entrepreneur_SS/
 rm *.o
 rm *.mod
+make
 exit
 EOF
 
-ssh -t -t -X flh71wr@$1 "/home/flh71wr/workspace/entrepreneur_SS/sshrun.sh"
+#ssh -t -t -X flh71wr@$1 "/home/flh71wr/workspace/entrepreneur_SS/sshrun.sh"
