@@ -154,7 +154,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: iter, iamax(JJ), ixmax(JJ)
+    integer :: iter, iamax(JJ), ixmax(JJ), JJ
 
     ! initialize remaining variables
     call initialize()
