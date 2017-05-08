@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
+  integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
   real*8 :: mu_val(NS, 3), sig_val(NS, 3), rho_val(NS, 3)
@@ -124,12 +124,12 @@ program main
 
   suc = 0.625d0
 
-  do m1 = 1, 1
-    do m2 = 1, 1
-      do m3 = 1, 1
+  do m1 = 3, 3
+    do m2 = 2, 2
+      do m3 = 3, 3
         do s1 = 1, 1
-          do s2 = 1, 1
-            do s3 = 3, 3
+          do s2 = 3, 3
+            do s3 = 1, 1
               do rh1 = 1, 1
                 do rh2 = 1, 1
                   do rh3 = 3, 3

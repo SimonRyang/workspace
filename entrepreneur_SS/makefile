@@ -2,7 +2,7 @@ MAINFILE = main
 LIBS = globals.o toolbox.o sorting.o clock.o
 
 # Intel Fortran Compiler
-CFLAGS = -qopenmp -O2
+CFLAGS = -qopenmp -O2 -check all
 CC = ~/intel/bin/ifort
 
 # PGI Fortran Compiler
@@ -21,7 +21,7 @@ all: $(TARGET)
 	-rm -f *.mod
 
 $(TARGET): $(MAINFILE).o $(LIBS)
-	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET) 
+	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET)
 
 globals.mod: toolbox.mod sorting.mod globals.f90
 	$(CC) $(CFLAGS) -c globals.f90
