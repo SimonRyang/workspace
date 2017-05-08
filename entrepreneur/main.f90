@@ -309,7 +309,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ######################################################
-    integer :: ia, ix, ip, iw, ie, is, ij, jj
+    integer :: ia, ix, ip, iw, ie, is, ij
     real*8 :: adj
 
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
@@ -373,8 +373,6 @@ contains
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
-
-    write(*,*)jj
 
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
