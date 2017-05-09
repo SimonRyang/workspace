@@ -70,7 +70,7 @@ program main
   ! tax and transfers
   taur   = 0.25d0
   tauy   = 0.15d0
-  kappa  = 0.53d0
+  kappa  = 0.55d0
   sscc   = 2d0
   mu     = 1d0
   lambda = 0d0
