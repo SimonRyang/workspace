@@ -1681,7 +1681,7 @@ contains
     write(21,'(a,5f8.2/)')'(in %)  ',(/taup(it), kappa(it), PP(it)/YY(it), PC(it)/YY(it), BQ(it)/YY(it)/)*100d0
 
     write(21,'(a)')'INCOME     TOTAL     WOR     ENT ENT/WOR     y_w     y_e y_e/y_w'
-    write(21, '(8x,7f8.2)')w(it)*LC(it) + PE(it) + PRE(it), w(it)*LC(it), PE(it) + PRE(it), (PE(it)+PRE(it))/(w(it)*LC(it)), w(it)*LC(it)/sum(pop_w(:, it)), (PE(it) + PRE(it))/(sum(pop_e(:, it) + pop_re(:, it))), (PE(it) + PRE(it))/sum(pop_e(:, it) + pop_re(:, it))/w(it)*LC(it)/sum(pop_w(:, it))
+    write(21, '(8x,7f8.2)')w(it)*LC(it) + PE(it) + PRE(it), w(it)*LC(it), PE(it) + PRE(it), (PE(it)+PRE(it))/(w(it)*LC(it)), w(it)*LC(it)/sum(pop_w(:, it)), (PE(it) + PRE(it))/(sum(pop_e(:, it) + pop_re(:, it))), (PE(it) + PRE(it))/sum(pop_e(:, it) + pop_re(:, it))/(w(it)*LC(it)/sum(pop_w(:, it)))
     write(21, '(a,4f8.2/)')'(in %)  ',(/w(it)*LC(it) + PE(it) + PRE(it), w(it)*LC(it), PE(it) + PRE(it)/)/(w(it)*LC(it) + PE(it) + PRE(it))*100d0, (PE(it)+PRE(it))/(w(it)*LC(it))*100d0
 
     write(21,'(a)')'POP        TOTAL     65-     65+ 65+/65-'
