@@ -1746,7 +1746,16 @@ contains
                                     sum(os_coh(1, :, 2, ij, it)), &
                                     sum(os_coh(1, :, 3, ij, it)), &
                                     sum(os_coh(1, :, :, ij, it)*reshape((/rpop(:, ij, it), rpop(:, ij, it)/), (/2, NS/)))/pop(ij, it)/)*100d0
+
+      write(23,'(i3, 4f8.2)') ij, (/sum(m(1, :, :, :, :, :, 1, ij, it))/sum(m(:, :, :, :, :, :, 1, ij, it)), &
+                                    sum(m(1, :, :, :, :, :, 2, ij, it))/sum(m(:, :, :, :, :, :, 2, ij, it)), &
+                                    sum(m(1, :, :, :, :, :, 3, ij, it))/sum(m(:, :, :, :, :, :, 3, ij, it)), &
+                                    sum(m(1, :, :, :, :, :, :, ij, it))/sum(m(:, :, :, :, :, :, :, ij, it)))*100d0
     enddo
+    write(23,'(3x,4f8.2)')(/sum(m(1, :, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it)), &
+                            sum(m(1, :, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it)), &
+                            sum(m(1, :, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it)), &
+                            sum(m(1, :, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it)))*100d0
 
     write(23,'(/a)')'Entry rates'
     do ij = 1, JJ
