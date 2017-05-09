@@ -13,7 +13,7 @@ all: $(TARGET)
 	-rm -f *.mod
 
 $(TARGET): $(MAINFILE).o $(LIBS)
-	$(CC) $(CFLAGS) -xavx $(MAINFILE).o $(LIBS) -o $(TARGET)
+	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET)
 
 globals.mod: toolbox.mod sorting.mod globals.f90
 	$(CC) $(CFLAGS) -c globals.f90
