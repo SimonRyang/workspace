@@ -115,7 +115,7 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  ! stop
+  stop
 
   ann = .true.
 
