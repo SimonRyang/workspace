@@ -2,7 +2,7 @@ MAINFILE = main
 LIBS = globals.o toolbox.o sorting.o clock.o
 
 # Intel Fortran Compiler
-CFLAGS = -qopenmp -O2 -xavx #-check all
+CFLAGS = -qopenmp -O2 #-check all
 CC = ~/intel/bin/ifort
 
 TARGET = prog
