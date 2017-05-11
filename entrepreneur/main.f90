@@ -1331,9 +1331,6 @@ contains
 
     inc_bar(it) = (w(it)*LC(it) + PE(it))/(sum(pop_w(:, it)) + sum(pop_e(:, it)))
 
-    ! get difference on goods market
-    DIFF = YY(it)-CC(it)-II(it)-GG(it)-NEX(it)
-
     !write(*,*)'Done!'
     !call tock(calc)
 
@@ -1397,6 +1394,9 @@ contains
       if (it == TT) BP(it) = (PP(TT) - taup(TT)*PC(TT))/(n_p - r(TT))
 
     endif
+
+    ! get difference on goods market
+    DIFF = YY(it)-CC(it)-II(it)-GG(it)-NEX(it)
 
   end subroutine
 
