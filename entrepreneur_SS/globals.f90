@@ -24,10 +24,10 @@ module globals
   integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 31
+  integer, parameter :: NA = 128
 
   ! number of points on the pension claim grid (-1)
-  integer, parameter :: NP = 4
+  integer, parameter :: NP = 5
 
   ! number of occupations (-1)
   integer, parameter :: NO = 1
