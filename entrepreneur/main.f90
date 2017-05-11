@@ -101,7 +101,7 @@ program main
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.70d0
+  damp  = 0.80d0
   tol   = 1d-6
   itermax = 200
 
