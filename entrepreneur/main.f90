@@ -197,7 +197,7 @@ contains
                       write(*,*) LC(0)
                       write(*,*)'     '
                       do ia = 0, NA
-                        write(*,*)sum(m(:, ia, :, :, :, :, :, :, :, 0))
+                        write(*,*)sum(m(:, ia, :, :, :, :, :, :, 0))
                       enddo
         call tock(calc)
         call output(0)
