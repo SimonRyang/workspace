@@ -1733,8 +1733,8 @@ contains
                                     percentiles(reshape(wealth(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
 
       write(21, '(a)')'GROSSINC  GINI     1%     5%    10%    25%    50%    75%    90%    95%    99%'
-      write(21,'(4x, f10.3, 9f7.2/)')gini(reshape(grossinc(:, :, :, :, :, :, :, 1:JR-1), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*(JR-1)/)), reshape(m(:, :, :, :, :, :, :, 1:JR-1, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*(JR-1)/))), &
-                                     percentiles(reshape(grossinc(:, :, :, :, :, :, :, 1:JR-1), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*(JR-1)/)), reshape(m(:, :, :, :, :, :, :, 1:JR-1, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*(JR-1)/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
+      write(21,'(4x, f10.3, 9f7.2/)')gini(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
+                                     percentiles(reshape(grossinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), (/0.01d0, 0.05d0, 0.10d0, 0.25d0, 0.50d0, 0.75d0, 0.90d0, 0.95d0, 0.99d0/))
 
       write(21, '(a)')'NETINC    GINI     1%     5%    10%    25%    50%    75%    90%    95%    99%'
       write(21,'(4x, f10.3, 9f7.2/)')gini(reshape(netinc(:, :, :, :, :, :, :, :), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/)), reshape(m(:, :, :, :, :, :, :, :, it), (/2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ/))), &
