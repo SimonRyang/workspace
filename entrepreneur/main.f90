@@ -164,16 +164,6 @@ contains
     ! iterate until value function converges
     do iter = 1, itermax
 
-
-              write(*,*) taup(0)
-              write(*,*) tauc(0)
-              write(*,*) bqs(:, 0)
-              write(*,*) inc_bar(0)
-              write(*,*) BQ(0)
-              write(*,*) BB(0)
-              write(*,*) KC(0)
-              write(*,*) LC(0)
-
       !call tick(calc)
 
       ! get factor and other prices
@@ -197,6 +187,14 @@ contains
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
+                      write(*,*) taup(0)
+                      write(*,*) tauc(0)
+                      write(*,*) bqs(:, 0)
+                      write(*,*) inc_bar(0)
+                      write(*,*) BQ(0)
+                      write(*,*) BB(0)
+                      write(*,*) KC(0)
+                      write(*,*) LC(0)
         call tock(calc)
         call output(0)
         return
@@ -435,14 +433,14 @@ contains
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
     ! initial guesses for macro variables
-    taup(0) = 0.192392d0
-    tauc(0) = 0.173895d0
-    inc_bar(0) = 0.527959d0
-    bqs(:, 0) = (/0.019551d0, 0.119462d0, 0.302635d0/)
-    BQ(0) = 0.441649d0
-    BB(0) = 0.953990d0
-    KC(0) = 3.816690d0
-    LC(0) = 5.17143587d0
+    taup(0) = 0.192393d0
+    tauc(0) = 0.173856d0
+    inc_bar(0) = 0.527950d0
+    bqs(:, 0) = (/0.019551d0, 0.119450d0, 0.302507d0/)
+    BQ(0) = 0.441508d0
+    BB(0) = 0.953949d0
+    KC(0) = 3.821249d0
+    LC(0) = 5.171536d0
 
     ! open files
     open(21, file='output.out')
