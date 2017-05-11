@@ -10,7 +10,7 @@ TARGET = prog
 all: $(TARGET)
 	clear
 	./$(TARGET)
-	-rm -f *.mod
+#	-rm -f *.mod
 
 $(TARGET): $(MAINFILE).o $(LIBS)
 	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET)
