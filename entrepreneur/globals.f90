@@ -27,7 +27,7 @@ module globals
   integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 31
+  integer, parameter :: NA = 63
 
   ! number of points on the annuitized asset grid (-1)
   integer, parameter :: NX = 15
@@ -629,42 +629,22 @@ contains
     do ij = 1, JJ
 
       ! check for the maximum asset grid point used at a certain age
-      ! do ia = 0, NA
-      !   do is = 1, NS
-      !     do ie = 1, NE
-      !       do iw = 1, NW
-      !         do ip = 0, NP
-      !           do ix = 0, NX
-      !             if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
-      !             if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
-      !           enddo ! ix
-      !         enddo ! ip
-      !       enddo ! iw
-      !     enddo ! ie
-      !   enddo ! is
-      ! enddo ! ia
-
       do ia = NA, 0, -1
         if (sum(m(:, ia, :, :, :, :, :, ij, it)) > 0d0) then
           iamax(ij) = ia
           exit
         endif
-      enddo
+      enddo ! ia
 
-      do ix = 0, NX
-        do is = 1, NS
-          do ie = 1, NE
-            do iw = 1, NW
-              do ip = 0, NP
-                do ia = 0, NA
-                  if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) ixmax(ij)=ix
-                  if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) ixmax(ij)=ix
-                enddo ! ia
-              enddo ! ip
-            enddo ! iw
-          enddo ! ie
-        enddo ! is
-      enddo ! ix
+      ! check for the maximum annuitie grid point used at a certain age
+      if (ann) then
+        do ix = NX, 0, -1
+          if (sum(m(:, :, ix, :, :, :, :, ij, it)) > 0d0) then
+            ixmax(ij) = ix
+            exit
+          endif
+        enddo ! ix
+      endif
 
     enddo ! ij
 
