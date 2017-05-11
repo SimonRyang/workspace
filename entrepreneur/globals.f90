@@ -646,7 +646,7 @@ contains
 
       do ia = NA, 0, -1
         if (sum(m(:, ia, :, :, :, :, :, ij, it)) > 0d0) iamax(ij) = ia
-        cycle
+        exit
       enddo
 
       do ix = 0, NX
