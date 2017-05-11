@@ -31,5 +31,5 @@ $(MAINFILE).o: globals.mod toolbox.mod sorting.mod clock.mod $(MAINFILE).f90
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
 clean:
-	-rm -f *.mod
-	-rm -f *.o
+	-rm -f globals.mod
+	-rm -f globals.o
