@@ -1162,7 +1162,7 @@ contains
 
     write(21,'(a)')'INCOME     TOTAL     WOR     ENT ENT/WOR     y_w     y_e y_e/y_w'
     write(21, '(8x,7f8.2)')w*LC + PE + PRE, w*LC, PE + PRE, (PE+PRE)/(w*LC), w*LC/sum(pop_w(:)), &
-                           (PE + PRE)/(sum(pop_e(:) + pop_re(:))), (PE + PRE)/sum(pop_e(:) + pop_re(:))/w*LC/sum(pop_w(:))
+                           (PE + PRE)/(sum(pop_e(:) + pop_re(:))), (PE + PRE)/sum(pop_e(:) + pop_re(:))/(w*LC/sum(pop_w(:)))
     write(21, '(a,4f8.2/)')'(in %)  ',(/w*LC + PE + PRE, w*LC, PE + PRE/)/(w*LC + PE + PRE)*100d0, (PE+PRE)/(w*LC)*100d0
 
     write(21,'(a)')'POP        TOTAL     65-     65+ 65+/65-'
