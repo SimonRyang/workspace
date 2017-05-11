@@ -644,8 +644,9 @@ contains
       !   enddo ! is
       ! enddo ! ia
 
-      do ia = 0, NA
+      do ia = NA, 0, -1
         if (sum(m(:, ia, :, :, :, :, :, ij, it)) > 0d0) iamax(ij) = ia
+        cycle
       enddo
 
       do ix = 0, NX
