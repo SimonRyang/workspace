@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 14
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -50,8 +50,8 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = -11.700d0
-  phi2   =  11.700d0
+  phi1   = -12.600d0
+  phi2   =  12.600d0
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
