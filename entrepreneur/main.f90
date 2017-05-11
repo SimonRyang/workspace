@@ -436,14 +436,14 @@ contains
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
     ! initial guesses for macro variables
-    taup(0) = 0.1837d0
-    tauc(0) = 0.1566d0
-    inc_bar(0) = 0.5047d0
-    bqs(:, 0) = (/0.0216d0, 0.1168d0, 0.2888d0/)
-    BQ(0) = 0.4266d0
-    BB(0) = 0.9174d0
-    KC(0) = 3.7344d0
-    LC(0) = 5.2214d0
+    taup(0) = 0.192398d0
+    tauc(0) = 0.174174d0
+    inc_bar(0) = 0.528015d0
+    bqs(:, 0) = (/0.019431d0, 0.119467d0, 0.305297d0/)
+    BQ(0) = 0.444196d0
+    BB(0) = 0.955154d0
+    KC(0) = 3.828603d0
+    LC(0) = 5.173753d0
 
     ! open files
     open(21, file='output.out')
