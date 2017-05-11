@@ -101,7 +101,7 @@ program main
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.70d0
+  damp  = 0.80d0
   tol   = 1d-6
   itermax = 200
 
@@ -109,7 +109,7 @@ program main
   gini_on = .true.
 
   ! set switches
-  ent = .false.
+  ent = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -436,14 +436,14 @@ contains
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
     ! initial guesses for macro variables
-    taup(0) = 0.192398d0
-    tauc(0) = 0.174174d0
-    inc_bar(0) = 0.528015d0
-    bqs(:, 0) = (/0.019431d0, 0.119467d0, 0.305297d0/)
-    BQ(0) = 0.444196d0
-    BB(0) = 0.955154d0
-    KC(0) = 3.828603d0
-    LC(0) = 5.174587d0
+    taup(0) = 0.192392d0
+    tauc(0) = 0.173895d0
+    inc_bar(0) = 0.527959d0
+    bqs(:, 0) = (/0.019551d0, 0.119462d0, 0.302635d0/)
+    BQ(0) = 0.441649d0
+    BB(0) = 0.953990d0
+    KC(0) = 3.816690d0
+    LC(0) = 5.171435d0
 
     ! open files
     open(21, file='output.out')
