@@ -645,7 +645,7 @@ contains
       ! enddo ! ia
 
       do ia = NA, 0, -1
-        if (sum(m(:, ia, :, :, :, :, :, ij, it)) > 0d0)
+        if (sum(m(:, ia, :, :, :, :, :, ij, it)) > 0d0) then
           iamax(ij) = ia
           exit
         endif
