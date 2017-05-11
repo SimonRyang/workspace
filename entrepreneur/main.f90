@@ -443,7 +443,7 @@ contains
     BQ(0) = 0.444196d0
     BB(0) = 0.955154d0
     KC(0) = 3.828603d0
-    LC(0) = 5.173753d0
+    LC(0) = 5.174587d0
 
     ! open files
     open(21, file='output.out')
