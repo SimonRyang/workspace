@@ -50,8 +50,8 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = -15.600d0
-  phi2   =  15.600d0
+  phi1   = -19.600d0
+  phi2   =  19.600d0
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
@@ -81,8 +81,8 @@ program main
   mu     = 1d0
   lambda = 0d0
   phi    = 0d0
-  gy     = 0.193d0
-  by     = 0.703d0
+  gy     = 0.20d0
+  by     = 0.80d0
   ! convert variables into per period values
   by = by/5d0
 
