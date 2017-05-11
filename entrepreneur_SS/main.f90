@@ -70,12 +70,12 @@ program main
   ! tax and transfers
   taur   = 0.25d0
   tauy   = 0.15d0
-  kappa  = 0.55d0
+  kappa  = 0.53d0
   sscc   = 2d0
   mu     = 1d0
   lambda = 0d0
   phi    = 0d0
-  gy     = 0.20d0
+  gy     = 0.19d0
   by     = 0.80d0
   ! convert variables into per period values
   by = by/5d0
@@ -83,7 +83,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 32768d0
-  a_grow = 1.28d0
+  a_grow = 1.6d0
 
   ! size of the pension claim grid
   p_l  = 0d0
