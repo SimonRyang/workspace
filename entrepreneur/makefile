@@ -30,6 +30,6 @@ clock.mod: clock.f90
 $(MAINFILE).o: globals.mod toolbox.mod sorting.mod clock.mod $(MAINFILE).f90
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
-#clean:
+clean:
 	-rm -f *.mod
 	-rm -f *.o
