@@ -89,7 +89,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 65536d0
-  a_grow = 1.4d0
+  a_grow = 1.28d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -101,7 +101,7 @@ program main
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.66d0
+  damp  = 0.60d0
   tol   = 1d-6
   itermax = 200
 
@@ -153,7 +153,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: iter, iamax(JJ), ixmax(JJ)
+    integer :: iter, iamax(JJ), ixmax(JJ), ia
 
     ! initialize remaining variables
     call initialize()
@@ -195,6 +195,10 @@ contains
                       write(*,*) BB(0)
                       write(*,*) KC(0)
                       write(*,*) LC(0)
+                      write(*,*)'     '
+                      do ia = 0, NA
+                        write(*,*)sum(m(:, ia, :, :, :, :, :, :, :, 0))
+                      enddo
         call tock(calc)
         call output(0)
         return
