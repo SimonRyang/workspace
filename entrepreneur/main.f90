@@ -164,6 +164,16 @@ contains
     ! iterate until value function converges
     do iter = 1, itermax
 
+
+              write(*,*) taup(0)
+              write(*,*) tauc(0)
+              write(*,*) bqs(:, 0)
+              write(*,*) inc_bar(0)
+              write(*,*) BQ(0)
+              write(*,*) BB(0)
+              write(*,*) KC(0)
+              write(*,*) LC(0)
+
       !call tick(calc)
 
       ! get factor and other prices
@@ -187,17 +197,6 @@ contains
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
-
-        write(*,*) taup(0)
-        write(*,*) tauc(0)
-        write(*,*) bqs(:, 0)
-        write(*,*) inc_bar(0)
-        write(*,*) BQ(0)
-        write(*,*) BB(0)
-        write(*,*) KC(0)
-        write(*,*) LC(0)
-
-
         call tock(calc)
         call output(0)
         return
