@@ -109,7 +109,6 @@ program main
   gini_on = .true.
 
   ! set switches
-  ann = .false.
   ent = .false.
 
   ! calculate initial equilibrium
