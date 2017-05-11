@@ -50,8 +50,8 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = -11.600d0
-  phi2   =  11.600d0
+  phi1   = -13.600d0
+  phi2   =  13.600d0
   ! invert phi2
   phi2 = 1d0/phi2
   sigmaq =  1.500d0
@@ -81,7 +81,7 @@ program main
   mu     = 1d0
   lambda = 0d0
   phi    = 0d0
-  gy     = 0.19d0
+  gy     = 0.20d0
   by     = 0.80d0
   ! convert variables into per period values
   by = by/5d0
@@ -89,7 +89,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 32768d0 !65536d0
-  a_grow = 2.6d0
+  a_grow = 2.0d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
