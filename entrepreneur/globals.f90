@@ -629,20 +629,24 @@ contains
     do ij = 1, JJ
 
       ! check for the maximum asset grid point used at a certain age
+      ! do ia = 0, NA
+      !   do is = 1, NS
+      !     do ie = 1, NE
+      !       do iw = 1, NW
+      !         do ip = 0, NP
+      !           do ix = 0, NX
+      !             if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
+      !             if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
+      !           enddo ! ix
+      !         enddo ! ip
+      !       enddo ! iw
+      !     enddo ! ie
+      !   enddo ! is
+      ! enddo ! ia
+
       do ia = 0, NA
-        do is = 1, NS
-          do ie = 1, NE
-            do iw = 1, NW
-              do ip = 0, NP
-                do ix = 0, NX
-                  if (m(0, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
-                  if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0) iamax(ij)=ia
-                enddo ! ix
-              enddo ! ip
-            enddo ! iw
-          enddo ! ie
-        enddo ! is
-      enddo ! ia
+        if (sum(m(:, ia, :, :, :, :, ij, it)) > 0d0) iamax(ij) = ia
+      enddo
 
       do ix = 0, NX
         do is = 1, NS
