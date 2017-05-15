@@ -175,27 +175,27 @@ contains
       ! get factor and other prices
       call tick(calc)
       call get_prices(0)
-      call tack(calc)
+      call tock(calc)
 
       ! solve the household problem
       call tick(calc)
       call solve_household(1, 0)
-      call tack(calc)
+      call tock(calc)
 
       ! calculate the distribution of households over state space
       call tick(calc)
       call get_distribution(0)
-      call tack(calc)
+      call tock(calc)
 
       ! aggregate individual decisions
       call tick(calc)
       call aggregation(0)
-      call tack(calc)
+      call tock(calc)
 
       ! determine the government parameters
       call tick(calc)
       call government(0)
-      call tack(calc)
+      call tock(calc)
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
