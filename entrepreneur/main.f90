@@ -332,7 +332,7 @@ contains
     call grid_Cons_Grow(x, x_l, x_u, x_grow)
 
     ! initialize pension claim grid
-    p = grid_Cons_Equi(p_l, p_u, NP)
+    call grid_Cons_Equi(p, p_l, p_u)
 
     ! get initial guess for savings decision
     do ij = 1, JJ
