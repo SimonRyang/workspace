@@ -144,7 +144,7 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, v_ind, valuefunc_help, varpsi, varchi, varphi
+    real*8 :: a_plus, wage, v_ind, vcons_help, varpsi, varchi, varphi
     integer :: itp, ial, iar, ixl, ixr, ipl, ipr
 
     ! tomorrow's assets
@@ -196,7 +196,7 @@ contains
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
-    valuefunc_help = 0d0
+    vcons_help = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
@@ -220,11 +220,7 @@ contains
     endif
 
     ! add today's part and discount
-    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(a_plus, xplus_com, pplus_com, int(oplus_com), iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
-    vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) !+ interpolate_EV(a_plus, xplus_com, pplus_com, oplus_com, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
-    !valuefunc_w = -(vcons_com + vbeq_com)
-    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
-
+    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons_com + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
 
@@ -243,7 +239,7 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help
+    real*8 :: a_plus, p_hat, profit, v_ind, vcons_help
     real*8 :: temp1, temp2
     integer :: ij, itp
     integer :: iij, itj
@@ -323,22 +319,22 @@ contains
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_e = 0d0
-    valuefunc_help = 0d0
+    vcons_help = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_e = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
+      vcons_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1 .and. ent) then
 
-        valuefunc_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
+        vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_e) then
-          valuefunc_e = valuefunc_help
+        if (vcons_help > vcons_com) then
+          vcons_com = vcons_help
           oplus_com = 1d0
         endif
 
@@ -347,11 +343,7 @@ contains
     endif
 
     ! add today's part and discount
-    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(a_plus, xplus_com, pplus_com, int(oplus_com), iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
-    vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) !+ interpolate_EV(a_plus, xplus_com, pplus_com, oplus_com, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
-    !valuefunc_e = -(vcons_com + vbeq_com)
-    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
-
+    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons_com + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
 
