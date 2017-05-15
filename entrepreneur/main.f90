@@ -54,7 +54,7 @@ program main
   phi2   =  13.600d0
   ! invert phi2
   phi2 = 1d0/phi2
-  beta   =  0.98d0
+  beta   =  0.998d0
   ! convert variables into per period values
   beta = beta**5d0
 
@@ -68,7 +68,7 @@ program main
   delta = 1d0 - (1d0-delta)**5d0
 
   ! demographic parameters
-  n_p   = 0.007d0
+  n_p   = 0.0064d0
   ! convert variables into per period values
   n_p = (1d0+n_p)**5-1d0
 
