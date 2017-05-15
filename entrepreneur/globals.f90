@@ -202,10 +202,6 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
-
       valuefunc_w = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
 
       ! interpolate next period's value function as an entrepreneur
@@ -226,7 +222,9 @@ contains
     ! add today's part and discount
     vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(a_plus, xplus_com, pplus_com, int(oplus_com), iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
     vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) !+ interpolate_EV(a_plus, xplus_com, pplus_com, oplus_com, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
-    valuefunc_w = -(vcons_com + vbeq_com)
+    !valuefunc_w = -(vcons_com + vbeq_com)
+    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+
 
   end function
 
@@ -351,7 +349,9 @@ contains
     ! add today's part and discount
     vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(a_plus, xplus_com, pplus_com, int(oplus_com), iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
     vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) !+ interpolate_EV(a_plus, xplus_com, pplus_com, oplus_com, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
-    valuefunc_e = -(vcons_com + vbeq_com)
+    !valuefunc_e = -(vcons_com + vbeq_com)
+    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+
 
   end function
 
