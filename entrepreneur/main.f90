@@ -25,6 +25,7 @@ program main
   if(allocated(m))deallocate(m)
   if(allocated(VV))deallocate(VV)
   if(allocated(EV_cons))deallocate(EV_cons)
+  if(allocated(EV_beq))deallocate(EV_beq)
   if(allocated(v))deallocate(v)
   allocate(aplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(xplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
