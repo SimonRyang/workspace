@@ -434,16 +434,6 @@ contains
 
     if (ij_com < JJ) then
 
-      ! interpolate next period's value function as a worker/retiree
-      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-
-      valuefunc_r = (varphi*varchi*EV_cons(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*EV_cons(0, ial, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*EV_cons(0, iar, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp ) &
-               + (1d0-varphi)*(1d0-varchi)*EV_cons(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) !&
-               !**(1d0-gamma)/(1d0-gamma)
-
       vcons = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'cons')
 
     endif
