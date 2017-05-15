@@ -217,9 +217,6 @@ contains
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
           oplus_com = 1d0
-        elseif (.not. ent .and. oplus(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, 0) > 0d0) then
-          valuefunc_w = valuefunc_help
-          oplus_com = 1d0
         endif
 
       endif
@@ -343,9 +340,6 @@ contains
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
-          valuefunc_e = valuefunc_help
-          oplus_com = 1d0
-        elseif (.not. ent .and. oplus(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, 0) > 0d0) then
           valuefunc_e = valuefunc_help
           oplus_com = 1d0
         endif
