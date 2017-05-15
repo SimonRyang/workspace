@@ -94,7 +94,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 2*32768d0 !65536d0
+  a_u    = 8192d0 !32768d0 !65536d0
   a_grow = 1.6d0
 
   ! size of the annuitiy grid
@@ -1075,8 +1075,8 @@ contains
 
                 EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) &
                   = ((1d0-gamma)*EV_cons(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
-                ! EV_beq(:, ia, ix, ip, iw, ie, is, ij, it) &
-                  ! = EV_beq(:, ia, ix, ip, iw, ie, is, ij, it)**(1d0/(1d0-sigmaq))
+                EV_beq(:, ia, ix, ip, iw, ie, is, ij, it) &
+                  = EV_beq(:, ia, ix, ip, iw, ie, is, ij, it)**(1d0/(1d0-sigmaq))
 
               enddo ! ia
             enddo ! ix
