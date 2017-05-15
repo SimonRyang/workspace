@@ -212,7 +212,7 @@ contains
 
         ! set next period's occupational decision
         if (vcons_help > vcons) then
-          vcons_com = vcons_help
+          vcons = vcons_help
           oplus_com = 1d0
         endif
 
