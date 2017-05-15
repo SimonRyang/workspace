@@ -326,10 +326,10 @@ contains
     write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent  iamax  ixmax          DIFF'
 
     ! initialize asset grid
-    a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
+    call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
     ! initialize annuity grid
-    x = grid_Cons_Grow(x_l, x_u, x_grow, NX)
+    call grid_Cons_Grow(x, x_l, x_u, x_grow)
 
     ! initialize pension claim grid
     p = grid_Cons_Equi(p_l, p_u, NP)
