@@ -144,7 +144,7 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, v_ind, vcons, vcons_help, varpsi, varchi, varphi
+    real*8 :: a_plus, wage, v_ind, vcons, vcons_help, vbeq, vbeq_help, varpsi, varchi, varphi
     integer :: itp, ial, iar, ixl, ixr, ipl, ipr
 
     ! tomorrow's assets
@@ -222,9 +222,10 @@ contains
 
     ! add today's part and discount
     vcons = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons
+    vbeq = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq)
     vcons_com = vcons
-    valuefunc_w = -(vcons + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
-
+    vbeq_com = vbeq
+    valuefunc_w = -(vcons + vbeq)
 
   end function
 
@@ -339,7 +340,7 @@ contains
 
         ! set next period's occupational decision
         if (vcons_help > vcons) then
-          vcons= vcons_help
+          vcons = vcons_help
           oplus_com = 1d0
         endif
 
