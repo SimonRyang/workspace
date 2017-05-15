@@ -56,11 +56,11 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = -13.600d0
-  phi2   =  13.600d0
+  phi1   = -9.500d0
+  phi2   = 11.600d0
   ! invert phi2
   phi2 = 1d0/phi2
-  sigmaq =  1.500d0
+  sigmaq =  2d0
   beta   =  0.988d0
   ! convert variables into per period values
   beta = beta**5d0
