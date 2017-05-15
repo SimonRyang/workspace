@@ -372,7 +372,7 @@ contains
     real*8 :: valuefunc_r
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, v_ind, vcons, vbeq varphi, varchi
+    real*8 :: a_plus, p_hat, v_ind, vcons, vbeq, varphi, varchi
     real*8 :: temp1, temp2
     integer :: ij, iij, itj, itp, ial, iar, ixl, ixr
 
