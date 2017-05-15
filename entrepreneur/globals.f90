@@ -227,7 +227,7 @@ contains
     endif
 
     ! add today's part and discount
-    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(a_plus, xplus_com, pplus_com, oplus_com, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
+    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(a_plus, xplus_com, pplus_com, int(oplus_com), iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
     vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) !+ interpolate_EV(a_plus, xplus_com, pplus_com, oplus_com, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
     valuefunc_w = -(vcons_com + vbeq_com)
 
@@ -355,7 +355,7 @@ contains
     endif
 
     ! add today's part and discount
-    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(a_plus, xplus_com, pplus_com, oplus_com, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
+    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(a_plus, xplus_com, pplus_com, int(oplus_com), iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
     vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) !+ interpolate_EV(a_plus, xplus_com, pplus_com, oplus_com, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
     valuefunc_e = -(vcons_com + vbeq_com)
 
