@@ -88,7 +88,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 64d0
-  a_grow = 0.25d0
+  a_grow = 0.4d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -98,7 +98,6 @@ program main
   ! size of the pension claim grid
   p_l  = 0d0
   p_u  = 2d0
-  p_grow = 0.05d0
 
   ! simulation parameters
   damp  = 0.60d0
@@ -1130,8 +1129,8 @@ contains
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
                     ! interpolate today's pension claims
-                    call linint_Grow(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
-                                       p_l, p_u, p_grow, NP, ipl, ipr, varpsi)
+                    call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
+                                       p_l, p_u, NP, ipl, ipr, varpsi)
 
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
