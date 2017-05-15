@@ -197,11 +197,6 @@ contains
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
-    valuefunc_w = 0d0
-    vcons_com = 0d0
-    vbeq_com = 0d0
-    vcons_help = 0d0
-    vbeq_help = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
@@ -328,11 +323,6 @@ contains
     endif
 
     ! calculate tomorrow's part of the value function and occupational decision
-    valuefunc_e = 0d0
-    vcons_com = 0d0
-    vbeq_com = 0d0
-    vcons_help = 0d0
-    vbeq_help = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
@@ -346,6 +336,7 @@ contains
 
         vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'c')
         vbeq_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
+        oplus_com = 0d0
 
         ! set next period's occupational decision
         if (vcons_help + vbeq_help > vcons_com + vbeq_com) then
@@ -435,9 +426,6 @@ contains
          - inctax_com - captax_com - a_plus)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
-    valuefunc_r = 0d0
-    vcons_com = 0d0
-    vbeq_com = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
