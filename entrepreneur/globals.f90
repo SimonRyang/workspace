@@ -144,8 +144,8 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, v_ind, vcons, vcons_help, vbeq, vbeq_help, varpsi, varchi, varphi
-    integer :: itp, ial, iar, ixl, ixr, ipl, ipr
+    real*8 :: a_plus, wage, v_ind, vcons, vcons_help, vbeq, vbeq_help
+    integer :: itp
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -244,7 +244,7 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, profit, v_ind, vcons, vcons_help
+    real*8 :: a_plus, p_hat, profit, v_ind, vcons, vcons_help, vbeq
     real*8 :: temp1, temp2
     integer :: ij, itp
     integer :: iij, itj
@@ -372,9 +372,9 @@ contains
     real*8 :: valuefunc_r
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, v_ind, vcons, vbeq, varphi, varchi
+    real*8 :: a_plus, p_hat, v_ind, vcons, vbeq
     real*8 :: temp1, temp2
-    integer :: ij, iij, itj, itp, ial, iar, ixl, ixr
+    integer :: ij, iij, itj, itp
 
     ! tomorrow's assets
     a_plus = xy
