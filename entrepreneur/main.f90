@@ -1075,6 +1075,8 @@ contains
 
                 EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) &
                   = ((1d0-gamma)*EV_cons(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
+                EV_beq(:, ia, ix, ip, iw, ie, is, ij, it) &
+                  = ((1d0-gamma)*EV_beq(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-sigmaq))
 
               enddo ! ia
             enddo ! ix
