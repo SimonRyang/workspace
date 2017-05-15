@@ -1020,6 +1020,8 @@ contains
               VV(:, :, :, :, iw, ie, is, ij, it) = -fret
               VV_cons(:, :, :, :, iw, ie, is, ij, it) = vcons_com
 
+              write(*,*)-fret, vcons_com
+
             enddo ! iw
           enddo ! ie
         enddo ! is
