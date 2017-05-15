@@ -666,8 +666,6 @@ contains
         enddo ! is
         !$omp end parallel do
 
-        call sleep(5)
-
       elseif (ij >= JR) then
 
         if (ent) then
