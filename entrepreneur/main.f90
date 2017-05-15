@@ -24,8 +24,6 @@ program main
   if(allocated(captax))deallocate(captax)
   if(allocated(m))deallocate(m)
   if(allocated(VV))deallocate(VV)
-  if(allocated(VV_cons))deallocate(VV_cons)
-  if(allocated(VV_beq))deallocate(VV_beq)
   if(allocated(EV_cons))deallocate(EV_cons)
   if(allocated(EV_beq))deallocate(EV_beq)
   if(allocated(v))deallocate(v)
@@ -42,8 +40,6 @@ program main
   allocate(captax(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(m(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(VV(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
-  allocate(VV_cons(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
-  allocate(VV_beq(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(EV_cons(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(EV_beq(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(v(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
@@ -56,7 +52,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = 0d0 !-13.600d0
+  phi1   = -13.600d0
   phi2   =  13.600d0
   ! invert phi2
   phi2 = 1d0/phi2
@@ -115,7 +111,7 @@ program main
   gini_on = .true.
 
   ! set switches
-  ent = .false.
+  ent = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -623,7 +619,7 @@ contains
     do ij = JJ, 1, -1
 
       !call tick(calc)
-      write(*,*)'Optimize for age: ', ij
+      !write(*,*)'Optimize for age: ', ij
 
       it = year(it_in, ij_in, ij)
 
@@ -668,8 +664,6 @@ contains
                 inctax(:, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
                 captax(:, ia, ix, ip,  :,  :, is, ij, it) = captax_com
                 VV(:, ia, ix, ip,  :,  :, is, ij, it) = -fret
-                VV_cons(:, ia, ix, ip,  :,  :, is, ij, it) = vcons_com
-                VV_beq(:, ia, ix, ip,  :,  :, is, ij, it) = vbeq_com
 
               enddo ! ia
             enddo ! ix
@@ -720,8 +714,6 @@ contains
                     inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
                     captax(1, ia, ix, ip, :, ie, is, ij, it) = captax_com
                     VV(1, ia, ix, ip, :, ie, is, ij, it) = -fret
-                    VV_cons(1, ia, ix, ip, :, ie, is, ij, it) = vcons_com
-                    VV_beq(1, ia, ix, ip, :, ie, is, ij, it) = vbeq_com
 
                   enddo ! ia
                 enddo ! ix
@@ -767,8 +759,6 @@ contains
                 inctax(0, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
                 captax(0, ia, ix, ip,  :,  :, is, ij, it) = captax_com
                 VV(0, ia, ix, ip,  :,  :, is, ij, it) = -fret
-                VV_cons(0, ia, ix, ip,  :,  :, is, ij, it) = vcons_com
-                VV_beq(0, ia, ix, ip,  :,  :, is, ij, it) = vbeq_com
 
               enddo ! ia
             enddo ! ix
@@ -822,8 +812,6 @@ contains
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
                     captax(1, ia, :, ip, iw, ie, is, ij, it) = captax_com
                     VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
-                    VV_cons(1, ia, :, ip, iw, ie, is, ij, it) = vcons_com
-                    VV_beq(1, ia, :, ip, iw, ie, is, ij, it) = vbeq_com
 
                   enddo ! ia
                 enddo ! ip
@@ -872,8 +860,6 @@ contains
                   inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
                   captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
                   VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
-                  VV_cons(0, ia, :, ip, iw, ie, is, ij, it) = vcons_com
-                  VV_beq(0, ia, :, ip, iw, ie, is, ij, it) = vbeq_com
 
                 enddo ! ia
               enddo ! ip
@@ -929,8 +915,6 @@ contains
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
                     captax(1, ia, :, ip, iw, ie, is, ij, it) = captax_com
                     VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
-                    VV_cons(1, ia, :, ip, iw, ie, is, ij, it) = vcons_com
-                    VV_beq(1, ia, :, ip, iw, ie, is, ij, it) = vbeq_com
 
                   enddo ! ia
                 enddo ! ip
@@ -979,8 +963,6 @@ contains
                   inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
                   captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
                   VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
-                  VV_cons(0, ia, :, ip, iw, ie, is, ij, it) = vcons_com
-                  VV_beq(0, ia, :, ip, iw, ie, is, ij, it) = vbeq_com
 
                 enddo ! ia
               enddo ! ip
@@ -1027,8 +1009,6 @@ contains
               inctax(:, :, :, :, iw, ie, is, ij, it) = inctax_com
               captax(:, :, :, :, iw, ie, is, ij, it) = captax_com
               VV(:, :, :, :, iw, ie, is, ij, it) = -fret
-              VV_cons(:, :, :, :, iw, ie, is, ij, it) = vcons_com
-              VV_beq(:, :, :, :, iw, ie, is, ij, it) = vbeq_com
 
             enddo ! iw
           enddo ! ie
@@ -1072,18 +1052,12 @@ contains
               do ia = 0, NA
 
                 EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) = 0d0
-                EV_beq(:, ia, ix, ip, iw, ie, is, ij, it) = 0d0
                 do ie_p = 1, NE
                   do iw_p = 1, NW
                     EV_cons(0, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(0, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_cons(0, ia, ix, ip, iw_p, ie_p, is, ij, it)
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(0, ia, ix, ip, iw_p, ie_p, is, ij, it)
                     EV_cons(1, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(1, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_cons(1, ia, ix, ip, iw_p, ie_p, is, ij, it)
-
-                    EV_beq(0, ia, ix, ip, iw, ie, is, ij, it) = EV_beq(0, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_beq(0, ia, ix, ip, iw_p, ie_p, is, ij, it)
-                    EV_beq(1, ia, ix, ip, iw, ie, is, ij, it) = EV_beq(1, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_beq(1, ia, ix, ip, iw_p, ie_p, is, ij, it)
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(1, ia, ix, ip, iw_p, ie_p, is, ij, it)
                   enddo ! iw_p
                 enddo ! ie_p
 
