@@ -668,11 +668,16 @@ contains
                 VV(:, ia, ix, ip,  :,  :, is, ij, it) = -fret
                 VV_cons(:, ia, ix, ip,  :,  :, is, ij, it) = vcons_com
 
+
+                write(*,*)-fret, vcons_com
+
               enddo ! ia
             enddo ! ix
           enddo ! ip
         enddo ! is
         !$omp end parallel do
+
+        call sleep(5)
 
       elseif (ij >= JR) then
 
@@ -1019,8 +1024,6 @@ contains
               captax(:, :, :, :, iw, ie, is, ij, it) = captax_com
               VV(:, :, :, :, iw, ie, is, ij, it) = -fret
               VV_cons(:, :, :, :, iw, ie, is, ij, it) = vcons_com
-
-              write(*,*)-fret, vcons_com
 
             enddo ! iw
           enddo ! ie
