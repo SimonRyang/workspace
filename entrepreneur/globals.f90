@@ -204,6 +204,16 @@ contains
       call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
+      valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+                     + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+                     + varphi*(1d0-varchi)*varpsi*EV(0, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+                     + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+                     + (1d0-varphi)*varchi*varpsi*EV(0, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+                     + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+                     + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+                     + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) !&
+                     !**(1d0-gamma)/(1d0-gamma)
+
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
