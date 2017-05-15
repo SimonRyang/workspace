@@ -587,7 +587,7 @@ contains
                             + (1d0-varphi)*varchi*varpsi*EV_beq(io, iar, ixl, ipl, iw, ie, is, ij, it) &
                             + (1d0-varphi)*varchi*(1d0-varpsi)*EV_beq(io, iar, ixl, ipr, iw, ie, is, ij, it) &
                             + (1d0-varphi)*(1d0-varchi)*varpsi*EV_beq(io, iar, ixr, ipl, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV_beq(io, iar, ixr, ipr, iw, ie, is, ij, it)) !&
+                            + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV_beq(io, iar, ixr, ipr, iw, ie, is, ij, it)) &
                             **(1d0-sigmaq)
       endif
 
