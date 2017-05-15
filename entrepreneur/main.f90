@@ -194,6 +194,11 @@ contains
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
+
+        do ia = 0, NA
+          write(*,*)sum(m(:, ia, :, :, :, :, :, :, 0))
+        enddo
+
         call tock(calc)
         call output(0)
         return
