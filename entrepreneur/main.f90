@@ -50,7 +50,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = -9.000d0
+  phi1   = -8.500d0
   phi2   =  13.600d0
   ! invert phi2
   phi2 = 1d0/phi2
@@ -326,7 +326,7 @@ contains
 
     ! initialize asset grid
     call grid_Cons_Grow(a, a_l, a_u, a_grow)
-    
+
     ! initialize annuity grid
     call grid_Cons_Grow(x, x_l, x_u, x_grow)
 
