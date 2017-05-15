@@ -666,7 +666,7 @@ contains
                 inctax(:, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
                 captax(:, ia, ix, ip,  :,  :, is, ij, it) = captax_com
                 VV(:, ia, ix, ip,  :,  :, is, ij, it) = -fret
-                VV_con(:, ia, ix, ip,  :,  :, is, ij, it) = vcons_com
+                VV_cons(:, ia, ix, ip,  :,  :, is, ij, it) = vcons_com
 
               enddo ! ia
             enddo ! ix
