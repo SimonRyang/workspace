@@ -47,7 +47,7 @@ module globals
   ! numerical parameters
   real*8 :: a_l, a_u, a_grow
   real*8 :: x_l, x_u, x_grow
-  real*8 :: p_l, p_u
+  real*8 :: p_l, p_u, p_grow
   real*8 :: damp, tol
   integer :: itermax
 
@@ -202,7 +202,7 @@ contains
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
       call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
+      call linint_Grow(pplus_com, p_l, p_u, p_grow NP, ipl, ipr, varpsi)
 
       valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
@@ -348,7 +348,7 @@ contains
       ! interpolate next period's value function as a worker/retiree
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
       call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
+      call linint_Grow(pplus_com, p_l, p_u, p_grow, NP, ipl, ipr, varpsi)
 
       valuefunc_e = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &

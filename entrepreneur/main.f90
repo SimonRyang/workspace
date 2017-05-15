@@ -88,7 +88,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 64d0
-  a_grow = 0.4d0
+  a_grow = 0.25d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -98,6 +98,7 @@ program main
   ! size of the pension claim grid
   p_l  = 0d0
   p_u  = 2d0
+  p_grow = 0.5d0
 
   ! simulation parameters
   damp  = 0.60d0
