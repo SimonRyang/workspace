@@ -24,7 +24,7 @@ program main
   if(allocated(captax))deallocate(captax)
   if(allocated(m))deallocate(m)
   if(allocated(VV))deallocate(VV)
-  if(allocated(EV))deallocate(EV)
+  if(allocated(EV_cons))deallocate(EV_cons)
   if(allocated(v))deallocate(v)
   allocate(aplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(xplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
@@ -39,7 +39,7 @@ program main
   allocate(captax(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(m(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(VV(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
-  allocate(EV(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(EV_cons(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(v(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
 
   ! set compensating payments to zero
@@ -534,7 +534,7 @@ contains
       inctax(:, :, :, :, :, :, :, :, it) = inctax(:, :, :, :, :, :, :, :, 0)
       captax(:, :, :, :, :, :, :, :, it) = captax(:, :, :, :, :, :, :, :, 0)
       VV(:, :, :, :, :, :, :, :, it) = VV(:, :, :, :, :, :, :, :, 0)
-      EV(:, :, :, :, :, :, :, :, it) = EV(:, :, :, :, :, :, :, :, 0)
+      EV_cons(:, :, :, :, :, :, :, :, it) = EV_cons(:, :, :, :, :, :, :, :, 0)
       m(:, :, :, :, :, :, :, :, it) = m(:, :, :, :, :, :, :, :, 0)
 
     enddo
@@ -1049,18 +1049,18 @@ contains
             do ix = 0, NX
               do ia = 0, NA
 
-                EV(:, ia, ix, ip, iw, ie, is, ij, it) = 0d0
+                EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) = 0d0
                 do ie_p = 1, NE
                   do iw_p = 1, NW
-                    EV(0, ia, ix, ip, iw, ie, is, ij, it) = EV(0, ia, ix, ip, iw, ie, is, ij, it) &
+                    EV_cons(0, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(0, ia, ix, ip, iw, ie, is, ij, it) &
                       +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(0, ia, ix, ip, iw_p, ie_p, is, ij, it)
-                    EV(1, ia, ix, ip, iw, ie, is, ij, it) = EV(1, ia, ix, ip, iw, ie, is, ij, it) &
+                    EV_cons(1, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(1, ia, ix, ip, iw, ie, is, ij, it) &
                       +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(1, ia, ix, ip, iw_p, ie_p, is, ij, it)
                   enddo ! iw_p
                 enddo ! ie_p
 
-                ! EV(:, ia, ix, ip, iw, ie, is, ij, it) &
-                  ! = ((1d0-gamma)*EV(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
+                ! EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) &
+                  ! = ((1d0-gamma)*EV_cons(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
 
               enddo ! ia
             enddo ! ix

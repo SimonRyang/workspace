@@ -564,7 +564,7 @@ contains
         !##### INPUT/OUTPUT VARIABLES #############################################
         real*8, intent(in) :: a_plus, x_plus, p_plus
         integer, intent(in) :: io, iw, ie, is, ij, it
-        char, intent(in) :: type
+        character, intent(in) :: type
         real*8 :: interpolate_EV
 
         !##### OTHER VARIABLES ####################################################
