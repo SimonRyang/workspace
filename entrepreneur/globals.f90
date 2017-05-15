@@ -211,8 +211,8 @@ contains
                + (1d0-varphi)*varchi*varpsi*EV(0, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma)
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) !&
+              !**(1d0-gamma)/(1d0-gamma)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
@@ -225,7 +225,8 @@ contains
                + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma) - suc
+               -suc
+              !**(1d0-gamma)/(1d0-gamma) - suc
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
@@ -358,7 +359,8 @@ contains
                + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma) - suc
+               -suc
+              !**(1d0-gamma)/(1d0-gamma) - suc
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
@@ -370,8 +372,8 @@ contains
                + (1d0-varphi)*varchi*varpsi*EV(1, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma)
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) !&
+              !**(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
@@ -473,8 +475,8 @@ contains
       valuefunc_r = (varphi*varchi*EV(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
                + varphi*(1d0-varchi)*EV(0, ial, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
                + (1d0-varphi)*varchi*EV(0, iar, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp ) &
-               + (1d0-varphi)*(1d0-varchi)*EV(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) &
-               **(1d0-gamma)/(1d0-gamma)
+               + (1d0-varphi)*(1d0-varchi)*EV(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) !&
+               !**(1d0-gamma)/(1d0-gamma)
 
     endif
 
