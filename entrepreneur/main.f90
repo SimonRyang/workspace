@@ -98,7 +98,7 @@ program main
   ! size of the pension claim grid
   p_l  = 0d0
   p_u  = 2d0
-  p_grow = 0.5d0
+  p_grow = 0.05d0
 
   ! simulation parameters
   damp  = 0.60d0
