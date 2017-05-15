@@ -578,7 +578,6 @@ contains
 
         ! interpolate expected valuefunction
         if (type == 'cons') then
-          write(*,*)'hell no'
           interpolate_EV = (varphi*varchi*varpsi*EV_cons(io, ial, ixl, ipl, iw, ie, is, ij, it) &
                             + varphi*varchi*(1d0-varpsi)*EV_cons(io, ial, ixl, ipr, iw, ie, is, ij, it) &
                             + varphi*(1d0-varchi)*varpsi*EV_cons(io, ial, ixr, ipl, iw, ie, is, ij, it) &
@@ -589,7 +588,6 @@ contains
                             + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV_cons(io, iar, ixr, ipr, iw, ie, is, ij, it)) !&
                             !**(1d0-gamma)/(1d0-gamma)
         else
-          write(*,*)'hell yeah'
           interpolate_EV = (varphi*varchi*varpsi*EV_beq(io, ial, ixl, ipl, iw, ie, is, ij, it) &
                             + varphi*varchi*(1d0-varpsi)*EV_beq(io, ial, ixl, ipr, iw, ie, is, ij, it) &
                             + varphi*(1d0-varchi)*varpsi*EV_beq(io, ial, ixr, ipl, iw, ie, is, ij, it) &
