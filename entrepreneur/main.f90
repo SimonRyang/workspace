@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 56
+  integer, parameter :: numthreads = 14
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -108,24 +108,20 @@ program main
   gini_on = .true.
 
   ! set switches
-  ann = .true.
+  !ann = .true.
   !ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  stop
-
-  ann = .true.
-
   ! set reform parameters
+  ann = .true.
   !pen_debt = .true.
   !smopec = .true.
   !phi(1:TT) = 1d0
   !lambda(1:TT) = 1d0
   !mu(1:TT) = 0d0
   !labor = .false.
-  !ent = .false.
 
   ! calculate transition path without lsra
   lsra_on = .false.
