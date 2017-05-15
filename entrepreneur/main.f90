@@ -669,7 +669,7 @@ contains
                 VV_cons(:, ia, ix, ip,  :,  :, is, ij, it) = vcons_com
 
 
-                write(*,*)-fret, vcons_com
+                write(*,*)-fret, vcons_com, io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com
 
               enddo ! ia
             enddo ! ix
