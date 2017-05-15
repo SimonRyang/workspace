@@ -24,6 +24,7 @@ program main
   if(allocated(captax))deallocate(captax)
   if(allocated(m))deallocate(m)
   if(allocated(VV))deallocate(VV)
+  if(allocated(VV_cons))deallocate(VV_cons)
   if(allocated(EV_cons))deallocate(EV_cons)
   if(allocated(EV_beq))deallocate(EV_beq)
   if(allocated(v))deallocate(v)
@@ -40,6 +41,7 @@ program main
   allocate(captax(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(m(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(VV(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(VV_cons(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(EV_cons(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(EV_beq(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(v(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
@@ -664,6 +666,7 @@ contains
                 inctax(:, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
                 captax(:, ia, ix, ip,  :,  :, is, ij, it) = captax_com
                 VV(:, ia, ix, ip,  :,  :, is, ij, it) = -fret
+                VV_con(:, ia, ix, ip,  :,  :, is, ij, it) = vcons_com
 
               enddo ! ia
             enddo ! ix
@@ -714,6 +717,7 @@ contains
                     inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
                     captax(1, ia, ix, ip, :, ie, is, ij, it) = captax_com
                     VV(1, ia, ix, ip, :, ie, is, ij, it) = -fret
+                    VV_cons(1, ia, ix, ip, :, ie, is, ij, it) = vcons_com
 
                   enddo ! ia
                 enddo ! ix
@@ -759,6 +763,7 @@ contains
                 inctax(0, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
                 captax(0, ia, ix, ip,  :,  :, is, ij, it) = captax_com
                 VV(0, ia, ix, ip,  :,  :, is, ij, it) = -fret
+                VV_cons(0, ia, ix, ip,  :,  :, is, ij, it) = vcons_com
 
               enddo ! ia
             enddo ! ix
@@ -812,6 +817,7 @@ contains
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
                     captax(1, ia, :, ip, iw, ie, is, ij, it) = captax_com
                     VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
+                    VV_cons(1, ia, :, ip, iw, ie, is, ij, it) = vcons_com
 
                   enddo ! ia
                 enddo ! ip
@@ -859,7 +865,8 @@ contains
                   pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                   inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
                   captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
-                  VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
+                  VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
+                  VV_cons(1, ia, :, ip, iw, ie, is, ij, it) = vcons_com
 
                 enddo ! ia
               enddo ! ip
@@ -915,6 +922,7 @@ contains
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
                     captax(1, ia, :, ip, iw, ie, is, ij, it) = captax_com
                     VV(1, ia, :, ip, iw, ie, is, ij, it) = -fret
+                    VV_cons(1, ia, :, ip, iw, ie, is, ij, it) = vcons_com
 
                   enddo ! ia
                 enddo ! ip
@@ -963,6 +971,7 @@ contains
                   inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
                   captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
                   VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
+                  VV_cons(0, ia, :, ip, iw, ie, is, ij, it) = vcons_com
 
                 enddo ! ia
               enddo ! ip
@@ -1009,6 +1018,7 @@ contains
               inctax(:, :, :, :, iw, ie, is, ij, it) = inctax_com
               captax(:, :, :, :, iw, ie, is, ij, it) = captax_com
               VV(:, :, :, :, iw, ie, is, ij, it) = -fret
+              VV_cons(:, :, :, :, iw, ie, is, ij, it) = vcons_com
 
             enddo ! iw
           enddo ! ie
