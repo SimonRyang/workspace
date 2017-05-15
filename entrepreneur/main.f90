@@ -54,7 +54,7 @@ program main
   phi2   =  11.600d0
   ! invert phi2
   phi2 = 1d0/phi2
-  beta   =  0.985d0
+  beta   =  0.984d0
   ! convert variables into per period values
   beta = beta**5d0
 
@@ -87,7 +87,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 64d0
+  a_u    = 32d0
   a_grow = 0.25d0
 
   ! size of the annuitiy grid
