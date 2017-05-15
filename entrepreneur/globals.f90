@@ -202,16 +202,16 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_w = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
+      vcons_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1 .and. ent) then
 
-        valuefunc_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
+        vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_w) then
-          valuefunc_w = valuefunc_help
+        if (vcons_help > vcons_com) then
+          vcons_com = vcons_help
           oplus_com = 1d0
         endif
 
