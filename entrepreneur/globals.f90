@@ -103,17 +103,13 @@ module globals
   real*8, allocatable :: inctax(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: captax(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: VV(:, :, :, :, :, :, :, :, :)
-  real*8, allocatable :: VV_cons(:, :, :, :, :, :, :, :, :)
-  real*8, allocatable :: VV_beq(:, :, :, :, :, :, :, :, :)
-  real*8, allocatable :: EV_cons(:, :, :, :, :, :, :, :, :)
-  real*8, allocatable :: EV_beq(:, :, :, :, :, :, :, :, :)
+  real*8, allocatable :: EV(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: m(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: v(:, :, :, :, :, :, :, :, :)
 
   ! numerical variables
   integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com
   real*8 :: c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
-  real*8 :: vcons_com, vbeq_com
 
   ! statistical variables
   logical :: gini_on = .false.
@@ -127,7 +123,7 @@ module globals
   logical :: pen_debt = .false. ! .true. = pension system can run into debts
 
   !$omp threadprivate(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
-  !$omp threadprivate(c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, vcons_com, vbeq_com)
+  !$omp threadprivate(c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
 
 contains
 
@@ -146,8 +142,8 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, v_ind, vcons_help, vbeq_help
-    integer :: itp
+    real*8 :: a_plus, wage, v_ind, valuefunc_help, varpsi, varchi, varphi
+    integer :: itp, ial, iar, ixl, ixr, ipl, ipr
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -197,24 +193,47 @@ contains
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
+    valuefunc_w = 0d0
+    valuefunc_help = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      vcons_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'c')
-      vbeq_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
+      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
+      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
+
+      valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*varpsi*EV(0, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*varpsi*EV(0, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) !&
+              !**(1d0-gamma)/(1d0-gamma)
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JR-1 .and. ent) then
+      if (ij_com < JR-1) then
 
-        vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'c') - suc
-        vbeq_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
+        valuefunc_help = (varphi*varchi*varpsi*EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*varchi*(1d0-varpsi)*EV(1, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*varpsi*EV(1, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(1, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*varpsi*EV(1, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
+               -suc
+              !**(1d0-gamma)/(1d0-gamma) - suc
 
         ! set next period's occupational decision
-        if (vcons_help + vbeq_help > vcons_com + vbeq_com) then
-          vcons_com = vcons_help
-          vbeq_com = vbeq_help
+        if (valuefunc_help > valuefunc_w .and. ent) then
+          valuefunc_w = valuefunc_help
+          oplus_com = 1d0
+        elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0) > 0d0) then
+          valuefunc_w = valuefunc_help
           oplus_com = 1d0
         endif
 
@@ -223,9 +242,7 @@ contains
     endif
 
     ! add today's part and discount
-    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons_com
-    vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) +  beta*psi(is_com, ij_com+1)*vbeq_com
-    valuefunc_w = -(vcons_com + vbeq_com)
+    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
 
@@ -244,9 +261,9 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, profit, v_ind, vcons_help, vbeq_help
+    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help, varpsi, varchi, varphi
     real*8 :: temp1, temp2
-    integer :: ij, itp
+    integer :: ij, itp, ial, iar, ixl, ixr, ipl, ipr
     integer :: iij, itj
 
     ! tomorrow's assets
@@ -323,25 +340,47 @@ contains
     endif
 
     ! calculate tomorrow's part of the value function and occupational decision
+    valuefunc_e = 0d0
+    valuefunc_help = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      vcons_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'c') - suc
-      vbeq_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
+      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
+      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
+
+      valuefunc_e = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*varpsi*EV(0, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*varpsi*EV(0, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
+               -suc
+              !**(1d0-gamma)/(1d0-gamma) - suc
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JE-1 .and. ent) then
+      if (ij_com < JE-1) then
 
-        vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'c')
-        vbeq_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
-        oplus_com = 0d0
+        valuefunc_help = (varphi*varchi*varpsi*EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*varchi*(1d0-varpsi)*EV(1, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*varpsi*EV(1, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(1, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*varpsi*EV(1, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) !&
+              !**(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
-        if (vcons_help + vbeq_help > vcons_com + vbeq_com) then
-          vcons_com = vcons_help
-          vbeq_com = vbeq_help
+        if (valuefunc_help > valuefunc_e .and. ent) then
+          valuefunc_e = valuefunc_help
+          oplus_com = 1d0
+        elseif (.not. ent .and. oplus(io_com, ij_com, ia_com, ix_com, ip_com, is_com, iw_com, ie_com, 0) > 0d0) then
+          valuefunc_e = valuefunc_help
           oplus_com = 1d0
         endif
 
@@ -350,9 +389,7 @@ contains
     endif
 
     ! add today's part and discount
-    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons_com
-    vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) + beta*psi(is_com, ij_com+1)*vbeq_com
-    valuefunc_e = -(vcons_com + vbeq_com)
+    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
 
@@ -371,9 +408,9 @@ contains
     real*8 :: valuefunc_r
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, v_ind
+    real*8 :: a_plus, p_hat, v_ind, varphi, varchi
     real*8 :: temp1, temp2
-    integer :: ij, iij, itj, itp
+    integer :: ij, iij, itj, itp, ial, iar, ixl, ixr
 
     ! tomorrow's assets
     a_plus = xy
@@ -426,21 +463,28 @@ contains
          - inctax_com - captax_com - a_plus)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
+    valuefunc_r = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
 
-      vcons_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'c')
-      vbeq_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'b')
+      ! interpolate next period's value function as a worker/retiree
+      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
+      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+
+      valuefunc_r = (varphi*varchi*EV(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*EV(0, ial, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*EV(0, iar, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp ) &
+               + (1d0-varphi)*(1d0-varchi)*EV(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) !&
+               !**(1d0-gamma)/(1d0-gamma)
 
     endif
 
     ! add today's part and discount
-    vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons_com
-    vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) + beta*psi(is_com, ij_com+1)*vbeq_com
-    valuefunc_r = -(vcons_com + vbeq_com)
+    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
+
 
 
   !##############################################################################
@@ -525,7 +569,6 @@ contains
 
   end function
 
-
   !##############################################################################
   ! FUNCTION margu
   !
@@ -540,57 +583,6 @@ contains
 
     ! determine marginal utility
     margu = sigma*(cons**sigma*(1d0-lab)**(1d0-sigma))**(1d0-gamma)/((1d0+tauc(it))*cons)
-
-  end function
-
-
-  !##############################################################################
-  ! FUNCTION interpolate_EV
-  !
-  ! Interpolates the expected value function
-  !##############################################################################
-  function interpolate_EV(a_plus, x_plus, p_plus, io, iw, ie, is, ij, it, type)
-
-        implicit none
-
-        !##### INPUT/OUTPUT VARIABLES #############################################
-        real*8, intent(in) :: a_plus, x_plus, p_plus
-        integer, intent(in) :: io, iw, ie, is, ij, it
-        character, intent(in) :: type
-        real*8 :: interpolate_EV
-
-        !##### OTHER VARIABLES ####################################################
-        real*8 :: varpsi, varchi, varphi
-        integer :: ial, iar, ixl, ixr, ipl, ipr
-
-        ! get interpolation weights
-        call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-        call linint_Grow(x_plus, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-        call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
-
-        ! interpolate expected valuefunction
-        if (type == 'c') then
-          interpolate_EV = (varphi*varchi*varpsi*EV_cons(io, ial, ixl, ipl, iw, ie, is, ij, it) &
-                            + varphi*varchi*(1d0-varpsi)*EV_cons(io, ial, ixl, ipr, iw, ie, is, ij, it) &
-                            + varphi*(1d0-varchi)*varpsi*EV_cons(io, ial, ixr, ipl, iw, ie, is, ij, it) &
-                            + varphi*(1d0-varchi)*(1d0-varpsi)*EV_cons(io, ial, ixr, ipr, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*varchi*varpsi*EV_cons(io, iar, ixl, ipl, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*varchi*(1d0-varpsi)*EV_cons(io, iar, ixl, ipr, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*(1d0-varchi)*varpsi*EV_cons(io, iar, ixr, ipl, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV_cons(io, iar, ixr, ipr, iw, ie, is, ij, it)) &
-                            **(1d0-gamma)/(1d0-gamma)
-        else
-          interpolate_EV = (varphi*varchi*varpsi*EV_beq(io, ial, ixl, ipl, iw, ie, is, ij, it) &
-                            + varphi*varchi*(1d0-varpsi)*EV_beq(io, ial, ixl, ipr, iw, ie, is, ij, it) &
-                            + varphi*(1d0-varchi)*varpsi*EV_beq(io, ial, ixr, ipl, iw, ie, is, ij, it) &
-                            + varphi*(1d0-varchi)*(1d0-varpsi)*EV_beq(io, ial, ixr, ipr, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*varchi*varpsi*EV_beq(io, iar, ixl, ipl, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*varchi*(1d0-varpsi)*EV_beq(io, iar, ixl, ipr, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*(1d0-varchi)*varpsi*EV_beq(io, iar, ixr, ipl, iw, ie, is, ij, it) &
-                            + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV_beq(io, iar, ixr, ipr, iw, ie, is, ij, it)) !&
-                            !**(1d0-sigmaq)
-      endif
-
 
   end function
 
