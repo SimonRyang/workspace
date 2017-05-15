@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -1901,7 +1901,7 @@ contains
     enddo
 
     ! headline
-    write(22,'(/a,a)')'         AA      AX      KK      KC      KE      LC   l_bar       r       w     inc       C       I',  &
+    write(22,'(/a,a)')'         AA      KK      KC      KE      LC   l_bar       r       w     inc       C       I',  &
       '      YY      YC      YE    tauc    taup      PP      BQ     ent    ent1    ent2    ent3     HEV      DIFF'
 
     ! current generations
@@ -1913,7 +1913,7 @@ contains
 
     ! future generations
     do it = 1, TT
-      write(22,'(i3,24f8.2,f10.5)')it,(/AA(it)/AA(0)-1d0, AX(it)/AX(0)-1d0, KK(it)/KK(0)-1d0, KC(it)/KC(0)-1d0, KE(it)/KE(0)-1d0, LC(it)/LC(0)-1d0, &
+      write(22,'(i3,23f8.2,f10.5)')it,(/AA(it)/AA(0)-1d0, KK(it)/KK(0)-1d0, KC(it)/KC(0)-1d0, KE(it)/KE(0)-1d0, LC(it)/LC(0)-1d0, &
         HH(it)/sum(pop_w(:, it))/(HH(0)/sum(pop_w(:, 0)))-1d0, &
         (1d0+r(it))**0.2d0-(1d0+r(0))**0.2d0, w(it)/w(0)-1d0, inc_bar(it)/inc_bar(0)-1d0, CC(it)/CC(0)-1d0, &
         II(it)/II(0)-1d0, YY(it)/YY(0)-1d0, YC(it)/YC(0)-1d0, YE(it)/YE(0)-1d0, tauc(it)-tauc(0), taup(it)-taup(0), PP(it)/YY(it)-PP(0)/YY(0), &
