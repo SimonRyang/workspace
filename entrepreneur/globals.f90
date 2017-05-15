@@ -205,12 +205,12 @@ contains
       valuefunc_w = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JR-1) then
+      if (ij_com < JR-1 .and. ent) then
 
         valuefunc_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_w .and. ent) then
+        if (valuefunc_help > valuefunc_w) then
           valuefunc_w = valuefunc_help
           oplus_com = 1d0
         endif
@@ -332,12 +332,12 @@ contains
       valuefunc_e = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JE-1) then
+      if (ij_com < JE-1 .and. ent) then
 
         valuefunc_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_e .and. ent) then
+        if (valuefunc_help > valuefunc_e) then
           valuefunc_e = valuefunc_help
           oplus_com = 1d0
         endif
