@@ -1065,9 +1065,9 @@ contains
                 do ie_p = 1, NE
                   do iw_p = 1, NW
                     EV_cons(0, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(0, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(0, ia, ix, ip, iw_p, ie_p, is, ij, it)
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_cons(0, ia, ix, ip, iw_p, ie_p, is, ij, it)
                     EV_cons(1, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(1, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(1, ia, ix, ip, iw_p, ie_p, is, ij, it)
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_cons(1, ia, ix, ip, iw_p, ie_p, is, ij, it)
                   enddo ! iw_p
                 enddo ! ie_p
 
