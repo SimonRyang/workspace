@@ -611,8 +611,8 @@ contains
 
     do ij = JJ, 1, -1
 
-      call tick(calc)
-      write(*,*)'Optimize for age: ', ij
+      !call tick(calc)
+      !write(*,*)'Optimize for age: ', ij
 
       it = year(it_in, ij_in, ij)
 
@@ -1029,8 +1029,8 @@ contains
       ! interpolate individual value function
       call interpolate(ij, it)
 
-      write(*,*)'Done!'
-      call tock(calc)
+      !write(*,*)'Done!'
+      !call tock(calc)
 
     enddo
 

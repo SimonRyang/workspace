@@ -197,13 +197,6 @@ contains
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
-    valuefunc_w = 0d0
-    vcons_com = 0d0
-    vbeq_com = 0d0
-    vcons_help = 0d0
-    vbeq_help = 0d0
-    oplus_com = 0d0
-
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
@@ -230,8 +223,6 @@ contains
     ! add today's part and discount
     vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons_com
     vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) +  beta*psi(is_com, ij_com+1)*vbeq_com
-    vcons_com = vcons_com
-    vbeq_com = vbeq_com
     valuefunc_w = -(vcons_com + vbeq_com)
 
   end function
@@ -330,13 +321,6 @@ contains
     endif
 
     ! calculate tomorrow's part of the value function and occupational decision
-    valuefunc_e = 0d0
-    vcons_com = 0d0
-    vbeq_com = 0d0
-    vcons_help = 0d0
-    vbeq_help = 0d0
-    oplus_com = 0d0
-
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
@@ -363,8 +347,6 @@ contains
     ! add today's part and discount
     vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons_com
     vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) + beta*psi(is_com, ij_com+1)*vbeq_com
-    vcons_com = vcons_com
-    vbeq_com = vbeq_com
     valuefunc_e = -(vcons_com + vbeq_com)
 
   end function
@@ -439,11 +421,6 @@ contains
          - inctax_com - captax_com - a_plus)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
-    valuefunc_r = 0d0
-    vcons_com = 0d0
-    vbeq_com = 0d0
-    oplus_com = 0d0
-
     if (ij_com < JJ) then
 
       vcons_com = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'c')
@@ -454,8 +431,6 @@ contains
     ! add today's part and discount
     vcons_com = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons_com
     vbeq_com = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq) + beta*psi(is_com, ij_com+1)*vbeq_com
-    vcons_com = vcons_com
-    vbeq_com = vbeq_com
     valuefunc_r = -(vcons_com + vbeq_com)
 
   end function
