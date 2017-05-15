@@ -221,7 +221,9 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+    vcons = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons
+    vcons_com = vcons
+    valuefunc_w = -(vcons + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
 
   end function
