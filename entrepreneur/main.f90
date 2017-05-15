@@ -173,18 +173,29 @@ contains
       !call tick(calc)
 
       ! get factor and other prices
+      call tick(calc)
       call get_prices(0)
+      call tack(calc)
 
       ! solve the household problem
+      call tick(calc)
       call solve_household(1, 0)
+      call tack(calc)
 
       ! calculate the distribution of households over state space
+      call tick(calc)
       call get_distribution(0)
+      call tack(calc)
 
       ! aggregate individual decisions
+      call tick(calc)
       call aggregation(0)
+      call tack(calc)
+
       ! determine the government parameters
+      call tick(calc)
       call government(0)
+      call tack(calc)
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
@@ -193,18 +204,6 @@ contains
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
-                      write(*,*) taup(0)
-                      write(*,*) tauc(0)
-                      write(*,*) bqs(:, 0)
-                      write(*,*) inc_bar(0)
-                      write(*,*) BQ(0)
-                      write(*,*) BB(0)
-                      write(*,*) KC(0)
-                      write(*,*) LC(0)
-                      write(*,*)'     '
-                      do ia = 0, NA
-                        write(*,*)sum(m(:, ia, :, :, :, :, :, :, 0))
-                      enddo
         call tock(calc)
         call output(0)
         return
