@@ -88,7 +88,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 65536d0
+  a_u    = 32768d0 !65536d0
   a_grow = 1.4d0
 
   ! size of the annuitiy grid
@@ -327,6 +327,8 @@ contains
 
     ! initialize asset grid
     call grid_Cons_Grow(a, a_l, a_u, a_grow)
+
+    write(*,*) a
 
     ! initialize annuity grid
     call grid_Cons_Grow(x, x_l, x_u, x_grow)
