@@ -326,9 +326,7 @@ contains
 
     ! initialize asset grid
     call grid_Cons_Grow(a, a_l, a_u, a_grow)
-
-    write(*,*) a
-
+    
     ! initialize annuity grid
     call grid_Cons_Grow(x, x_l, x_u, x_grow)
 
