@@ -33,7 +33,7 @@ module globals
   integer, parameter :: NX = 16
 
   ! number of points on the pension claim grid (-1)
-  integer, parameter :: NP = 10
+  integer, parameter :: NP = 6
 
   ! number of occupations (-1)
   integer, parameter :: NO = 1
