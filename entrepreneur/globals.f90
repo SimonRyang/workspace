@@ -576,6 +576,8 @@ contains
         call linint_Grow(x_plus, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
         call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
 
+        write(*,*)type
+
         ! interpolate expected valuefunction
         if (type == 'cons') then
           write(*,*)'hell no'
