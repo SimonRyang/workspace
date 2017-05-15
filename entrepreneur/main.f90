@@ -623,7 +623,7 @@ contains
     do ij = JJ, 1, -1
 
       !call tick(calc)
-      !write(*,*)'Optimize for age: ', ij
+      write(*,*)'Optimize for age: ', ij
 
       it = year(it_in, ij_in, ij)
 
