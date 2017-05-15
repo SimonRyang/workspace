@@ -1130,8 +1130,8 @@ contains
                              x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
                     ! interpolate today's pension claims
-                    call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
-                                       p_l, p_u, NP, ipl, ipr, varpsi)
+                    call linint_Grow(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
+                                       p_l, p_u, p_grow, NP, ipl, ipr, varpsi)
 
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
