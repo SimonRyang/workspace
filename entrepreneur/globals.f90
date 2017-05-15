@@ -103,13 +103,15 @@ module globals
   real*8, allocatable :: inctax(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: captax(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: VV(:, :, :, :, :, :, :, :, :)
-  real*8, allocatable :: EV(:, :, :, :, :, :, :, :, :)
+  real*8, allocatable :: EV_cons(:, :, :, :, :, :, :, :, :)
+  real*8, allocatable :: EV_beq(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: m(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: v(:, :, :, :, :, :, :, :, :)
 
   ! numerical variables
   integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com
   real*8 :: c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
+  real*8 :: vcons_com, vbeq_com
 
   ! statistical variables
   logical :: gini_on = .false.
@@ -204,12 +206,12 @@ contains
       call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
       call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
 
-      valuefunc_w = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp)
+      valuefunc_w = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp) - suc
+        valuefunc_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
@@ -330,12 +332,12 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_e = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp) - suc
+      valuefunc_e = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
 
-        valuefunc_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp)
+        valuefunc_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
@@ -434,10 +436,10 @@ contains
       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
       call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
 
-      valuefunc_r = (varphi*varchi*EV(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*EV(0, ial, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*EV(0, iar, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp ) &
-               + (1d0-varphi)*(1d0-varchi)*EV(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) !&
+      valuefunc_r = (varphi*varchi*EV_cons(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + varphi*(1d0-varchi)*EV_cons(0, ial, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
+               + (1d0-varphi)*varchi*EV_cons(0, iar, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp ) &
+               + (1d0-varphi)*(1d0-varchi)*EV_cons(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) !&
                !**(1d0-gamma)/(1d0-gamma)
 
     endif
@@ -555,13 +557,14 @@ contains
   !
   ! Interpolates the expected value function
   !##############################################################################
-  function interpolate_EV(a_plus, x_plus, p_plus, io, iw, ie, is, ij, it)
+  function interpolate_EV(a_plus, x_plus, p_plus, io, iw, ie, is, ij, it, type)
 
         implicit none
 
         !##### INPUT/OUTPUT VARIABLES #############################################
         real*8, intent(in) :: a_plus, x_plus, p_plus
         integer, intent(in) :: io, iw, ie, is, ij, it
+        char, intent(in) :: type
         real*8 :: interpolate_EV
 
         !##### OTHER VARIABLES ####################################################
@@ -574,15 +577,28 @@ contains
         call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
 
         ! interpolate expected valuefunction
-        interpolate_EV = (varphi*varchi*varpsi*EV(io, ial, ixl, ipl, iw, ie, is, ij, it) &
-                          + varphi*varchi*(1d0-varpsi)*EV(io, ial, ixl, ipr, iw, ie, is, ij, it) &
-                          + varphi*(1d0-varchi)*varpsi*EV(io, ial, ixr, ipl, iw, ie, is, ij, it) &
-                          + varphi*(1d0-varchi)*(1d0-varpsi)*EV(io, ial, ixr, ipr, iw, ie, is, ij, it) &
-                          + (1d0-varphi)*varchi*varpsi*EV(io, iar, ixl, ipl, iw, ie, is, ij, it) &
-                          + (1d0-varphi)*varchi*(1d0-varpsi)*EV(io, iar, ixl, ipr, iw, ie, is, ij, it) &
-                          + (1d0-varphi)*(1d0-varchi)*varpsi*EV(io, iar, ixr, ipl, iw, ie, is, ij, it) &
-                          + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(io, iar, ixr, ipr, iw, ie, is, ij, it)) !&
-                          !**(1d0-gamma)/(1d0-gamma)
+        if (type == 'cons') then
+          interpolate_EV = (varphi*varchi*varpsi*EV_cons(io, ial, ixl, ipl, iw, ie, is, ij, it) &
+                            + varphi*varchi*(1d0-varpsi)*EV_cons(io, ial, ixl, ipr, iw, ie, is, ij, it) &
+                            + varphi*(1d0-varchi)*varpsi*EV_cons(io, ial, ixr, ipl, iw, ie, is, ij, it) &
+                            + varphi*(1d0-varchi)*(1d0-varpsi)*EV_cons(io, ial, ixr, ipr, iw, ie, is, ij, it) &
+                            + (1d0-varphi)*varchi*varpsi*EV_cons(io, iar, ixl, ipl, iw, ie, is, ij, it) &
+                            + (1d0-varphi)*varchi*(1d0-varpsi)*EV_cons(io, iar, ixl, ipr, iw, ie, is, ij, it) &
+                            + (1d0-varphi)*(1d0-varchi)*varpsi*EV_cons(io, iar, ixr, ipl, iw, ie, is, ij, it) &
+                            + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV_cons(io, iar, ixr, ipr, iw, ie, is, ij, it)) !&
+                            !**(1d0-gamma)/(1d0-gamma)
+        else
+          interpolate_EV = (varphi*varchi*varpsi*EV_beq(io, ial, ixl, ipl, iw, ie, is, ij, it) &
+                            + varphi*varchi*(1d0-varpsi)*EV_beq(io, ial, ixl, ipr, iw, ie, is, ij, it) &
+                            + varphi*(1d0-varchi)*varpsi*EV_beq(io, ial, ixr, ipl, iw, ie, is, ij, it) &
+                            + varphi*(1d0-varchi)*(1d0-varpsi)*EV_beq(io, ial, ixr, ipr, iw, ie, is, ij, it) &
+                            + (1d0-varphi)*varchi*varpsi*EV_beq(io, iar, ixl, ipl, iw, ie, is, ij, it) &
+                            + (1d0-varphi)*varchi*(1d0-varpsi)*EV_beq(io, iar, ixl, ipr, iw, ie, is, ij, it) &
+                            + (1d0-varphi)*(1d0-varchi)*varpsi*EV_beq(io, iar, ixr, ipl, iw, ie, is, ij, it) &
+                            + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV_beq(io, iar, ixr, ipr, iw, ie, is, ij, it)) !&
+                            !**(1d0-gamma)/(1d0-gamma)
+      endif
+
 
   end function
 
