@@ -88,12 +88,12 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 64d0
-  a_grow = 0.4d0
+  a_grow = 0.5d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
   x_u    = 64d0
-  x_grow = 0.4d0
+  x_grow = 0.5d0
 
   ! size of the pension claim grid
   p_l  = 0d0
