@@ -1073,8 +1073,8 @@ contains
                   enddo ! iw_p
                 enddo ! ie_p
 
-                ! EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) &
-                  ! = ((1d0-gamma)*EV_cons(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
+                EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) &
+                  = ((1d0-gamma)*EV_cons(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
 
               enddo ! ia
             enddo ! ix
