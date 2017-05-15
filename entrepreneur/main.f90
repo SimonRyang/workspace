@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 56
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -50,11 +50,11 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = -8.500d0
+  phi1   = -9.000d0
   phi2   =  13.600d0
   ! invert phi2
   phi2 = 1d0/phi2
-  beta   =  0.988d0
+  beta   =  0.99d0
   ! convert variables into per period values
   beta = beta**5d0
 
@@ -68,7 +68,7 @@ program main
   delta = 1d0 - (1d0-delta)**5d0
 
   ! demographic parameters
-  n_p   = 0.007d0
+  n_p   = 0.064d0
   ! convert variables into per period values
   n_p = (1d0+n_p)**5-1d0
 
