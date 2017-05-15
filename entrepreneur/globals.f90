@@ -564,7 +564,7 @@ contains
         !##### INPUT/OUTPUT VARIABLES #############################################
         real*8, intent(in) :: a_plus, x_plus, p_plus
         integer, intent(in) :: io, iw, ie, is, ij, it
-        character, intent(in) :: type
+        character(length=4), intent(in) :: type
         real*8 :: interpolate_EV
 
         !##### OTHER VARIABLES ####################################################
@@ -575,8 +575,6 @@ contains
         call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
         call linint_Grow(x_plus, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
         call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
-
-        write(*,*)type
 
         ! interpolate expected valuefunction
         if (type == 'cons') then
