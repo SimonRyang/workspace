@@ -207,14 +207,14 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      vcons = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
-      vbeq = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
+      vcons = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'c')
+      vbeq = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1 .and. ent) then
 
-        vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
-        vbeq_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
+        vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'c') - suc
+        vbeq_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
 
         ! set next period's occupational decision
         if (vcons_help + vbeq_help > vcons + vbeq) then
@@ -340,14 +340,14 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      vcons = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'cons') - suc
-      vbeq = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
+      vcons = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'c') - suc
+      vbeq = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1 .and. ent) then
 
-        vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'cons')
-        vbeq_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'beq')
+        vcons_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'c')
+        vbeq_help = interpolate_EV(a_plus, xplus_com, pplus_com, 1, iw_com, ie_com, is_com, ij_com+1, itp, 'b')
 
         ! set next period's occupational decision
         if (vcons_help + vbeq_help > vcons + vbeq) then
@@ -446,8 +446,8 @@ contains
 
     if (ij_com < JJ) then
 
-      vcons = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'cons')
-      vbeq = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'beq')
+      vcons = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'c')
+      vbeq = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'b')
 
     endif
 
@@ -574,7 +574,7 @@ contains
         !##### INPUT/OUTPUT VARIABLES #############################################
         real*8, intent(in) :: a_plus, x_plus, p_plus
         integer, intent(in) :: io, iw, ie, is, ij, it
-        character(len=4), intent(in) :: type
+        character, intent(in) :: type
         real*8 :: interpolate_EV
 
         !##### OTHER VARIABLES ####################################################
@@ -587,7 +587,7 @@ contains
         call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
 
         ! interpolate expected valuefunction
-        if (type == 'cons') then
+        if (type == 'c') then
           interpolate_EV = (varphi*varchi*varpsi*EV_cons(io, ial, ixl, ipl, iw, ie, is, ij, it) &
                             + varphi*varchi*(1d0-varpsi)*EV_cons(io, ial, ixl, ipr, iw, ie, is, ij, it) &
                             + varphi*(1d0-varchi)*varpsi*EV_cons(io, ial, ixr, ipl, iw, ie, is, ij, it) &

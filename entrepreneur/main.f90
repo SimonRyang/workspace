@@ -173,29 +173,19 @@ contains
       !call tick(calc)
 
       ! get factor and other prices
-      call tick(calc)
       call get_prices(0)
-      call tock(calc)
 
       ! solve the household problem
-      call tick(calc)
       call solve_household(1, 0)
-      call tock(calc)
 
       ! calculate the distribution of households over state space
-      call tick(calc)
       call get_distribution(0)
-      call tock(calc)
 
       ! aggregate individual decisions
-      call tick(calc)
       call aggregation(0)
-      call tock(calc)
 
       ! determine the government parameters
-      call tick(calc)
       call government(0)
-      call tock(calc)
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
@@ -1077,15 +1067,11 @@ contains
 
                 do ie_p = 1, NE
                   do iw_p = 1, NW
-                    EV_cons(0, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(0, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_cons(0, ia, ix, ip, iw_p, ie_p, is, ij, it)
-                    EV_cons(1, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(1, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_cons(1, ia, ix, ip, iw_p, ie_p, is, ij, it)
+                    EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) = EV_cons(:, ia, ix, ip, iw, ie, is, ij, it) &
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_cons(:, ia, ix, ip, iw_p, ie_p, is, ij, it)
 
-                    EV_beq(0, ia, ix, ip, iw, ie, is, ij, it) = EV_beq(0, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_beq(0, ia, ix, ip, iw_p, ie_p, is, ij, it)
-                    EV_beq(1, ia, ix, ip, iw, ie, is, ij, it) = EV_beq(1, ia, ix, ip, iw, ie, is, ij, it) &
-                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_beq(1, ia, ix, ip, iw_p, ie_p, is, ij, it)
+                    EV_beq(:, ia, ix, ip, iw, ie, is, ij, it) = EV_beq(:, ia, ix, ip, iw, ie, is, ij, it) &
+                      +pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV_beq(:, ia, ix, ip, iw_p, ie_p, is, ij, it)
                   enddo ! iw_p
                 enddo ! ie_p
 
