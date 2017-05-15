@@ -50,11 +50,11 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = -8.500d0
+  phi1   = -8.000d0
   phi2   =  11.600d0
   ! invert phi2
   phi2 = 1d0/phi2
-  beta   =  0.984d0
+  beta   =  0.99d0
   ! convert variables into per period values
   beta = beta**5d0
 
@@ -101,7 +101,7 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-6
+  tol   = 1d-5
   itermax = 200
 
   ! compute gini
