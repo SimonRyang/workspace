@@ -350,8 +350,10 @@ contains
 
     ! add today's part and discount
     vcons = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons
+    vbeq = (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq)
     vcons_com = vcons
-    valuefunc_e = -(vcons + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+    vbeq_com = vbeq
+    valuefunc_e = -(vcons + vbeq)
 
   end function
 
@@ -370,7 +372,7 @@ contains
     real*8 :: valuefunc_r
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, v_ind, varphi, varchi
+    real*8 :: a_plus, p_hat, v_ind, vcons, vbeq varphi, varchi
     real*8 :: temp1, temp2
     integer :: ij, iij, itj, itp, ial, iar, ixl, ixr
 
@@ -426,6 +428,8 @@ contains
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_r = 0d0
+    vcons = 0d0
+    vbeq = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
@@ -440,10 +444,12 @@ contains
                + (1d0-varphi)*(1d0-varchi)*EV_cons(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) !&
                !**(1d0-gamma)/(1d0-gamma)
 
+      vcons = interpolate_EV(a_plus, xplus_com, pplus_com, 0, iw_com, ie_com, is_com, ij_com+1, it_com, 'cons')
+
     endif
 
     ! add today's part and discount
-    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*vcons + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
 
   end function
 
