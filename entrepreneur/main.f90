@@ -181,7 +181,7 @@ contains
       call government(0)
 
       call grid_Cons_Equi(xplot, 0.8d0, 1.22d0)
-      call grid_Cons_Equi(yplot, 0.12d0, 0.35d0)
+      call grid_Cons_Equi(yplot, 0.5d0, 1.35d0)
       io_com = 0
       ia_com = 20
       ix_com = 0
