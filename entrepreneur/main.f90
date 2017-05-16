@@ -557,7 +557,7 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: ij, in
-    real*8 :: dueink, x(1000), y(1000)
+    real*8 :: dueink, xplot(1000), yplot(1000)
 
     ! calculate inverse goods price
     pinv(it) = 1d0/(1d0+tauc(it))
@@ -596,10 +596,10 @@ contains
       if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
-    call grid_Cons_Equi(x, 0d0, 5d0)
-    write(*,*) x(1), x(500), x(1000)
+    call grid_Cons_Equi(xplot, 0d0, 5d0)
+    write(*,*) xplot(1), xplot(500), xplot(1000)
     do in = 1, 1000
-      y(in) = tarif(x(in))
+      yplot(in) = tarif(xplot(in))
     enddo
 
   end subroutine
