@@ -152,8 +152,8 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: iter, iamax(JJ), ixmax(JJ), ia
-    integer :: in
-    real*8 :: xplot(1000), yplot(1000)
+    integer :: in, im
+    real*8 :: xplot(1000), yplot(1000), zplot(1000)
 
     ! initialize remaining variables
     call initialize()
@@ -181,6 +181,7 @@ contains
       call government(0)
 
       call grid_Cons_Equi(xplot, 0d0, 0.15d0)
+      call grid_Cons_Equi(yplot, 0d0, 0.99d0)
       io_com = 0
       ia_com = 0
       ix_com = 0
@@ -191,13 +192,14 @@ contains
       ij_com = 1
       it_com = 0
       write(*,*)a(ia_com)
-      do in = 1, 1000
-        yplot(in) = valuefunc_w((/xplot(in), 0.3d0/))
+      do im = 1, 1000
+        do in = 1, 1000
+          zplot(in) = valuefunc_w((/xplot(im), yplot(in)/))
+        enddo
       enddo
       write(*,*)minloc(yplot), minval(yplot), xplot(minloc(yplot))
 
-      call plot(xplot, yplot)
-      call execplot()
+      call plot3d(xplot, yplot, zplot)
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
