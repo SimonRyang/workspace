@@ -200,7 +200,7 @@ contains
       write(*,*)minloc(zplot), minval(zplot)
 
       call plot3d(xplot, yplot, zplot)
-      call plot3d(a, p, EV(0, :, 0, :, 2, 3, 3, 2, 0))
+      call plot3d(a, p, EV(0, :, 0, :, 2, 3, 3, 9, 0))
       !call execplot
 
       ! check the grid
