@@ -194,7 +194,7 @@ contains
       do in = 1, 1000
         yplot(in) = valuefunc_w((/xplot(in), 0.3d0/))
       enddo
-      write(*,*)milox(yplot), minval(yplot)
+      write(*,*)minloc(yplot), minval(yplot)
 
       call plot(xplot, yplot)
       call execplot()
