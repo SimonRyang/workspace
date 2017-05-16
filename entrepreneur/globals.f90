@@ -27,10 +27,10 @@ module globals
   integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 64
+  integer, parameter :: NA = 32
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 64
+  integer, parameter :: NX = 32
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 6
@@ -142,8 +142,8 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, v_ind, valuefunc_help, varpsi, varchi, varphi
-    integer :: itp, ial, iar, ixl, ixr, ipl, ipr
+    real*8 :: a_plus, wage, v_ind, valuefunc_help
+    integer :: itp
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -200,32 +200,12 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
-
-      valuefunc_w = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*varpsi*EV(0, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*varpsi*EV(0, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma)
+      valuefunc_w = interpolate_EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = (varphi*varchi*varpsi*EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*varchi*(1d0-varpsi)*EV(1, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*varpsi*EV(1, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(1, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*varpsi*EV(1, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma) - suc
+        valuefunc_help = interpolate_EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) - suc
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
@@ -257,10 +237,9 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help, varpsi, varchi, varphi
+    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help
     real*8 :: temp1, temp2
-    integer :: ij, itp, ial, iar, ixl, ixr, ipl, ipr
-    integer :: iij, itj
+    integer :: ij, itp, iij, itj
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -343,32 +322,12 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
-
-      valuefunc_e = (varphi*varchi*varpsi*EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*varchi*(1d0-varpsi)*EV(0, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*varpsi*EV(0, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(0, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*varpsi*EV(0, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(0, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(0, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(0, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma) - suc
+      valuefunc_e = interpolate_EV(0, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) - suc
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
 
-        valuefunc_help = (varphi*varchi*varpsi*EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*varchi*(1d0-varpsi)*EV(1, ial, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*varpsi*EV(1, ial, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*(1d0-varpsi)*EV(1, ial, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*varpsi*EV(1, iar, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*(1d0-varpsi)*EV(1, iar, ixl, ipr, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*varpsi*EV(1, iar, ixr, ipl, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(1, iar, ixr, ipr, iw_com, ie_com, is_com, ij_com+1, itp)) &
-              **(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = interpolate_EV(1, ial, ixl, ipl, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
@@ -400,9 +359,9 @@ contains
     real*8 :: valuefunc_r
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, v_ind, varphi, varchi
+    real*8 :: a_plus, p_hat, v_ind
     real*8 :: temp1, temp2
-    integer :: ij, iij, itj, itp, ial, iar, ixl, ixr
+    integer :: ij, iij, itj, itp
 
     ! tomorrow's assets
     a_plus = xy
@@ -460,15 +419,8 @@ contains
 
     if (ij_com < JJ) then
 
-      ! interpolate next period's value function as a worker/retiree
-      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Grow(xplus_com, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
-
-      valuefunc_r = (varphi*varchi*EV(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + varphi*(1d0-varchi)*EV(0, ial, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp) &
-               + (1d0-varphi)*varchi*EV(0, iar, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp ) &
-               + (1d0-varphi)*(1d0-varchi)*EV(0, iar, ixr, ip_com, iw_com, ie_com, is_com, ij_com+1, itp )) &
-               **(1d0-gamma)/(1d0-gamma)
+      ! interpolate next period's value function as a retiree
+      valuefunc_r = interpolate_EV(0, ial, ixl, ip_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
     endif
 
@@ -577,6 +529,42 @@ contains
     margu = sigma*(cons**sigma*(1d0-lab)**(1d0-sigma))**(1d0-gamma)/((1d0+tauc(it))*cons)
 
   end function
+
+
+  !##############################################################################
+  ! FUNCTION interpolate_EV
+  !
+  ! Interpolates the expected valuefunction
+  !##############################################################################
+  function interpolate_EV(a_plus, x_plus, p_plus, io, iw, ie, is, ij, it)
+
+    implicit none
+
+    !##### INPUT/OUTPUT VARIABLES #############################################
+    real*8, intent(in) :: a_plus, x_plus, p_plus
+    integer, intent(in) :: io, iw, ie, is, ij, it
+    real*8 :: interpolate_EV
+
+    !##### OTHER VARIABLES ####################################################
+    real*8 :: varphi, varchi, varpsi
+    integer :: ial, iar, ixl, ixr, ipl, ipr
+
+    ! interpolate value function
+    call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
+    call linint_Grow(x_plus, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+    call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
+
+    interpolate_EV = (varphi*varchi*varpsi*EV(io, ial, ixl, ipl, iw, ie, is, ij, it) &
+                      + varphi*varchi*(1d0-varpsi)*EV(io, ial, ixl, ipr, iw, ie, is, ij, it) &
+                      + varphi*(1d0-varchi)*varpsi*EV(io, ial, ixr, ipl, iw, ie, is, ij, it) &
+                      + varphi*(1d0-varchi)*(1d0-varpsi)*EV(io, ial, ixr, ipr, iw, ie, is, ij, it) &
+                      + (1d0-varphi)*varchi*varpsi*EV(io, iar, ixl, ipl, iw, ie, is, ij, it) &
+                      + (1d0-varphi)*varchi*(1d0-varpsi)*EV(io, iar, ixl, ipr, iw, ie, is, ij, it) &
+                      + (1d0-varphi)*(1d0-varchi)*varpsi*EV(io, iar, ixr, ipl, iw, ie, is, ij, it) &
+                      + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(io, iar, ixr, ipr, iw, ie, is, ij, it)) &
+                     **(1d0-gamma)/(1d0-gamma)
+
+    end function
 
 
   !##############################################################################
