@@ -1080,8 +1080,8 @@ contains
                   enddo ! iw_p
                 enddo ! ie_p
 
-               EV(:, ia, ix, ip, iw, ie, is, ij, it) &
-                  = ((1d0-gamma)*EV(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
+               ! EV(:, ia, ix, ip, iw, ie, is, ij, it) &
+               !  = ((1d0-gamma)*EV(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
 
               enddo ! ia
             enddo ! ix
