@@ -317,14 +317,8 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ######################################################
-    integer :: ia, ix, ip, iw, ie, is, ij, in
-    real*8 :: adj, x(1000), y(1000)
-
-    call grid_Cons_Equi(x, 0d0, 5d0)
-    write(*,*) x(1), x(500), x(1000)
-    do in = 1, 1000
-      y(in) = tarif(x(in))
-    enddo
+    integer :: ia, ix, ip, iw, ie, is, ij
+    real*8 :: adj
 
     call plot(x, y)
     call execplot()
@@ -562,8 +556,8 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES ####################################################
-    integer :: ij
-    real*8 :: dueink
+    integer :: ij, in
+    real*8 :: dueink, x(1000), y(1000)
 
     ! calculate inverse goods price
     pinv(it) = 1d0/(1d0+tauc(it))
@@ -600,6 +594,12 @@ contains
       psix(:, ij, it) = 1d0
       !psix(:, ij, it) = 1d0/psi(:, ij)
       if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
+    enddo
+
+    call grid_Cons_Equi(x, 0d0, 5d0)
+    write(*,*) x(1), x(500), x(1000)
+    do in = 1, 1000
+      y(in) = tarif(x(in))
     enddo
 
   end subroutine
