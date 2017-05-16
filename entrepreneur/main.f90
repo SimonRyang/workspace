@@ -114,13 +114,11 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  stop
-
   ! set reform parameters
-  ann = .true.
+  !ann = .true.
   !pen_debt = .true.
   !smopec = .true.
-  !phi(1:TT) = 1d0
+  phi(1:TT) = 1d0
   !lambda(1:TT) = 1d0
   !mu(1:TT) = 0d0
   !labor = .false.
@@ -186,18 +184,6 @@ contains
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
-                      write(*,*) taup(0)
-                      write(*,*) tauc(0)
-                      write(*,*) bqs(:, 0)
-                      write(*,*) inc_bar(0)
-                      write(*,*) BQ(0)
-                      write(*,*) BB(0)
-                      write(*,*) KC(0)
-                      write(*,*) LC(0)
-                      write(*,*)'     '
-                      do ia = 0, NA
-                        write(*,*)sum(m(:, ia, :, :, :, :, :, :, 0))
-                      enddo
         call tock(calc)
         call output(0)
         return
