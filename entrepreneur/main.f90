@@ -152,6 +152,8 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: iter, iamax(JJ), ixmax(JJ), ia
+    integer :: in
+    real*8 :: xplot(100), yplot(1000)
 
     ! initialize remaining variables
     call initialize()
@@ -177,6 +179,23 @@ contains
       call aggregation(0)
       ! determine the government parameters
       call government(0)
+
+      call grid_Cons_Equi(xplot, 0d0, 64d0)
+      do in = 1, 1000
+        io_com = 0
+        ia_com = 0
+        ix_com = 0
+        ip_com = 0
+        is_com = 1
+        iw_com = 3
+        ie_com = 3
+        ij_com = 1
+        it_com = 0
+        yplot(in) = valuefunc_w((/xplot(in), 0.3d0/))
+      enddo
+
+      call plot(xplot, yplot)
+      call execplot()
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
@@ -551,8 +570,8 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES ####################################################
-    integer :: ij, in
-    real*8 :: dueink, xplot(1000), yplot(1000)
+    integer :: ij
+    real*8 :: dueink
 
     ! calculate inverse goods price
     pinv(it) = 1d0/(1d0+tauc(it))
@@ -590,15 +609,6 @@ contains
       !psix(:, ij, it) = 1d0/psi(:, ij)
       if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
-
-    call grid_Cons_Equi(xplot, 0d0, 5d0)
-    write(*,*) xplot(1), xplot(500), xplot(1000)
-    do in = 1, 1000
-      yplot(in) = tarif(xplot(in))
-    enddo
-
-    call plot(xplot, yplot)
-    call execplot()
 
   end subroutine
 

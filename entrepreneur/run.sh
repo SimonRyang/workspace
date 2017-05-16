@@ -13,7 +13,6 @@ cp * ~/workspace/entrepreneur/
 cd ~/workspace/entrepreneur/
 rm *.o
 rm *.mod
-#make
 exit
 EOF
 
