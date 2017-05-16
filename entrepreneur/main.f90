@@ -317,8 +317,18 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ######################################################
-    integer :: ia, ix, ip, iw, ie, is, ij
-    real*8 :: adj
+    integer :: ia, ix, ip, iw, ie, is, ij, in
+    real*8 :: adj, x(1000), y(1000)
+
+    call grid_Cons_Equi(x, 0d0, 5d0)
+    do in = 1, 1000
+      y(in) = tarif(x(in))
+    enddo
+
+    call plot(x, y)
+    call execplot()
+
+    stop
 
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
     write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent  iamax  ixmax          DIFF'
