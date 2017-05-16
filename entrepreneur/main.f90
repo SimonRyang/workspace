@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -101,7 +101,7 @@ program main
 
   ! simulation parameters
   damp  = 0.60d0
-  tol   = 1d-5
+  tol   = 1d-6
   itermax = 200
 
   ! compute gini
