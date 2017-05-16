@@ -378,8 +378,8 @@ contains
     psi(:, JJ+1) = 0d0
     adj = 22d0
     do ij = 2, JJ
-      psi(1, ij) = psi(2, ij) !- exp(0.33d0*(dble(ij-1)-adj))
-      psi(3, ij) = psi(2, ij) !+ exp(0.33d0*(dble(ij-1)-adj))
+      psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
+      psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
     ! set up population structure
@@ -414,8 +414,6 @@ contains
     enddo
     close(302)
     eff(JE:, :) = 0d0
-    eff(:, 1) = eff(:, 2)
-    eff(:, 3) = eff(:, 2)
 
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
     eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*exp(eta(:, 1)))
@@ -435,20 +433,6 @@ contains
 
     call discretize_AR(0.9410d0**5d0, 0.0000d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
-
-    theta(:, 1) = theta(:, 2)
-    theta(:, 3) = theta(:, 2)
-    pi_theta(:, :, 1) = pi_theta(:, :, 2)
-    pi_theta(:, :, 3) = pi_theta(:, :, 2)
-    dist_theta(:, 1) = dist_theta(:, 2)
-    dist_theta(:, 3) = dist_theta(:, 2)
-
-    eta(:, 1) = eta(:, 2)
-    eta(:, 3) = eta(:, 2)
-    pi_eta(:, :, 1) = pi_eta(:, :, 2)
-    pi_eta(:, :, 3) = pi_eta(:, :, 2)
-    dist_eta(:, 1) = dist_eta(:, 2)
-    dist_eta(:, 3) = dist_eta(:, 2)
 
     ! initial guesses for macro variables
     taup(0) = 0.192d0 !0.192393d0
