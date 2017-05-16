@@ -15,7 +15,7 @@ cd ~/workspace/entrepreneur/
 rm *.o
 rm *.mod
 make
-exit
+#exit
 EOF
 
 #ssh -t -t -X flh71wr@$1 "/home/flh71wr/workspace/entrepreneur/sshrun.sh"
