@@ -320,11 +320,6 @@ contains
     integer :: ia, ix, ip, iw, ie, is, ij
     real*8 :: adj
 
-    call plot(x, y)
-    call execplot()
-
-    stop
-
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
     write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent  iamax  ixmax          DIFF'
 
@@ -601,6 +596,9 @@ contains
     do in = 1, 1000
       yplot(in) = tarif(xplot(in))
     enddo
+
+    call plot(xplot, yplot)
+    call execplot()
 
   end subroutine
 
