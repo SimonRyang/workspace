@@ -1660,6 +1660,7 @@ contains
       k_coh(ij, it) = k_coh(ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
       flc_coh(ij, it) = flc_coh(ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
       do is = 1, NS
+        write(*,*)sum(os_coh(:, :, is, ij, it))
         os_coh(0, :, is, ij, it) = os_coh(0, :, is, ij, it)/sum(m(:, :, :, :, :, :, is, ij, it))
         os_coh(1, :, is, ij, it) = os_coh(1, :, is, ij, it)/sum(m(:, :, :, :, :, :, is, ij, it))
       end do ! is
