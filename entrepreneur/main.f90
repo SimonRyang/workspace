@@ -194,13 +194,13 @@ contains
       write(*,*)a(ia_com)
       do im = 1, 100
         do in = 1, 100
-          zplot(im, in) = valuefunc_w((/xplot(im), yplot(in)/))
+          zplot(im, in) = valuefunc_e((/xplot(im), yplot(in)/))
         enddo
       enddo
       write(*,*)minloc(zplot), minval(zplot)
 
       call plot3d(xplot, yplot, zplot)
-      call plot3d(a, p, EV(0, :, 0, :, 2, 3, 3, 9, 0))
+      call plot3d(a, p, EV(1, :, 0, :, 2, 3, 3, 9, 0))
       !call execplot
 
       ! check the grid
