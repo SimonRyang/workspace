@@ -180,16 +180,16 @@ contains
       ! determine the government parameters
       call government(0)
 
-      call grid_Cons_Equi(xplot, 0d0, 0.15d0)
+      call grid_Cons_Equi(xplot, 0d0, 0.5d0)
       call grid_Cons_Equi(yplot, 0d0, 0.99d0)
       io_com = 0
-      ia_com = 0
+      ia_com = 20
       ix_com = 0
-      ip_com = 0
+      ip_com = 2
       is_com = 2
       iw_com = 3
       ie_com = 3
-      ij_com = 1
+      ij_com = 2
       it_com = 0
       write(*,*)a(ia_com)
       do im = 1, 100
