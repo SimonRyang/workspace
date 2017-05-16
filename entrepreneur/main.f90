@@ -180,8 +180,8 @@ contains
       ! determine the government parameters
       call government(0)
 
-      call grid_Cons_Equi(xplot, 0d0, 1d0)
-      call grid_Cons_Equi(yplot, 0d0, 0.5d0)
+      call grid_Cons_Equi(xplot, 0d0, 2d0)
+      call grid_Cons_Equi(yplot, 0d0, 0.4d0)
       io_com = 0
       ia_com = 20
       ix_com = 0
