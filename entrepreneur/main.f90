@@ -200,7 +200,7 @@ contains
       write(*,*)minloc(zplot), minval(zplot)
 
       call plot3d(xplot, yplot, zplot)
-      !call plot(a, p, EV(0, :, 0, :, 2, 3, 3, 2, 0))
+      call plot3d(a, p, EV(0, :, 0, :, 2, 3, 3, 2, 0))
       !call execplot
 
       ! check the grid
@@ -1080,8 +1080,8 @@ contains
                   enddo ! iw_p
                 enddo ! ie_p
 
-              ! EV(:, ia, ix, ip, iw, ie, is, ij, it) &
-              !    = ((1d0-gamma)*EV(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
+               EV(:, ia, ix, ip, iw, ie, is, ij, it) &
+                  = ((1d0-gamma)*EV(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
 
               enddo ! ia
             enddo ! ix
