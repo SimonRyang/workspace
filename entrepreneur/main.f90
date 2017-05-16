@@ -378,8 +378,8 @@ contains
     psi(:, JJ+1) = 0d0
     adj = 22d0
     do ij = 2, JJ
-      psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
-      psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
+      psi(1, ij) = psi(2, ij) !- exp(0.33d0*(dble(ij-1)-adj))
+      psi(3, ij) = psi(2, ij) !+ exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
     ! set up population structure
@@ -414,6 +414,8 @@ contains
     enddo
     close(302)
     eff(JE:, :) = 0d0
+    eff(:, 1) = eff(:, 2)
+    eff(:, 3) = eff(:, 2)
 
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
     eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*exp(eta(:, 1)))
