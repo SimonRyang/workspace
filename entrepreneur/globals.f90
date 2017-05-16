@@ -536,7 +536,7 @@ contains
   !
   ! Interpolates the expected valuefunction
   !##############################################################################
-  function interpolate_EV(a_plus, x_plus, p_plus, io, iw, ie, is, ij, it)
+  function interpolate_EV(io, a_plus, x_plus, p_plus, iw, ie, is, ij, it)
 
     implicit none
 
