@@ -180,8 +180,8 @@ contains
       ! determine the government parameters
       call government(0)
 
-      call grid_Cons_Equi(xplot, 0d0, 0.5d0)
-      call grid_Cons_Equi(yplot, 0d0, 0.99d0)
+      call grid_Cons_Equi(xplot, 0d0, 1d0)
+      call grid_Cons_Equi(yplot, 0d0, 0.5d0)
       io_com = 0
       ia_com = 20
       ix_com = 0
@@ -197,7 +197,7 @@ contains
           zplot(im, in) = valuefunc_w((/xplot(im), yplot(in)/))
         enddo
       enddo
-      write(*,*)minloc(yplot), minval(yplot), xplot(minloc(yplot))
+      write(*,*)minloc(zplot), minval(zplot)
 
       call plot3d(xplot, yplot, zplot)
 
