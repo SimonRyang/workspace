@@ -153,7 +153,7 @@ contains
     !##### OTHER VARIABLES ####################################################
     integer :: iter, iamax(JJ), ixmax(JJ), ia
     integer :: in, im
-    real*8 :: xplot(1000), yplot(1000), zplot(1000, 1000)
+    real*8 :: xplot(100), yplot(100), zplot(100, 100)
 
     ! initialize remaining variables
     call initialize()
@@ -192,8 +192,8 @@ contains
       ij_com = 1
       it_com = 0
       write(*,*)a(ia_com)
-      do im = 1, 1000
-        do in = 1, 1000
+      do im = 1, 100
+        do in = 1, 100
           zplot(im, in) = valuefunc_w((/xplot(im), yplot(in)/))
         enddo
       enddo
