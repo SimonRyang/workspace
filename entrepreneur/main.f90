@@ -180,7 +180,7 @@ contains
       ! determine the government parameters
       call government(0)
 
-      call grid_Cons_Equi(xplot, 0d0, 64d0)
+      call grid_Cons_Equi(xplot, 0d0, 2d0)
       io_com = 0
       ia_com = 16
       ix_com = 0
@@ -194,6 +194,7 @@ contains
       do in = 1, 1000
         yplot(in) = valuefunc_w((/xplot(in), 0.3d0/))
       enddo
+      write(*,*)milox(yplot), minval(yplot)
 
       call plot(xplot, yplot)
       call execplot()
