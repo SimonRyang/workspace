@@ -431,7 +431,7 @@ contains
     call discretize_AR(0.9400d0**5d0, -0.2250d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.9410d0**5d0, 0.0400d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.9410d0**5d0, 0.0500d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
     ! initial guesses for macro variables
@@ -1660,7 +1660,7 @@ contains
       k_coh(ij, it) = k_coh(ij, it)/sum(m(1, :, :, :, :, :, :, ij, it))
       flc_coh(ij, it) = flc_coh(ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
       do is = 1, NS
-        write(*,*)sum(os_coh(:, :, is, ij, it))
+        write(*,*)sum(os_coh(:, :, is, ij, it))/sum(m(:, :, :, :, :, :, is, ij, it))
         os_coh(0, :, is, ij, it) = os_coh(0, :, is, ij, it)/sum(m(:, :, :, :, :, :, is, ij, it))
         os_coh(1, :, is, ij, it) = os_coh(1, :, is, ij, it)/sum(m(:, :, :, :, :, :, is, ij, it))
       end do ! is
