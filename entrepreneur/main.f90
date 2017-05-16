@@ -152,8 +152,6 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: iter, iamax(JJ), ixmax(JJ), ia
-    integer :: in, im
-    real*8 :: xplot(100), yplot(100), zplot(100, 100)
 
     ! initialize remaining variables
     call initialize()
@@ -177,31 +175,9 @@ contains
 
       ! aggregate individual decisions
       call aggregation(0)
+      
       ! determine the government parameters
       call government(0)
-
-      call grid_Cons_Equi(xplot, 0.8d0, 1.22d0)
-      call grid_Cons_Equi(yplot, 0.2d0, 0.8d0)
-      io_com = 0
-      ia_com = 20
-      ix_com = 0
-      ip_com = 2
-      is_com = 2
-      iw_com = 3
-      ie_com = 3
-      ij_com = 2
-      it_com = 0
-      write(*,*)a(ia_com)
-      do im = 1, 100
-        do in = 1, 100
-          zplot(im, in) = valuefunc_e((/xplot(im), yplot(in)/))
-        enddo
-      enddo
-      write(*,*)minloc(zplot), minval(zplot)
-
-      call plot3d(xplot, yplot, zplot)
-      call plot3d(a, p, EV(1, :, 0, :, 2, 3, 3, 9, 0))
-      !call execplot
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
@@ -1080,8 +1056,8 @@ contains
                   enddo ! iw_p
                 enddo ! ie_p
 
-               ! EV(:, ia, ix, ip, iw, ie, is, ij, it) &
-               !  = ((1d0-gamma)*EV(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
+                EV(:, ia, ix, ip, iw, ie, is, ij, it) &
+                 = ((1d0-gamma)*EV(:, ia, ix, ip, iw, ie, is, ij, it))**(1d0/(1d0-gamma))
 
               enddo ! ia
             enddo ! ix
