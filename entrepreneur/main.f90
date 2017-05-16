@@ -183,13 +183,13 @@ contains
       call grid_Cons_Equi(xplot, 0d0, 64d0)
       do in = 1, 1000
         io_com = 0
-        ia_com = 0
+        ia_com = 7
         ix_com = 0
-        ip_com = 0
-        is_com = 1
+        ip_com = 1
+        is_com = 2
         iw_com = 3
         ie_com = 3
-        ij_com = 1
+        ij_com = 2
         it_com = 0
         yplot(in) = valuefunc_w((/xplot(in), 0.3d0/))
       enddo
