@@ -199,7 +199,9 @@ contains
       enddo
       write(*,*)minloc(zplot), minval(zplot)
 
-      call plot3d(xplot, yplot, zplot)
+      !call plot3d(xplot, yplot, zplot)
+      plot(a, EV(0, :, 0, 0, 2, 3, 3, 1, 0))
+      call execplot
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
