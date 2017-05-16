@@ -443,6 +443,13 @@ contains
     dist_theta(:, 1) = dist_theta(:, 2)
     dist_theta(:, 3) = dist_theta(:, 2)
 
+    eta(:, 1) = eta(:, 2)
+    eta(:, 3) = eta(:, 2)
+    pi_eta(:, :, 1) = pi_eta(:, :, 2)
+    pi_eta(:, :, 3) = pi_eta(:, :, 2)
+    dist_eta(:, 1) = dist_eta(:, 2)
+    dist_eta(:, 3) = dist_eta(:, 2)
+
     ! initial guesses for macro variables
     taup(0) = 0.192d0 !0.192393d0
     tauc(0) = 0.173d0 !0.173856d0
