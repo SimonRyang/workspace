@@ -153,7 +153,7 @@ contains
     !##### OTHER VARIABLES ####################################################
     integer :: iter, iamax(JJ), ixmax(JJ), ia
     integer :: in
-    real*8 :: xplot(100), yplot(1000)
+    real*8 :: xplot(1000), yplot(1000)
 
     ! initialize remaining variables
     call initialize()
