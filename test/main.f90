@@ -230,7 +230,7 @@ contains
 
 
         ! initialize asset grid
-        a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
+        call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
         ! get initial guess for savings decision
         do ij = 1, JJ
