@@ -138,7 +138,7 @@ contains
 
 
         KK = 1d0
-        BB = 1d0
+        BB = 2d0
         GG = 0d0
         LL = 1d0
         YY = 1d0
