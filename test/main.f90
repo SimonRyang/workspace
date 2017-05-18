@@ -138,8 +138,8 @@ contains
 
 
         KK = 1d0
-        BB = 2d0
-        GG = 0d0
+        BB = 1d0
+        GG = 1d0
         LL = 1d0
         YY = 1d0
         II = (n_p+delta)*KK
