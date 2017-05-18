@@ -145,7 +145,7 @@ contains
         II = (n_p+delta)*KK
 
 
-        pen = 0d0
+        pen = 0.5d0
         pen(JR:JJ) = kappa
 
         ! open files
