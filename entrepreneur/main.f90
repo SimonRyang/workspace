@@ -118,8 +118,8 @@ program main
   !ann = .true.
   !pen_debt = .true.
   !smopec = .true.
-  phi(1:TT) = 1d0
-  !lambda(1:TT) = 1d0
+  !phi(1:TT) = 1d0
+  lambda(1:TT) = 1d0
   !mu(1:TT) = 0d0
   !labor = .false.
 
@@ -1449,10 +1449,10 @@ contains
                       lsra_comp = lsra_comp + m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
 
                     ! calculate total transfer
-                    v(io, ia, ix, ip, iw, ie, is, ij, 1) = v(io, ia, ix, ip, iw, ie, is, ij, 1) + damp*damp*v_tilde
+                    v(io, ia, ix, ip, iw, ie, is, ij, 1) = v(io, ia, ix, ip, iw, ie, is, ij, 1) + damp*v_tilde
 
                     ! aggregate transfers by cohort
-                    SV(1) = SV(1) + v(io, ia, ix, ip, iw, ie, is, ij, 1)*m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
+                    SV(1) = SV(1) + v(io, ia, ix, ip, iw, ie, is, ij, 1)*m(io, ia, ix, ip, iw, ie, is, ij, 1)
 
                   enddo ! io
                 enddo ! is
@@ -1472,10 +1472,10 @@ contains
     do it = TT, 1, -1
 
       ! get today's ex ante utility
-      VV_today = damp*damp*vv_coh(1, it)
+      VV_today = damp*vv_coh(1, it)
 
       ! get damped target utility
-      VV_target = damp*damp*vv_coh(1, 0)
+      VV_target = damp*vv_coh(1, 0)
 
       ! get derivative of expected utility function
       dVV_da = 0d0
@@ -1506,10 +1506,10 @@ contains
     do it = TT, 1, -1
 
       ! get today's ex ante utility
-      VV_today = damp*damp*vv_coh(1, it)
+      VV_today = damp*vv_coh(1, it)
 
       ! get target utility
-      VV_target = damp*damp*vv_coh(1, 0)*Vstar
+      VV_target = damp*vv_coh(1, 0)*Vstar
 
       ! get derivative of expected utility function
       dVV_da = 0d0
@@ -1528,7 +1528,7 @@ contains
       v(0, 0, 0, 0, :, :, :, 1, it) = v(0, 0, 0, 0, :, :, :, 1, it) + v_tilde
 
       ! aggregate transfers
-      SV(it) = SV(it) + v(0, 0, 0, 0, 1, 1, 1, 1, it)*pop(1, it)
+      SV(it) = SV(it) + v(0, 0, 0, 0, 1, 1, 1, 1, it)
 
     enddo
 
@@ -1709,7 +1709,7 @@ contains
       if (ij == JR-1) write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     enddo
 
-    if (gini_on .and. (it == 0 .or. TT)) then
+    if (gini_on .and. (it == 0 .or. it == TT)) then
 
       write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
       write(21,'(a/)')' '
@@ -1878,7 +1878,7 @@ contains
         HEVs(io, is, -(JJ-2):0) = HEVs(io, is, -(JJ-2):0)/mass(io, is, -(JJ-2):0)
       enddo ! is
     enddo ! io
-    HEV(-(JJ-2):0) = HEV(-(JJ-2):0)/mas
+    HEV(-(JJ-2):0) = HEV(-(JJ-2):0)/mas(-(JJ-2))
 
     ! calculate ex ante welfare of future generations
     do it = 1, TT
