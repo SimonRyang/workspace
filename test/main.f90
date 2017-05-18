@@ -275,8 +275,8 @@ contains
         YY = 1d0
         II = (n_p+delta)*KK
 
-        GG = gy*YY(0)
-        BB = by*YY(0)
+        GG = 0d0 !gy*YY(0)
+        BB = 0d0 !by*YY(0)
 
         pen = 0d0
         pen(JR:JJ, 0) = kappa(0)
