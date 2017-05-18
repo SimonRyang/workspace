@@ -5,8 +5,6 @@
 !            University of Wuerzburg
 !            contact@ce-fortran.com
 !##############################################################################
-include "prog11_01m.f90"
-
 program OLG_LR
 
     ! modules
