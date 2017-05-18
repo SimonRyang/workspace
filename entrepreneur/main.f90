@@ -425,10 +425,10 @@ contains
     taup(0) = 0.192d0
     tauc(0) = 0.176d0
     inc_bar(0) = 0.538d0
-    bqs(:, 0) = 0d0
-    !bqs(:, 0) = (/0.019d0, 0.124d0, 0.322d0/)
+    bqs(:, 0) = (/0.019d0, 0.124d0, 0.322d0/)
     BQ(0) = 0.465d0
-    BB(0) = 0.971d0
+    BB(0) = 0d0
+    !BB(0) = 0.971d0
     KC(0) = 4.000d0
     LC(0) = 5.142d0
 
@@ -1346,7 +1346,7 @@ contains
     ! last year
     itp = year(it, 1, 2)
 
-    ! set government quantities and pension payments
+    ! set government quantities
     GG(it) = gy*YY(0)
     BB(it) = by*YY(0)
 
