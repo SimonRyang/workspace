@@ -18,8 +18,6 @@ program OLG_LR
     reform_on = .false.
     call get_SteadyState()
 
-    stop
-
     ! set reform variables
     reform_on = .true.
 !    tauw  = 0.0d0
@@ -145,7 +143,7 @@ contains
         II = (n_p+delta)*KK
 
 
-        pen = 0.5d0
+        pen = 0d0
         pen(JR:JJ) = kappa
 
         ! open files
