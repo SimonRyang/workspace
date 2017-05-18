@@ -115,11 +115,11 @@ program main
   call get_SteadyState()
 
   ! set reform parameters
-  !ann = .true.
+  ann = .true.
   !pen_debt = .true.
   !smopec = .true.
   !phi(1:TT) = 1d0
-  lambda(1:TT) = 1d0
+  !lambda(1:TT) = 1d0
   !mu(1:TT) = 0d0
   !labor = .false.
 
@@ -428,7 +428,7 @@ contains
     bqs(:, 0) = (/0.019d0, 0.124d0, 0.322d0/)
     BQ(0) = 0.465d0
     BB(0) = 0.971d0
-    KC(0) = 1d0 !4.000d0
+    KC(0) = 4.000d0
     LC(0) = 5.142d0
 
     ! open files
