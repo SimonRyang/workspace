@@ -10,8 +10,8 @@ include "prog11_01m.f90"
 program OLG_LR
 
     ! modules
-    use globals      
-    implicit none    
+    use globals
+    implicit none
 
     ! initialize variables
     call initialize()
@@ -23,12 +23,12 @@ program OLG_LR
     stop
 
     ! set reform variables
-    reform_on = .true. 
+    reform_on = .true.
 !    tauw  = 0.0d0
 !    taur  = 0.0d0
 !    tax   = 3
     kappa = 0d0
-   
+
     ! close files
     close(21)
 
@@ -43,25 +43,25 @@ contains
 
         ! start timer
         call tic()
-         
+
         ! iterate until value function converges
-        do iter = 1, itermax                
-    
-            ! derive prices 
+        do iter = 1, itermax
+
+            ! derive prices
             call prices()
 
             ! solve the household problem
             call solve_household()
-    
+
             ! calculate the distribution of households over state space
             call get_distribution()
-    
+
             ! aggregate individual decisions over cohorts
             call aggregation()
-    
+
             ! determine the government parameters
             call government()
-    
+
             write(*,'(i4,5f8.2,f12.5)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
                                        r, w, DIFF/YY*100d0
             if(abs(DIFF/YY)*100d0 < sig)then
@@ -69,18 +69,18 @@ contains
                 call output()
                 return
             endif
-        enddo    
-        
+        enddo
+
         call toc
         call output()
-    
+
         write(*,*)'No Convergence'
 
     end subroutine
 
 
     ! initializes the remaining model parameters and variables
-    subroutine initialize        
+    subroutine initialize
 
         implicit none
 
@@ -93,9 +93,9 @@ contains
         do ij = 1, JJ
             rpop(ij) = (1d0+n_p)**(1d0-ij)
         enddo
-   
+
         ! initialize asset grid
-        a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
+        call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
         ! get initial guess for savings decision
         do ij = 1, JJ
@@ -125,7 +125,7 @@ contains
         theta = exp(theta)
 
         ! calculate the shock process
-        call discretize_AR(rho, 0d0, sigma_eps, eta, pi) 
+        call discretize_AR(rho, 0d0, sigma_eps, eta, pi)
         eta = exp(eta)
 
         ! tax and transfers
@@ -138,30 +138,30 @@ contains
         taur  = 0.0d0
         taup  = 0.1d0
 
-       
+
         KK = 1d0
         BB = 0d0
         GG = 0d0
         LL = 1d0
         YY = 1d0
         II = (n_p+delta)*KK
-        
-       
+
+
         pen = 0d0
         pen(JR:JJ) = kappa
-        
+
         ! open files
         open(21, file='output.out')
 
     end subroutine
 
 
-    ! subroutine for prices 
+    ! subroutine for prices
     subroutine prices()
 
         implicit none
 
-   
+
         ! calculate new prices
         r = Omega*alpha*(KK/LL)**(alpha-1d0)-delta
         w = Omega*(1d0-alpha)*(KK/LL)**alpha
@@ -169,10 +169,10 @@ contains
         wn = w*(1d0-tauw-taup)
         p = 1d0 + tauc
 
-    
+
     end subroutine
-    
-    
+
+
     ! determines the solution to the household optimization problem
     subroutine solve_household()
 
@@ -194,7 +194,7 @@ contains
         call interpolate(JJ)
 
         do ij = JJ-1, 1, -1
-          
+
             ! check about how many is to iterate
             if(ij >= JR)then
                 ip_max = 1
@@ -204,7 +204,7 @@ contains
                 is_max = NS
             endif
 
-            do ia = 0, NA                
+            do ia = 0, NA
 
                 ! determine decision for zero assets at retirement without pension
                 if(ij >= JR .and. ia == 0 .and. kappa <= 1d-10)then
@@ -217,39 +217,39 @@ contains
 
                 do ip = 1, ip_max
                     do is = 1, is_max
-                        
+
                         ! get initial guess for the individual choices
                         x(1) = max(aplus(ij, ia, ip, is), 1d-4)
                         x(2) = 0d0
-      
+
                         ! set up communication variables
                         ij_com = ij
                         ia_com = ia
                         ip_com = ip
                         is_com = is
-      
+
                         ! solve the household problem using rootfinding
                         call fzero(x, foc, check)
-    
+
                         ! write screen output in case of a problem
                         if(check)write(*,'(a, 5i4)')'ERROR IN ROOTFINDING : ', ij, ia, ip, is
-      
+
                         ! copy decisions
                         aplus(ij, ia, ip, is) = x(1)
                         c(ij, ia, ip, is) = cons_com
                         l(ij, ia, ip, is) = lab_com
                         V(ij, ia, ip, is) = valuefunc(x(1), cons_com, lab_com, ij, ip, is)
-                              
+
                     enddo
-      
+
                     ! copy decision in retirement age
-                    if(ij >= JR)then                        
+                    if(ij >= JR)then
                         aplus(ij, ia, :, :) = aplus(ij, ia, 1, 1)
                         c(ij, ia, :, :) = c(ij, ia, 1, 1)
                         l(ij, ia, :, :) = l(ij, ia, 1, 1)
                         V(ij, ia, :, :) = V(ij, ia, 1, 1)
                     endif
-                enddo                
+                enddo
             enddo
 
             ! interpolate individual RHS
@@ -308,7 +308,7 @@ contains
 
         ! successively compute distribution over ages
         do ij = 2, JJ
-            
+
             ! iterate over yesterdays gridpoints
             do ia = 0, NA
                 do ip = 1 , NP
@@ -330,35 +330,35 @@ contains
                     enddo
                 enddo
             enddo
-        enddo 
+        enddo
 
     end subroutine
 
 
     ! subroutine for calculating quantities
     subroutine aggregation()
-    
+
         implicit none
-        
+
         integer :: ij, ia, ip, is
         real*8 :: workpop, LL_old
-        
-        LL_old = LL  
-        
+
+        LL_old = LL
+
         ! calculate cohort aggregates
         c_coh(:) = 0d0
         h_coh(:) = 0d0
         l_coh(:) = 0d0
         a_coh(:) = 0d0
         v_coh(:) = 0d0
-        
+
         do ij = 1, JJ
             do ia = 0, NA
                 do ip = 1, NP
                     do is = 1, NS
                         c_coh(ij) = c_coh(ij) + c(ij, ia, ip, is)*phi(ij, ia, ip, is)
                         h_coh(ij) = h_coh(ij) + l(ij, ia, ip, is)*phi(ij, ia, ip, is)
-                        l_coh(ij) = l_coh(ij) + eff(ij)*theta(ip)*eta(is)*l(ij, ia, ip, is)*phi(ij, ia, ip, is)                        
+                        l_coh(ij) = l_coh(ij) + eff(ij)*theta(ip)*eta(is)*l(ij, ia, ip, is)*phi(ij, ia, ip, is)
                         a_coh(ij) = a_coh(ij) + a(ia)*phi(ij, ia, ip, is)
                         v_coh(ij) = v_coh(ij) + V(ij, ia, ip, is)*phi(ij, ia, ip, is)
                     enddo
@@ -370,8 +370,8 @@ contains
         CC = 0d0
         LL = 0d0
         HH = 0d0
-        AA = 0d0   
-        workpop = 0d0        
+        AA = 0d0
+        workpop = 0d0
         do ij = 1, JJ
             CC = CC + c_coh(ij)*rpop(ij)
             LL = LL + l_coh(ij)*rpop(ij)
@@ -379,8 +379,8 @@ contains
             AA = AA + a_coh(ij)*rpop(ij)
             if(ij < JR)workpop = workpop + rpop(ij)
         enddo
-        
-        ! damping and other quantities  
+
+        ! damping and other quantities
         KK = damp*(AA-BB)+(1d0-damp)*KK
         LL = damp*LL + (1d0-damp)*LL_old
         II = (n_p+delta)*KK
@@ -391,16 +391,16 @@ contains
         HH  = HH/workpop
 
         ! get difference on goods market
-        DIFF = YY-CC-II-GG       
-    
+        DIFF = YY-CC-II-GG
+
     end subroutine
 
-    
+
     ! subroutine for calculating government parameters
     subroutine government()
-    
+
         implicit none
-    
+
         integer :: ij
         real*8 :: expend
 
@@ -408,11 +408,11 @@ contains
         if (.not. reform_on) then
           GG = gy*YY
           BB = by*YY
-        endif   
+        endif
 
         ! calculate government expenditure
         expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
-    
+
         ! get budget balancing tax rate
         if(tax == 1)then
             tauc = (expend - (tauw*w*LL + taur*r*AA))/CC
@@ -421,7 +421,7 @@ contains
             tauw = (expend - tauc*CC)/(w*LL + r*AA)
             taur = tauw
         elseif(tax == 3)then
-            tauw = (expend - (tauc*CC + taur*r*AA))/(w*LL)      
+            tauw = (expend - (tauc*CC + taur*r*AA))/(w*LL)
         else
             taur = (expend - (tauc*CC + tauw*w*LL))/(r*AA)
         endif
@@ -430,7 +430,7 @@ contains
         taxrev(2) = tauw*w*LL
         taxrev(3) = taur*r*AA
         taxrev(4) = sum(taxrev(1:3))
-        
+
         ! get budget balancing social security contribution
         pen(JR:JJ) = kappa*INC
         PP = 0d0
@@ -439,21 +439,21 @@ contains
         enddo
 
         taup = PP/(w*LL)
-    
+
     end subroutine
-    
+
 
     ! subroutine for writing output
     subroutine output()
-    
+
         implicit none
-        
-        integer :: ij, ia, ip, is, iamax(JJ)   
+
+        integer :: ij, ia, ip, is, iamax(JJ)
         real*8 :: temp
         real*8 :: exp_c(JJ), exp_h(JJ), exp_l(JJ)
         real*8 :: var_c(JJ), var_h(JJ), var_l(JJ)
         real*8 :: mas_c(JJ), mas_h(JJ), mas_l(JJ)
-        
+
         ! calculate cohort specific variances of logs
         exp_c = 0d0 ; var_c = 0d0 ; mas_c = 0d0
         exp_h = 0d0 ; var_h = 0d0 ; mas_h = 0d0
@@ -472,13 +472,13 @@ contains
                         endif
 
                         if(l(ij, ia, ip, is) > 0.01d0)then
-    
+
                             ! hours
                             temp = log(l(ij, ia, ip, is))
                             exp_h(ij) = exp_h(ij) + temp*phi(ij, ia, ip, is)
                             var_h(ij) = var_h(ij) + temp**2*phi(ij, ia, ip, is)
                             mas_h(ij) = mas_h(ij) + phi(ij, ia, ip, is)
-    
+
                             ! earnings
                             temp = log(w*eff(ij)*theta(ip)*eta(is)*l(ij, ia, ip, is))
                             exp_l(ij) = exp_l(ij) + temp*phi(ij, ia, ip, is)
@@ -503,8 +503,8 @@ contains
         write(21,'(a,3f8.2/)')'(in %)  ',(/KK, AA, BB/)/YY*500d0
 
         write(21,'(a)')'LABOR          L      HH     INC       w'
-        write(21,'(8x,4f8.2/)')LL, HH*100d0, INC, w 
-        
+        write(21,'(8x,4f8.2/)')LL, HH*100d0, INC, w
+
         write(21,'(a)')'GOODS          Y       C       I       G    DIFF'
         write(21,'(8x,4f8.2,f8.3)')YY,CC,II,GG,diff
         write(21,'(a,4f8.2,f8.3/)')'(in %)  ',(/YY, CC, II, GG, diff/)/YY*100d0
@@ -523,19 +523,19 @@ contains
 
         write(21, '(a,a)')' IJ      CONS     LABOR  EARNINGS    INCOME    INCTAX      PENS    ASSETS', &
             '    VAR(C)    VAR(H)    VAR(L)     VALUE     IAMAX'
-        do ij = 1, JJ          
+        do ij = 1, JJ
             write(21,'(i3,11f10.3,i10)')ij, c_coh(ij)/INC, h_coh(ij), (/w*l_coh(ij), wn*l_coh(ij)+rn*a_coh(ij), &
                     tauw*w*l_coh(ij)+taur*r*a_coh(ij), pen(ij)-taup*w*l_coh(ij), 5d0*a_coh(ij)/)/INC, &
                     var_c(ij), var_h(ij), var_l(ij), v_coh(ij), iamax(ij)
         enddo
         write(21,'(a/)')'--------------------------------------------------------------------'
-    
+
     end subroutine
 
 
     ! subroutine that checks for the maximum gridpoint used
     subroutine check_grid(iamax)
-    
+
         implicit none
 
         integer :: iamax(JJ), ij, ia, ip, is
