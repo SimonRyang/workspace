@@ -122,7 +122,7 @@ program main
 
   do m1 = 3, 3
     do m2 = 2, 2
-      do m3 = 2, 2
+      do m3 = 3, 3
         do s1 = 1, 1
           do s2 = 3, 3
             do s3 = 1, 1
