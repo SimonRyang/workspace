@@ -27,13 +27,13 @@ module globals
   integer, parameter :: NA = 32
 
   ! number of points on the pension claim grid (-1)
-  integer, parameter :: NP = 5
+  integer, parameter :: NP = 6
 
   ! number of occupations (-1)
   integer, parameter :: NO = 1
 
   ! household parameters
-  real*8 :: gamma, sigma, beta, l_bar, phi1, phi2, sigmaq
+  real*8 :: gamma, sigma, beta, l_bar, mu_b
 
   ! production parameters
   real*8 :: alpha, delta, nu, suc
@@ -199,7 +199,7 @@ contains
 
     ! add today's part and discount
     valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w &
-                    + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+                    + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
 
   end function
 
@@ -303,7 +303,7 @@ contains
 
     ! add today's part and discount
     valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e &
-                    + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+                    + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
 
   end function
 
@@ -367,7 +367,7 @@ contains
 
     ! add today's part and discount
     valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r &
-                    + (1d0-psi(is_com, ij_com+1))*phi1*(1d0+a_plus*phi2)**(1d0-sigmaq))
+                    + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
 
   end function
 
