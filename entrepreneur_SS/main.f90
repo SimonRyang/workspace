@@ -235,7 +235,7 @@ contains
     !##### OTHER VARIABLES ####################################################
     integer :: iter, iamax(JJ)
     integer :: ia
-    real*8 :: xplot(1000), yplot(1000)
+    real*8 :: xplot(100), yplot(100)
     ! initialize remaining variables
     call initialize()
 
@@ -275,7 +275,7 @@ contains
       iw_com = 7
       ie_com = 1
       ij_com = 1
-      do ia = 0, 1000
+      do ia = 0, 100
         yplot(ia) = valuefunc_w((/0.2d0, xplot(ia)/))
       enddo
       call plot (xplot, yplot)
