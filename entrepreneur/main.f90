@@ -50,7 +50,10 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  mu_b   =  -0.500d0
+  phi1   = -0.500d0
+  phi2   =  1d0
+  ! invert phi2
+  phi2 = 1d0/phi2
   beta   =  0.987d0
   ! convert variables into per period values
   beta = beta**5d0
@@ -597,7 +600,7 @@ contains
     do ij = JJ, 1, -1
 
       !call tick(calc)
-      write(*,*)'Optimize for age: ', ij
+      !write(*,*)'Optimize for age: ', ij
 
       it = year(it_in, ij_in, ij)
 
