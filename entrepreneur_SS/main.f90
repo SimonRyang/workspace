@@ -234,7 +234,8 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: iter, iamax(JJ)
-
+    integer :: ia
+    real*8 :: xplot(1000), yplot(1000)
     ! initialize remaining variables
     call initialize()
 
@@ -266,6 +267,13 @@ contains
 
       write(*,'(i4,6f8.2,i7,f14.8)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
+
+      call grid_Cons_Equi(xplot, a_l, a_u)
+      do ia = 0, 1000
+        yplot(ia) = valuefunc_w((/xplot(ia), 0.33d0/))
+      enddo
+      call plot (xplot, yplot)
+      call execplot
 
       if(abs(DIFF/YY)*100d0 < tol)then
 
