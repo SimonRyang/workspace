@@ -50,7 +50,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  mu_b   =  -0.3d0
+  mu_b   =  -0.4d0
   beta   =  0.987d0
   ! convert variables into per period values
   beta = beta**5d0
@@ -414,10 +414,10 @@ contains
     call discretize_AR(0.9400d0**5d0, -0.3205d0, sigma5(0.9400d0, 0.0370d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.9400d0**5d0, -0.2500d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.9400d0**5d0, -0.2250d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.9410d0**5d0, -0.0500d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.9410d0**5d0, 0.0500d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
     ! initial guesses for macro variables
@@ -1623,7 +1623,7 @@ contains
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
                     endif
                     netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
-                    wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia)
+                    wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia) + beq(is, ij, it)
 
                   enddo ! io
                 enddo ! is
