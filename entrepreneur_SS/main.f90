@@ -269,6 +269,7 @@ contains
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
 
       call grid_Cons_Equi(xplot, 0d0, 0.50d0)
+      write(*,*)maxval(xplot)
       ia_com = 0
       ip_com = 0
       is_com = 3
