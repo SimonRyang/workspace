@@ -45,7 +45,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =   0.320d0
-  mu_b   = -0.500d0
+  mu_b   = -0.000d0
   beta   =  0.998d0
   ! convert variables into per period values
   beta = beta**5d0
@@ -234,8 +234,7 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: iter, iamax(JJ)
-    integer :: ia
-    real*8 :: xplot(100), yplot(100)
+
     ! initialize remaining variables
     call initialize()
 
@@ -267,21 +266,6 @@ contains
 
       write(*,'(i4,6f8.2,i7,f14.8)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
-
-      call grid_Cons_Equi(xplot, 0.1d0, 0.99d0)
-      write(*,*)maxval(xplot)
-      ia_com = 0
-      ip_com = 0
-      is_com = 3
-      iw_com = 7
-      ie_com = 1
-      ij_com = 1
-      yplot = 2d0
-      do ia = 1, 100
-        yplot(ia) = valuefunc_w((/0.2d0, xplot(ia)/))
-      enddo
-      call plot (xplot, yplot)
-      call execplot
 
       if(abs(DIFF/YY)*100d0 < tol)then
 
