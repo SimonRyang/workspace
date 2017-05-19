@@ -45,7 +45,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =   0.320d0
-  mu_b   = -0.400d0
+  mu_b   = -0.250d0
   beta   =  0.998d0
   ! convert variables into per period values
   beta = beta**5d0
@@ -1150,7 +1150,7 @@ contains
     write(21,'(8x,8f8.2)')TAc, TAr, TAw, TAy, TAc+TAr+TAw+TAy, GG, BB, BF
     write(21,'(a,8f8.2)')'(in %)  ',(/TAc, TAr, TAw, TAy, TAc+TAr+TAw+TAy, &
                GG, BB*5d0, BF*5d0/)/YY*100d0
-    write(21,'(a,4f8.2/)')'(rate)  ',(/tauc, taur, 0d0, tauy/)*100d0
+    write(21,'(a,4f8.2/)')'(rate)  ',(/tauc, taur, TAw/(w*LC + PE + PRE), tauy/)*100d0
 
     write(21,'(a)')'PENS        TAUP     PEN      PP      PC      BQ'
     write(21,'(8x,5f8.2)')taup*PC, PP/sum(pop(JR:)), PP, PC, BQ
