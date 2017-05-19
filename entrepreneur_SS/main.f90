@@ -268,7 +268,7 @@ contains
       write(*,'(i4,6f8.2,i7,f14.8)')iter, (/5d0*KK, CC, II/)/YY*100d0, &
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
 
-      call grid_Cons_Equi(xplot, 0d0, 0.04d0)
+      call grid_Cons_Equi(xplot, 0d0, 0.40d0)
       ia_com = 0
       ip_com = 0
       is_com = 3
