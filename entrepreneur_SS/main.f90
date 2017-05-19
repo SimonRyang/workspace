@@ -303,10 +303,10 @@ contains
     write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent  iamax          DIFF'
 
     ! initialize asset grid
-    a = grid_Cons_Grow(a_l, a_u, a_grow, NA)
+    call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
     ! initialize pension claim grid
-    p = grid_Cons_Equi(p_l, p_u, NP)
+    call grid_Cons_Equi(p, p_l, p_u)
 
     ! get initial guess for savings decision
     do ij = 1, JJ
