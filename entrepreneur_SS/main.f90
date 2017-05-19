@@ -271,8 +271,8 @@ contains
       call grid_Cons_Equi(xplot, 0d0, 0.04d0)
       ia_com = 0
       ip_com = 0
-      is_com = 2
-      iw_com = 1
+      is_com = 3
+      iw_com = 7
       ie_com = 1
       ij_com = 1
       do ia = 0, 1000
