@@ -79,7 +79,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 32d0
-  a_grow = 0.2d0
+  a_grow = 0.4d0
 
   ! size of the pension claim grid
   p_l  = 0d0
@@ -1015,9 +1015,6 @@ contains
 
     inc_bar = (w*LC + PE)/(sum(pop_w(:)) + sum(pop_e(:)))
 
-    ! get difference on goods market
-    DIFF = YY-CC-II-GG-NEX
-
     !write(*,*)'Done!'
     !call tock(calc)
 
@@ -1048,6 +1045,9 @@ contains
 
     ! get budget balancing contribution rate to pension system
     taup = PP/PC
+
+    ! get difference on goods market
+    DIFF = YY-CC-II-GG-NEX
 
   end subroutine
 
