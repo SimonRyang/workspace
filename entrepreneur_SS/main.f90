@@ -91,7 +91,7 @@ program main
   itermax = 20
 
   ! compute gini
-  gini_on = .false.
+  gini_on = .true.
 
   ! set switches
   if (NO == 0) ent = .false.
