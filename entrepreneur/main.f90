@@ -51,7 +51,6 @@ program main
   gamma = 1d0/gamma
   sigma  =  0.320d0
   mu_b   =  0d0
-  phi2 = 1d0/phi2
   beta   =  0.987d0
   ! convert variables into per period values
   beta = beta**5d0
