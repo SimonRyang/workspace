@@ -179,6 +179,8 @@ contains
       ! check the grid
       call check_grid(iamax, ixmax, 0)
 
+      write(*,*)bqs(:, 0)
+
       write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
 
@@ -1618,7 +1620,7 @@ contains
 
                     ! Individual variables
                     if (io == 0) then
-                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ip, ix, iw, ie, is, ij, it)*w(it)
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it)*w(it)
                     else
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
                     endif
