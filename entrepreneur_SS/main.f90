@@ -272,8 +272,8 @@ contains
       ia_com = 0
       ip_com = 0
       is_com = 2
-      iw_com = 4
-      ie_com = 4
+      iw_com = 1
+      ie_com = 1
       ij_com = 1
       do ia = 0, 1000
         yplot(ia) = valuefunc_w((/xplot(ia), 0.33d0/))
