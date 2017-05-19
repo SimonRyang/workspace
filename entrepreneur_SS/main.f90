@@ -66,7 +66,7 @@ program main
   ! tax and transfers
   taur   = 0.25d0
   tauy   = 0.15d0
-  kappa  = 0.53d0
+  kappa  = 0.55d0
   sscc   = 2d0
   mu     = 1d0
   lambda = 0d0
@@ -108,7 +108,7 @@ program main
 
   mu_val(1, :) =  (/0.3195d0, 0.3200d0, 0.3205d0/)
   mu_val(2, :) =  (/0.2245d0, 0.2250d0, 0.2255d0/)
-  mu_val(3, :) =  (/-0.000d0, -0.0250d0, -0.0500d0/)
+  mu_val(3, :) =  -(/-0.000d0, -0.0250d0, -0.0500d0/)
   sig_val(1, :) = (/0.0370d0, 0.0375d0, 0.0380d0/)
   sig_val(2, :) = (/0.0370d0, 0.0375d0, 0.0380d0/)
   sig_val(3, :) = (/0.0395d0, 0.0400d0, 0.0405d0/)
@@ -122,7 +122,7 @@ program main
 
   do m1 = 3, 3
     do m2 = 2, 2
-      do m3 = 1, 1
+      do m3 = 2, 2
         do s1 = 1, 1
           do s2 = 3, 3
             do s3 = 1, 1
