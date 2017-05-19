@@ -50,9 +50,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =  0.320d0
-  phi1   = -0.500d0
-  phi2   =  1d0
-  ! invert phi2
+  mu_b   =  0d0
   phi2 = 1d0/phi2
   beta   =  0.987d0
   ! convert variables into per period values
