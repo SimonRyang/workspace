@@ -45,7 +45,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =   0.320d0
-  mu_b   = -0.500d0
+  mu_b   = -0.400d0
   beta   =  0.99d0
   ! convert variables into per period values
   beta = beta**5d0
@@ -122,7 +122,7 @@ program main
 
   do m1 = 3, 3
     do m2 = 2, 2
-      do m3 = 3, 3
+      do m3 = 1, 1
         do s1 = 1, 1
           do s2 = 3, 3
             do s3 = 1, 1
