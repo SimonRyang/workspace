@@ -269,6 +269,12 @@ contains
         ((1d0+r)**0.2d0-1d0)*100d0, w, sum(pop_e(:))/(sum(pop_w(:))+sum(pop_e(:)))*100d0, maxval(iamax), DIFF/YY*100d0
 
       call grid_Cons_Equi(xplot, a_l, a_u)
+      ia_com = 0
+      ip_com = 0
+      is_com = 2
+      iw_com = 4
+      ie_com = 4
+      ij_com = 1
       do ia = 0, 1000
         yplot(ia) = valuefunc_w((/xplot(ia), 0.33d0/))
       enddo
