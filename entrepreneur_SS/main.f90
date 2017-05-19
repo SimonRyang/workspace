@@ -276,7 +276,8 @@ contains
       iw_com = 7
       ie_com = 1
       ij_com = 1
-      do ia = 0, 100
+      yplot = 2d0
+      do ia = 1, 100
         yplot(ia) = valuefunc_w((/0.2d0, xplot(ia)/))
       enddo
       call plot (xplot, yplot)
