@@ -115,12 +115,12 @@ program main
   call get_SteadyState()
 
   ! set reform parameters
-  ann = .true.
+  !ann = .true.
   !pen_debt = .true.
   !smopec = .true.
   !phi(1:TT) = 1d0
   !lambda(1:TT) = 1d0
-  !mu(1:TT) = 0d0
+  mu(1:TT) = 0d0
   !labor = .false.
 
   ! calculate transition path without lsra
@@ -1878,7 +1878,7 @@ contains
         HEVs(io, is, -(JJ-2):0) = HEVs(io, is, -(JJ-2):0)/mass(io, is, -(JJ-2):0)
       enddo ! is
     enddo ! io
-    HEV(-(JJ-2):0) = HEV(-(JJ-2):0)/mas(-(JJ-2))
+    HEV(-(JJ-2):0) = HEV(-(JJ-2):0)/mas(-(JJ-2):0)
 
     ! calculate ex ante welfare of future generations
     do it = 1, TT
