@@ -18,13 +18,13 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of transitory shock process values (worker)
-  integer, parameter :: NW = 9
+  integer, parameter :: NW = 7
 
   ! number of transitory shock process values (entrepreneur)
-  integer, parameter :: NE = 9
+  integer, parameter :: NE = 7
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 32
+  integer, parameter :: NA = 128
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 6
@@ -102,7 +102,6 @@ module globals
   ! switches
   logical :: smopec = .false.   ! .true. = economcy is smopec
   logical :: ent = .true.     ! .true. = endogenous decision to become an entrepreneur
-  logical :: labor = .true.   ! .true. = endogenous labor decision of worker
 
   !$omp threadprivate(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com)
   !$omp threadprivate(c_com, l_com, k_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
@@ -131,11 +130,7 @@ contains
     a_plus = xy(1)
 
     ! today's labor
-    if (labor) then
-      l_com  = xy(2)
-    else
-      l_com = l(0, ia_com, ip_com, iw_com, ie_com, is_com, ij_com)
-    endif
+    l_com  = xy(2)
 
     ! calculate the wage rate and next periods pension claims
     wage = w*eff(ij_com, is_com)*eta(iw_com, is_com)
