@@ -322,7 +322,7 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_e = interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp) - 0.5d0*suc
+      valuefunc_e = interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp) - suc
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
