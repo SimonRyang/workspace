@@ -1,7 +1,7 @@
 module globals
 
   use toolbox
-  !use sorting
+  use sorting
 
   implicit none
 
