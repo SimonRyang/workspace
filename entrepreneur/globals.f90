@@ -663,207 +663,6 @@ contains
 
   end function
 
-  !##############################################################################
-  ! SUBROUTINE gini_wealth
-  !
-  ! Calculates GINI coefficient of wealth
-  !##############################################################################
-  subroutine gini_wealth(it)
-
-    implicit none
-
-    !##### INPUT/OUTPUT VARIABLES #############################################
-    integer, intent(in) :: it
-
-    !##### OTHER VARIABLES ####################################################
-    integer :: is, ie, iw, ip, ix, ia, ij, ic, ICMAX
-    real*8, allocatable :: xs(:), ys(:), xcum(:), ycum(:)
-
-    if(allocated(xs))deallocate(xs)
-    if(allocated(ys))deallocate(ys)
-    if(allocated(xcum))deallocate(xcum)
-    if(allocated(ycum))deallocate(ycum)
-
-    allocate(xs(2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ))
-    allocate(ys(2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ))
-    allocate(xcum(2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ))
-    allocate(ycum(2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ))
-
-    ic = 1
-
-    do ij = 1, JJ
-      do is = 1, NS
-        do ie = 1, NE
-          do iw = 1, NW
-            do ip = 0, NP
-              do ix = 0, NX
-                do ia = 0, NA
-
-                  if(m(0, ia, ip, ix, iw, ie, is, ij, it) > 0d0) then
-                    ys(ic) = m(0, ia, ip, ix, iw, ie, is, ij, it)
-                    xs(ic) = a(ia)
-                    ic = ic + 1
-                  endif
-                  if(m(1, ia, ip, ix, iw, ie, is, ij, it) > 0d0) then
-                    ys(ic) = m(1, ia, ip, ix, iw, ie, is, ij, it)
-                    xs(ic) = a(ia)
-                    ic = ic + 1
-                  endif
-
-                enddo ! ia
-              enddo ! ix
-            enddo ! ip
-          enddo ! iw
-        enddo ! ie
-      enddo ! is
-    enddo ! ij
-
-    ! get array size and normalize ys
-    ICMAX = ic - 1
-    ys(1:ICMAX) = ys(1:ICMAX)/sum(ys(1:ICMAX))
-
-    ! sort array
-    call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
-
-    ! calculate cumulative distributions
-    xcum(1) = 0d0
-    ycum(1) = 0d0
-    do ic = 2, ICMAX+1
-      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
-      ycum(ic) = ycum(ic-1) + ys(ic-1)
-    enddo
-
-    gini_w(it) = 0d0
-    do ic = 2, ICMAX+1
-      gini_w(it) = gini_w(it) + ys(ic-1)*(xcum(ic-1)+xcum(ic))
-    enddo
-    gini_w(it) = 1d0-gini_w(it)/xcum(ICMAX+1)
-
-    percentiles_w = 0d0
-    do ic = ICMAX, 1, -1
-      if (1d0-ycum(ic) > 0.01 .and. percentiles_w(1, it) <= 0d0) then
-        percentiles_w(1, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.05 .and. percentiles_w(2, it) <= 0d0) then
-        percentiles_w(2, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.10 .and. percentiles_w(3, it) <= 0d0) then
-        percentiles_w(3, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.20 .and. percentiles_w(4, it) <= 0d0) then
-        percentiles_w(4, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.40 .and. percentiles_w(5, it) <= 0d0) then
-        percentiles_w(5, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.60 .and. percentiles_w(6, it) <= 0d0) then
-        percentiles_w(6, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-    enddo
-
-  end subroutine
-
-
-  !##############################################################################
-  ! SUBROUTINE gini_income
-  !
-  ! Calculates GINI coefficient of income
-  !##############################################################################
-  subroutine gini_income(it)
-
-    implicit none
-
-    !##### INPUT/OUTPUT VARIABLES #############################################
-    integer, intent(in) :: it
-
-    !##### OTHER VARIABLES ####################################################
-    integer :: is, ie, iw, ip, ix, ia, ij, ic, ICMAX
-    real*8, allocatable :: xs(:), ys(:), xcum(:), ycum(:)
-
-    if(allocated(xs))deallocate(xs)
-    if(allocated(ys))deallocate(ys)
-    if(allocated(xcum))deallocate(xcum)
-    if(allocated(ycum))deallocate(ycum)
-
-    allocate(xs(2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ))
-    allocate(ys(2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ))
-    allocate(xcum(2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ))
-    allocate(ycum(2*NS*NE*NW*(NP+1)*(NX+1)*(NA+1)*JJ))
-
-    ic = 1
-
-    do ij = 1, JJ
-      do is = 1, NS
-        do ie = 1, NE
-          do iw = 1, NW
-            do ip = 0, NP
-              do ix = 0, NX
-                do ia = 0, NA
-
-                  if(m(0, ia, ip, ix, iw, ie, is, ij, it) > 0d0) then
-                    ys(ic) = m(0, ia, ip, ix, iw, ie, is, ij, it)
-                    xs(ic) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(0, ia, ip, ix, iw, ie, is, ij, it)*w(it)
-                    ic = ic + 1
-                  endif
-                  if(m(1, ia, ip, ix, iw, ie, is, ij, it) > 0d0) then
-                    ys(ic) = m(1, ia, ip, ix, iw, ie, is, ij, it)
-                    xs(ic) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(1, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
-                    ic = ic + 1
-                  endif
-
-                enddo ! ia
-              enddo ! ix
-            enddo ! ip
-          enddo ! iw
-        enddo ! ie
-      enddo ! is
-    enddo ! ij
-
-    ! get array size and normalize ys
-    ICMAX = ic - 1
-    ys(1:ICMAX) = ys(1:ICMAX)/sum(ys(1:ICMAX))
-
-    ! sort array
-    call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
-
-    ! calculate cumulative distributions
-    xcum(1) = 0d0
-    ycum(1) = 0d0
-    do ic = 2, ICMAX+1
-      xcum(ic) = xcum(ic-1) + xs(ic-1)*ys(ic-1)
-      ycum(ic) = ycum(ic-1) + ys(ic-1)
-    enddo
-
-    gini_i(it) = 0d0
-    do ic = 2, ICMAX+1
-      gini_i(it) = gini_i(it) + ys(ic-1)*(xcum(ic-1)+xcum(ic))
-    enddo
-    gini_i(it) = 1d0-gini_i(it)/xcum(ICMAX+1)
-
-    percentiles_i = 0d0
-    do ic = ICMAX, 1, -1
-      if (1d0-ycum(ic) > 0.01d0 .and. percentiles_i(1, it) <= 0d0) then
-        percentiles_i(1, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.05d0 .and. percentiles_i(2, it) <= 0d0) then
-        percentiles_i(2, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.10d0 .and. percentiles_i(3, it) <= 0d0) then
-        percentiles_i(3, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.20d0 .and. percentiles_i(4, it) <= 0d0) then
-        percentiles_i(4, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.40d0 .and. percentiles_i(5, it) <= 0d0) then
-        percentiles_i(5, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-      if (1d0-ycum(ic) > 0.60d0 .and. percentiles_i(6, it) <= 0d0) then
-        percentiles_i(6, it) = (xcum(ICMAX+1)-xcum(ic-1))/xcum(ICMAX+1)
-      endif
-    enddo
-
-  end subroutine
-
 
   !##############################################################################
   ! FUNCTION gini
@@ -907,7 +706,7 @@ contains
     ys(1:ICMAX) = ys(1:ICMAX)/sum(ys(1:ICMAX))
 
     ! sort array
-    call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
+    call sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
     xcum = 0d0
@@ -970,7 +769,7 @@ contains
     ys(1:ICMAX) = ys(1:ICMAX)/sum(ys(1:ICMAX))
 
     ! sort array
-    call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
+    call sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
     xcum = 0d0
