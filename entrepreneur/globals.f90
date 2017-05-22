@@ -706,7 +706,7 @@ contains
     ys(1:ICMAX) = ys(1:ICMAX)/sum(ys(1:ICMAX))
 
     ! sort array
-    call sort(xs(1:ICMAX), ys(1:ICMAX))
+    call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
     xcum = 0d0
@@ -769,7 +769,7 @@ contains
     ys(1:ICMAX) = ys(1:ICMAX)/sum(ys(1:ICMAX))
 
     ! sort array
-    call sort(xs(1:ICMAX), ys(1:ICMAX))
+    call quick_sort(xs(1:ICMAX), ys(1:ICMAX))
 
     ! calculate cumulative distributions
     xcum = 0d0
