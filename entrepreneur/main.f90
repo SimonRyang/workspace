@@ -101,7 +101,7 @@ program main
   ! simulation parameters
   damp  = 0.5d0
   tol   = 1d-4
-  itermax = 2
+  itermax = 200
 
   ! compute gini
   gini_on = .true.
@@ -366,7 +366,7 @@ contains
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
     psi(:, JJ+1) = 0d0
-    adj = 20d0
+    adj = 21d0
     do ij = 2, JJ
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
