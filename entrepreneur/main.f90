@@ -60,7 +60,7 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  suc = 0.625d0
+  suc = 0d0 !0.625d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
@@ -369,13 +369,6 @@ contains
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
-
-    ! psi(:, :JR-1) = 1d0
-
-    call plot((/(dble(ij), ij=1,JJ)/), psi(1,:JJ))
-    call plot((/(dble(ij), ij=1,JJ)/), psi(2,:JJ))
-    call plot((/(dble(ij), ij=1,JJ)/), psi(3,:JJ))
-    call execplot
 
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
