@@ -42,7 +42,7 @@ module globals
   real*8 :: gamma, sigma, beta, l_bar, mu_b
 
   ! production parameters
-  real*8 :: alpha, delta, nu, suc
+  real*8 :: alpha, delta, nu, suc, swc
 
   ! numerical parameters
   real*8 :: a_l, a_u, a_grow
@@ -322,7 +322,7 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_e = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
+      valuefunc_e = util(c_com, l_com)*swc + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
