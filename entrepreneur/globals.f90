@@ -39,7 +39,7 @@ module globals
   integer, parameter :: NO = 1
 
   ! household parameters
-  real*8 :: gamma, sigma, beta, l_bar, mu_b
+  real*8 :: gamma, sigma, beta, l_bar
 
   ! production parameters
   real*8 :: alpha, delta, nu, suc, swc
@@ -423,7 +423,7 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r)
 
   end function
 
