@@ -372,6 +372,9 @@ contains
 
     psi(:, :JR-1) = 1d0
 
+    call plot((/(dble(ij), ij=1,JJ)/), psi(1,:))
+    call execplot
+
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
     do ij = 2, JJ
