@@ -54,7 +54,6 @@ program main
   beta   =  0.99d0
   ! convert variables into per period values
   beta = beta**5d0
-  beta   =  0.98d0
 
   ! production parameters
   alpha = 0.36d0
