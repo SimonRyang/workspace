@@ -366,13 +366,18 @@ contains
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
     psi(:, JJ+1) = 0d0
-    adj = 24d0
+    adj = 18d0
     do ij = 2, JJ
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
     psi(:, :JR-1) = 1d0
+
+    call plot((/dble(ij), ij=1,JJ/), psi(1,:))
+    call plot((/dble(ij), ij=1,JJ/), psi(2,:))
+    call plot((/dble(ij), ij=1,JJ/), psi(3,:))
+    call execplot
 
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
