@@ -67,7 +67,7 @@ program main
   delta = 1d0 - (1d0-delta)**5d0
 
   ! demographic parameters
-  n_p   = 0.009d0
+  n_p   = 0.0085d0
   ! convert variables into per period values
   n_p = (1d0+n_p)**5-1d0
 
@@ -180,8 +180,6 @@ contains
 
       ! check the grid
       call check_grid(iamax, ixmax, 0)
-
-      write(*,*)bqs(:, 0)
 
       write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
@@ -423,7 +421,7 @@ contains
     call discretize_AR(0.9400d0**5d0, 0.230d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.9410d0**5d0, 0.450d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.9410d0**5d0, 0.400d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
     ! initial guesses for macro variables
