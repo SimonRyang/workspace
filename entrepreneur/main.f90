@@ -370,7 +370,7 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
-    psi(:, :JR-1) = 1d0
+    ! psi(:, :JR-1) = 1d0
 
     call plot((/(dble(ij), ij=1,JJ)/), psi(1,:JJ))
     call plot((/(dble(ij), ij=1,JJ)/), psi(2,:JJ))
