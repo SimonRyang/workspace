@@ -374,9 +374,9 @@ contains
 
     psi(:, :JR-1) = 1d0
 
-    call plot((/dble(ij), ij=1,JJ/), psi(1,:JJ))
-    call plot((/dble(ij), ij=1,JJ/), psi(2,:JJ))
-    call plot((/dble(ij), ij=1,JJ/), psi(3,:JJ))
+    call plot((/(dble(ij), ij=1,JJ)/), psi(1,:JJ))
+    call plot((/(dble(ij), ij=1,JJ)/), psi(2,:JJ))
+    call plot((/(dble(ij), ij=1,JJ)/), psi(3,:JJ))
     call execplot
 
     ! set up population structure
