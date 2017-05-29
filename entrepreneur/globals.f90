@@ -218,7 +218,7 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w ! + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
 
   end function
 
@@ -340,7 +340,7 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e + ! (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
 
   end function
 
