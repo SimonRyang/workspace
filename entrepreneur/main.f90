@@ -67,7 +67,7 @@ program main
   delta = 1d0 - (1d0-delta)**5d0
 
   ! demographic parameters
-  n_p   = 0.001d0
+  n_p   = 0.008d0
   ! convert variables into per period values
   n_p = (1d0+n_p)**5-1d0
 
@@ -366,7 +366,7 @@ contains
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
     psi(:, JJ+1) = 0d0
-    adj = 18d0
+    adj = 20d0
     do ij = 2, JJ
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
