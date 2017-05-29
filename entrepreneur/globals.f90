@@ -217,8 +217,7 @@ contains
 
     endif
 
-    ! add today's part and discount
-    valuefunc_w = -(valuefunc_w) ! + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    valuefunc_w = -valuefunc_w
 
   end function
 
@@ -339,8 +338,7 @@ contains
 
     endif
 
-    ! add today's part and discount
-    valuefunc_e = -(valuefunc_e) ! + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    valuefunc_e = -valuefunc_e
 
   end function
 
@@ -446,7 +444,7 @@ contains
     real*8 :: profent
 
     ! compute profit
-    profent = theta(ie, is)*(k**nu*(eff(ij, is)*l_bar)**(1d0-nu)) - delta*k - r(it)*max(k-a(ia), 0d0)
+    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r(it)*max(k-a(ia), 0d0)
 
   end function
 
