@@ -370,6 +370,8 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
+    psi(:, :JR-1) = 1d0
+
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
     do ij = 2, JJ
