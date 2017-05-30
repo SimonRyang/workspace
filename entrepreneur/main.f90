@@ -114,7 +114,7 @@ program main
 
   ! set reform parameters
   !ann = .true.
-  !pen_debt = .true.
+  pen_debt = .true.
   !smopec = .true.
   phi(1:TT) = 1d0
   !lambda(1:TT) = 1d0
