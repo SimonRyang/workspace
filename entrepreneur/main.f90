@@ -412,7 +412,7 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.9400d0**5d0, 0.220d0, sigma5(0.9400d0, 0.0370d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.9400d0**5d0, 0.210d0, sigma5(0.9400d0, 0.0370d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
     call discretize_AR(0.9400d0**5d0, 0.230d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
