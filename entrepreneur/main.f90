@@ -60,8 +60,8 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  suc = (1d0 - 0.42d0)**(1d0-gamma) !0.625d0
-  swc = (1d0 - 0.43d0)**(1d0-gamma) !1d0 + (suc - 1d0)/2d0
+  suc = (1d0 - 0.42d0)**(1d0-gamma)
+  swc = (1d0 - 0.43d0)**(1d0-gamma)
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
@@ -149,7 +149,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: iter, iamax(JJ), ixmax(JJ), ia
+    integer :: iter, iamax(JJ), ixmax(JJ), ij
 
     ! initialize remaining variables
     call initialize()
@@ -182,6 +182,13 @@ contains
 
       write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
+
+        do ij = 1, JJ
+          write(23,'(i3, 4f8.2)') ij, (/sum(m(1, :, :, :, :, :, 1, ij, it))/sum(m(:, :, :, :, :, :, 1, ij, it)), &
+                                        sum(m(1, :, :, :, :, :, 2, ij, it))/sum(m(:, :, :, :, :, :, 2, ij, it)), &
+                                        sum(m(1, :, :, :, :, :, 3, ij, it))/sum(m(:, :, :, :, :, :, 3, ij, it)), &
+                                        sum(m(1, :, :, :, :, :, :, ij, it))/sum(m(:, :, :, :, :, :, :, ij, it))/)*100d0
+        enddo
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
         call tock(calc)
