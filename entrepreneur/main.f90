@@ -60,8 +60,8 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  suc = (1d0 - 0.41d0)**(1d0-gamma)
-  swc = (1d0 - 0.41d0)**(1d0-gamma)
+  suc = (1d0 - 0.50d0)**(1d0-gamma)
+  swc = (1d0 - 0.50d0)**(1d0-gamma)
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
@@ -430,7 +430,7 @@ contains
     call discretize_AR(0.9400d0**5d0, -0.020d0, sigma5(0.9400d0, 0.0370d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.9400d0**5d0, 0.000d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.9400d0**5d0, 0.050d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
     call discretize_AR(0.9410d0**5d0, 0.210d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
