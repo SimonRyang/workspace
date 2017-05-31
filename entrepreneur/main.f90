@@ -99,14 +99,14 @@ program main
 
   ! simulation parameters
   damp  = 0.5d0
-  tol   = 1d-4
+  tol   = 1d-3
   itermax = 200
 
   ! compute gini
   gini_on = .true.
 
   ! set switches
-  ann = .true.
+  !ann = .true.
   !ent = .false.
 
   ! calculate initial equilibrium

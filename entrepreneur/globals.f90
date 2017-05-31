@@ -21,10 +21,10 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of transitory shock process values (worker)
-  integer, parameter :: NW = 7
+  integer, parameter :: NW = 5
 
   ! number of transitory shock process values (entrepreneur)
-  integer, parameter :: NE = 7
+  integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
   integer, parameter :: NA = 32
@@ -33,13 +33,13 @@ module globals
   integer, parameter :: NX = 32
 
   ! number of points on the pension claim grid (-1)
-  integer, parameter :: NP = 6
+  integer, parameter :: NP = 5
 
   ! number of occupations (-1)
   integer, parameter :: NO = 1
 
   ! household parameters
-  real*8 :: gamma, sigma, beta, l_bar
+  real*8 :: gamma, sigma, mu_b, beta, l_bar
 
   ! production parameters
   real*8 :: alpha, delta, nu, suc, swc
@@ -423,7 +423,7 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r)
+    valuefunc_r = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_r + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
 
   end function
 
