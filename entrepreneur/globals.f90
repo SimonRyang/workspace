@@ -183,10 +183,10 @@ contains
     pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_bar(it_com))
 
     ! calculate income tax
-    inctax_com = tarif(max(wage*l_com - 0.20d0*wage*l_com - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+    inctax_com = tarif(max(wage*l_com - 0.25d0*wage*l_com - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calculate capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-2d0*0.0267d0*inc_bar(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.25d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_bar(0), 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
@@ -296,10 +296,10 @@ contains
     endif
 
     ! calculate income tax
-    inctax_com = tarif(max(profit - 0.20d0*profit - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+    inctax_com = tarif(max(profit - 0.25d0*profit - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calcualte capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_bar(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 0.25d0*r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_bar(0), 0d0)
 
     ! calculate consumption
     c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
@@ -405,7 +405,7 @@ contains
     inctax_com = tarif(pen(ip_com, ij_com, it_com))
 
     ! calculate capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-2d0*0.0267d0*inc_bar(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.25d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_bar(0), 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r(it_com))*a(ia_com) + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind &
