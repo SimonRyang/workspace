@@ -51,7 +51,7 @@ program main
   gamma = 1d0/gamma
   sigma =  0.320d0
   mu_b  = -0.250d0
-  beta   =  0.98d0
+  beta   =  0.998d0
   ! convert variables into per period values
   beta = beta**5d0
   !beta = 0.96d0
@@ -112,7 +112,7 @@ program main
 
   ! calculate initial equilibrium
   call get_SteadyState()
-
+stop
   ! set reform parameters
   !ann = .true.
   pen_debt = .true.
