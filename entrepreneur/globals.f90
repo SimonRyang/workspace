@@ -339,6 +339,9 @@ contains
     endif
 
     valuefunc_e = -valuefunc_e
+    if (ij_com >= JR) then
+      valuefunc_e = -(valuefunc_e + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    endif
 
   end function
 
