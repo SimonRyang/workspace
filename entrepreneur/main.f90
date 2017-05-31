@@ -50,8 +50,8 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma =  0.320d0
-  mu_b  = -0.250d0
-  beta   =  0.988d0
+  mu_b  = -0.300d0
+  beta   =  0.985d0
   ! convert variables into per period values
   beta = beta**5d0
   !beta = 0.99d0
