@@ -51,7 +51,7 @@ program main
   gamma = 1d0/gamma
   sigma =  0.320d0
   mu_b  = -0.200d0
-  beta   =  0.988d0
+  beta   =  0.985d0
   ! convert variables into per period values
   beta = beta**5d0
   !beta = 0.96d0
@@ -417,7 +417,7 @@ contains
     call discretize_AR(0.9400d0**5d0, 0.350d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.9410d0**5d0, 0.500d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.9410d0**5d0, 0.510d0, sigma5(0.9410d0, 0.0395d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
     ! initial guesses for macro variables
