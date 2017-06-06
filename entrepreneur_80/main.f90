@@ -80,7 +80,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 128d0
+  a_u    = 256d0
   a_grow = 0.5d0
 
   ! size of the annuitiy grid
@@ -361,8 +361,6 @@ contains
       psi(1, ij) = 1d0 - (1d0 - 0.999d0**(dble(ij-1)*20d0))*(1d0-psi(2, ij)) !psi(2, ij) - exp(0.4d0*(dble(ij-1)/5d0-adj))
       psi(3, ij) = 1d0 - (1d0 + 0.999d0**(dble(ij-1)*20d0))*(1d0-psi(2, ij)) !psi(2, ij) + exp(0.4d0*(dble(ij-1)/5d0-adj))
     enddo
-
-    write(*,*)maxval(psi)
 
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
