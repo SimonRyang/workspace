@@ -1665,7 +1665,7 @@ contains
     ! Output
     write(21,'(a, i3/)')'EQUILIBRIUM YEAR ', it
     write(21,'(a)')'CAPITAL       KK      KC      KE      AA      AX       r    p.a.'
-    write(21,'(8x,7f8.2)')KK(it), KC(it), KE(it), AA(it), AX(it), r(it), r(it))*100d0
+    write(21,'(8x,7f8.2)')KK(it), KC(it), KE(it), AA(it), AX(it), r(it), r(it)*100d0
     write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*100d0
 
     write(21,'(a)')'LABOR         LC       w     inc   l_bar'
