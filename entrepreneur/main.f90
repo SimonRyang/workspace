@@ -1255,7 +1255,7 @@ contains
                              *m(io, ia, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))
                     CC(it) = CC(it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                    SC(it) = SC(it) + SC(io, ia, ix, ip, iw, ie, is, ij, it) &
+                    SC(it) = SC(it) + cx(io, ia, ix, ip, iw, ie, is, ij, it) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 0 .and. ij < JR) then
                       LC(it) = LC(it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
