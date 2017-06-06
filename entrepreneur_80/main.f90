@@ -80,7 +80,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 64d0
+  a_u    = 128d0
   a_grow = 0.5d0
 
   ! size of the annuitiy grid
@@ -424,9 +424,9 @@ contains
     KC(0) = 4.000d0
     LC(0) = 5.142d0
 
-    call plot((/(dble(ij), ij=1, JJ+1)/), psi(1, :))
-    call plot((/(dble(ij), ij=1, JJ+1)/), psi(2, :))
-    call plot((/(dble(ij), ij=1, JJ+1)/), psi(3, :))
+    call plot((/(dble(ij), ij=1, JJ)/), psi(1, :JJ))
+    call plot((/(dble(ij), ij=1, JJ)/), psi(2, :JJ))
+    call plot((/(dble(ij), ij=1, JJ)/), psi(3, :JJ))
     call execplot
 
     ! open files
