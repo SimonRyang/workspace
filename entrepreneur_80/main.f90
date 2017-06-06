@@ -102,7 +102,7 @@ program main
 
   ! set switches
   !ann = .true.
-  !ent = .false.
+  ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -423,6 +423,9 @@ contains
     BB(0) = 0.971d0
     KC(0) = 4.000d0
     LC(0) = 5.142d0
+
+    call plot((/(dble(ij), ij=1, JJ+1)/), psi)
+    call execplot
 
     ! open files
     open(21, file='output.out')
