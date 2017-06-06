@@ -173,8 +173,8 @@ contains
       ! check the grid
       call check_grid(iamax, ixmax, 0)
 
-      write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
-        ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
+      write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/KK(0), CC(0), II(0)/)/YY(0)*100d0, &
+        r(0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
         call tock(calc)
@@ -256,7 +256,7 @@ contains
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
       if(.not. lsra_on)then
-        write(*,'(i4,6f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
+        write(*,'(i4,6f8.2,f14.8)')iter, (/KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
           ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), sum(pop_e(:, TT))/(sum(pop_w(:, TT))+sum(pop_e(:, TT)))*100d0, DIFF(itmax)/YY(itmax)*100d0
         check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
       else
@@ -1665,8 +1665,8 @@ contains
     ! Output
     write(21,'(a, i3/)')'EQUILIBRIUM YEAR ', it
     write(21,'(a)')'CAPITAL       KK      KC      KE      AA      AX       r    p.a.'
-    write(21,'(8x,7f8.2)')KK(it), KC(it), KE(it), AA(it), AX(it), r(it), ((1d0+r(it))**(1d0/5d0)-1d0)*100d0
-    write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*500d0
+    write(21,'(8x,7f8.2)')KK(it), KC(it), KE(it), AA(it), AX(it), r(it), r(it))*100d0
+    write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*100d0
 
     write(21,'(a)')'LABOR         LC       w     inc   l_bar'
     write(21,'(8x,4f8.2/)')LC(it), w(it), inc_bar(it), HH(it)/sum(pop_w(:, it))
@@ -1678,7 +1678,7 @@ contains
     write(21,'(a)')'GOV         TAUC    TAUR    TAUW    TAUY   TOTAL      GG      BB      BF'
     write(21,'(8x,8f8.2)')TAc(it), TAr(it), TAw(it), TAy(it), TAc(it)+TAr(it)+TAw(it)+TAy(it), GG(it), BB(it), BF(it)
     write(21,'(a,8f8.2)')'(in %)  ',(/TAc(it), TAr(it), TAw(it), TAy(it)/)/(TAc(it)+TAr(it)+TAw(it)+TAy(it))*100d0, &
-               (/TAc(it)+TAr(it)+TAw(it)+TAy(it), GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
+               (/TAc(it)+TAr(it)+TAw(it)+TAy(it), GG(it), BB(it), BF(it)/)/YY(it)*100d0
     write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur(it), TAw(it)/(w(it)*LC(it)+ PE(it) + PRE(it)), tauy(it)/)*100d0
 
     write(21,'(a)')'PENS        TAUP     PEN      PP      PC      BQ'
