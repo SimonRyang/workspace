@@ -424,7 +424,9 @@ contains
     KC(0) = 4.000d0
     LC(0) = 5.142d0
 
-    call plot((/(dble(ij), ij=1, JJ+1)/), psi)
+    call plot((/(dble(ij), ij=1, JJ+1)/), psi(1, :))
+    call plot((/(dble(ij), ij=1, JJ+1)/), psi(2, :))
+    call plot((/(dble(ij), ij=1, JJ+1)/), psi(3, :))
     call execplot
 
     ! open files
