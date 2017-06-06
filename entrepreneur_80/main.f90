@@ -1580,10 +1580,10 @@ contains
     life_exp = 0d0
     do is = 1, NS
       punb(is, 1) = psi(is, 1)
-      life_exp(is) = life_exp(is) + 22d0*punb(is, 1)*(1d0-psi(is, 2))
+      life_exp(is) = life_exp(is) + 20d0*punb(is, 1)*(1d0-psi(is, 2))
       do ij = 2, JJ
         punb(is, ij) = punb(is, ij-1)*psi(is, ij)
-        life_exp(is) = life_exp(is) + (22d0 + 5d0*dble(ij-1))*punb(is, ij)*(1d0-psi(is, ij+1))
+        life_exp(is) = life_exp(is) + (20d0 + dble(ij-1))*punb(is, ij)*(1d0-psi(is, ij+1))
       enddo ! ij
     enddo ! is
 
