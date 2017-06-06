@@ -214,7 +214,7 @@ contains
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
-          cx_com = swc*c_com/pinv(it_com)
+          cx_com = suc*c_com/pinv(it_com)
           c_com = c_help
           oplus_com = 1d0
         endif
