@@ -325,7 +325,7 @@ contains
     valuefunc_e = 0d0
     valuefunc_help = 0d0
     oplus_com = 0d0
-    cx_com = swc*c_com/pinv(it_com)
+    cx_com = swc/(1d0-swc)*c_com/pinv(it_com)
 
     if (ij_com < JJ) then
 
