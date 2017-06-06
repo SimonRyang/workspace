@@ -358,8 +358,8 @@ contains
     psi(:, JJ+1) = 0d0
     adj = 23.1d0
     do ij = 2, JJ
-      psi(1, ij) = psi(2, ij) - exp(0.4d0*(dble(ij-1)/5d0-adj))
-      psi(3, ij) = psi(2, ij) + exp(0.4d0*(dble(ij-1)/5d0-adj))
+      psi(1, ij) = 1d0 - (1d0 - 0.999d0**(dble(ij-1)*20d0))*(1d0-psi(2, ij)) !psi(2, ij) - exp(0.4d0*(dble(ij-1)/5d0-adj))
+      psi(3, ij) = 1d0 + (1d0 - 0.999d0**(dble(ij-1)*20d0))*(1d0-psi(2, ij)) !psi(2, ij) + exp(0.4d0*(dble(ij-1)/5d0-adj))
     enddo
 
     write(*,*)maxval(psi)
