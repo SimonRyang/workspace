@@ -63,8 +63,8 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  suc = 0.10d0 !(1d0 - 0.50d0)**(1d0-gamma)
-  swc = 0.10d0 !(1d0 - 0.50d0)**(1d0-gamma)
+  suc = 0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
+  swc = 0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
