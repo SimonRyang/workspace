@@ -95,7 +95,7 @@ program main
   ! simulation parameters
   damp  = 0.5d0
   tol   = 1d-3
-  itermax = 200
+  itermax = 2
 
   ! compute gini
   gini_on = .true.
@@ -361,6 +361,8 @@ contains
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)/5d0-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)/5d0-adj))
     enddo
+
+    write(*,*)maxval(psi)
 
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
