@@ -42,7 +42,7 @@ module globals
   real*8 :: gamma, sigma, mu_b, beta, l_bar
 
   ! production parameters
-  real*8 :: alpha, delta, nu, suc, swc
+  real*8 :: alpha, delta, nu, suc(NS), swc
 
   ! numerical parameters
   real*8 :: a_l, a_u, a_grow
@@ -193,7 +193,7 @@ contains
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
     c_help = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
-         - pencon_com - inctax_com - captax_com - mx_com - a_plus)*(1d0-suc)*pinv(it_com)
+         - pencon_com - inctax_com - captax_com - mx_com - a_plus)*(1d0-suc(is_com))*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
@@ -214,7 +214,7 @@ contains
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
-          cx_com = suc*c_com/pinv(it_com)
+          cx_com = suc(is_com)*c_com/pinv(it_com)
           c_com = c_help
           oplus_com = 1d0
         endif
