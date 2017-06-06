@@ -65,7 +65,7 @@ program main
   swc = 0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
 
   ! demographic parameters
-  n_p   = 0.0037d0
+  n_p   = 0.0035d0
 
   ! tax and transfers
   taur   = 0.25d0
@@ -102,7 +102,7 @@ program main
 
   ! set switches
   !ann = .true.
-  ent = .false.
+  !ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
