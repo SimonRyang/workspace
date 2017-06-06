@@ -65,7 +65,7 @@ program main
   swc = 0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
 
   ! demographic parameters
-  n_p   = 0.005d0
+  n_p   = 0.004d0
 
   ! tax and transfers
   taur   = 0.25d0
@@ -425,11 +425,6 @@ contains
     BB(0) = 0.971d0
     KC(0) = 4.000d0
     LC(0) = 5.142d0
-
-    call plot((/(dble(ij), ij=1, JJ)/), psi(1, :JJ))
-    call plot((/(dble(ij), ij=1, JJ)/), psi(2, :JJ))
-    call plot((/(dble(ij), ij=1, JJ)/), psi(3, :JJ))
-    call execplot
 
     ! open files
     open(21, file='output.out')
