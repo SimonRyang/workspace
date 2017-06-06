@@ -65,7 +65,7 @@ program main
   swc = 0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
 
   ! demographic parameters
-  n_p   = 0.007d0
+  n_p   = 0.005d0
 
   ! tax and transfers
   taur   = 0.25d0
