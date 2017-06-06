@@ -58,7 +58,7 @@ module globals
   real*8:: gy, by
   real*8 :: r(0:TT), w(0:TT), inc_bar(0:TT), psix(NS, JJ, 0:TT), pinv(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), AA(0:TT), AX(0:TT), XB(0:TT), LC(0:TT), HH(0:TT)
-  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
+  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), CX(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
   real*8 :: BB(0:TT), BF(0:TT), BQ(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAy(0:TT)
 
@@ -98,6 +98,7 @@ module globals
   real*8, allocatable :: l(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: k(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: mx(:, :, :, :, :, :, :, :, :)
+  real*8, allocatable :: cx(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: oplus(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: pencon(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: inctax(:, :, :, :, :, :, :, :, :)
@@ -109,7 +110,7 @@ module globals
 
   ! numerical variables
   integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com
-  real*8 :: c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
+  real*8 :: c_com, l_com, k_com, mx_com, xplus_com, cx_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
 
   ! statistical variables
   logical :: gini_on = .false.
@@ -123,7 +124,7 @@ module globals
   logical :: pen_debt = .false. ! .true. = pension system can run into debts
 
   !$omp threadprivate(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
-  !$omp threadprivate(c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
+  !$omp threadprivate(c_com, l_com, k_com, mx_com, cx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
 
 contains
 
@@ -198,6 +199,7 @@ contains
     valuefunc_w = 0d0
     valuefunc_help = 0d0
     oplus_com = 0d0
+    cx_com = 0d0
 
     if (ij_com < JJ) then
 
@@ -214,6 +216,7 @@ contains
           valuefunc_w = valuefunc_help
           c_com = c_help
           oplus_com = 1d0
+          cx_com = suc
         endif
 
       endif
@@ -322,6 +325,7 @@ contains
     valuefunc_e = 0d0
     valuefunc_help = 0d0
     oplus_com = 0d0
+    cx_com = swc
 
     if (ij_com < JJ) then
 
@@ -338,6 +342,7 @@ contains
           valuefunc_e = valuefunc_help
           c_com = c_help
           oplus_com = 1d0
+          cx_com = 0d0
         endif
 
       endif
