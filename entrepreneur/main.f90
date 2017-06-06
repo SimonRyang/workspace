@@ -1208,7 +1208,7 @@ contains
     ! calculate aggregates
     AA(it)  = 0d0
     CC(it)  = 0d0
-    CX(it)  = 0d0
+    SC(it)  = 0d0
     LC(it)  = 0d0
     HH(it)  = 0d0
     KE(it)  = 0d0
@@ -1255,7 +1255,7 @@ contains
                              *m(io, ia, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))
                     CC(it) = CC(it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                    CX(it) = CX(it) + cx(io, ia, ix, ip, iw, ie, is, ij, it) &
+                    SC(it) = SC(it) + SC(io, ia, ix, ip, iw, ie, is, ij, it) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 0 .and. ij < JR) then
                       LC(it) = LC(it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
@@ -1398,7 +1398,7 @@ contains
     endif
 
     ! get difference on goods market
-    DIFF = YY(it)-CC(it)-II(it)-GG(it)-NEX(it)-CX(it)
+    DIFF = YY(it)-CC(it)-II(it)-GG(it)-NEX(it)-SC(it)
 
   end subroutine
 
