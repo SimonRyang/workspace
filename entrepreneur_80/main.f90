@@ -359,7 +359,7 @@ contains
     adj = 21d0
     do ij = 2, JJ
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)/5d0-adj))
-      psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)/5d0)-adj))
+      psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)/5d0-adj))
     enddo
 
     ! set up population structure
