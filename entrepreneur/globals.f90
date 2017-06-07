@@ -56,7 +56,7 @@ module globals
 
   ! macroeconomic variables
   real*8:: gy, by
-  real*8 :: r(0:TT), w(0:TT), inc_bar(0:TT), psix(NS, JJ, 0:TT), pinv(0:TT)
+  real*8 :: r(0:TT), w(0:TT), inc_tax(0:TT), inc_pen(0:TT), psix(NS, JJ, 0:TT), pinv(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), AA(0:TT), AX(0:TT), XB(0:TT), LC(0:TT), HH(0:TT)
   real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), SC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
   real*8 :: BB(0:TT), BF(0:TT), BQ(0:TT)
@@ -175,19 +175,19 @@ contains
     ! calculate the wage rate and next periods pension claims
     wage = w(it_com)*eff(ij_com, is_com)*eta(iw_com, is_com)
     pplus_com = (p(ip_com)*dble(ij_com-1) + mu(it_com)*(lambda(it_com) &
-           + (1d0-lambda(it_com))*min(wage*l_com/inc_bar(it_com), sscc(it_com))))/dble(ij_com)
+           + (1d0-lambda(it_com))*min(wage*l_com/inc_pen(it_com), sscc(it_com))))/dble(ij_com)
 
     ! worker do not invest
     k_com = 0d0
 
     ! calculate contribution to pension system
-    pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_bar(it_com))
+    pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_pen(it_com))
 
     ! calculate income tax
-    inctax_com = tarif(max(wage*l_com - 0.20d0*wage*l_com - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+    inctax_com = tarif(max(wage*l_com - 0.20d0*wage*l_com - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calculate capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.20d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_bar(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.20d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_tax(0), 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
@@ -296,16 +296,16 @@ contains
 
     ! calculate contribution to pension system
     if (ij_com < JR) then
-        pencon_com = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_bar(it_com))
+        pencon_com = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_pen(it_com))
     else
         pencon_com = 0d0
     endif
 
     ! calculate income tax
-    inctax_com = tarif(max(profit - 0.20d0*profit - 0.04d0*inc_bar(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+    inctax_com = tarif(max(profit - 0.20d0*profit - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calcualte capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 0.20d0*r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_bar(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 0.20d0*r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
 
     ! calculate consumption
     c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
@@ -316,7 +316,7 @@ contains
     ! calculate next periods pension claims
     if (ij_com < JR) then
       pplus_com = (p(ip_com)*dble(ij_com-1) + mu(it_com)*phi(it_com)*(lambda(it_com) &
-             + (1d0-lambda(it_com))*min(profit/inc_bar(it_com), sscc(it_com))))/dble(ij_com)
+             + (1d0-lambda(it_com))*min(profit/inc_pen(it_com), sscc(it_com))))/dble(ij_com)
     else
       pplus_com = p(ip_com)
     endif
@@ -419,7 +419,7 @@ contains
     inctax_com = tarif(pen(ip_com, ij_com, it_com))
 
     ! calculate capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.20d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_bar(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.20d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_tax(0), 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r(it_com))*a(ia_com) + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind &

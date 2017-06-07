@@ -425,7 +425,8 @@ contains
     ! initial guesses for macro variables
     taup(0) = 0.192d0
     tauc(0) = 0.176d0
-    inc_bar(0) = 0.538d0
+    inc_tax(0) = 0.538d0
+    inc_pen(0) = 0.538d0
     bqs(:, 0) = (/0.019d0, 0.124d0, 0.322d0/)
     BQ(0) = 0.465d0
     BB(0) = 0.971d0
@@ -459,7 +460,8 @@ contains
 
       r(it) = r(0)
       w(it) = w(0)
-      inc_bar(it) = inc_bar(0)
+      inc_pen(it) = inc_pen(0)
+      inc_tax(it) = inc_tax(0)
       psix(:, JJ, it) = psix(:, JJ, 0)
       pinv(it) = pinv(0)
 
@@ -560,11 +562,11 @@ contains
     ! calculate individual pensions
     pen(:, :, it) = 0d0
     do ij = JR, JJ
-      pen(:, ij, it) = p(:)*kappa(it)*inc_bar(it)
+      pen(:, ij, it) = p(:)*kappa(it)*inc_pen(it)
     enddo
 
     ! determine the income tax system
-    dueink = inc_bar(0)
+    dueink = inc_tax(0)
 
     r1 = 0.286d0*dueink*2d0
     r2 = 0.456d0*dueink*2d0
@@ -1262,13 +1264,13 @@ contains
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       HH(it) = HH(it) + l(io, ia, ix, ip, iw, ie, is, ij, it) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      PC(it) = PC(it) + min(w(it)*eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it), sscc(it)*inc_bar(it)) &
+                      PC(it) = PC(it) + min(w(it)*eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it), sscc(it)*inc_pen(it)) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
                       KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it), sscc(it)*inc_bar(it)) &
+                      if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it), sscc(it)*inc_pen(it)) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       PE(it) = PE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1331,7 +1333,8 @@ contains
 
     TAy(it) = TAy(it) + tauy(it)*(YC(it) - delta*KC(it) - w(it)*LC(it))
 
-    inc_bar(it) = (w(it)*LC(it) + PE(it))/(sum(pop_w(:, it)) + sum(pop_e(:, it)))
+    inc_tax(it) = (w(it)*LC(it) + PE(it) + PRE(it))/(sum(pop_w(:, it)) + sum(pop_e(:, it)) + sum(pop_re(:, it)))
+    inc_pen(it) = (w(it)*LC(it) + phi(it)*PE(it))/(sum(pop_w(:, it)) + phi(it)*sum(pop_e(:, it))))
 
     !write(*,*)'Done!'
     !call tock(calc)
@@ -1672,7 +1675,7 @@ contains
     write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*500d0
 
     write(21,'(a)')'LABOR         LC       w     inc   l_bar'
-    write(21,'(8x,4f8.2/)')LC(it), w(it), inc_bar(it), HH(it)/sum(pop_w(:, it))
+    write(21,'(8x,4f8.2/)')LC(it), w(it), inc_pen(it), HH(it)/sum(pop_w(:, it))
 
     write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX    DIFF'
     write(21,'(8x,6f8.2,f8.3)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), diff(it)
@@ -1912,7 +1915,7 @@ contains
     do it = 1, TT
       write(22,'(i3,23f8.2,f10.5)')it,(/AA(it)/AA(0)-1d0, KK(it)/KK(0)-1d0, KC(it)/KC(0)-1d0, KE(it)/KE(0)-1d0, LC(it)/LC(0)-1d0, &
         HH(it)/sum(pop_w(:, it))/(HH(0)/sum(pop_w(:, 0)))-1d0, &
-        (1d0+r(it))**0.2d0-(1d0+r(0))**0.2d0, w(it)/w(0)-1d0, inc_bar(it)/inc_bar(0)-1d0, CC(it)/CC(0)-1d0, &
+        (1d0+r(it))**0.2d0-(1d0+r(0))**0.2d0, w(it)/w(0)-1d0, inc_pen(it)/inc_pen(0)-1d0, CC(it)/CC(0)-1d0, &
         II(it)/II(0)-1d0, YY(it)/YY(0)-1d0, YC(it)/YC(0)-1d0, YE(it)/YE(0)-1d0, tauc(it)-tauc(0), taup(it)-taup(0), PP(it)/YY(it)-PP(0)/YY(0), &
         BQ(it)/BQ(0)-1d0, sum(pop_e(:, it))/sum(pop(:JR-1, it))-sum(pop_e(:, 0))/sum(pop(:JR-1, 0)), &
         pop_e(1, it)/sum(pop(:JR-1, it))-pop_e(1, 0)/sum(pop(:JR-1, 0)), &
