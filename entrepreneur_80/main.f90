@@ -85,7 +85,7 @@ program main
 
   ! size of the annuitiy grid
   x_l    = 0d0
-  x_u    = 128d0
+  x_u    = 256d0
   x_grow = 0.5d0
 
   ! size of the pension claim grid
