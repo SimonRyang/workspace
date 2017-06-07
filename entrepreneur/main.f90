@@ -1334,7 +1334,7 @@ contains
     TAy(it) = TAy(it) + tauy(it)*(YC(it) - delta*KC(it) - w(it)*LC(it))
 
     inc_tax(it) = (w(it)*LC(it) + PE(it) + PRE(it))/(sum(pop_w(:, it)) + sum(pop_e(:, it)) + sum(pop_re(:, it)))
-    inc_pen(it) = (w(it)*LC(it) + phi(it)*PE(it))/(sum(pop_w(:, it)) + phi(it)*sum(pop_e(:, it))))
+    inc_pen(it) = (w(it)*LC(it) + phi(it)*PE(it))/(sum(pop_w(:, it)) + phi(it)*sum(pop_e(:, it)))
 
     !write(*,*)'Done!'
     !call tock(calc)
