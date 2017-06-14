@@ -52,7 +52,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma =  0.320d0
-  mu_b  = -0.150d0
+  mu_b  = -0.250d0
   beta   =  0.99d0
   ! convert variables into per period values
 
@@ -405,24 +405,24 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.9400d0, -0.500d0, 0.0370d0, theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.9400d0, -0.550d0, 0.0370d0, theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.9400d0, -0.400d0, 0.0380d0, theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.9400d0, -0.500d0, 0.0380d0, theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
-    call discretize_AR(0.9410d0, -0.150d0, 0.0395d0, theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
+    call discretize_AR(0.9410d0, -0.250d0, 0.0395d0, theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
     ! initial guesses for macro variables
     taup(0) = 0.192d0
     tauc(0) = 0.176d0
-    inc_bar(0) = 0.538d0
+    inc_bar(0) = 1.438d0
     bqs(:, 0) = (/0.019d0, 0.124d0, 0.322d0/)
-    BQ(0) = 0.465d0
-    BB(0) = 0.971d0
-    KC(0) = 4.000d0
-    LC(0) = 5.142d0
+    BQ(0) = 3.465d0
+    BB(0) = 50.971d0
+    KC(0) = 237.000d0
+    LC(0) = 24.142d0
 
     ! open files
     open(21, file='output.out')
