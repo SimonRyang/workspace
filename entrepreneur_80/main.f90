@@ -383,7 +383,8 @@ contains
     Gama(7) = 1.8d0*pop(7, 0)
     Gama(8) = 1.8d0*pop(8, 0)
     Gama(9) = 1.6d0*pop(9, 0)
-    Gama(1:JR-1) = 1d0
+    Gama(1:19) = 0d0
+    Gama(20:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
     Gama = Gama/sum(Gama)
 
