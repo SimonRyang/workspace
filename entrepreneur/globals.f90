@@ -12,7 +12,7 @@ module globals
   integer, parameter :: JR = 10
 
   ! number of years a household can be an entrepreneur (+1)
-  integer, parameter :: JE = 10
+  integer, parameter :: JE = 13
 
   ! number of transition periods
   integer, parameter :: TT = 48
@@ -28,7 +28,7 @@ module globals
 
   ! number of points on the asset grid (-1)
   integer, parameter :: NA = 24
-  
+
   ! number of points on the annuitized asset grid (-1)
   integer, parameter :: NX = 2
 

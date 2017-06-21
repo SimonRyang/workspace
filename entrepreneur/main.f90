@@ -63,8 +63,8 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  suc = 0.20d0 !(/0.20d0, 0.30d0, 0.40d0/) !(1d0 - 0.50d0)**(1d0-gamma)
-  swc = 0.20d0 !(1d0 - 0.50d0)**(1d0-gamma)
+  suc = 0.10d0 !(/0.20d0, 0.30d0, 0.40d0/) !(1d0 - 0.50d0)**(1d0-gamma)
+  swc = 0.10d0 !(1d0 - 0.50d0)**(1d0-gamma)
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
@@ -413,7 +413,7 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability
-    call discretize_AR(0.9400d0**5d0, -0.500d0, sigma5(0.9400d0, 0.0370d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
+    call discretize_AR(0.9400d0**5d0, -0.450d0, sigma5(0.9400d0, 0.0370d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
     call discretize_AR(0.9400d0**5d0, -0.400d0, sigma5(0.9400d0, 0.0380d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
