@@ -52,7 +52,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma =  0.320d0
-  mu_b  = -0.150d0
+  mu_b  = -0.180d0
   beta   =  0.99d0
   ! convert variables into per period values
   beta = beta**5d0
@@ -391,7 +391,8 @@ contains
     Gama(7) = 1.8d0*pop(7, 0)
     Gama(8) = 1.8d0*pop(8, 0)
     Gama(9) = 1.6d0*pop(9, 0)
-    !Gama(1:JR-1) = 1d0
+    Gama(1:4) = 0d0
+    Gama(5:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
     Gama = Gama/sum(Gama)
 
