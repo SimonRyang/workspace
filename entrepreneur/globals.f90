@@ -12,7 +12,7 @@ module globals
   integer, parameter :: JR = 10
 
   ! number of years a household can be an entrepreneur (+1)
-  integer, parameter :: JE = 13
+  integer, parameter :: JE = 10
 
   ! number of transition periods
   integer, parameter :: TT = 48
