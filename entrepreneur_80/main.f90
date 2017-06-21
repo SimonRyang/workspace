@@ -52,8 +52,8 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma =  0.320d0
-  mu_b  = -1.5d0
-  beta   =  0.99d0
+  mu_b  = -2.0d0
+  beta   =  0.995d0
   ! convert variables into per period values
 
   ! production parameters
