@@ -374,15 +374,6 @@ contains
     enddo
 
     ! set distribution of bequests
-    Gama(1) = 0.0d0*pop(1, 0)
-    Gama(2) = 0.0d0*pop(2, 0)
-    Gama(3) = 1.0d0*pop(3, 0)
-    Gama(4) = 1.2d0*pop(4, 0)
-    Gama(5) = 1.4d0*pop(5, 0)
-    Gama(6) = 1.6d0*pop(6, 0)
-    Gama(7) = 1.8d0*pop(7, 0)
-    Gama(8) = 1.8d0*pop(8, 0)
-    Gama(9) = 1.6d0*pop(9, 0)
     Gama(1:19) = 0d0
     Gama(20:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
