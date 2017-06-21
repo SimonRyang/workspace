@@ -61,8 +61,8 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  suc = 0.500d0 !(/0.30d0, 0.40d0, 0.50d0/) !(1d0 - 0.50d0)**(1d0-gamma)
-  swc = 0.000d0 !0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
+  suc = 0.70d0 !(/0.30d0, 0.40d0, 0.50d0/) !(1d0 - 0.50d0)**(1d0-gamma)
+  swc = 0.70d0 !0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
 
   ! demographic parameters
   n_p   = 0.0036d0
