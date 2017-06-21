@@ -52,7 +52,7 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma =  0.320d0
-  mu_b  = -1.0d0
+  mu_b  = -1.5d0
   beta   =  0.99d0
   ! convert variables into per period values
 
@@ -61,8 +61,8 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  suc = 0d0 !(/0.30d0, 0.40d0, 0.50d0/) !(1d0 - 0.50d0)**(1d0-gamma)
-  swc = 0d0 !0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
+  suc = 0.300d0 !(/0.30d0, 0.40d0, 0.50d0/) !(1d0 - 0.50d0)**(1d0-gamma)
+  swc = 0.300d0 !0.25d0 !(1d0 - 0.50d0)**(1d0-gamma)
 
   ! demographic parameters
   n_p   = 0.0036d0

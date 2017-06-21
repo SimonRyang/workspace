@@ -27,7 +27,7 @@ module globals
   integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 32
+  integer, parameter :: NA = 24
 
   ! number of points on the annuitized asset grid (-1)
   integer, parameter :: NX = 2
@@ -193,7 +193,7 @@ contains
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
     c_help = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
-         - pencon_com - inctax_com - captax_com - mx_com - a_plus)*(1d0-suc(is_com))*pinv(it_com)
+         - pencon_com - inctax_com - captax_com - mx_com - a_plus - suc(is_com))*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
@@ -214,7 +214,7 @@ contains
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
-          cx_com = suc(is_com)*c_com/pinv(it_com)
+          cx_com = suc(is_com)
           c_com = c_help
           oplus_com = 1d0
         endif
@@ -309,7 +309,7 @@ contains
 
     ! calculate consumption
     c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
-           - captax_com - inctax_com - pencon_com - mx_com - a_plus)*(1d0-swc)*pinv(it_com)
+           - captax_com - inctax_com - pencon_com - mx_com - a_plus - swc)*pinv(it_com)
     c_help = (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
            - captax_com - inctax_com - pencon_com - mx_com - a_plus)*pinv(it_com)
 
@@ -325,7 +325,7 @@ contains
     valuefunc_e = 0d0
     valuefunc_help = 0d0
     oplus_com = 0d0
-    cx_com = swc*c_com/(1d0-swc)/pinv(it_com)
+    cx_com = swc
 
     if (ij_com < JJ) then
 
