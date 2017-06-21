@@ -1095,7 +1095,7 @@ contains
     do is = 1, NS
       do ie = 1, NE
         do iw = 1, NW
-          m(0, 0, 0, 0, iw, ie, is, 1, it) = dist_theta(ie, is)*dist_eta(iw, is)*dist_skill(is)
+          m(0, 0, 0, 0, iw, 4, is, 1, it) = dist_eta(iw, is)*dist_skill(is) !dist_theta(ie, is)*dist_eta(iw, is)*dist_skill(is)
         enddo ! iw
       enddo ! ie
     enddo ! is
