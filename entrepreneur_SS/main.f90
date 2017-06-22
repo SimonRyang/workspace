@@ -1013,8 +1013,8 @@ contains
 
     TAy = TAy + tauy*(YC - delta*KC - w*LC)
 
-    inc_tax(it) = (w*LC + PE + PRE)/(sum(pop_w(:)) + sum(pop_e(:)) + sum(pop_re(:))
-    inc_pen(it) = (w*LC + phi*PE)/(sum(pop_w(:)) + phi*sum(pop_e(:))
+    inc_tax = (w*LC + PE + PRE)/(sum(pop_w(:)) + sum(pop_e(:)) + sum(pop_re(:)))
+    inc_pen = (w*LC + phi*PE)/(sum(pop_w(:)) + phi*sum(pop_e(:)))
 
     !write(*,*)'Done!'
     !call tock(calc)
