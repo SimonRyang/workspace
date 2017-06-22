@@ -445,32 +445,27 @@ contains
   !
   ! Interpolates the expected valuefunction
   !##############################################################################
-  function interpolate_EV(io, a_plus, x_plus, p_plus, iw, ie, is, ij)
+  function interpolate_EV(io, a_plus, p_plus, iw, ie, is, ij)
 
     implicit none
 
     !##### INPUT/OUTPUT VARIABLES #############################################
-    real*8, intent(in) :: a_plus, x_plus, p_plus
+    real*8, intent(in) :: a_plus, p_plus
     integer, intent(in) :: io, iw, ie, is, ij
     real*8 :: interpolate_EV
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: varphi, varchi, varpsi
-    integer :: ial, iar, ixl, ixr, ipl, ipr
+    real*8 :: varphi, varpsi
+    integer :: ial, iar, ipl, ipr
 
     ! interpolate value function
     call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-    call linint_Grow(x_plus, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
     call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
 
-    interpolate_EV = (varphi*varchi*varpsi*EV(io, ial, ixl, ipl, iw, ie, is, ij) &
-                      + varphi*varchi*(1d0-varpsi)*EV(io, ial, ixl, ipr, iw, ie, is, ij) &
-                      + varphi*(1d0-varchi)*varpsi*EV(io, ial, ixr, ipl, iw, ie, is, ij) &
-                      + varphi*(1d0-varchi)*(1d0-varpsi)*EV(io, ial, ixr, ipr, iw, ie, is, ij) &
-                      + (1d0-varphi)*varchi*varpsi*EV(io, iar, ixl, ipl, iw, ie, is, ij) &
-                      + (1d0-varphi)*varchi*(1d0-varpsi)*EV(io, iar, ixl, ipr, iw, ie, is, ij) &
-                      + (1d0-varphi)*(1d0-varchi)*varpsi*EV(io, iar, ixr, ipl, iw, ie, is, ij) &
-                      + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(io, iar, ixr, ipr, iw, ie, is, ij)) &
+    interpolate_EV = (varphi*varpsi*EV(io, ial, ipl, iw, ie, is, ij) &
+                      + varphi*(1d0-varpsi)*EV(io, ial, ipr, iw, ie, is, ij) &
+                      + (1d0-varphi)*varpsi*EV(io, iar, ipl, iw, ie, is, ij) &
+                      + (1d0-varphi)*(1d0-varpsi)*EV(io, iar, ipr, iw, ie, is, ij)) &
                      **(1d0-gamma)/(1d0-gamma)
 
   end function
