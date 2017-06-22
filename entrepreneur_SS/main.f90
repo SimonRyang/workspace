@@ -79,14 +79,14 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 64d0
-  a_grow = 0.5d0
+  a_grow = 0.4d0
 
   ! size of the pension claim grid
   p_l  = 0d0
   p_u  = 2d0
 
   ! simulation parameters
-  damp  = 0.60d0
+  damp  = 0.50d0
   tol   = 1d-4
   itermax = 20
 
@@ -342,14 +342,14 @@ contains
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
     psi(:, JJ+1) = 0d0
-    adj = 23d0
+    adj = 22d0
     do ij = 2, JJ
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-adj))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-adj))
     enddo
 
     ! set up population structure
-    rpop(:, 1) = 1d0
+    rpop(:, 1) = dist_skill(:)
     do ij = 2, JJ
       rpop(:, ij) = psi(:, ij)*rpop(:, ij-1)/(1d0+n_p)
     enddo
@@ -441,9 +441,9 @@ contains
     endif
 
     ! calculate individual bequests
-    beq(1, :) = Gama*bqs(1)/rpop(1, :)/dist_skill(1)
-    beq(2, :) = Gama*bqs(2)/rpop(2, :)/dist_skill(2)
-    beq(3, :) = Gama*bqs(3)/rpop(3, :)/dist_skill(3)
+    beq(1, :) = Gama*bqs(1)/rpop(1, :)
+    beq(2, :) = Gama*bqs(2)/rpop(2, :)
+    beq(3, :) = Gama*bqs(3)/rpop(3, :)
 
     ! calculate individual pensions
     pen(:, :) = 0d0
@@ -548,7 +548,7 @@ contains
                   xy(1) = max(aplus(1, ia, ip, 1, ie, is, ij), 1d-4)
                   xy(2) = max(k(1, ia, ip, 1, ie, is, ij), 1d-4)
 
-                  limit = max(1.5d0*a(ia), 1d-4)
+                  limit = max(1.5d0*a(ia), 1d-8)
 
                   call fminsearch(xy, fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
@@ -637,7 +637,7 @@ contains
                     xy(1) = max(aplus(1, ia, ip, iw, ie, is, ij), 1d-4)
                     xy(2) = max(k(1, ia, ip, iw, ie, is, ij), 1d-4)
 
-                    limit = max(1.5d0*a(ia), 1d-4)
+                    limit = max(1.5d0*a(ia), 1d-8)
 
                     call fminsearch(xy, fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
@@ -825,7 +825,7 @@ contains
     do is = 1, NS
       do ie = 1, NE
         do iw = 1, NW
-          m(0, 0, 0, 4, 4, is, 1) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
+          m(0, 0, 0, 4, 4, is, 1) = dist_skill(is) !dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
         enddo ! iw
       enddo ! ie
     enddo ! is
@@ -882,8 +882,6 @@ contains
         enddo ! is
       enddo ! io
 
-      !m(:, :, :, :, :, :, ij) = m(:, :, :, :, :, :, ij)/sum(m(:, :, :, :, :, :, ij))*pop(ij)
-
     enddo ! ij
 
   end subroutine
@@ -938,6 +936,8 @@ contains
             do ip = 0, NP
               do ia = 0, NA
                 do io = 0, NO
+
+                  if (m(io, ia, ip, iw, ie, is, ij) <= 0d0 .and. m(io, ia, ip, iw, ie, is, ij) <= 0d0) cycle
 
                   AA = AA + aplus(io, ia, ip, iw, ie, is, ij) &
                             *m(io, ia, ip, iw, ie, is, ij)/(1d0+n_p)
