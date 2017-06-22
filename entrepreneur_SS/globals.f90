@@ -147,7 +147,7 @@ contains
     inctax_com = tarif(max(wage*l_com - 0.10d0*wage*l_com - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calculate capital gains tax
-    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.10d0*r(it_com)*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.10d0*r*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
@@ -242,7 +242,7 @@ contains
     inctax_com = tarif(max(profit - 0.10d0*profit - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calcualte capital gains tax
-    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.10d0*r(it_com)*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.10d0*r*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
 
     ! calculate consumption
     c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
@@ -342,7 +342,7 @@ contains
     inctax_com = tarif(pen(ip_com, ij_com))
 
     ! calculate capital gains tax
-    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.10d0*r(it_com)*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.10d0*r*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r)*a(ia_com) + beq(is_com, ij_com) + pen(ip_com, ij_com) &
