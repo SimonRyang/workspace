@@ -405,7 +405,8 @@ contains
     ! initial guesses for macro variables
     taup = 0.192d0
     tauc = 0.176d0
-    inc_bar = 0.538d0
+    inc_tax = 0.538d0
+    inc_pen = 0.538d0
     bqs(:) = (/0.019d0, 0.124d0, 0.322d0/)
     BQ = 0.465d0
     BB = 0.971d0
@@ -447,13 +448,13 @@ contains
     ! calculate individual pensions
     pen(:, :) = 0d0
     do ij = JR, JJ
-      pen(:, ij) = p(:)*kappa*inc_bar
+      pen(:, ij) = p(:)*kappa*inc_pen
     enddo
 
     ! determine the income tax system
-    r1 = 0.286d0*inc_bar*2d0
-    r2 = 0.456d0*inc_bar*2d0
-    r3 = 1.786d0*inc_bar*2d0
+    r1 = 0.286d0*inc_tax*2d0
+    r2 = 0.456d0*inc_tax*2d0
+    r3 = 1.786d0*inc_tax*2d0
 
     b1 = (t2-t1)/(r2-r1)
     b2 = (t3-t2)/(r3-r2)
@@ -947,13 +948,13 @@ contains
                               *m(io, ia, ip, iw, ie, is, ij)
                     HH = HH + l(io, ia, ip, iw, ie, is, ij) &
                               *m(io, ia, ip, iw, ie, is, ij)
-                    PC = PC + min(w*eff(ij, is)*eta(iw, is)*l(io, ia, ip, iw, ie, is, ij), sscc*inc_bar) &
+                    PC = PC + min(w*eff(ij, is)*eta(iw, is)*l(io, ia, ip, iw, ie, is, ij), sscc*inc_pen) &
                               *m(io, ia, ip, iw, ie, is, ij)
                   else
                     KE = KE + k(io, ia, ip, iw, ie, is, ij)*m(io, ia, ip, iw, ie, is, ij)
                     YE = YE + theta(ie, is)*(k(io, ia, ip, iw, ie, is, ij)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                               *m(io, ia, ip, iw, ie, is, ij)
-                    if (ij < JR) PC = PC + phi*min(profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, ie), sscc*inc_bar) &
+                    if (ij < JR) PC = PC + phi*min(profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, ie), sscc*inc_pen) &
                               *m(io, ia, ip, iw, ie, is, ij)
                     PE = PE + profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, ie) &
                               *m(io, ia, ip, iw, ie, is, ij)
@@ -1012,7 +1013,8 @@ contains
 
     TAy = TAy + tauy*(YC - delta*KC - w*LC)
 
-    inc_bar = (w*LC + PE)/(sum(pop_w(:)) + sum(pop_e(:)))
+    inc_tax(it) = (w*LC + PE + PRE)/(sum(pop_w(:)) + sum(pop_e(:)) + sum(pop_re(:)))
+    inc_pen(it) = (w*LC + phi*PE))/(sum(pop_w(:)) + phi*sum(pop_e(:)))
 
     !write(*,*)'Done!'
     !call tock(calc)
@@ -1139,7 +1141,7 @@ contains
     write(21,'(a,4f8.2/)')'(in %)  ',(/KK, KC, KE, AA/)/YY*500d0
 
     write(21,'(a)')'LABOR         LC       w     inc   l_bar'
-    write(21,'(8x,4f8.2/)')LC, w, inc_bar, HH/sum(pop_w(:))
+    write(21,'(8x,4f8.2/)')LC, w, inc_tax, HH/sum(pop_w(:))
 
     write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX    DIFF'
     write(21,'(8x,6f8.2,f8.3)')YY, YC, YE, CC, II, NEX, diff

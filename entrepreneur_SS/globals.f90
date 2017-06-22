@@ -33,7 +33,7 @@ module globals
   integer, parameter :: NO = 1
 
   ! household parameters
-  real*8 :: gamma, sigma, beta, l_bar, mu_b
+  real*8 :: gamma, sigma, mu_b, beta, l_bar
 
   ! production parameters
   real*8 :: alpha, delta, nu
@@ -45,8 +45,8 @@ module globals
   integer :: itermax
 
   ! macroeconomic variables
-  real*8 :: r, w, inc_bar, pinv
   real*8:: gy, by
+  real*8 :: r, w, inc_pen, inc_tax, pinv
   real*8 :: KK, KC, KE, AA, LC, HH
   real*8 :: YY, YC, YE, CC, II, GG, NEX
   real*8 :: BB, BF, BQ
@@ -123,8 +123,7 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, valuefunc_help, varphi, varpsi
-    integer :: ial, iar, ipl, ipr
+    real*8 :: a_plus, wage, valuefunc_help
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -135,19 +134,19 @@ contains
     ! calculate the wage rate and next periods pension claims
     wage = w*eff(ij_com, is_com)*eta(iw_com, is_com)
     pplus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda &
-           + (1d0-lambda)*min(wage*l_com/inc_bar, sscc)))/dble(ij_com)
+           + (1d0-lambda)*min(wage*l_com/inc_pen, sscc)))/dble(ij_com)
 
     ! worker do not invest
     k_com = 0d0
 
     ! calculate contribution to pension system
-    pencon_com = taup*min(wage*l_com, sscc*inc_bar)
+    pencon_com = taup*min(wage*l_com, sscc*inc_pen)
 
     ! calculate income tax
-    inctax_com = tarif(max(wage*l_com - 0.10d0*wage*l_com - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
+    inctax_com = tarif(max(wage*l_com - 0.080*wage*l_com - 0.04d0*inc_tax - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calculate capital gains tax
-    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.10d0*r*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.08d0*r*a(ia_com) - 2d0*0.0267d0*inc_tax, 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
@@ -161,29 +160,15 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
-
-      valuefunc_w = (varphi*varpsi*EV(0, ial, ipl, iw_com, ie_com, is_com, ij_com+1) &
-               + varphi*(1d0-varpsi)*EV(0, ial, ipr, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*varpsi*EV(0, iar, ipl, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*(1d0-varpsi)*EV(0, iar, ipr, iw_com, ie_com, is_com, ij_com+1)) &
-              **(1d0-gamma)/(1d0-gamma)
+      valuefunc_w = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = (varphi*varpsi*EV(1, ial, ipl, iw_com, ie_com, is_com, ij_com+1) &
-               + varphi*(1d0-varpsi)*EV(1, ial, ipr, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*varpsi*EV(1, iar, ipl, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*(1d0-varpsi)*EV(1, iar, ipr, iw_com, ie_com, is_com, ij_com+1)) &
-              **(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
-          valuefunc_w = valuefunc_help
-          oplus_com = 1d0
-        elseif (.not. ent .and. oplus(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com) > 0d0) then
           valuefunc_w = valuefunc_help
           oplus_com = 1d0
         endif
@@ -193,7 +178,7 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w)
+    valuefunc_w = -valuefunc_w
 
   end function
 
@@ -212,8 +197,7 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, profit, valuefunc_help, varpsi, varphi
-    integer :: ial, iar, ipl, ipr
+    real*8 :: a_plus, profit, valuefunc_help
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -233,16 +217,16 @@ contains
 
     ! calculate contribution to pension system
     if (ij_com < JR) then
-        pencon_com = phi*taup*min(profit, sscc*inc_bar)
+        pencon_com = phi*taup*min(profit, sscc*inc_pen)
     else
         pencon_com = 0d0
     endif
 
     ! calculate income tax
-    inctax_com = tarif(max(profit - 0.10d0*profit - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
+    inctax_com = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calcualte capital gains tax
-    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.10d0*r*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.080d0*r*a(ia_com) - 2d0*0.0267d0*inc_tax, 0d0)
 
     ! calculate consumption
     c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
@@ -264,23 +248,12 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-      call linint_Equi(pplus_com, p_l, p_u, NP, ipl, ipr, varpsi)
-
-      valuefunc_e = (varphi*varpsi*EV(0, ial, ipl, iw_com, ie_com, is_com, ij_com+1) &
-               + varphi*(1d0-varpsi)*EV(0, ial, ipr, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*varpsi*EV(0, iar, ipl, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*(1d0-varpsi)*EV(0, iar, ipr, iw_com, ie_com, is_com, ij_com+1)) &
-              **(1d0-gamma)/(1d0-gamma)
+      valuefunc_e = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
 
-        valuefunc_help = (varphi*varpsi*EV(1, ial, ipl, iw_com, ie_com, is_com, ij_com+1) &
-               + varphi*(1d0-varpsi)*EV(1, ial, ipr, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*varpsi*EV(1, iar, ipl, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*(1d0-varpsi)*EV(1, iar, ipr, iw_com, ie_com, is_com, ij_com+1)) &
-              **(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
@@ -302,6 +275,7 @@ contains
     else
       valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e)
     endif
+    valuefunc_e = -valuefunc_e
 
   end function
 
@@ -342,7 +316,7 @@ contains
     inctax_com = tarif(pen(ip_com, ij_com))
 
     ! calculate capital gains tax
-    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.10d0*r*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.08d0*r*a(ia_com) - 2d0*0.0267d0*inc_tax, 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r)*a(ia_com) + beq(is_com, ij_com) + pen(ip_com, ij_com) &
@@ -355,11 +329,7 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
-
-      valuefunc_r = (varphi*EV(0, ial, ip_com, iw_com, ie_com, is_com, ij_com+1) &
-               + (1d0-varphi)*EV(0, iar, ip_com, iw_com, ie_com, is_com, ij_com+1 )) &
-               **(1d0-gamma)/(1d0-gamma)
+      valuefunc_r = interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
     endif
 
@@ -466,6 +436,42 @@ contains
 
     ! determine marginal utility
     margu = sigma*(cons**sigma*(1d0-lab)**(1d0-sigma))**(1d0-gamma)/((1d0+tauc)*cons)
+
+  end function
+
+
+  !##############################################################################
+  ! FUNCTION interpolate_EV
+  !
+  ! Interpolates the expected valuefunction
+  !##############################################################################
+  function interpolate_EV(io, a_plus, x_plus, p_plus, iw, ie, is, ij)
+
+    implicit none
+
+    !##### INPUT/OUTPUT VARIABLES #############################################
+    real*8, intent(in) :: a_plus, x_plus, p_plus
+    integer, intent(in) :: io, iw, ie, is, ij
+    real*8 :: interpolate_EV
+
+    !##### OTHER VARIABLES ####################################################
+    real*8 :: varphi, varchi, varpsi
+    integer :: ial, iar, ixl, ixr, ipl, ipr
+
+    ! interpolate value function
+    call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
+    call linint_Grow(x_plus, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
+    call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
+
+    interpolate_EV = (varphi*varchi*varpsi*EV(io, ial, ixl, ipl, iw, ie, is, ij) &
+                      + varphi*varchi*(1d0-varpsi)*EV(io, ial, ixl, ipr, iw, ie, is, ij) &
+                      + varphi*(1d0-varchi)*varpsi*EV(io, ial, ixr, ipl, iw, ie, is, ij) &
+                      + varphi*(1d0-varchi)*(1d0-varpsi)*EV(io, ial, ixr, ipr, iw, ie, is, ij) &
+                      + (1d0-varphi)*varchi*varpsi*EV(io, iar, ixl, ipl, iw, ie, is, ij) &
+                      + (1d0-varphi)*varchi*(1d0-varpsi)*EV(io, iar, ixl, ipr, iw, ie, is, ij) &
+                      + (1d0-varphi)*(1d0-varchi)*varpsi*EV(io, iar, ixr, ipl, iw, ie, is, ij) &
+                      + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(io, iar, ixr, ipr, iw, ie, is, ij)) &
+                     **(1d0-gamma)/(1d0-gamma)
 
   end function
 
