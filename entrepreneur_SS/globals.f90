@@ -24,7 +24,7 @@ module globals
   integer, parameter :: NE = 7
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 24
+  integer, parameter :: NA = 32
 
   ! number of points on the pension claim grid (-1)
   integer, parameter :: NP = 6
@@ -144,10 +144,10 @@ contains
     pencon_com = taup*min(wage*l_com, sscc*inc_bar)
 
     ! calculate income tax
-    inctax_com = tarif(max(wage*l_com - 0.00d0*wage*l_com - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
+    inctax_com = tarif(max(wage*l_com - 0.10d0*wage*l_com - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calculate capital gains tax
-    captax_com = taur*1.055d0*max(r*a(ia_com)-2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.10d0*r(it_com)*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
@@ -193,8 +193,7 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w &
-                    + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    valuefunc_w = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_w)
 
   end function
 
@@ -240,10 +239,10 @@ contains
     endif
 
     ! calculate income tax
-    inctax_com = tarif(max(profit - 0.00d0*profit - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
+    inctax_com = tarif(max(profit - 0.10d0*profit - 0.04d0*inc_bar - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calcualte capital gains tax
-    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.10d0*r(it_com)*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
 
     ! calculate consumption
     c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
@@ -297,8 +296,12 @@ contains
     endif
 
     ! add today's part and discount
-    valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e &
-                    + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    if (ij_com >= JR) then
+      valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e &
+                      + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+    else
+      valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e)
+    endif
 
   end function
 
@@ -339,7 +342,7 @@ contains
     inctax_com = tarif(pen(ip_com, ij_com))
 
     ! calculate capital gains tax
-    captax_com = taur*1.055d0*max(r*a(ia_com)-2d0*0.0267d0*inc_bar, 0d0)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - 0.10d0*r(it_com)*a(ia_com) - 2d0*0.0267d0*inc_bar, 0d0)
 
     ! calculate consumption
     c_com = ((1d0+r)*a(ia_com) + beq(is_com, ij_com) + pen(ip_com, ij_com) &

@@ -45,8 +45,8 @@ program main
   ! invert gamma
   gamma = 1d0/gamma
   sigma  =   0.320d0
-  mu_b   = -0.000d0
-  beta   =  0.998d0
+  mu_b   = -0.180d0
+  beta   =  0.99d0
   ! convert variables into per period values
   beta = beta**5d0
 
@@ -54,7 +54,7 @@ program main
   alpha = 0.36d0
   delta = 0.06d0
   nu = 0.88d0
-  l_bar = 0.41d0
+  l_bar = 0.47d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
@@ -72,14 +72,14 @@ program main
   lambda = 0d0
   phi    = 0d0
   gy     = 0.19d0
-  by     = 0.80d0
+  by     = 0.60d0
   ! convert variables into per period values
   by = by/5d0
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 32d0
-  a_grow = 0.4d0
+  a_u    = 64d0
+  a_grow = 0.5d0
 
   ! size of the pension claim grid
   p_l  = 0d0
