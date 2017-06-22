@@ -108,7 +108,7 @@ program main
 
   mu_val(1, :) =  0.6d0 !(/0.3195d0, 0.3200d0, 0.3205d0/)
   mu_val(2, :) =  0.5d0 !(/0.2245d0, 0.2250d0, 0.2255d0/)
-  mu_val(3, :) =  0.25d0 !-(/-0.000d0, -0.0250d0, -0.0500d0/)
+  mu_val(3, :) =  0.30d0 !-(/-0.000d0, -0.0250d0, -0.0500d0/)
   sig_val(1, :) = 0.0370d0 !(/0.0370d0, 0.0375d0, 0.0380d0/)
   sig_val(2, :) = 0.0380d0 !(/0.0370d0, 0.0375d0, 0.0380d0/)
   sig_val(3, :) = 0.0395d0 !(/0.0395d0, 0.0400d0, 0.0405d0/)
@@ -205,13 +205,13 @@ program main
     !
     ! write(*,*)share_result
 
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(2:9, 1), color='blue')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(2:9, 2), color='red')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(2:9, 3), color='green')
 
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, :)+os_coh(1, 1, 1, :))*100d0, color='blue', linewidth=4d0)
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, :)+os_coh(1, 1, 2, :))*100d0, color='red', linewidth=4d0)
-    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, :)+os_coh(1, 1, 3, :))*100d0, color='green', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 1, 2:9)+os_coh(1, 1, 1, 2:9))*100d0, color='blue', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 2, 2:9)+os_coh(1, 1, 2, 2:9))*100d0, color='red', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,jj)/), (os_coh(1, 0, 3, 2:9)+os_coh(1, 1, 3, 2:9))*100d0, color='green', linewidth=4d0)
     call execplot()
 
   ! close files
