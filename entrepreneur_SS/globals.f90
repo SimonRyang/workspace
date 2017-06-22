@@ -18,10 +18,10 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of transitory shock process values (worker)
-  integer, parameter :: NW = 5
+  integer, parameter :: NW = 9
 
   ! number of transitory shock process values (entrepreneur)
-  integer, parameter :: NE = 5
+  integer, parameter :: NE = 9
 
   ! number of points on the asset grid (-1)
   integer, parameter :: NA = 32
