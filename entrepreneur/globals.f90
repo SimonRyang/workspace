@@ -77,7 +77,7 @@ module globals
 
   ! cohort aggregate variables
   real*8 :: pop_w(NS, 0:TT), pop_e(NS, 0:TT), pop_r(NS, 0:TT), pop_re(NS, 0:TT)
-  real*8 :: bqs(NS, 0:TT)
+  real*8 :: bqs(NS, 0:TT), beq(NS, JJ, 0:TT)
   real*8 :: x_coh(JJ, 0:TT), bx_coh(JJ, 0:TT), os_coh(0:1, 0:1, NS, JJ, 0:TT)
   real*8 :: vv_coh(JJ, 0:TT) = 0d0
 
@@ -87,7 +87,7 @@ module globals
   real*8 :: theta(NE, NS), dist_theta(NE, NS), pi_theta(NE, NE, NS)
 
   ! demographic and other model parameters
-  real*8 :: eff(JJ, NS), rpop(NS, JJ, 0:TT), pop(JJ, 0:TT), psi(NS, JJ+1), beq(NS, JJ, 0:TT), Gama(JJ), n_p
+  real*8 :: eff(JJ, NS), rpop(NS, JJ, 0:TT), pop(JJ, 0:TT), psi(NS, JJ+1), Gama(JJ), n_p
 
   ! individual variables
   real*8 :: a(0:NA), x(0:NX), p(0:NP)
