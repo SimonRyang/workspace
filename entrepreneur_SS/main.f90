@@ -11,7 +11,7 @@ program main
   integer, parameter :: numthreads = 28
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(NS, 3), sig_val(NS, 3), rho_val(NS, 3)
+  real*8 :: mu_val(NS, 5), sig_val(NS, 5), rho_val(NS, 5)
   integer :: s1, s2, s3, m1, m2, m3, rh1, rh2, rh3
 
   ! allocate arrays
