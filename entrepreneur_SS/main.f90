@@ -369,7 +369,8 @@ contains
     Gama(7) = 1.8d0*pop(7)
     Gama(8) = 1.8d0*pop(8)
     Gama(9) = 1.6d0*pop(9)
-!    Gama(1:JR-1) = 1d0
+    Gama(1:4) = 0d0
+    Gama(5:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
     Gama = Gama/sum(Gama)
 
@@ -402,14 +403,14 @@ contains
     theta(:, 3) = exp(theta(:, 3))
 
     ! initial guesses for macro variables
-    taup   = 0.1837d0
-    tauc   = 0.1566d0
-    inc_bar = 0.5047d0
-    bqs = (/0.0216d0, 0.1168d0, 0.2888d0/)
-    BQ = 0.4266d0
-    BB = 0.9174d0
-    KC = 3.7344d0
-    LC = 5.2214d0
+    taup = 0.192d0
+    tauc = 0.176d0
+    inc_bar = 0.538d0
+    bqs(:) = (/0.019d0, 0.124d0, 0.322d0/)
+    BQ = 0.465d0
+    BB = 0.971d0
+    KC = 4.000d0
+    LC = 5.142d0
 
     ! open files
     open(21, file='output.out')
