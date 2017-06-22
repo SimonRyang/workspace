@@ -36,7 +36,7 @@ module globals
   real*8 :: gamma, sigma, beta, l_bar, mu_b
 
   ! production parameters
-  real*8 :: alpha, delta, nu, suc
+  real*8 :: alpha, delta, nu
 
   ! numerical parameters
   real*8 :: a_l, a_u, a_grow
@@ -177,7 +177,7 @@ contains
                + varphi*(1d0-varpsi)*EV(1, ial, ipr, iw_com, ie_com, is_com, ij_com+1) &
                + (1d0-varphi)*varpsi*EV(1, iar, ipl, iw_com, ie_com, is_com, ij_com+1) &
                + (1d0-varphi)*(1d0-varpsi)*EV(1, iar, ipr, iw_com, ie_com, is_com, ij_com+1)) &
-              **(1d0-gamma)/(1d0-gamma) - suc
+              **(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
@@ -272,7 +272,7 @@ contains
                + varphi*(1d0-varpsi)*EV(0, ial, ipr, iw_com, ie_com, is_com, ij_com+1) &
                + (1d0-varphi)*varpsi*EV(0, iar, ipl, iw_com, ie_com, is_com, ij_com+1) &
                + (1d0-varphi)*(1d0-varpsi)*EV(0, iar, ipr, iw_com, ie_com, is_com, ij_com+1)) &
-              **(1d0-gamma)/(1d0-gamma) - suc
+              **(1d0-gamma)/(1d0-gamma)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then

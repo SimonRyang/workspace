@@ -118,8 +118,6 @@ program main
 
   open(307, file='results.out')
 
-  suc = 0.625d0
-
   do m1 = 3, 3
     do m2 = 2, 2
       do m3 = 3, 3
