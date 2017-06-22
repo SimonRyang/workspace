@@ -159,7 +159,7 @@ program main
                         sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                                   + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                                   + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                        sqrt(32d0*(share_target-share_result)**2d0))
+                        sqrt(share_target-share_result)
 
                       write(*,'(16f8.4)')shares_result(:, 1)
                       write(*,'(16f8.4)')shares_target(:, 1)
