@@ -30,7 +30,7 @@ module globals
   integer, parameter :: NP = 6
 
   ! number of occupations (-1)
-  integer, parameter :: NO = 0
+  integer, parameter :: NO = 1
 
   ! household parameters
   real*8 :: gamma, sigma, mu_b, beta, l_bar
@@ -143,7 +143,7 @@ contains
     pencon_com = taup*min(wage*l_com, sscc*inc_pen)
 
     ! calculate income tax
-    inctax_com = tarif(max(wage*l_com - 0.080*wage*l_com - 0.04d0*inc_tax - pencon_com, 0d0) + pen(ip_com, ij_com))
+    inctax_com = tarif(max(wage*l_com - 0.08d0*wage*l_com - 0.04d0*inc_tax - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calculate capital gains tax
     captax_com = taur*1.055d0*max(r*a(ia_com) - 0.08d0*r*a(ia_com) - 2d0*0.0267d0*inc_tax, 0d0)
@@ -226,7 +226,7 @@ contains
     inctax_com = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calcualte capital gains tax
-    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.080d0*r*a(ia_com) - 2d0*0.0267d0*inc_tax, 0d0)
+    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.08d0*r*a(ia_com) - 2d0*0.0267d0*inc_tax, 0d0)
 
     ! calculate consumption
     c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
@@ -270,12 +270,11 @@ contains
 
     ! add today's part and discount
     if (ij_com >= JR) then
-      valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e &
-                      + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+      valuefunc_e = -(valuefunc_e + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
     else
-      valuefunc_e = -(util(c_com, l_com) + beta*psi(is_com, ij_com+1)*valuefunc_e)
+      valuefunc_e = -valuefunc_e
     endif
-    valuefunc_e = -valuefunc_e
+
 
   end function
 
