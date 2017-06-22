@@ -159,9 +159,8 @@ program main
                         sqrt(16d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
                                                                   + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
                                                                   + sum((shares_target(:, 3)-shares_result(:, 3))**2d0)), &
-                        sqrt(32d0*(share_target-share_result)**2d0 + sum((shares_target(:, 1)-shares_result(:, 1))**2d0) &
-                                                                  + sum((shares_target(:, 2)-shares_result(:, 2))**2d0) &
-                                                                  + sum((shares_target(:, 3)-shares_result(:, 3))**2d0))
+                        sqrt(32d0*(share_target-share_result)**2d0))
+
                       write(*,'(16f8.4)')shares_result(:, 1)
                       write(*,'(16f8.4)')shares_target(:, 1)
 
@@ -205,14 +204,14 @@ program main
     !
     ! write(*,*)share_result
 
-    call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 1), color='blue')
-    call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 2), color='red')
-    call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 3), color='green')
-
-    call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 1, 2:9)+os_coh(1, 1, 1, 2:9))*100d0, color='blue', linewidth=4d0)
-    call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 2, 2:9)+os_coh(1, 1, 2, 2:9))*100d0, color='red', linewidth=4d0)
-    call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 3, 2:9)+os_coh(1, 1, 3, 2:9))*100d0, color='green', linewidth=4d0)
-    call execplot()
+    ! call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 1), color='blue')
+    ! call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 2), color='red')
+    ! call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 3), color='green')
+    !
+    ! call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 1, 2:9)+os_coh(1, 1, 1, 2:9))*100d0, color='blue', linewidth=4d0)
+    ! call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 2, 2:9)+os_coh(1, 1, 2, 2:9))*100d0, color='red', linewidth=4d0)
+    ! call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 3, 2:9)+os_coh(1, 1, 3, 2:9))*100d0, color='green', linewidth=4d0)
+    ! call execplot()
 
   ! close files
   close(307)
