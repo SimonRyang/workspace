@@ -27,7 +27,7 @@ module globals
   integer, parameter :: NA = 16
 
   ! number of points on the pension claim grid (-1)
-  integer, parameter :: NP = 6
+  integer, parameter :: NP = 5
 
   ! number of occupations (-1)
   integer, parameter :: NO = 1
