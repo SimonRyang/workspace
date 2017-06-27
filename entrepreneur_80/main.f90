@@ -81,7 +81,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 256d0
-  a_grow = 0.005d0
+  a_grow = 0.015d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -94,7 +94,7 @@ program main
 
   ! simulation parameters
   damp  = 0.5d0
-  tol   = 1d-6
+  tol   = 1d-4
   itermax = 200
 
   ! compute gini
