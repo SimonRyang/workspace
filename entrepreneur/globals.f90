@@ -42,7 +42,7 @@ module globals
   real*8 :: gamma, sigma, mu_b, beta, l_bar
 
   ! production parameters
-  real*8 :: alpha, delta, nu, suc(NS), swc
+  real*8 :: alpha, delta, nu
 
   ! numerical parameters
   real*8 :: a_l, a_u, a_grow
@@ -58,7 +58,7 @@ module globals
   real*8:: gy, by
   real*8 :: r(0:TT), w(0:TT), inc_tax(0:TT), inc_pen(0:TT), psix(NS, JJ, 0:TT), pinv(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), AA(0:TT), AX(0:TT), XB(0:TT), LC(0:TT), HH(0:TT)
-  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), SC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
+  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
   real*8 :: BB(0:TT), BF(0:TT), BQ(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAy(0:TT)
 
@@ -98,7 +98,6 @@ module globals
   real*8, allocatable :: l(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: k(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: mx(:, :, :, :, :, :, :, :, :)
-  real*8, allocatable :: cx(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: oplus(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: pencon(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: inctax(:, :, :, :, :, :, :, :, :)
@@ -110,7 +109,7 @@ module globals
 
   ! numerical variables
   integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com
-  real*8 :: c_com, l_com, k_com, mx_com, xplus_com, cx_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
+  real*8 :: c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
 
   ! statistical variables
   logical :: gini_on = .false.
@@ -143,7 +142,7 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, v_ind, valuefunc_help, c_help
+    real*8 :: a_plus, wage, v_ind, valuefunc_help
     integer :: itp
 
     ! tomorrow's assets
@@ -192,14 +191,10 @@ contains
     ! calculate consumption
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
-    c_help = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
-         - pencon_com - inctax_com - captax_com - mx_com - a_plus -suc(is_com))*pinv(it_com)
-
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
     valuefunc_help = 0d0
     oplus_com = 0d0
-    cx_com = 0d0
 
     if (ij_com < JJ) then
 
@@ -209,13 +204,11 @@ contains
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
+        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
-          cx_com = suc(is_com)
-          c_com = c_help
           oplus_com = 1d0
         endif
 
@@ -242,7 +235,7 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help, c_help
+    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help
     real*8 :: temp1, temp2
     integer :: ij, itp, iij, itj
 
@@ -310,8 +303,6 @@ contains
     ! calculate consumption
     c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
            - captax_com - inctax_com - pencon_com - mx_com - a_plus - swc)*pinv(it_com)
-    c_help = (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
-           - captax_com - inctax_com - pencon_com - mx_com - a_plus)*pinv(it_com)
 
     ! calculate next periods pension claims
     if (ij_com < JR) then
@@ -325,7 +316,6 @@ contains
     valuefunc_e = 0d0
     valuefunc_help = 0d0
     oplus_com = 0d0
-    cx_com = swc
 
     if (ij_com < JJ) then
 
@@ -335,14 +325,12 @@ contains
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
 
-        valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
+        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
           valuefunc_e = valuefunc_help
-          c_com = c_help
           oplus_com = 1d0
-          cx_com = 0d0
         endif
 
       endif

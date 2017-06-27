@@ -18,7 +18,6 @@ program main
   if(allocated(l))deallocate(l)
   if(allocated(k))deallocate(k)
   if(allocated(mx))deallocate(mx)
-  if(allocated(cx))deallocate(cx)
   if(allocated(oplus))deallocate(oplus)
   if(allocated(pencon))deallocate(pencon)
   if(allocated(inctax))deallocate(inctax)
@@ -33,7 +32,6 @@ program main
   allocate(c(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(l(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(mx(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
-  allocate(cx(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(k(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(oplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(pencon(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
@@ -516,7 +514,6 @@ contains
       l(:, :, :, :, :, :, :, :, it) = l(:, :, :, :, :, :, :, :, 0)
       k(:, :, :, :, :, :, :, :, it) = k(:, :, :, :, :, :, :, :, 0)
       mx(:, :, :, :, :, :, :, :, it) = mx(:, :, :, :, :, :, :, :, 0)
-      cx(:, :, :, :, :, :, :, :, it) = cx(:, :, :, :, :, :, :, :, 0)
       oplus(:, :, :, :, :, :, :, :, it) = oplus(:, :, :, :, :, :, :, :, 0)
       pencon(:, :, :, :, :, :, :, :, it) = pencon(:, :, :, :, :, :, :, :, 0)
       inctax(:, :, :, :, :, :, :, :, it) = inctax(:, :, :, :, :, :, :, :, 0)
@@ -645,7 +642,6 @@ contains
                 l(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 k(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 mx(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                cx(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 oplus(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 pencon(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 inctax(:, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
@@ -696,7 +692,6 @@ contains
                     c(1, ia, ix, ip, :, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, ix, ip, :, ie, is, ij, it) = l_com
                     mx(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
-                    cx(1, ia, ix, ip, :, ie, is, ij, it) = cx_com
                     oplus(1, ia, ix, ip, :, ie, is, ij, it) = oplus_com
                     pencon(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
                     inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
@@ -742,7 +737,6 @@ contains
                 l(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 k(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 mx(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                cx(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 oplus(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 pencon(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 inctax(0, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
@@ -795,7 +789,6 @@ contains
                     c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
                     mx(1, ia, :, ip, iw, ie, is, ij, it) = mx_com
-                    cx(1, ia, :, ip, iw, ie, is, ij, it) = cx_com
                     oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                     pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
@@ -844,7 +837,6 @@ contains
                   c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                   l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
                   mx(0, ia, :, ip, iw, ie, is, ij, it) = mx_com
-                  cx(0, ia, :, ip, iw, ie, is, ij, it) = cx_com
                   oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                   pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                   inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
@@ -900,7 +892,6 @@ contains
                     c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                     l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
                     mx(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                    cx(1, ia, :, ip, iw, ie, is, ij, it) = cx_com
                     oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                     pencon(1, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                     inctax(1, ia, :, ip, iw, ie, is, ij, it) = inctax_com
@@ -949,7 +940,6 @@ contains
                   c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
                   l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
                   mx(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                  cx(0, ia, :, ip, iw, ie, is, ij, it) = cx_com
                   oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
                   pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
                   inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
@@ -995,7 +985,6 @@ contains
               c(:, :, :, :, iw, ie, is, ij, it) = max(c_com, 1d-10)
               l(:, :, :, :, iw, ie, is, ij, it) = l_com
               mx(:, :, :, :, iw, ie, is, ij, it) = 0d0
-              cx(:, :, :, :, iw, ie, is, ij, it) = cx_com
               k(:, :, :, :, iw, ie, is, ij, it) = 0d0
               oplus(:, :, :, :, iw, ie, is, ij, it) = oplus_com
               pencon(:, :, :, :, iw, ie, is, ij, it) = pencon_com
@@ -1210,7 +1199,6 @@ contains
     ! calculate aggregates
     AA(it)  = 0d0
     CC(it)  = 0d0
-    SC(it)  = 0d0
     LC(it)  = 0d0
     HH(it)  = 0d0
     KE(it)  = 0d0
@@ -1256,8 +1244,6 @@ contains
                     bx_coh(ij, it) = bx_coh(ij, it) + x(ix) &
                              *m(io, ia, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))
                     CC(it) = CC(it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
-                              *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                    SC(it) = SC(it) + cx(io, ia, ix, ip, iw, ie, is, ij, it) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 0 .and. ij < JR) then
                       LC(it) = LC(it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
@@ -1401,7 +1387,7 @@ contains
     endif
 
     ! get difference on goods market
-    DIFF = YY(it)-CC(it)-II(it)-GG(it)-NEX(it)-SC(it)
+    DIFF = YY(it)-CC(it)-II(it)-GG(it)-NEX(it)
 
   end subroutine
 
