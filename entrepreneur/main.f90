@@ -110,11 +110,11 @@ program main
 
   ! set switches
   !ann = .true.
-  ent = .false.
+  !ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
-stop
+
   ! set reform parameters
   !ann = .true.
   pen_debt = .true.
