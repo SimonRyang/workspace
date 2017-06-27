@@ -302,7 +302,7 @@ contains
 
     ! calculate consumption
     c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
-           - captax_com - inctax_com - pencon_com - mx_com - a_plus - swc)*pinv(it_com)
+           - captax_com - inctax_com - pencon_com - mx_com - a_plus)*pinv(it_com)
 
     ! calculate next periods pension claims
     if (ij_com < JR) then
