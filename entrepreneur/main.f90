@@ -1594,7 +1594,6 @@ contains
             do iw = 1, NW
               do ie = 1, NE
                 do is = 1, NS
-                  if (m(1, ia, ix, ip, iw, ie, is, ij, it) > 0d0 .and. ix > 0) write(*,*) ia, ix, ip, iw, ie, is, ij, it
                   do io = 0, NO
 
                     if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0) cycle
