@@ -1850,9 +1850,9 @@ contains
       call plot(a, sum_help(:, 1), marker=1)
       call execplot()
 
-      do ia = 0, NX
+      do ix = 0, NX
         do io = 0, NO
-          sum_help(ia, io) = sum(m(io, :, :, ia, :, :, :, :, it))
+          sum_help(ia, ix) = sum(m(io, :, :, ix, :, :, :, :, it))
         enddo
       enddo
       ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
