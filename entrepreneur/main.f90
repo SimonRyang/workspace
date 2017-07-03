@@ -1830,7 +1830,7 @@ contains
 
     do ia = 0, NA
       do io = 0, NO
-        sum_help(ia, is) = sum(m(io, ia, :, :, :, :, :, :, 0))
+        sum_help(ia, io) = sum(m(io, ia, :, :, :, :, :, :, 0))
       enddo
     enddo
     ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
