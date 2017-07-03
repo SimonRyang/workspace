@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 1
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -110,6 +110,8 @@ program main
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+stop
 
   ! set reform parameters
   ann = .true.
@@ -660,7 +662,7 @@ contains
           iw_com = 1
           io_com = 1
 
-          !$omp parallel do copyin(io_com, iw_com, ij_com, it_com) collapse(4) schedule(dynamic, 1) private(xy, fret) num_threads(numthreads)
+          !$omp parallel do copyin(io_com, iw_com, ij_com, it_com) collapse(4) schedule(dynamic, 1) private(xy, fret, limit) num_threads(numthreads)
           do is = 1, NS
             do ie = 1, NE
               do ip = 0, NP
@@ -757,7 +759,7 @@ contains
           io_com = 1
           ix_com = 0
 
-          !$omp do collapse(4) schedule(dynamic, 1)
+          !$omp do copyin(io_com, ix_com) collapse(4) schedule(dynamic, 1)
           do is = 1, NS
             do ie = 1, NE
               do iw = 1, NW
@@ -806,7 +808,7 @@ contains
         io_com = 0
         ix_com = 0
 
-        !$omp do collapse(4) schedule(dynamic, 1)
+        !$omp do copyin(io_com, ix_com) collapse(4) schedule(dynamic, 1)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
@@ -860,7 +862,7 @@ contains
           io_com = 1
           ix_com = 0
 
-          !$omp do collapse(4) schedule(dynamic, 1)
+          !$omp do copyin(io_com, ix_com) collapse(4) schedule(dynamic, 1)
           do is = 1, NS
             do ie = 1, NE
               do iw = 1, NW
@@ -909,7 +911,7 @@ contains
         io_com = 0
         ix_com = 0
 
-        !$omp do collapse(4) schedule(dynamic, 1)
+        !$omp do copyin(io_com, ix_com) collapse(4) schedule(dynamic, 1)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
