@@ -1596,6 +1596,8 @@ contains
                 do is = 1, NS
                   do io = 0, NO
 
+                    if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(io, ia, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
+
                     ! Cohort average variables
                     c_coh(io, ij, it) = c_coh(io, ij, it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
                                         *m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1852,7 +1854,7 @@ contains
 
       do ix = 0, NX
         do io = 0, NO
-          sum_help(ia, ix) = sum(m(io, :, :, ix, :, :, :, :, it))
+          sum_help(ia, ix) = sum(m(io, :, ix, :, :, :, :, :, it))
         enddo
       enddo
       ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
