@@ -1827,9 +1827,9 @@ contains
                         sum(reshape(l(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(:, :, :, :, :, :, :, :JR-1, it))
 
     do ia = 0, NA
-      help_sum(ia) = sum(m(:, ia, :, :, :, :, :, :, 0))
+      sum_help(ia) = sum(m(:, ia, :, :, :, :, :, :, 0))
     enddo
-    call plot(help_sum, a)
+    call plot(sum_help, a)
     call execplot()
 
   end subroutine
