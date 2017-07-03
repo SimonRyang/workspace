@@ -759,7 +759,7 @@ contains
           io_com = 1
           ix_com = 0
 
-          !$omp do copyin(io_com, ix_com) collapse(4) schedule(dynamic, 1)
+          !$omp do collapse(4) schedule(dynamic, 1)
           do is = 1, NS
             do ie = 1, NE
               do iw = 1, NW
@@ -808,7 +808,7 @@ contains
         io_com = 0
         ix_com = 0
 
-        !$omp do copyin(io_com, ix_com) collapse(4) schedule(dynamic, 1)
+        !$omp do ollapse(4) schedule(dynamic, 1)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
@@ -862,7 +862,7 @@ contains
           io_com = 1
           ix_com = 0
 
-          !$omp do copyin(io_com, ix_com) collapse(4) schedule(dynamic, 1)
+          !$omp do collapse(4) schedule(dynamic, 1)
           do is = 1, NS
             do ie = 1, NE
               do iw = 1, NW
@@ -911,7 +911,7 @@ contains
         io_com = 0
         ix_com = 0
 
-        !$omp do copyin(io_com, ix_com) collapse(4) schedule(dynamic, 1)
+        !$omp do collapse(4) schedule(dynamic, 1)
         do is = 1, NS
           do ie = 1, NE
             do iw = 1, NW
