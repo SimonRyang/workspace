@@ -1559,6 +1559,7 @@ contains
     real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
     real*8, allocatable :: wealth(:, :, :, :, :, :, :, :), grossinc(:, :, :, :, :, :, :, :), netinc(:, :, :, :, :, :, :, :)
     real*8 :: life_exp(NS), punb(NS, JJ)
+    real*8 :: sum_help(0:NA)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
@@ -1825,7 +1826,10 @@ contains
                         sum(reshape(l(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(:, :, :, :, :, :, 3, :JR-1, it)), &
                         sum(reshape(l(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(:, :, :, :, :, :, :, :JR-1, it))
 
-    call plot(sum(m(:, :, :, :, :, :, :, :, 0), 2), a)
+    do ia = 0, NA
+      help_sum(ia) = sum(m(:, ia, :, :, :, :, :, :, 0))
+    enddo
+    call plot(help_sum, a)
     call execplot()
 
   end subroutine
