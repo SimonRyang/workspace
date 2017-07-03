@@ -1838,6 +1838,11 @@ contains
     call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3))
     call execplot()
 
+    call plot(a, sum_help(:, 1))
+    call plot(a, sum_help(:, 2))
+    call plot(a, sum_help(:, 3))
+    call execplot()
+
   end subroutine
 
 
