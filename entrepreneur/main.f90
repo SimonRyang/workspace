@@ -106,7 +106,7 @@ program main
 
   ! set switches
   !ann = .true.
-  !ent = .false.
+  ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -1824,6 +1824,9 @@ contains
                         sum(reshape(l(:, :, :, :, :, :, 2, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(:, :, :, :, :, :, 2, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(:, :, :, :, :, :, 2, :JR-1, it)), &
                         sum(reshape(l(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(:, :, :, :, :, :, 3, :JR-1, it)), &
                         sum(reshape(l(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(:, :, :, :, :, :, :, :JR-1, it))
+
+    call plot(sum(m(:, :, :, :, :, :, :, :, 0), 2), a)
+    call execplot()
 
   end subroutine
 
