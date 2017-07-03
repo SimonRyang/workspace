@@ -1829,6 +1829,8 @@ contains
     do ia = 0, NA
       sum_help(ia) = sum(m(:, ia, :, :, :, :, :, :, 0))
     enddo
+    write(*,*)sum_help
+    write(*,*)a
     call plot(sum_help, a)
     call execplot()
 
