@@ -85,7 +85,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 6d0
-  a_grow = 0.00015d0
+  a_grow = 0.015d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -1838,9 +1838,9 @@ contains
     call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
     call execplot()
 
-    call plot(a, sum_help(:, 1))
-    call plot(a, sum_help(:, 2))
-    call plot(a, sum_help(:, 3))
+    call plot(a, sum_help(:, 1), marker=1)
+    call plot(a, sum_help(:, 2), marker=1)
+    call plot(a, sum_help(:, 3), marker=1)
     call execplot()
 
   end subroutine
