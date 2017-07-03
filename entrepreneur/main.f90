@@ -1852,7 +1852,7 @@ contains
 
       do ia = 0, NX
         do io = 0, NO
-          sum_help(ia, io) = sum(m(io, :, :, ix, :, :, :, :, it))
+          sum_help(ia, io) = sum(m(io, :, :, ia, :, :, :, :, it))
         enddo
       enddo
       ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
@@ -1869,8 +1869,8 @@ contains
       call plot((/(dble(ij), ij=0,NX)/), sum_help(:NX, 1), marker=1)
       call execplot()
 
-      call plot(a, sum_help(:NX, 0), marker=1)
-      call plot(a, sum_help(:NX, 1), marker=1)
+      call plot(x, sum_help(:NX, 0), marker=1)
+      call plot(x, sum_help(:NX, 1), marker=1)
       call execplot()
 
     endif
