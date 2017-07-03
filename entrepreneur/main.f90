@@ -98,7 +98,7 @@ program main
 
   ! simulation parameters
   damp  = 0.5d0
-  tol   = 1d-6
+  tol   = 1d-4
   itermax = 200
 
   ! compute gini
@@ -1849,6 +1849,30 @@ contains
       call plot(a, sum_help(:, 0), marker=1)
       call plot(a, sum_help(:, 1), marker=1)
       call execplot()
+
+      do ia = 0, NX
+        do io = 0, NO
+          sum_help(ia, io) = sum(m(io, :, :, ix, :, :, :, :, it))
+        enddo
+      enddo
+      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
+      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
+      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
+      ! call execplot()
+      !
+      ! call plot(a, sum_help(:, 1), marker=1)
+      ! call plot(a, sum_help(:, 2), marker=1)
+      ! call plot(a, sum_help(:, 3), marker=1)
+      ! call execplot()
+
+      call plot((/(dble(ij), ij=0,NX)/), sum_help(:NX, 0), marker=1)
+      call plot((/(dble(ij), ij=0,NX)/), sum_help(:NX, 1), marker=1)
+      call execplot()
+
+      call plot(a, sum_help(:NX, 0), marker=1)
+      call plot(a, sum_help(:NX, 1), marker=1)
+      call execplot()
+
     endif
 
   end subroutine
