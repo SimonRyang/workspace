@@ -105,7 +105,7 @@ program main
   gini_on = .true.
 
   ! set switches
-  !ann = .true.
+  ann = .true.
   !ent = .false.
 
   ! calculate initial equilibrium
@@ -1826,29 +1826,30 @@ contains
                         sum(reshape(l(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(:, :, :, :, :, :, 3, :JR-1, it)), &
                         sum(reshape(l(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(:, :, :, :, :, :, :, :JR-1, it))
 
-    do ia = 0, NA
-      do io = 0, NO
-        sum_help(ia, io) = sum(m(io, ia, :, :, :, :, :, :, 0))
+    if (it == 0 .OR. it == TT) then
+      do ia = 0, NA
+        do io = 0, NO
+          sum_help(ia, io) = sum(m(io, ia, :, :, :, :, :, :, it))
+        enddo
       enddo
-    enddo
-    ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
-    ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
-    ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
-    ! call execplot()
-    !
-    ! call plot(a, sum_help(:, 1), marker=1)
-    ! call plot(a, sum_help(:, 2), marker=1)
-    ! call plot(a, sum_help(:, 3), marker=1)
-    ! call execplot()
+      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
+      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
+      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
+      ! call execplot()
+      !
+      ! call plot(a, sum_help(:, 1), marker=1)
+      ! call plot(a, sum_help(:, 2), marker=1)
+      ! call plot(a, sum_help(:, 3), marker=1)
+      ! call execplot()
 
-    call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
-    call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
-    call execplot()
+      call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
+      call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
+      call execplot()
 
-    call plot(a, sum_help(:, 0), marker=1)
-    call plot(a, sum_help(:, 1), marker=1)
-    call execplot()
-
+      call plot(a, sum_help(:, 0), marker=1)
+      call plot(a, sum_help(:, 1), marker=1)
+      call execplot()
+    endif
 
   end subroutine
 
