@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 1
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
