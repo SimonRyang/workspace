@@ -105,13 +105,11 @@ program main
   gini_on = .true.
 
   ! set switches
-  ann = .true.
+  !ann = .true.
   !ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
-
-stop
 
   ! set reform parameters
   ann = .true.
