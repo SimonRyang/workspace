@@ -84,8 +84,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 4d0
-  a_grow = 0.06d0
+  a_u    = 8d0
+  a_grow = 0.15d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -110,6 +110,8 @@ program main
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+stop
 
   ! set reform parameters
   !ann = .true.
