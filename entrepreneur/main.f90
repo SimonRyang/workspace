@@ -1831,7 +1831,7 @@ contains
     enddo
     write(*,*)sum_help
     write(*,*)a
-    call plot(sum_help, a)
+    call plot(sum_help, (/(dble(ij), ij=0,NA)/))
     call execplot()
 
   end subroutine
