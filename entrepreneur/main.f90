@@ -1833,9 +1833,9 @@ contains
         sum_help(ia, is) = sum(m(:, ia, :, :, :, :, is, :, 0))
       enddo
     enddo
-    call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1))
-    call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2))
-    call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3))
+    call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
+    call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
+    call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
     call execplot()
 
     call plot(a, sum_help(:, 1))
