@@ -105,13 +105,11 @@ program main
   gini_on = .true.
 
   ! set switches
-  ann = .true.
+  !ann = .true.
   !ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
-
-stop
 
   ! set reform parameters
   ann = .true.
@@ -1424,32 +1422,32 @@ contains
                   do io = 0, NO
 
                     ! do not do anything for an agent at retirement without pension and savings
-                    if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
+                    if(ij >= JR .and. ia == 0 .and. ix == 0 .and. ip == 0)then
                       v(io, ia, ix, ip, iw, ie, is, ij, 1) = 0d0
                       cycle
                     endif
 
                     ! get today's utility
                     VV_today = VV(io, ia, ix, ip, iw, ie, is, ij, 1)
-                    ! if (VV_today >= 0d0)write(*,*)'VV_today', VV_today
-                    ! if (VV_today <= -1d10)write(*,*)'VV_today', VV_today
+                    if (VV_today >= 0d0)write(*,*)'VV_today', VV_today
+                    if (VV_today <= -1d10)write(*,*)'VV_today', VV_today
 
                     ! get target utility
                     VV_target = VV(io, ia, ix, ip, iw, ie, is, ij, 0)
-                    ! if (VV_target >= 0d0)write(*,*)'VV_target', VV_target
-                    ! if (VV_target <= -1d10)write(*,*)'VV_target', VV_target
+                    if (VV_target >= 0d0)write(*,*)'VV_target', VV_target
+                    if (VV_target <= -1d10)write(*,*)'VV_target', VV_target
 
                     ! get derivative of the value function
                     dVV_da = margu(c(io, ia, ix, ip, iw, ie, is, ij, 1), l(io, ia, ix, ip, iw, ie, is, ij, 1), 1)
-                    ! if (dVV_da < 0d0)write(*,*)'dVV_da', dVV_da
+                     if (dVV_da < 0d0)write(*,*)'dVV_da', dVV_da
 
                     ! calculate change in transfers
                     v_tilde = (VV_target-VV_today)/dVV_da
 
                     ! check whether individual is already compensated
-                    lsra_all = lsra_all + m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
+                    lsra_all = lsra_all + m(io, ia, ix, ip, iw, ie, is, ij, 1) !*pop(ij, 1)
                     if(abs((VV_today-VV_target)/VV_target) < tol) &
-                      lsra_comp = lsra_comp + m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
+                      lsra_comp = lsra_comp + m(io, ia, ix, ip, iw, ie, is, ij, 1) !*pop(ij, 1)
 
                     ! calculate total transfer
                     v(io, ia, ix, ip, iw, ie, is, ij, 1) = v(io, ia, ix, ip, iw, ie, is, ij, 1) + damp*v_tilde
@@ -1914,7 +1912,7 @@ contains
               do is = 1, NS
                 do iw = 1, NW
                   do ie = 1, NE
-                    if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
+                    if (ij >= JR .and. ia == 0 .and. ix == 0 .and. ip == 0) then
                       cycle
                     endif
                     HEV_help = ((VV(io, ia, ix, ip, iw, ie, is, ij, 1)/max(VV(io, ia, ix, ip, iw, ie, is, ij, 0), -1d10))**(1d0/(1d0-gamma))-1d0)*100d0
