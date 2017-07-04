@@ -85,7 +85,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 10d0
-  a_grow = 0.16d0
+  a_grow = 0.12d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -1422,7 +1422,7 @@ contains
                 do is = 1, NS
                   do io = 0, NO
 
-                    ! do not do anything for an agent at retirement without pension and savings
+                    ! do not do anything for an agent at retirement without pension, annuitites and savings
                     if(ij >= JR .and. ia == 0 .and. ix == 0 .and. ip == 0)then
                       v(io, ia, ix, ip, iw, ie, is, ij, 1) = 0d0
                       cycle
