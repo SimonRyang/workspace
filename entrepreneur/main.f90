@@ -1326,7 +1326,8 @@ contains
     !call tock(calc)
 
 
-        write(*,*)minval(V(:, :, :, :, :, :, :, :, 0))
+        write(*,*)minval(V(:, :, :, :, :, :, :, :, 0)), minloc(V(:, :, :, :, :, :, :, :, 0))
+        write(*,*)maxval(V(:, :, :, :, :, :, :, :, 0)), maxloc(V(:, :, :, :, :, :, :, :, 0))
 
   end subroutine
 
