@@ -106,7 +106,7 @@ program main
 
   ! set switches
   ann = .true.
-  ent = .false.
+  !ent = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -776,6 +776,7 @@ contains
                     ! get initial guess for the individual choices
                     xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
                     limit = max(1.5d0*a(ia), 1d-8)
 
@@ -1006,103 +1007,6 @@ contains
       !call tock(calc)
 
     enddo
-
-  end subroutine
-
-
-  !##############################################################################
-  ! SUBROUTINE get_investment
-  !
-  ! Calculates the optimal investment decision of an entrepreneur
-  !##############################################################################
-  subroutine get_investment(ia, ie, is, ij, it)
-
-      implicit none
-
-      !##### INPUT/OUTPUT VARIABLES #############################################
-      integer, intent(in) :: ia, ie, is, ij, it
-
-      !##### OTHER VARIABLES ####################################################
-      real*8 :: limit, x, fret
-
-      ! determine credit limit
-      limit = 1.5d0*a(ia)
-
-      ! set up communication variables
-      it_com = it
-      ij_com = ij
-      is_com = is
-      ie_com = ie
-      ia_com = ia
-
-      ! calculate optimal investment
-      if (ia == 0) then
-          k(1, ia, :, :, :, ie, is, :, it) = 0d0
-      else
-          x = limit/4d0
-          call fminsearch(x, fret, 0d0, limit, incent)
-
-          ! check the result
-          if (x > limit) call error('get_investment', 'optimal investment greater than borrowing limit')
-
-          k(1, ia, :, :, :, ie, is, :, it) = x
-      endif
-
-  end subroutine
-
-
-  !##############################################################################
-  ! SUBROUTINE get_decision
-  !
-  ! Calculates the optimal decision of an individual
-  !##############################################################################
-  subroutine get_decision(io, ij, ia, ip, is, iw, ie, it)
-
-      implicit none
-
-      !##### INPUT/OUTPUT VARIABLES #############################################
-      integer, intent(in) :: io, ij, ia, ip, is, iw, ie, it
-
-      !##### OTHER VARIABLES ####################################################
-      real*8 :: x(2), fret
-
-      ! set up communication variables
-      ij_com = ij
-      ia_com = ia
-      ip_com = ip
-      is_com = is
-      iw_com = iw
-      ie_com = ie
-      it_com = it
-      io_com = io
-
-      if (io_com == 0) then
-
-          ! get initial guess for the individual choices
-          x(1) = max(aplus(0, ij, ia, ip, is, iw, ie, it), 1d-4)
-          x(2) = max(l(0, ij, ia, ip, is, iw, ie, it), 1d-4)
-
-          call fminsearch(x, fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
-
-      else
-
-          ! get initial guess for the individual choices
-          x(1) = max(aplus(1, ij, ia, ip, is, iw, ie, it), 1d-4)
-
-          call fminsearch(x(1), fret, a_l, a_u, valuefunc_e)
-
-      endif
-
-      ! copy decisions
-      aplus(io, ij, ia, ip, is, iw, ie, it) = x(1)
-      pplus(io, ij, ia, ip, is, iw, ie, it) = pplus_com
-      c(io, ij, ia, ip, is, iw, ie, it) = max(c_com, 1d-10)
-      l(io, ij, ia, ip, is, iw, ie, it) = l_com
-      oplus(io, ij, ia, ip, is, iw, ie, it) = oplus_com
-      pencon(io, ij, ia, ip, is, iw, ie, it) = pencon_com
-      inctax(io, ij, ia, ip, is, iw, ie, it) = inctax_com
-      captax(io, ij, ia, ip, is, iw, ie, it) = captax_com
-      VV(io, ij, ia, ip, is, iw, ie, it) = -fret
 
   end subroutine
 
