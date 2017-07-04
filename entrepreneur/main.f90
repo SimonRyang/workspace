@@ -776,7 +776,7 @@ contains
                     ! get initial guess for the individual choices
                     xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                    xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
+                    xy(3) = max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
                     limit = max(1.5d0*a(ia), 1d-8)
 
