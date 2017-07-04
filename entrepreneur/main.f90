@@ -1009,6 +1009,10 @@ contains
 
     enddo
 
+
+        write(*,*)minval(VV(0, :, :, :, :, :, :, :, 0)), minloc(VV(0, :, :, :, :, :, :, :, 0))
+        write(*,*)maxval(VV(1, :, :, :, :, :, :, JR:, 0)), maxloc(VV(1, :, :, :, :, :, :, JR:, 0))
+
   end subroutine
 
 
@@ -1326,15 +1330,6 @@ contains
 
     !write(*,*)'Done!'
     !call tock(calc)
-
-
-    write(*,*)minval(VV(:, :, :, :, :, :, :, :, 0)), minloc(VV(:, :, :, :, :, :, :, :, 0))
-    !write(*,*)maxval(VV(:, :, :, :, :, :, :, :, 0)), maxloc(VV(:, :, :, :, :, :, :, :, 0))
-
-    write(*,*)minval(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0)), minloc(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0))
-    !write(*,*)maxval(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0)), maxloc(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0))
-
-    write(*,*)sum(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0))
 
   end subroutine
 
