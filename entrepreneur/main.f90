@@ -1007,6 +1007,8 @@ contains
 
     enddo
 
+    write(*,*)sum(VV(1, 1:, 1:, 1:, :, :, :, 1, 0))
+
   end subroutine
 
 
