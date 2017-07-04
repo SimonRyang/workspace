@@ -98,7 +98,7 @@ program main
 
   ! simulation parameters
   damp  = 0.5d0
-  tol   = 1d-8
+  tol   = 1d-6
   itermax = 200
 
   ! compute gini
