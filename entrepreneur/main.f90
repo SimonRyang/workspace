@@ -1010,7 +1010,7 @@ contains
     enddo
 
 
-        write(*,*)minval(VV(0, :, :, :, :, :, :, :, 0)), minloc(VV(0, :, :, :, :, :, :, :, 0))
+        write(*,*)minval(VV(:, :, :, :, :, :, :, :, 0)), minloc(VV(:, :, :, :, :, :, :, :, 0))
         write(*,*)maxval(VV(1, :, :, :, :, :, :, JR:, 0)), maxloc(VV(1, :, :, :, :, :, :, JR:, 0))
 
   end subroutine
