@@ -85,7 +85,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 12d0
-  a_grow = 0.14d0
+  a_grow = 0.16d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -105,14 +105,12 @@ program main
   gini_on = .true.
 
   ! set switches
-  ann = .true.
+  !ann = .true.
   !ent = .false.
   !show_graphics = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
-
-stop
 
   ! set reform parameters
   ann = .true.
@@ -1866,7 +1864,7 @@ contains
         sum_help = 0d0
         do ix = 0, NX
           do io = 0, NO
-            sum_help(ix, io) = sum(m(io, :, ix, :, :, :, :, :, it))
+            sum_help(ix, io) = sum(m(io, :, ix, :, :, :, :, JR:, it))
           enddo
         enddo
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
