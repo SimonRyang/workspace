@@ -85,7 +85,7 @@ program main
   ! size of the asset grid
   a_l    = 0d0
   a_u    = 10d0
-  a_grow = 0.12d0
+  a_grow = 0.16d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -1327,10 +1327,10 @@ contains
 
 
     write(*,*)minval(VV(:, :, :, :, :, :, :, :, 0)), minloc(VV(:, :, :, :, :, :, :, :, 0))
-    write(*,*)maxval(VV(:, :, :, :, :, :, :, :, 0)), maxloc(VV(:, :, :, :, :, :, :, :, 0))
+    !write(*,*)maxval(VV(:, :, :, :, :, :, :, :, 0)), maxloc(VV(:, :, :, :, :, :, :, :, 0))
 
     write(*,*)minval(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0)), minloc(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0))
-    write(*,*)maxval(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0)), maxloc(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0))
+    !write(*,*)maxval(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0)), maxloc(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0))
 
     write(*,*)sum(VV(1, 1:, 1:, 1:, 1, 1, 1, 1, 0))
 
