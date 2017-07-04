@@ -1236,7 +1236,7 @@ contains
 
                     if (m(io, ia, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(io, ia, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
-                    if(VV(io, ia, ix, ip, iw, ie, is, ij, it) < 1d0-16) write(*,*) VV(io, ia, ix, ip, iw, ie, is, ij, it), io, ia, ix, ip, iw, ie, is, ij, it
+                    if(VV(io, ia, ix, ip, iw, ie, is, ij, it) < 1d-16) write(*,*) VV(io, ia, ix, ip, iw, ie, is, ij, it), io, ia, ix, ip, iw, ie, is, ij, it
 
                     AA(it) = AA(it) + aplus(io, ia, ix, ip, iw, ie, is, ij, itm) &
                                       *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
