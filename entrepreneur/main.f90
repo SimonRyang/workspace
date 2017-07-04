@@ -696,6 +696,8 @@ contains
           enddo ! ip
         enddo ! is
 
+        !$omp end parallel do
+
         if (ent) then
 
           ! set up communication variables
@@ -746,8 +748,6 @@ contains
           !$omp end parallel do
 
         endif
-
-        !$omp end parallel do
 
       elseif (ij == JR-1 .and. ann) then
 
