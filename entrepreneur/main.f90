@@ -89,8 +89,8 @@ program main
 
   ! size of the annuitiy grid
   x_l    = 0d0
-  x_u    = 12d0
-  x_grow = 0.16d0
+  x_u    = 8d0
+  x_grow = 0.12d0
 
   ! size of the pension claim grid
   p_l  = 0d0
@@ -107,6 +107,7 @@ program main
   ! set switches
   ann = .true.
   !ent = .false.
+  !show_graphics = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -1831,54 +1832,55 @@ contains
                         sum(reshape(l(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/))*reshape(m(:, :, :, :, :, :, 3, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*(JR-1)/)))/sum(m(:, :, :, :, :, :, 3, :JR-1, it)), &
                         sum(reshape(l(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(:, :, :, :, :, :, :, :JR-1, it))
 
-    if (it == 0 .OR. it == TT) then
-      do ia = 0, NA
-        do io = 0, NO
-          sum_help(ia, io) = sum(m(io, ia, :, :, :, :, :, :, it))
+    if (show_graphics) then
+      if (it == 0 .OR. it == TT) then
+        do ia = 0, NA
+          do io = 0, NO
+            sum_help(ia, io) = sum(m(io, ia, :, :, :, :, :, :, it))
+          enddo
         enddo
-      enddo
-      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
-      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
-      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
-      ! call execplot()
-      !
-      ! call plot(a, sum_help(:, 1), marker=1)
-      ! call plot(a, sum_help(:, 2), marker=1)
-      ! call plot(a, sum_help(:, 3), marker=1)
-      ! call execplot()
+        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
+        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
+        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
+        ! call execplot()
+        !
+        ! call plot(a, sum_help(:, 1), marker=1)
+        ! call plot(a, sum_help(:, 2), marker=1)
+        ! call plot(a, sum_help(:, 3), marker=1)
+        ! call execplot()
 
-      call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
-      call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
-      call execplot()
+        call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
+        call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
+        call execplot()
 
-      call plot(a, sum_help(:, 0), marker=1)
-      call plot(a, sum_help(:, 1), marker=1)
-      call execplot()
+        call plot(a, sum_help(:, 0), marker=1)
+        call plot(a, sum_help(:, 1), marker=1)
+        call execplot()
 
-      sum_help = 0d0
-      do ix = 0, NX
-        do io = 0, NO
-          sum_help(ix, io) = sum(m(io, :, ix, :, :, :, :, :, it))
+        sum_help = 0d0
+        do ix = 0, NX
+          do io = 0, NO
+            sum_help(ix, io) = sum(m(io, :, ix, :, :, :, :, :, it))
+          enddo
         enddo
-      enddo
-      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
-      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
-      ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
-      ! call execplot()
-      !
-      ! call plot(a, sum_help(:, 1), marker=1)
-      ! call plot(a, sum_help(:, 2), marker=1)
-      ! call plot(a, sum_help(:, 3), marker=1)
-      ! call execplot()
+        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
+        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
+        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
+        ! call execplot()
+        !
+        ! call plot(a, sum_help(:, 1), marker=1)
+        ! call plot(a, sum_help(:, 2), marker=1)
+        ! call plot(a, sum_help(:, 3), marker=1)
+        ! call execplot()
 
-      call plot((/(dble(ix), ix=0,NX)/), sum_help(:NX, 0), marker=1)
-      call plot((/(dble(ix), ix=0,NX)/), sum_help(:NX, 1), marker=1)
-      call execplot()
+        call plot((/(dble(ix), ix=0,NX)/), sum_help(:NX, 0), marker=1)
+        call plot((/(dble(ix), ix=0,NX)/), sum_help(:NX, 1), marker=1)
+        call execplot()
 
-      call plot(x, sum_help(:NX, 0), marker=1)
-      call plot(x, sum_help(:NX, 1), marker=1)
-      call execplot()
-
+        call plot(x, sum_help(:NX, 0), marker=1)
+        call plot(x, sum_help(:NX, 1), marker=1)
+        call execplot()
+      endif
     endif
 
   end subroutine
