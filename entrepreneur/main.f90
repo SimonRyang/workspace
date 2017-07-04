@@ -329,6 +329,10 @@ contains
                 do ia = 0, NA
                   aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1))
                   aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1))
+                  if (ij == JR-1 .and. ann) then
+                    mx(0, ia, ix, ip, iw, ie, is, ij, 0) = max(x(ix)/2d0, x(1))
+                    mx(1, ia, ix, ip, iw, ie, is, ij, 0) = max(x(ix)/2d0, x(1))
+                  endif
                 enddo ! ia
               enddo ! ix
             enddo ! ip
