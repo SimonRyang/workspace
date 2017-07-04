@@ -450,7 +450,7 @@ contains
 
       ! calculate contribution to pension system
       if (ij_com < JR) then
-          pencon = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_bar(it_com))
+          pencon = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_pen(it_com))
       else
           pencon = 0d0
       endif
