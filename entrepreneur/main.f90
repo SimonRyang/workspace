@@ -1325,6 +1325,9 @@ contains
     !write(*,*)'Done!'
     !call tock(calc)
 
+
+        write(*,*)minval(V(:, :, :, :, :, :, :, :, 0))
+
   end subroutine
 
 
