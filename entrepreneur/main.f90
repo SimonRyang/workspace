@@ -1072,7 +1072,6 @@ contains
     !##### OTHER VARIABLES ####################################################
     integer :: io, ia, ix, ip, iw, ie, is, ij, &
                io_p, iw_p, ie_p, ial, iar, ixr, ixl, ipl, ipr, itm
-    integer :: io_pl
     real*8 :: varpsi, varchi, varphi
 
     ! get yesterdays year
@@ -1121,35 +1120,23 @@ contains
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
 
-
-                    if ((interpolate_EV(0, a(ial), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm) &
-                        > interpolate_EV(1, a(ial), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)) &
-                        .and. &
-                        (interpolate_EV(0, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm) &
-                        < interpolate_EV(1, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm))) then
-                        io_pl = 1
-                        io_p = 0
-                        ! write(*,*) io, ia, ix, ip, iw, ie, is, ij-1, itm
-                        ! write(*,*) aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm)
-                    endif
-
                     ! redistribute households
                     do ie_p = 1, NE
                       do iw_p = 1, NW
-                        m(io_pl, ial, ixl, ipl, iw_p, ie_p, is, ij, it) = &
-                           m(io_pl, ial, ixl, ipl, iw_p, ie_p, is, ij, it) &
+                        m(io_p, ial, ixl, ipl, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, ial, ixl, ipl, iw_p, ie_p, is, ij, it) &
                            +varphi*varchi*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)&
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
-                        m(io_pl, ial, ixl, ipr, iw_p, ie_p, is, ij, it) = &
-                           m(io_pl, ial, ixl, ipr, iw_p, ie_p, is, ij, it) &
+                        m(io_p, ial, ixl, ipr, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, ial, ixl, ipr, iw_p, ie_p, is, ij, it) &
                            +varphi*varchi*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
-                        m(io_pl, ial, ixr, ipl, iw_p, ie_p, is, ij, it) = &
-                           m(io_pl, ial, ixr, ipl, iw_p, ie_p, is, ij, it) &
+                        m(io_p, ial, ixr, ipl, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, ial, ixr, ipl, iw_p, ie_p, is, ij, it) &
                            +varphi*(1d0-varchi)*varpsi*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)&
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
-                        m(io_pl, ial, ixr, ipr, iw_p, ie_p, is, ij, it) = &
-                           m(io_pl, ial, ixr, ipr, iw_p, ie_p, is, ij, it) &
+                        m(io_p, ial, ixr, ipr, iw_p, ie_p, is, ij, it) = &
+                           m(io_p, ial, ixr, ipr, iw_p, ie_p, is, ij, it) &
                            +varphi*(1d0-varchi)*(1d0-varpsi)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is) &
                            *psi(is, ij)*m(io, ia, ix, ip, iw, ie, is, ij-1, itm)/(1d0+n_p)
                         m(io_p, iar, ixl, ipl, iw_p, ie_p, is, ij, it) = &
