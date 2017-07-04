@@ -1011,6 +1011,47 @@ contains
 
 
   !##############################################################################
+  ! SUBROUTINE get_investment
+  !
+  ! Calculates the optimal investment decision of an entrepreneur
+  !##############################################################################
+  subroutine get_investment(ia, ie, is, ie, ij, it)
+
+      implicit none
+
+      !##### INPUT/OUTPUT VARIABLES #############################################
+      integer, intent(in) :: ia, ie, is, ie, ij, it
+
+      !##### OTHER VARIABLES ####################################################
+      real*8 :: limit, x, fret
+
+      ! determine credit limit
+      limit = 1.5d0*a(ia)
+
+      ! set up communication variables
+      it_com = it
+      ij_com = ij
+      is_com = is
+      ie_com = ie
+      ia_com = ia
+
+      ! calculate optimal investment
+      if (ia == 0) then
+          k(1, ia, :, :, :, ie, is, :, it) = 0d0
+      else
+          x = limit/4d0
+          call fminsearch(x, fret, 0d0, limit, incent)
+
+          ! check the result
+          if (x > limit) call error('get_investment', 'optimal investment greater than borrowing limit')
+
+          k(1, ia, :, :, :, ie, is, :, it) = x
+      endif
+
+  end subroutine
+
+
+  !##############################################################################
   ! SUBROUTINE interpolate
   !
   ! Calculates the expected valuefunction of cohort ij at time it
