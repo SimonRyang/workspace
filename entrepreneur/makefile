@@ -10,7 +10,6 @@ TARGET = prog
 all: $(TARGET)
 	clear
 	./$(TARGET)
-	-rm -f globals.mod
 
 $(TARGET): $(MAINFILE).o $(LIBS)
 	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET)
@@ -33,5 +32,4 @@ $(MAINFILE).o: globals.mod $(MAINFILE).f90
 	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
 clean:
-	-rm -f globals.mod
-	-rm -f globasl.o main.o
+	-rm -f main.o

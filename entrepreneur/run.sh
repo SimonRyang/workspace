@@ -11,8 +11,8 @@ git pull origin master
 cd ~/workspace/include/
 cp * ~/workspace/entrepreneur/
 cd ~/workspace/entrepreneur/
-rm *.o
-rm *.mod
+rm globals.o
+rm globals.mod
 exit
 EOF
 
