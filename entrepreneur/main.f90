@@ -1120,7 +1120,7 @@ contains
                         .and. &
                         (interpolate_EV(0, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm) &
                         < interpolate_EV(1, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm))) then
-                        write(*,*)'Test!'
+                        write(*,*) io, ia, ix, ip, iw, ie, is, ij-1, itm
                     endif
 
                     ! this year's occupation
