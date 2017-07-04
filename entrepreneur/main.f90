@@ -320,6 +320,8 @@ contains
     call grid_Cons_Equi(p, p_l, p_u)
 
     ! get initial guess for savings decision
+    aplus(:, :; :, :, :, :, :, :, 0) = 0d0
+    mx(:, :; :, :, :, :, :, :, 0) = 0d0
     do ij = 1, JJ
       do is = 1, NS
         do ie = 1, NE
@@ -330,8 +332,8 @@ contains
                   aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1))
                   aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1))
                   if (ij == JR-1 .and. ann) then
-                    mx(0, ia, ix, ip, iw, ie, is, ij, 0) = max(x(ix)/2d0, x(1))
-                    mx(1, ia, ix, ip, iw, ie, is, ij, 0) = max(x(ix)/2d0, x(1))
+                    mx(0, ia, ix, ip, iw, ie, is, ij, 0) = x(1)
+                    mx(1, ia, ix, ip, iw, ie, is, ij, 0) = x(1)
                   endif
                 enddo ! ia
               enddo ! ix
