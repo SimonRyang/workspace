@@ -320,8 +320,8 @@ contains
     call grid_Cons_Equi(p, p_l, p_u)
 
     ! get initial guess for savings decision
-    aplus(:, :; :, :, :, :, :, :, 0) = 0d0
-    mx(:, :; :, :, :, :, :, :, 0) = 0d0
+    aplus(:, :, :, :, :, :, :, :, 0) = 0d0
+    mx(:, :, :, :, :, :, :, :, 0) = 0d0
     do ij = 1, JJ
       do is = 1, NS
         do ie = 1, NE
