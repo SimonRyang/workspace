@@ -98,7 +98,7 @@ program main
 
   ! simulation parameters
   damp  = 0.5d0
-  tol   = 1d-6
+  tol   = 1d-8
   itermax = 200
 
   ! compute gini
@@ -107,10 +107,11 @@ program main
   ! set switches
   !ann = .true.
   !ent = .false.
-  !show_graphics = .false.
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+stop
 
   ! set reform parameters
   ann = .true.
@@ -1423,30 +1424,30 @@ contains
                   do io = 0, NO
 
                     ! do not do anything for an agent at retirement without pension and savings
-                    if(ij >= JR .and. ia == 0 .and. ix == 0 .and. ip == 0)then
+                    if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
                       v(io, ia, ix, ip, iw, ie, is, ij, 1) = 0d0
                       cycle
                     endif
 
                     ! get today's utility
                     VV_today = VV(io, ia, ix, ip, iw, ie, is, ij, 1)
-                    if (VV_today >= 0d0)write(*,*)'VV_today', VV_today
-                    if (VV_today <= -1d10)write(*,*)'VV_today', VV_today
+                    ! if (VV_today >= 0d0)write(*,*)'VV_today', VV_today
+                    ! if (VV_today <= -1d10)write(*,*)'VV_today', VV_today
 
                     ! get target utility
                     VV_target = VV(io, ia, ix, ip, iw, ie, is, ij, 0)
-                     if (VV_target >= 0d0)write(*,*)'VV_target', VV_target
-                     if (VV_target <= -1d10)write(*,*)'VV_target', VV_target
+                    ! if (VV_target >= 0d0)write(*,*)'VV_target', VV_target
+                    ! if (VV_target <= -1d10)write(*,*)'VV_target', VV_target
 
                     ! get derivative of the value function
                     dVV_da = margu(c(io, ia, ix, ip, iw, ie, is, ij, 1), l(io, ia, ix, ip, iw, ie, is, ij, 1), 1)
-                    if (dVV_da < 0d0)write(*,*)'dVV_da', dVV_da
+                    ! if (dVV_da < 0d0)write(*,*)'dVV_da', dVV_da
 
                     ! calculate change in transfers
                     v_tilde = (VV_target-VV_today)/dVV_da
 
                     ! check whether individual is already compensated
-                    lsra_all = lsra_all + m(io, ia, ix, ip, iw, ie, is, ij, 1) !*pop(ij, 1)
+                    lsra_all = lsra_all + m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
                     if(abs((VV_today-VV_target)/VV_target) < tol) &
                       lsra_comp = lsra_comp + m(io, ia, ix, ip, iw, ie, is, ij, 1)*pop(ij, 1)
 
@@ -1858,7 +1859,7 @@ contains
         sum_help = 0d0
         do ix = 0, NX
           do io = 0, NO
-            sum_help(ix, io) = sum(m(io, :, ix, :, :, :, :, JR:, it))
+            sum_help(ix, io) = sum(m(io, :, ix, :, :, :, :, :, it))
           enddo
         enddo
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
@@ -1878,7 +1879,9 @@ contains
         call plot(x, sum_help(:NX, 0), marker=1)
         call plot(x, sum_help(:NX, 1), marker=1)
         call execplot()
+
       endif
+
     endif
 
   end subroutine
@@ -1911,7 +1914,7 @@ contains
               do is = 1, NS
                 do iw = 1, NW
                   do ie = 1, NE
-                    if(ij >= JR .and. ia == 0 .and. ix == 0 .and. ip == 0)then
+                    if(ij >= JR .and. ia == 0 .and. (pen(ip, ij, 0) <= 1d-10 .or. pen(ip, ij, 1) <= 1d-10))then
                       cycle
                     endif
                     HEV_help = ((VV(io, ia, ix, ip, iw, ie, is, ij, 1)/max(VV(io, ia, ix, ip, iw, ie, is, ij, 0), -1d10))**(1d0/(1d0-gamma))-1d0)*100d0
