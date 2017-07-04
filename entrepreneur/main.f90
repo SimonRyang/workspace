@@ -1115,6 +1115,14 @@ contains
                     call linint_Equi(pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
                                        p_l, p_u, NP, ipl, ipr, varpsi)
 
+                    if ((interpolate_EV(0, a(ial), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm) &
+                        > interpolate_EV(1, a(ial), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)) &
+                        .and. &
+                        (interpolate_EV(0, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm) &
+                        < interpolate_EV(1, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm))) then
+                        write(*,*)'Test!'
+                    endif
+
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
 
