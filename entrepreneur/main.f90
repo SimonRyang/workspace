@@ -421,6 +421,11 @@ contains
     call discretize_AR(0.9450d0**5d0, -0.150d0, sigma5(0.9450d0, 0.0390d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
+    call plot(theta(:, 1), dist_theta(:, 1))
+    call plot(theta(:, 2), dist_theta(:, 2))
+    call plot(theta(:, 3), dist_theta(:, 3))
+    call execplot
+
     ! initial guesses for macro variables
     taup(0) = 0.192d0
     tauc(0) = 0.176d0
