@@ -191,7 +191,7 @@ contains
     captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.08d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_tax(0), 0d0)
 
     if ((wage + pen(ip_com, ij_com, it_com)- pencon_com - inctax_com) <= 0d0) write(*,*) wage, pen(ip_com, ij_com, it_com), pencon_com, inctax_com
-    if ((r(it_com)*a(ia_com) - captax_com) <= 0d0) write(*,*) r(it_com)*a(ia_com), captax
+    if ((r(it_com)*a(ia_com) - captax_com) < 0d0) write(*,*) r(it_com)*a(ia_com), captax
 
     ! calculate consumption
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
