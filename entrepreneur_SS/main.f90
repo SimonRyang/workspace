@@ -953,12 +953,12 @@ contains
                     KE = KE + k(io, ia, ip, iw, ie, is, ij)*m(io, ia, ip, iw, ie, is, ij)
                     YE = YE + theta(ie, is)*(k(io, ia, ip, iw, ie, is, ij)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                               *m(io, ia, ip, iw, ie, is, ij)
-                    if (ij < JR) PC = PC + phi*min(profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, iw, ie), sscc*inc_pen) &
+                    if (ij < JR) PC = PC + phi*min(profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, ie), sscc*inc_pen) &
                               *m(io, ia, ip, iw, ie, is, ij)
-                    PE = PE + profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, iw, ie) &
+                    PE = PE + profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, ie) &
                               *m(io, ia, ip, iw, ie, is, ij)
                     if (ij >= JR) then
-                      PRE = PRE + profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, iw, ie) &
+                      PRE = PRE + profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, ie) &
                                 *m(io, ia, ip, iw, ie, is, ij)
                     endif
                   endif
@@ -1101,7 +1101,7 @@ contains
                   if (io == 1) then
                     k_coh(ij) = k_coh(ij) + k(io, ia, ip, iw, ie, is, ij) &
                                     *m(io, ia, ip, iw, ie, is, ij)
-                    inc_coh(io, ij) = inc_coh(io, ij) + profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, iw, ie) &
+                    inc_coh(io, ij) = inc_coh(io, ij) + profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, ie) &
                                           *m(io, ia, ip, iw, ie, is, ij)
                   else
                     inc_coh(io, ij) = inc_coh(io, ij) + w*eff(ij, is)*eta(iw, is)*l(io, ia, ip, iw, ie, is, ij) &
