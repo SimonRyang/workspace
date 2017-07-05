@@ -1257,7 +1257,8 @@ contains
                       KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ia, ie, is, ij, it), sscc(it)*inc_pen(it)) &
+                      if (ij < JR) PC(it) = PC(it) + (phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ia, ie, is, ij, it), sscc(it)*inc_pen(it)) &
+                                                   + (1d0-phi(it))*0.05d0*inc_pen(it)) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       PE(it) = PE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ia, ie, is, ij, it) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
