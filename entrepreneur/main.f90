@@ -1640,6 +1640,8 @@ contains
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) io, ia, ix, ip, iw, ie, is, ij, it
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) k(io, ia, ip, ix, iw, ie, is, ij, it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) pen(ip, ij, it)
                     endif
 
                     netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
