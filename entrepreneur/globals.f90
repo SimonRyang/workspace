@@ -305,9 +305,8 @@ contains
     ! calcualte capital gains tax
     captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 0.08d0*r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
 
-    if ((profit + pen(ip_com, ij_com, it_com) - pencon_com - inctax_com) <= 0d0) write(*,*) profit, pen(ip_com, ij_com, it_com), pencon_com, inctax_com
-    if ((r(it_com)*max(a(ia_com)-k_com, 0d0) - captax_com) < 0d0) write(*,*) r(it_com)*max(a(ia_com)-k_com, 0d0), captax
-
+    if ((profit + pen(ip_com, ij_com, it_com) - pencon_com - inctax_com) < 0d0) write(*,*)'profit:', profit, pen(ip_com, ij_com, it_com), pencon_com, inctax_com
+    if ((r(it_com)*max(a(ia_com)-k_com, 0d0) - captax_com) < 0d0) write(*,*)'capital gains:', r(it_com)*max(a(ia_com)-k_com, 0d0), captax
 
     ! calculate consumption
     c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
