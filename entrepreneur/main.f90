@@ -1641,7 +1641,12 @@ contains
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) a(ia)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) k(io, ia, ip, ix, iw, ie, is, ij, it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) theta(ie, is)*(k(io, ia, ip, ix, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) delta*k(io, ia, ip, ix, iw, ie, is, ij, it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) r(it)*max(k(io, ia, ip, ix, iw, ie, is, ij, it)-a(ia), 0d0)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(a(ia), ij, ia, is, ie, it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) theta(ie, is)*(a(ia)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) delta*a(ia)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) pen(ip, ij, it)
                     endif
