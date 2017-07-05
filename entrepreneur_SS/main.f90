@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 4
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
   real*8 :: mu_val(NS, 5), sig_val(NS, 5), rho_val(NS, 5)
@@ -78,8 +78,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 32d0
-  a_grow = 0.6d0
+  a_u    = 10d0
+  a_grow = 0.12d0
 
   ! size of the pension claim grid
   p_l  = 0d0
@@ -87,8 +87,8 @@ program main
 
   ! simulation parameters
   damp  = 0.50d0
-  tol   = 1d-2
-  itermax = 10
+  tol   = 1d-6
+  itermax = 200
 
   ! compute gini
   gini_on = .true.
@@ -118,15 +118,15 @@ program main
 
   open(307, file='results.out')
 
-  do m1 = 1, 5
-    do m2 = 1, 5
-      do m3 = 1, 5
-        do s1 = 1, 5
-          do s2 = 1, 5
-            do s3 = 1, 5
-              do rh1 = 1, 5
-                do rh2 = 1, 5
-                  do rh3 = 1, 5
+  do m1 = 1, 1
+    do m2 = 1, 1
+      do m3 = 3, 3
+        do s1 = 2, 2
+          do s2 = 4, 4
+            do s3 = 2, 2
+              do rh1 = 2, 2
+                do rh2 = 4, 4
+                  do rh3 = 5, 5
 
                     write(*,*) m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
                     write(*,*) mu_val(1,m1), mu_val(2,m2), mu_val(3,m3), sig_val(1,s1), sig_val(2,s2), sig_val(3,s3), rho_val(1,rh1), rho_val(2,rh2), rho_val(3,rh3)
