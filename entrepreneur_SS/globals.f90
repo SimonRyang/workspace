@@ -12,7 +12,7 @@ module globals
   integer, parameter :: JR = 10
 
   ! number of years a household can be an entrepreneur (+1)
-  integer, parameter :: JE = 10
+  integer, parameter :: JE = 13
 
   ! number of permanent skill classes
   integer, parameter :: NS = 3

@@ -46,7 +46,7 @@ program main
   gamma = 1d0/gamma
   sigma  =   0.320d0
   mu_b   = -0.180d0
-  beta   =  0.99d0
+  beta   =  0.990d0
   ! convert variables into per period values
   beta = beta**5d0
 
@@ -824,7 +824,7 @@ contains
     do is = 1, NS
       do ie = 1, NE
         do iw = 1, NW
-          m(0, 0, 0, 4, 4, is, 1) = dist_skill(is) !dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
+          m(0, 0, 0, 3, 3, is, 1) = dist_skill(is) !dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
         enddo ! iw
       enddo ! ie
     enddo ! is

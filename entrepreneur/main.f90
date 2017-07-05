@@ -1423,7 +1423,10 @@ contains
                 do is = 1, NS
                   do io = 0, NO
 
-                    if (m(io, ia, ix, ip, iw, ie, is, ij, 1) <= 0d0) cycle
+                    if (m(io, ia, ix, ip, iw, ie, is, ij, 1) <= 0d0) then
+                      v(io, ia, ix, ip, iw, ie, is, ij, 1) = 0d0
+                      cycle
+                    endif
 
                     ! do not do anything for an agent at retirement without pension and savings
                     if(ij >= JR .and. ia == 0 .and. ix == 0 .and. ip == 0)then
