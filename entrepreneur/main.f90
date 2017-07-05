@@ -1257,12 +1257,12 @@ contains
                       KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it), sscc(it)*inc_pen(it)) &
+                      if (ij < JR) PC(it) = PC(it) + phi(it)*min(profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ia, ie, is, ij, it), sscc(it)*inc_pen(it)) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      PE(it) = PE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
+                      PE(it) = PE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ia, ie, is, ij, it) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       if (ij >= JR) then
-                        PRE(it) = PRE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
+                        PRE(it) = PRE(it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ia, ie, is, ij, it) &
                                   *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       endif
                     endif
@@ -1618,7 +1618,7 @@ contains
                     if (io == 1) then
                       k_coh(ij, it) = k_coh(ij, it) + k(io, ia, ix, ip, iw, ie, is, ij, it) &
                                       *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      inc_coh(io, ij, it) = inc_coh(io, ij, it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ij, ia, is, ie, it) &
+                      inc_coh(io, ij, it) = inc_coh(io, ij, it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ia, ie, is, ij, it) &
                                             *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
                       inc_coh(io, ij, it) = inc_coh(io, ij, it) + w(it)*eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
@@ -1632,7 +1632,7 @@ contains
                     if (io == 0) then
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it)*w(it)
                     else
-                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ia, ie, is, ij, it)
                     endif
 
                     if (ij < 6) then
@@ -1640,15 +1640,14 @@ contains
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) io, ia, ix, ip, iw, ie, is, ij, it
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) a(ia)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) k(io, ia, ip, ix, iw, ie, is, ij, it)
-                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ia, ie, is, ij, it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) theta(ie, is)*(k(io, ia, ip, ix, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) delta*k(io, ia, ip, ix, iw, ie, is, ij, it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) r(it)*max(k(io, ia, ip, ix, iw, ie, is, ij, it)-a(ia), 0d0)
-                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(a(ia), ij, ia, is, ie, it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(a(ia), ia, ie, is, ij, it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) theta(ie, is)*(a(ia)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) delta*a(ia)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it)
-                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) pen(ip, ij, it)
                     endif
 
                     netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
