@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
+  integer, parameter :: numthreads = 14
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -1635,8 +1635,11 @@ contains
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
                     endif
 
-                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) <= 0d0) write(*,*) 'grossinc:', grossinc(io, ia, ix, ip, iw, ie, is, ij), io, ia, ix, ip, iw, ie, is, ij
-                    
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) 'grossinc:', grossinc(io, ia, ix, ip, iw, ie, is, ij)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) io, ia, ix, ip, iw, ie, is, ij, it
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) k(io, ia, ip, ix, iw, ie, is, ij, it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
+
                     netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
                     wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia)! + beq(is, ij, it)
 
