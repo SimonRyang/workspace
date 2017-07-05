@@ -345,17 +345,17 @@ contains
   !
   ! Computes profit of an entrepreneur
   !##############################################################################
-  function profent(k, ij, ia, is, ie)
+  function profent(k, ij, ia, is, iw, ie)
 
     implicit none
 
     !##### INPUT/OUTPUT VARIABLES #############################################
     real*8, intent(in) :: k
-    integer, intent(in) :: ij, ia, is, ie
+    integer, intent(in) :: ij, ia, is, iw, ie
     real*8 :: profent
 
     ! compute profit
-    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r*max(k-a(ia), 0d0)
+    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*eta(iw, is)*l_bar)**(1d0-alpha))**nu - delta*k - r*max(k-a(ia), 0d0)
 
   end function
 
@@ -674,7 +674,7 @@ contains
                 if(m(1, ia, ip, iw, ie, is, ij) > 0d0) then
                   ys(ic) = m(1, ia, ip, iw, ie, is, ij)
                   xs(ic) = max(a(ia)-k(1, ia, ip, iw, ie, is, ij), 0d0)*r + pen(ip, ij) &
-                           + profent(k(1, ia, ip, iw, ie, is, ij), ij, ia, is, ie)
+                           + profent(k(1, ia, ip, iw, ie, is, ij), ij, ia, is, iw, ie)
                   ic = ic + 1
                 endif
 
