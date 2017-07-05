@@ -58,7 +58,7 @@ program main
 
   ! production parameters
   alpha = 0.36d0
-  delta = 0d0 ! 0.06d0
+  delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
   ! convert variables into per period values
@@ -1641,6 +1641,7 @@ contains
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) a(ia)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) k(io, ia, ip, ix, iw, ie, is, ij, it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ij, ia, is, ie, it)
+                    if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) profent(a(ia), ij, ia, is, ie, it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it)
                     if (grossinc(io, ia, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) pen(ip, ij, it)
                     endif

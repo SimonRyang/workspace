@@ -485,7 +485,7 @@ contains
     real*8 :: profent
 
     ! compute profit
-    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k
+    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r(it)*max(k-a(ia), 0d0)
 
   end function
 
