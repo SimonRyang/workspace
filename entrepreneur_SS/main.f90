@@ -87,8 +87,8 @@ program main
 
   ! simulation parameters
   damp  = 0.50d0
-  tol   = 1d-6
-  itermax = 200
+  tol   = 1d-4
+  itermax = 20
 
   ! compute gini
   gini_on = .true.
