@@ -421,6 +421,11 @@ contains
     call discretize_AR(0.9450d0**5d0, -0.150d0, sigma5(0.9450d0, 0.0390d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
     theta(:, 3) = exp(theta(:, 3))!/sum(dist_theta(:, 3)*exp(theta(:, 3)))
 
+    write(*,*) pi_theta(:, :, 1)
+    write(*,*) pi_theta(:, :, 2)
+    write(*,*) pi_theta(:, :, 3)
+
+
     call plot(theta(:, 1), dist_theta(:, 1))
     call plot(theta(:, 2), dist_theta(:, 2))
     call plot(theta(:, 3), dist_theta(:, 3))
