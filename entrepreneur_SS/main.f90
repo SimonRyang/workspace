@@ -822,9 +822,9 @@ contains
 
     ! get initial distribution at age 1
     do is = 1, NS
-      do ie = 1, NE
+      do ie = 2, NE-1
         do iw = 1, NW
-          m(0, 0, 0, iw, ie, is, 1) = dist_skill(is)*dist_eta(iw, is)*dist_theta(ie, is) !dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
+          m(0, 0, 0, iw, ie, is, 1) = dist_skill(is)*dist_eta(iw, is)*dist_theta(ie, is)/sum(dist_theta(2:4, is)) !dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
         enddo ! iw
       enddo ! ie
     enddo ! is
