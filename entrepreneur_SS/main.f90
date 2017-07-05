@@ -8,10 +8,10 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 4
+  integer, parameter :: numthreads = 14
   integer :: ij
   real*8 :: shares_target(JJ, NS), shares_result(JJ, NS), share_target, share_result
-  real*8 :: mu_val(NS, 5), sig_val(NS, 5), rho_val(NS, 5)
+  real*8 :: mu_val(NS, 3), sig_val(NS, 3), rho_val(NS, 3)
   integer :: s1, s2, s3, m1, m2, m3, rh1, rh2, rh3
 
   ! allocate arrays
@@ -106,27 +106,27 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(1, :) =  (/0.600d0, 0.595d0, 0.605d0, 0.590d0, 0.610d0/)
-  mu_val(2, :) =  (/0.550d0, 0.545d0, 0.565d0, 0.540d0, 0.560d0/)
-  mu_val(3, :) =  (/0.300d0, 0.295d0, 0.305d0, 0.290d0, 0.310d0/)
-  sig_val(1, :) = (/0.0370d0, 0.0365d0, 0.0375d0, 0.0360d0, 0.0380d0/)
-  sig_val(2, :) = (/0.0380d0, 0.0375d0, 0.0385d0, 0.0370d0, 0.0390d0/)
-  sig_val(3, :) = (/0.0395d0, 0.0390d0, 0.0400d0, 0.0385d0, 0.0405d0/)
-  rho_val(1, :) = (/0.940d0, 0.939d0, 0.941d0, 0.936d0, 0.944d0/)
-  rho_val(2, :) = (/0.940d0, 0.939d0, 0.941d0, 0.936d0, 0.944d0/)
-  rho_val(3, :) = (/0.941d0, 0.940d0, 0.942d0, 0.937d0, 0.945d0/)
+  mu_val(1, :) =  (/0.600d0, 0.400d0, 0.200d0/)
+  mu_val(2, :) =  (/0.500d0, 0.300d0, 0.100d0/)
+  mu_val(3, :) =  (/0.300d0, 0.150d0, 0.000d0/)
+  sig_val(1, :) = (/0.0300d0, 0.0450d0, 0.0600d0/)
+  sig_val(2, :) = (/0.0300d0, 0.0450d0, 0.0600d0/)
+  sig_val(3, :) = (/0.0300d0, 0.0450d0, 0.0600d0/)
+  rho_val(1, :) = (/0.950d0, 0.850d0, 0.750d0/)
+  rho_val(2, :) = (/0.950d0, 0.850d0, 0.750d0/)
+  rho_val(3, :) = (/0.950d0, 0.850d0, 0.750d0/)
 
   open(307, file='results.out')
 
-  do m1 = 1, 1
-    do m2 = 1, 1
-      do m3 = 3, 3
-        do s1 = 2, 2
-          do s2 = 4, 4
-            do s3 = 2, 2
-              do rh1 = 2, 2
-                do rh2 = 4, 4
-                  do rh3 = 5, 5
+  do m1 = 1, 3
+    do m2 = 1, 3
+      do m3 = 1, 3
+        do s1 = 1, 3
+          do s2 = 1, 3
+            do s3 = 1, 3
+              do rh1 = 1, 3
+                do rh2 = 1, 3
+                  do rh3 = 1, 3
 
                     write(*,*) m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
                     write(*,*) mu_val(1,m1), mu_val(2,m2), mu_val(3,m3), sig_val(1,s1), sig_val(2,s2), sig_val(3,s3), rho_val(1,rh1), rho_val(2,rh2), rho_val(3,rh3)
