@@ -12,7 +12,7 @@ module globals
   integer, parameter :: JR = 46
 
   ! number of years a household can be an entrepreneur (+1)
-  integer, parameter :: JE = 46
+  integer, parameter :: JE = 58
 
   ! number of transition periods
   integer, parameter :: TT = 48
@@ -21,19 +21,19 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of transitory shock process values (worker)
-  integer, parameter :: NW = 7
+  integer, parameter :: NW = 5
 
   ! number of transitory shock process values (entrepreneur)
-  integer, parameter :: NE = 7
+  integer, parameter :: NE = 5
 
   ! number of points on the asset grid (-1)
-  integer, parameter :: NA = 128
+  integer, parameter :: NA = 32
 
   ! number of points on the annuitized asset grid (-1)
   integer, parameter :: NX = 2
 
   ! number of points on the pension claim grid (-1)
-  integer, parameter :: NP = 10
+  integer, parameter :: NP = 5
 
   ! number of occupations (-1)
   integer, parameter :: NO = 1
