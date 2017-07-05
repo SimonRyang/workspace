@@ -1429,17 +1429,17 @@ contains
 
                     ! get today's utility
                     VV_today = VV(io, ia, ix, ip, iw, ie, is, ij, 1)
-                    if (VV_today >= 0d0)write(*,*)'VV_today', VV_today
-                    if (VV_today <= -1d10)write(*,*)'VV_today', VV_today
+                    if (VV_today >= 0d0)write(*,*)'VV_today', VV_today, io, ia, ix, ip, iw, ie, is, ij
+                    if (VV_today <= -1d10)write(*,*)'VV_today', VV_today, io, ia, ix, ip, iw, ie, is, ij
 
                     ! get target utility
                     VV_target = VV(io, ia, ix, ip, iw, ie, is, ij, 0)
-                    if (VV_target >= 0d0)write(*,*)'VV_target', VV_target
-                    if (VV_target <= -1d10)write(*,*)'VV_target', VV_target
+                    if (VV_target >= 0d0)write(*,*)'VV_target', VV_target, io, ia, ix, ip, iw, ie, is, ij
+                    if (VV_target <= -1d10)write(*,*)'VV_target', VV_target, io, ia, ix, ip, iw, ie, is, ij
 
                     ! get derivative of the value function
                     dVV_da = margu(c(io, ia, ix, ip, iw, ie, is, ij, 1), l(io, ia, ix, ip, iw, ie, is, ij, 1), 1)
-                     if (dVV_da < 0d0)write(*,*)'dVV_da', dVV_da
+                     if (dVV_da < 0d0)write(*,*)'dVV_da', dVV_da, io, ia, ix, ip, iw, ie, is, ij
 
                     ! calculate change in transfers
                     v_tilde = (VV_target-VV_today)/dVV_da
