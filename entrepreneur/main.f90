@@ -1850,6 +1850,7 @@ contains
           enddo
         enddo
 
+        write(*,*)sum(m(:, :, :, :, :, :, :, :, it))
         write(*,*)sum(m(1, :, :, :, :, :, :, :, it))
         write(*,*)sum(sum_help(1, :, :))
         write(*,*)sum(m(1, NA, :, :, :, :, :, :, it))
