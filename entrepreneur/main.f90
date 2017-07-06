@@ -109,6 +109,8 @@ program main
   ! set switches
   !ann = .true.
   !ent = .false.
+  labor = .false.
+  l = l_bar
 
   ! calculate initial equilibrium
   call get_SteadyState()
