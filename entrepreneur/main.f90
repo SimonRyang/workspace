@@ -85,9 +85,9 @@ program main
   by = by/5d0
 
   ! size of the asset grid
-  a_l    = 0d0
-  a_u    = 8d0
-  a_grow = 0.10d0
+  a_l(is)    = 0d0
+  a_u(is)    = 8d0
+  a_grow(is) = 0.10d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -313,7 +313,9 @@ contains
     write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent  iamax  ixmax          DIFF'
 
     ! initialize asset grid
-    call grid_Cons_Grow(a, a_l, a_u, a_grow)
+    do is = 1, NS
+      call grid_Cons_Grow(a(is), a_l(is)(is), a_u(is)(is), a_grow(is)(is))
+    enddo
 
     ! initialize annuity grid
     call grid_Cons_Grow(x, x_l, x_u, x_grow)
@@ -329,8 +331,8 @@ contains
             do ip = 0, NP
               do ix = 0, NX
                 do ia = 0, NA
-                  aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1))
-                  aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1))
+                  aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia, is)/2d0, a(1))
+                  aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia, is)/2d0, a(1))
                 enddo ! ia
               enddo ! ix
             enddo ! ip
@@ -635,7 +637,7 @@ contains
                 ! get initial guess for the individual choices
                 xy(1) = max(aplus(0, ia, ix, ip, 1, 1, is, ij, it), 1d-4)
 
-                call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
+                call fminsearch(xy(1), fret, a_l(is), a_u(is), valuefunc_r)
 
                 ! copy decisions
                 aplus(:, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
@@ -683,9 +685,9 @@ contains
                     xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-8)
 
-                    limit = max(1.5d0*a(ia), 1d-6)
+                    limit = max(1.5d0*a(ia, is), 1d-6)
 
-                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
+                    call fminsearch(xy(:2), fret, (/a_l(is), 0d0/), (/a_u(is), limit/), valuefunc_e)
 
                     ! copy decisions
                     aplus(1, ia, ix, ip, :, ie, is, ij, it) = xy(1)
@@ -730,7 +732,7 @@ contains
                 ! get initial guess for the individual choices
                 xy(1) = max(aplus(0, ia, ix, ip, 1, 1, is, ij, it), 1d-4)
 
-                call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
+                call fminsearch(xy(1), fret, a_l(is), a_u(is), valuefunc_r)
 
                 ! copy decisions
                 aplus(0, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
@@ -781,9 +783,9 @@ contains
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-8)
                     xy(3) = max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                    limit = max(1.5d0*a(ia), 1d-6)
+                    limit = max(1.5d0*a(ia, is), 1d-6)
 
-                    call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, limit, x_u/), valuefunc_e)
+                    call fminsearch(xy, fret, (/a_l(is), 0d0, x_l/), (/a_u(is), limit, x_u/), valuefunc_e)
 
                     ! copy decisions
                     aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -831,7 +833,7 @@ contains
                   xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                   xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                  call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, 1d0, x_u/), valuefunc_w)
+                  call fminsearch(xy, fret, (/a_l(is), 0d0, x_l/), (/a_u(is), 1d0, x_u/), valuefunc_w)
 
                   ! copy decisions
                   aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -884,9 +886,9 @@ contains
                     xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-8)
 
-                    limit = max(1.5d0*a(ia), 1d-6)
+                    limit = max(1.5d0*a(ia, is), 1d-6)
 
-                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
+                    call fminsearch(xy(:2), fret, (/a_l(is), 0d0/), (/a_u(is), limit/), valuefunc_e)
 
                     ! copy decisions
                     aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -934,7 +936,7 @@ contains
                   xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                   xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                  call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
+                  call fminsearch(xy(:2), fret, (/a_l(is), 0d0/), (/a_u(is), 1d0/), valuefunc_w)
 
                   ! copy decisions
                   aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -980,7 +982,7 @@ contains
               xy(1) = max(aplus(0, 0, 0, 0, iw, ie, is, ij, it), 1d-4)
               xy(2) = max(l(0, 0, 0, 0, iw, ie, is, ij, it), 1d-4)
 
-              call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
+              call fminsearch(xy(:2), fret, (/a_l(is), 0d0/), (/a_u(is), 1d0/), valuefunc_w)
 
               ! copy decisions
               aplus(:, :, :, :, iw, ie, is, ij, it) = xy(1)
@@ -1111,7 +1113,7 @@ contains
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
-                             a_l, a_u, a_grow, NA, ial, iar, varphi)
+                             a_l(is), a_u(is), a_grow(is), NA, ial, iar, varphi)
 
                     ! interpolate yesterday's annuitized assets
                     call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
@@ -1259,7 +1261,7 @@ contains
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
                       profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
-                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia), 0d0)
+                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia, is), 0d0)
                       KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1615,7 +1617,7 @@ contains
                     ! Cohort average variables
                     c_coh(io, ij, it) = c_coh(io, ij, it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
                                         *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                    a_coh(io, ij, it) = a_coh(io, ij, it) + a(ia)*m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    a_coh(io, ij, it) = a_coh(io, ij, it) + a(ia, is)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                     ax_coh(io, ij, it) = ax_coh(io, ij, it) + x(ix)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij, it))
                     o_coh(io, io_p, ij, it) = o_coh(io, io_p, ij, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1623,7 +1625,7 @@ contains
                                      + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 1) then
                       profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
-                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia), 0d0)
+                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia, is), 0d0)
                       k_coh(ij, it) = k_coh(ij, it) + k(io, ia, ix, ip, iw, ie, is, ij, it) &
                                       *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       inc_coh(io, ij, it) = inc_coh(io, ij, it) + profit*m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1637,13 +1639,13 @@ contains
 
                     ! Individual variables
                     if (io == 0) then
-                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it)*w(it)
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia, is)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it)*w(it)
                     else
-                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia, is)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
                     endif
 
                     netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
-                    wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia)! + beq(is, ij, it)
+                    wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia, is)! + beq(is, ij, it)
 
                   enddo ! io
                 enddo ! is
