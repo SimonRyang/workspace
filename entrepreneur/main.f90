@@ -314,7 +314,7 @@ contains
 
     ! initialize asset grid
     do is = 1, NS
-      call grid_Cons_Grow(a(is), a_l(is), a_u(is), a_grow(is))
+      call grid_Cons_Grow(a(:, is), a_l(is), a_u(is), a_grow(is))
     enddo
 
     ! initialize annuity grid
