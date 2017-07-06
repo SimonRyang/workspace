@@ -86,8 +86,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = (/10d0, 8d0, 6d0/)
-  a_grow = 0.10d0
+  a_u    = (/10d0, 9d0, 8d0/)
+  a_grow = (/0.10d0, 0.11d0, 0.12d0/)
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -1266,7 +1266,7 @@ contains
                       YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       if (ij < JR) PC(it) = PC(it) + (phi(it)*min(profit, sscc(it)*inc_pen(it)) &
-                                                   + (1d0-phi(it))*0.05d0*inc_pen(it)) &
+                                                   + (1d0-phi(it))*0.00d0*inc_pen(it)) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       PE(it) = PE(it) + profit*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       if (ij >= JR) then
