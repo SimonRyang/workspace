@@ -1129,7 +1129,7 @@ contains
                     EV_help(1, ial) = interpolate_EV(1, a(ial), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)
                     EV_help(0, iar) = interpolate_EV(0, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)
                     EV_help(1, iar) = interpolate_EV(1, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)
-                    if (EV_help(0, ial) > EV_help(1, ial) .and. EV_help(0, iar) < EV_help(1, iar)) write(*,*) m(io, ia, ix, ip, iw, ie, is, ij-1, itm
+                    if (EV_help(0, ial) > EV_help(1, ial) .and. EV_help(0, iar) < EV_help(1, iar)) write(*,*) m(io, ia, ix, ip, iw, ie, is, ij-1, itm)
 
                     ! redistribute households
                     do ie_p = 1, NE
