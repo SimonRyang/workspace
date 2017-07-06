@@ -11,7 +11,7 @@ all: $(TARGET)
 	-rm -f *.mod
 
 $(TARGET): Build/$(MAINFILE).o
-	$(CC) -O2 $(LIBS) Build/$(MAINFILE).o -o $(TARGET)
+	$(CC) -qopenmp -O2 $(LIBS) Build/$(MAINFILE).o -o $(TARGET)
 
 Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
