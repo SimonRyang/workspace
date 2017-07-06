@@ -1572,6 +1572,7 @@ contains
     real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
     real*8, allocatable :: wealth(:, :, :, :, :, :, :, :), grossinc(:, :, :, :, :, :, :, :), netinc(:, :, :, :, :, :, :, :)
     real*8 :: life_exp(NS), punb(NS, JJ)
+    real*8 :: profit
     real*8 :: sum_help(0:NO, 0:NA, NS)
 
     if(allocated(wealth))deallocate(wealth)
@@ -1621,10 +1622,11 @@ contains
                     os_coh(io, io_p, is, ij, it) = os_coh(io, io_p, is, ij, it) &
                                      + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 1) then
+                      profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia), 0d0)
                       k_coh(ij, it) = k_coh(ij, it) + k(io, ia, ix, ip, iw, ie, is, ij, it) &
                                       *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      inc_coh(io, ij, it) = inc_coh(io, ij, it) + profent(k(io, ia, ix, ip, iw, ie, is, ij, it), ia, ie, is, ij, it) &
-                                            *m(io, ia, ix, ip, iw, ie, is, ij, it)
+                      inc_coh(io, ij, it) = inc_coh(io, ij, it) + profit*m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
                       inc_coh(io, ij, it) = inc_coh(io, ij, it) + w(it)*eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
                                             *m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1637,7 +1639,7 @@ contains
                     if (io == 0) then
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it)*w(it)
                     else
-                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profent(k(io, ia, ip, ix, iw, ie, is, ij, it), ia, ie, is, ij, it)
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
                     endif
 
                     netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
