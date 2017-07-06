@@ -1854,18 +1854,26 @@ contains
 
         call plot((/(dble(ia), ia=0,NA)/), VV(0, :, 0, 0, 3, 3, 2, 5, it), marker=1)
         call plot((/(dble(ia), ia=0,NA)/), VV(1, :, 0, 0, 3, 3, 2, 5, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(0, :, 0, 0, 3, 3, 2, 5, it), marker=2)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(1, :, 0, 0, 3, 3, 2, 5, it), marker=2)
         call execplot()
 
         call plot((/(dble(ia), ia=0,NA)/), VV(0, :, 0, 0, 2, 4, 2, 3, it), marker=1)
         call plot((/(dble(ia), ia=0,NA)/), VV(1, :, 0, 0, 2, 4, 2, 3, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(0, :, 0, 0, 2, 4, 2, 3, it), marker=2)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(1, :, 0, 0, 2, 4, 2, 3, it), marker=2)
         call execplot()
 
         call plot((/(dble(ia), ia=0,NA)/), VV(0, :, 0, 0, 2, 5, 3, 5, it), marker=1)
         call plot((/(dble(ia), ia=0,NA)/), VV(1, :, 0, 0, 2, 5, 3, 5, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(0, :, 0, 0, 2, 5, 3, 5, it), marker=2)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(1, :, 0, 0, 2, 5, 3, 5, it), marker=2)
         call execplot()
 
         call plot((/(dble(ia), ia=0,NA)/), VV(0, :, 0, 0, 2, 5, 2, 5, it), marker=1)
         call plot((/(dble(ia), ia=0,NA)/), VV(1, :, 0, 0, 2, 5, 2, 5, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(0, :, 0, 0, 2, 5, 2, 5, it), marker=2)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(1, :, 0, 0, 2, 5, 2, 5, it), marker=2)
         call execplot()
 
         ! call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
