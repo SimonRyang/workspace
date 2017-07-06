@@ -1853,9 +1853,13 @@ contains
 
         write(*,*)sum(m(:, :, :, :, :, :, :, :, it))
         write(*,*)sum(m(1, :, :, :, :, :, :, :, it))
+        write(*,*)sum(sum_help(0, :, :))
         write(*,*)sum(sum_help(1, :, :))
         write(*,*)sum(m(1, NA, :, :, :, :, :, :, it))
+        write(*,*)sum(sum_help(0, NA, :))
         write(*,*)sum(sum_help(1, NA, :))
+        write(*,*)sum_help(0, NA, :)
+        write(*,*)sum_help(1, NA, :)        
 
         call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
         call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 2), marker=1)
