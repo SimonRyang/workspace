@@ -1077,6 +1077,7 @@ contains
     integer :: io, ia, ix, ip, iw, ie, is, ij, &
                io_p, iw_p, ie_p, ial, iar, ixr, ixl, ipl, ipr, itm
     real*8 :: varpsi, varchi, varphi
+    real*8 :: EV_help(0:NO, 0:NA)
 
     ! get yesterdays year
     itm = year(it, 2, 1)
@@ -1122,7 +1123,13 @@ contains
                                        p_l, p_u, NP, ipl, ipr, varpsi)
 
                     ! this year's occupation
-                    io_p = 0! int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
+                    io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
+
+                    EV_help(0, ial) = interpolate_EV(0, a(ial), p_plus, iw, ie, is, ij-1, itm)
+                    EV_help(1, ial) = interpolate_EV(1, a(ial), p_plus, iw, ie, is, ij-1, itm)
+                    EV_help(0, iar) = interpolate_EV(0, a(iar), p_plus, iw, ie, is, ij-1, itm)
+                    EV_help(1, iar) = interpolate_EV(1, a(iar), p_plus, iw, ie, is, ij-1, itm)
+                    if (EV(0, ial) > EV(1, ial) .and. EV(0, iar) < EV(1, iar)) write(*,*) m(io, ia, ix, ip, iw, ie, is, ij-1, itm
 
                     ! redistribute households
                     do ie_p = 1, NE
