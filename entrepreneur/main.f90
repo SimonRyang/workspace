@@ -682,7 +682,7 @@ contains
                     xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
 
-                    limit = max(1d0*a(ia), 1d-8)
+                    limit = max(1.5d0*a(ia), 1d-8)
 
                     call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
@@ -780,7 +780,7 @@ contains
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                     xy(3) = max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                    limit = max(1d0*a(ia), 1d-8)
+                    limit = max(1.5d0*a(ia), 1d-8)
 
                     call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, limit, x_u/), valuefunc_e)
 
@@ -883,7 +883,7 @@ contains
                     xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                    limit = max(1d0*a(ia), 1d-8)
+                    limit = max(1.5d0*a(ia), 1d-8)
 
                     call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
@@ -1870,10 +1870,10 @@ contains
         call plot((/(dble(ia), ia=0,NA)/), oplus(1, :, 0, 0, 2, 5, 3, 5, it), marker=2)
         call execplot()
 
-        call plot((/(dble(ia), ia=0,NA)/), EV(0, :, 0, 0, 2, 5, 2, 5, it), marker=1)
-        call plot((/(dble(ia), ia=0,NA)/), EV(1, :, 0, 0, 2, 5, 2, 5, it), marker=1)
-        call plot((/(dble(ia), ia=0,NA)/), oplus(0, :, 0, 0, 2, 5, 2, 5, it), marker=2)
-        call plot((/(dble(ia), ia=0,NA)/), oplus(1, :, 0, 0, 2, 5, 2, 5, it), marker=2)
+        call plot((/(dble(ia), ia=0,NA)/), EV(0, :, 0, 0, 2, 5, 1, 5, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), EV(1, :, 0, 0, 2, 5, 1, 5, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(0, :, 0, 0, 2, 5, 1, 5, it), marker=2)
+        call plot((/(dble(ia), ia=0,NA)/), oplus(1, :, 0, 0, 2, 5, 1, 5, it), marker=2)
         call execplot()
 
         ! call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
