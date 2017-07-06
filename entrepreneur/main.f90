@@ -86,8 +86,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = (/10d0, 9d0, 8d0/)
-  a_grow = (/0.10d0, 0.11d0, 0.12d0/)
+  a_u    = 10d0
+  a_grow = 0.10d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
