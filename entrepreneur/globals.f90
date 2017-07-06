@@ -291,7 +291,7 @@ contains
 
     ! calculate contribution to pension system
     if (ij_com < JR) then
-        if (phi(it_com) >= 1d0) pencon_com = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_pen(it_com))
+         pencon_com = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_pen(it_com))
         !if (phi(it_com) <= 0d0) pencon_com = taup(it_com)*0.05d0*inc_pen(it_com)
     else
         pencon_com = 0d0
@@ -309,8 +309,8 @@ contains
 
     ! calculate next periods pension claims
     if (ij_com < JR) then
-      if (phi(it_com) >= 1d0) pplus_com = (p(ip_com)*dble(ij_com-1) + mu(it_com)*phi(it_com)*(lambda(it_com) &
-                                          + (1d0-lambda(it_com))*min(profit/inc_pen(it_com), sscc(it_com))))/dble(ij_com)
+      pplus_com = (p(ip_com)*dble(ij_com-1) + mu(it_com)*phi(it_com)*(lambda(it_com) &
+                   + (1d0-lambda(it_com))*min(profit/inc_pen(it_com), sscc(it_com))))/dble(ij_com)
       !if (phi(it_com) <= 0d0) pplus_com = (p(ip_com)*dble(ij_com-1) + mu(it_com)*(lambda(it_com) &
       !                                    + (1d0-lambda(it_com))*0.05d0))/dble(ij_com)
     else
