@@ -451,7 +451,7 @@ contains
       !##### OTHER VARIABLES ####################################################
       real*8 :: profit, pencon, inctax, captax
 
-      profit = profent(k, ia_com, ie_com, is_com, ij_com, it_com)
+      profit = theta(ie_com, is_com)*(k**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k - r(it_com)*max(k-a(ia_com), 0d0)
 
       ! calculate contribution to pension system
       if (ij_com < JR) then
@@ -469,26 +469,6 @@ contains
       ! compute income
       incent = -(a(ia_com) + r(it_com)*max(a(ia_com)-k, 0d0) + profit + pen(ij_com, ip_com, it_com) &
                  - pencon - inctax - captax)
-
-  end function
-
-
-  !##############################################################################
-  ! FUNCTION profent
-  !
-  ! Computes profit of an entrepreneur
-  !##############################################################################
-  function profent(k, ia, ie, is, ij, it)
-
-    implicit none
-
-    !##### INPUT/OUTPUT VARIABLES #############################################
-    real*8, intent(in) :: k
-    integer, intent(in) :: ia, ie, is, ij, it
-    real*8 :: profent
-
-    ! compute profit
-    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r(it)*max(k-a(ia), 0d0)
 
   end function
 
