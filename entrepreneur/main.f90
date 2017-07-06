@@ -1266,11 +1266,9 @@ contains
                       if (ij < JR) PC(it) = PC(it) + (phi(it)*min(profit, sscc(it)*inc_pen(it)) &
                                                    + (1d0-phi(it))*0.05d0*inc_pen(it)) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      PE(it) = PE(it) + profit, ia, ie, is, ij, it) &
-                                *m(io, ia, ix, ip, iw, ie, is, ij, it)
+                      PE(it) = PE(it) + profit*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       if (ij >= JR) then
-                        PRE(it) = PRE(it) + profit, ia, ie, is, ij, it) &
-                                  *m(io, ia, ix, ip, iw, ie, is, ij, it)
+                        PRE(it) = PRE(it) + profit*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       endif
                     endif
                     PP(it) = PP(it) + pen(ip, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
