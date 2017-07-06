@@ -331,8 +331,8 @@ contains
             do ip = 0, NP
               do ix = 0, NX
                 do ia = 0, NA
-                  aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia, is)/2d0, a(1))
-                  aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia, is)/2d0, a(1))
+                  aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia, is)/2d0, a(1, is))
+                  aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia, is)/2d0, a(1, is))
                 enddo ! ia
               enddo ! ix
             enddo ! ip
