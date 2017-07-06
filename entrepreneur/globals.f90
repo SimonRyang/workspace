@@ -1,4 +1,4 @@
-a_l(is)module globals
+module globals
 
   use toolbox
   use sorting
