@@ -110,7 +110,6 @@ program main
   !ann = .true.
   !ent = .false.
   labor = .false.
-  l = 0.12d0
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -344,7 +343,7 @@ contains
     k(:, :, :, :, :, :, :, :, 0) = 1d-4
 
     ! initial guess for labor decision
-    l(:, :, :, :, :, :, :, :, 0) = 0.33d0
+    l(:, :, :, :, :, :, :, :, 0) = l_bar
 
     ! initial guess for annuity investment
     mx(:, :, :, :, :, :, :, :, 0) = 0.33d0
