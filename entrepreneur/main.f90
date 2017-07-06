@@ -1846,40 +1846,41 @@ contains
           do ia = 0, NA
             do io = 0, NO
               sum_help(io, ia, is) = sum(m(io, ia, :, :, :, :, is, :, it))
-              if (sum_help(io, ia, is)>2d0) write(*,*) io, ia, is, sum(m(io, ia, :, :, :, :, is, :, it)),  sum_help(io, ia, is)
             enddo
           enddo
         enddo
 
-        write(*,*)sum(m(:, :, :, :, :, :, :, :, it))
-        write(*,*)sum(m(1, :, :, :, :, :, :, :, it))
-        write(*,*)sum(sum_help(0, :, :))
-        write(*,*)sum(sum_help(1, :, :))
-        write(*,*)sum(m(1, NA, :, :, :, :, :, :, it))
-        write(*,*)sum(sum_help(0, NA, :))
-        write(*,*)sum(sum_help(1, NA, :))
-        write(*,*)sum_help(0, NA, :)
-        write(*,*)sum_help(1, NA, :)
-
-        call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
-        call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 2), marker=1)
-        call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 3), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), EV(0, :, 0, 0, 3, 3, 2, 5, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), EV(1, :, 0, 0, 3, 3, 2, 5, it), marker=1)
         call execplot()
 
-        call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 1), marker=1)
-        call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 2), marker=1)
-        call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 3), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), EV(0, :, 0, 0, 3, 3, 2, 3, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), EV(1, :, 0, 0, 3, 3, 2, 3, it), marker=1)
         call execplot()
 
-        call plot(a, sum_help(0, :, 1), marker=1)
-        call plot(a, sum_help(0, :, 2), marker=1)
-        call plot(a, sum_help(0, :, 3), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), EV(0, :, 0, 0, 2, 5, 3, 5, it), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), EV(1, :, 0, 0, 2, 5, 3, 5, it), marker=1)
         call execplot()
 
-        call plot(a, sum_help(1, :, 1), marker=1)
-        call plot(a, sum_help(1, :, 2), marker=1)
-        call plot(a, sum_help(1, :, 3), marker=1)
-        call execplot()
+        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
+        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 2), marker=1)
+        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 3), marker=1)
+        ! call execplot()
+        !
+        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 1), marker=1)
+        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 2), marker=1)
+        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 3), marker=1)
+        ! call execplot()
+        !
+        ! call plot(a, sum_help(0, :, 1), marker=1)
+        ! call plot(a, sum_help(0, :, 2), marker=1)
+        ! call plot(a, sum_help(0, :, 3), marker=1)
+        ! call execplot()
+        !
+        ! call plot(a, sum_help(1, :, 1), marker=1)
+        ! call plot(a, sum_help(1, :, 2), marker=1)
+        ! call plot(a, sum_help(1, :, 3), marker=1)
+        ! call execplot()
 
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
