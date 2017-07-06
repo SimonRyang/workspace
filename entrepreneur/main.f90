@@ -1839,6 +1839,8 @@ contains
                         sum(reshape(l(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/))*reshape(m(:, :, :, :, :, :, :, :JR-1, it), (/2*(NA+1)*(NX+1)*(NP+1)*NW*NE*NS*(JR-1)/)))/sum(m(:, :, :, :, :, :, :, :JR-1, it))
 
     if (show_graphics) then
+      sum_help = 0d0
+
       if (it == 0 .OR. it == TT) then
         do is = 1, NS
           do ia = 0, NA
