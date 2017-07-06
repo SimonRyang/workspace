@@ -1846,7 +1846,7 @@ contains
           do ia = 0, NA
             do io = 0, NO
               sum_help(io, ia, is) = sum(m(io, ia, :, :, :, :, is, :, it))
-              if (sum_help(io, ia, is)>5d0) write(*,*) io, ia, is, sum(m(io, ia, :, :, :, :, is, :, it)),  sum_help(io, ia, is)
+              if (sum_help(io, ia, is)>2d0) write(*,*) io, ia, is, sum(m(io, ia, :, :, :, :, is, :, it)),  sum_help(io, ia, is)
             enddo
           enddo
         enddo
