@@ -343,7 +343,7 @@ contains
     k(:, :, :, :, :, :, :, :, 0) = 1d-4
 
     ! initial guess for labor decision
-    l(:, :, :, :, :, :, :, :, 0) = l_bar
+    l(:, :, :, :, :, :, :, :, 0) = 0.33d0
 
     ! initial guess for annuity investment
     mx(:, :, :, :, :, :, :, :, 0) = 0.33d0
