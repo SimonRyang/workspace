@@ -61,7 +61,7 @@ program main
   ! production parameters
   alpha = 0.36d0
   delta = 0.06d0
-  nu = 1d0 !0.88d0
+  nu = 0.88d0
   l_bar = 0.47d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
@@ -109,9 +109,7 @@ program main
   ! set switches
   !ann = .true.
   !ent = .false.
-  labor = .false.
-  l = l_bar
-
+  
   ! calculate initial equilibrium
   call get_SteadyState()
 
