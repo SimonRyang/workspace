@@ -1568,7 +1568,7 @@ contains
     real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
     real*8, allocatable :: wealth(:, :, :, :, :, :, :, :), grossinc(:, :, :, :, :, :, :, :), netinc(:, :, :, :, :, :, :, :)
     real*8 :: life_exp(NS), punb(NS, JJ)
-    real*8 :: sum_help(NO, 0:NA, NS)
+    real*8 :: sum_help(0:NO, 0:NA, NS)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
@@ -1859,7 +1859,7 @@ contains
         write(*,*)sum(sum_help(0, NA, :))
         write(*,*)sum(sum_help(1, NA, :))
         write(*,*)sum_help(0, NA, :)
-        write(*,*)sum_help(1, NA, :)        
+        write(*,*)sum_help(1, NA, :)
 
         call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
         call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 2), marker=1)
