@@ -8,7 +8,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -1847,6 +1847,11 @@ contains
             enddo
           enddo
         enddo
+
+        write(*,*)sum(m(1, :, :, :, :, :, :, :, it))
+        write(*,*)sum(sum_help(1, :, :))
+        write(*,*)sum(m(1, NA, :, :, :, :, :, :, it))
+        write(*,*)sum(sum_help(1, NA, :))
 
         call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
         call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 2), marker=1)
