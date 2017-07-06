@@ -111,6 +111,8 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
+stop
+
   ! set reform parameters
   !ann = .true.
   !pen_debt = .true.
@@ -1566,7 +1568,7 @@ contains
     real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
     real*8, allocatable :: wealth(:, :, :, :, :, :, :, :), grossinc(:, :, :, :, :, :, :, :), netinc(:, :, :, :, :, :, :, :)
     real*8 :: life_exp(NS), punb(NS, JJ)
-    real*8 :: sum_help(0:NA, NO)
+    real*8 :: sum_help(NO, 0:NA, NS)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
@@ -1838,11 +1840,48 @@ contains
 
     if (show_graphics) then
       if (it == 0 .OR. it == TT) then
-        do ia = 0, NA
-          do io = 0, NO
-            sum_help(ia, io) = sum(m(io, ia, :, :, :, :, :, :, it))
+        do is = 1, NS
+          do ia = 0, NA
+            do io = 0, NO
+              sum_help(io, ia, is) = sum(m(io, ia, :, :, :, :, is, :, it))
+            enddo
           enddo
         enddo
+
+        call plot((/(dble(ij), ij=0,NA)/), sum_help(0, :, 1), marker=1)
+        call plot((/(dble(ij), ij=0,NA)/), sum_help(0, :, 2), marker=1)
+        call plot((/(dble(ij), ij=0,NA)/), sum_help(0, :, 3), marker=1)
+        call execplot()
+
+        call plot((/(dble(ij), ij=0,NA)/), sum_help(1, :, 1), marker=1)
+        call plot((/(dble(ij), ij=0,NA)/), sum_help(1, :, 2), marker=1)
+        call plot((/(dble(ij), ij=0,NA)/), sum_help(1, :, 3), marker=1)
+        call execplot()
+
+        call plot(a, sum_help(0, :, 1), marker=1)
+        call plot(a, sum_help(0, :, 2), marker=1)
+        call plot(a, sum_help(0, :, 3), marker=1)
+        call execplot()
+
+        call plot(a, sum_help(1, :, 1), marker=1)
+        call plot(a, sum_help(1, :, 2), marker=1)
+        call plot(a, sum_help(1, :, 3), marker=1)
+        call execplot()
+
+        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
+        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
+        ! call execplot()
+        !
+        ! call plot(a, sum_help(:, 0), marker=1)
+        ! call plot(a, sum_help(:, 1), marker=1)
+        ! call execplot()
+
+        ! sum_help = 0d0
+        ! do ix = 0, NX
+        !   do io = 0, NO
+        !     sum_help(ix, io) = sum(m(io, :, ix, :, :, :, :, :, it))
+        !   enddo
+        ! enddo
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
@@ -1852,38 +1891,14 @@ contains
         ! call plot(a, sum_help(:, 2), marker=1)
         ! call plot(a, sum_help(:, 3), marker=1)
         ! call execplot()
-
-        call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
-        call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
-        call execplot()
-
-        call plot(a, sum_help(:, 0), marker=1)
-        call plot(a, sum_help(:, 1), marker=1)
-        call execplot()
-
-        sum_help = 0d0
-        do ix = 0, NX
-          do io = 0, NO
-            sum_help(ix, io) = sum(m(io, :, ix, :, :, :, :, :, it))
-          enddo
-        enddo
-        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
-        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 2), marker=1)
-        ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 3), marker=1)
+        !
+        ! call plot((/(dble(ix), ix=0,NX)/), sum_help(:NX, 0), marker=1)
+        ! call plot((/(dble(ix), ix=0,NX)/), sum_help(:NX, 1), marker=1)
         ! call execplot()
         !
-        ! call plot(a, sum_help(:, 1), marker=1)
-        ! call plot(a, sum_help(:, 2), marker=1)
-        ! call plot(a, sum_help(:, 3), marker=1)
+        ! call plot(x, sum_help(:NX, 0), marker=1)
+        ! call plot(x, sum_help(:NX, 1), marker=1)
         ! call execplot()
-
-        call plot((/(dble(ix), ix=0,NX)/), sum_help(:NX, 0), marker=1)
-        call plot((/(dble(ix), ix=0,NX)/), sum_help(:NX, 1), marker=1)
-        call execplot()
-
-        call plot(x, sum_help(:NX, 0), marker=1)
-        call plot(x, sum_help(:NX, 1), marker=1)
-        call execplot()
 
       endif
 
