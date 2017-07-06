@@ -8,11 +8,9 @@ git push origin master
 ssh -t -t -X flh71wr@$1 << EOF
 cd ~/workspace/
 git pull origin master
-cd ~/workspace/include/
-cp * ~/workspace/entrepreneur/
 cd ~/workspace/entrepreneur/
-rm globals.o
-rm globals.mod
+#rm globals.o
+#rm globals.mod
 exit
 EOF
 
