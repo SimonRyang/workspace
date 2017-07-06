@@ -549,7 +549,7 @@ contains
                   xy(1) = max(aplus(1, ia, ip, 1, ie, is, ij), 1d-4)
                   xy(2) = max(k(1, ia, ip, 1, ie, is, ij), 1d-4)
 
-                  limit = max(1.5d0*a(ia), 1d-8)
+                  limit = max(1.5d0*a(ia), 1d-2)
 
                   call fminsearch(xy, fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
@@ -638,7 +638,7 @@ contains
                     xy(1) = max(aplus(1, ia, ip, iw, ie, is, ij), 1d-4)
                     xy(2) = max(k(1, ia, ip, iw, ie, is, ij), 1d-4)
 
-                    limit = max(1.5d0*a(ia), 1d-8)
+                    limit = max(1.5d0*a(ia), 1d-2)
 
                     call fminsearch(xy, fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
