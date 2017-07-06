@@ -287,6 +287,7 @@ contains
     v_ind = v(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
 
     ! entrepreneur's profit
+    ! profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r(it_com)*max(k_com-a(ia_com), 0d0)
     profit = profent(k_com, ia_com, ie_com, is_com, ij_com, it_com)
 
     ! calculate contribution to pension system
