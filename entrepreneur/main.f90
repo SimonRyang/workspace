@@ -1122,7 +1122,7 @@ contains
                                        p_l, p_u, NP, ipl, ipr, varpsi)
 
                     ! this year's occupation
-                    io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
+                    io_p = 0! int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
 
                     ! redistribute households
                     do ie_p = 1, NE
