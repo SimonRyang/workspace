@@ -8,7 +8,6 @@ git push origin master
 ssh -t -t -X flh71wr@$1 << EOF
 cd ~/workspace/
 git pull origin master
-cd ~/workspace/entrepreneur/
 exit
 EOF
 
