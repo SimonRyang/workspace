@@ -209,7 +209,7 @@ contains
         valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
-        if (valuefunc_help < valuefunc_w .and. ent) then
+        if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
           oplus_com = 1d0
         endif
@@ -333,7 +333,7 @@ contains
         valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
-        if (valuefunc_help < valuefunc_e .and. ent) then
+        if (valuefunc_help > valuefunc_e .and. ent) then
           valuefunc_e = valuefunc_help
           oplus_com = 1d0
         endif
@@ -603,8 +603,7 @@ contains
                       + (1d0-varphi)*varchi*varpsi*EV(io, iar, ixl, ipl, iw, ie, is, ij, it) &
                       + (1d0-varphi)*varchi*(1d0-varpsi)*EV(io, iar, ixl, ipr, iw, ie, is, ij, it) &
                       + (1d0-varphi)*(1d0-varchi)*varpsi*EV(io, iar, ixr, ipl, iw, ie, is, ij, it) &
-                      + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(io, iar, ixr, ipr, iw, ie, is, ij, it)) &
-                     **(1d0-gamma)/(1d0-gamma)
+                      + (1d0-varphi)*(1d0-varchi)*(1d0-varpsi)*EV(io, iar, ixr, ipr, iw, ie, is, ij, it))
 
     end function
 
