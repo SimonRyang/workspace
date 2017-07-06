@@ -1124,13 +1124,14 @@ contains
 
                     ! this year's occupation
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij-1, itm))
+                    io_p = 0
 
                     EV_help(0, ial) = interpolate_EV(0, a(ial), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)
                     EV_help(1, ial) = interpolate_EV(1, a(ial), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)
                     EV_help(0, iar) = interpolate_EV(0, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)
                     EV_help(1, iar) = interpolate_EV(1, a(iar), xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), pplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), iw, ie, is, ij-1, itm)
-                    if (EV_help(0, ial) > EV_help(1, ial) .and. EV_help(0, iar) < EV_help(1, iar)) io_p = 0
-                    if (EV_help(0, ial) < EV_help(1, ial) .and. EV_help(0, iar) > EV_help(1, iar)) io_p = 1
+                    !if (EV_help(0, ial) > EV_help(1, ial) .and. EV_help(0, iar) < EV_help(1, iar)) io_p = 0
+                    !if (EV_help(0, ial) < EV_help(1, ial) .and. EV_help(0, iar) > EV_help(1, iar)) io_p = 1
 
                     ! redistribute households
                     do ie_p = 1, NE
