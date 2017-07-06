@@ -1,3 +1,5 @@
+include "globals.f90"
+
 program main
 
   ! modules

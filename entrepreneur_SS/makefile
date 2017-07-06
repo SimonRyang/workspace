@@ -1,43 +1,23 @@
 MAINFILE = main
-LIBS = globals.o toolbox.o sorting.o clock.o
-
-# Intel Fortran Compiler
-CFLAGS = -qopenmp -O2 #-check all
+LIBS = /home/flh71wr/workspace/include/toolbox.o /home/flh71wr/workspace/include/sorting.o /home/flh71wr/workspace/include/clock.o
+CFLAGS = -qopenmp -O2 -I/home/flh71wr/workspace/include
 CC = ~/intel/bin/ifort
-
-# PGI Fortran Compiler
-#CFLAGS = -mp -O2 -Mbackslash
-#CC = ~/pgi/linux86-64/2016/bin/pgfortran
-
-# GFortran Compiler
-#CFLAGS = -fopenmp -O2
-#CC = gfortran
-
-TARGET = prog
+TARGET = Build/prog
 
 all: $(TARGET)
 	clear
 	./$(TARGET)
+	-rm -rf Build
 	-rm -f *.mod
 
-$(TARGET): $(MAINFILE).o $(LIBS)
-	$(CC) $(CFLAGS) $(MAINFILE).o $(LIBS) -o $(TARGET)
+$(TARGET): Build/$(MAINFILE).o
+	$(CC) -qopenmp -O2 $(LIBS) Build/$(MAINFILE).o -o $(TARGET)
 
-globals.mod: toolbox.mod sorting.mod globals.f90
-	$(CC) $(CFLAGS) -c globals.f90
+Build/$(MAINFILE).o: $(MAINFILE).f90
+	mkdir -p Build
+	$(CC) $(CFLAGS) -c $(MAINFILE).f90 -o Build/$(MAINFILE).o
 
-toolbox.mod: toolbox.f90
-	$(CC) $(CFLAGS) -c toolbox.f90
-
-sorting.mod: toolbox.mod sorting.f90
-	$(CC) $(CFLAGS) -c sorting.f90
-
-clock.mod: clock.f90
-	$(CC) $(CFLAGS) -c clock.f90
-
-$(MAINFILE).o: globals.mod toolbox.mod sorting.mod clock.mod $(MAINFILE).f90
-	$(CC) $(CFLAGS) -c $(MAINFILE).f90
 
 clean:
+	-rm -rf Build
 	-rm -f *.mod
-	-rm -f *.o
