@@ -568,9 +568,6 @@ contains
       pen(:, ij, it) = p(:)*kappa(it)*inc_pen(it)
     enddo
 
-    inc_tax(it) = (w(it)*LC(it) + PE(it) + PRE(it))/(sum(pop_w(:, it)) + sum(pop_e(:, it)) + sum(pop_re(:, it)))
-    inc_pen(it) = (w(it)*LC(it) + phi(it)*PE(it))/(sum(pop_w(:, it)) + phi(it)*sum(pop_e(:, it)))
-
     ! determine the income tax system
     dueink = inc_tax(0)
 
@@ -1329,6 +1326,10 @@ contains
     YY(it) = YC(it) + YE(it)
 
     TAy(it) = TAy(it) + tauy(it)*(YC(it) - delta*KC(it) - w(it)*LC(it))
+
+    ! determine average income in tax and pension system
+    inc_tax(it) = 0.5d0 !(w(it)*LC(it) + PE(it) + PRE(it))/(sum(pop_w(:, it)) + sum(pop_e(:, it)) + sum(pop_re(:, it)))
+    inc_pen(it) = 0.5d0 !(w(it)*LC(it) + phi(it)*PE(it))/(sum(pop_w(:, it)) + phi(it)*sum(pop_e(:, it)))
 
     !write(*,*)'Done!'
     !call tock(calc)
