@@ -331,8 +331,8 @@ contains
             do ip = 0, NP
               do ix = 0, NX
                 do ia = 0, NA
-                  aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia, is)/2d0, a(1, is))
-                  aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia, is)/2d0, a(1, is))
+                  aplus(0, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1, is))
+                  aplus(1, ia, ix, ip, iw, ie, is, ij, 0) = max(a(ia)/2d0, a(1, is))
                 enddo ! ia
               enddo ! ix
             enddo ! ip
@@ -685,7 +685,7 @@ contains
                     xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-8)
 
-                    limit = max(1.5d0*a(ia, is), 1d-6)
+                    limit = max(1.5d0*a(ia), 1d-6)
 
                     call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
@@ -783,7 +783,7 @@ contains
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-8)
                     xy(3) = max(mx(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                    limit = max(1.5d0*a(ia, is), 1d-6)
+                    limit = max(1.5d0*a(ia), 1d-6)
 
                     call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, limit, x_u/), valuefunc_e)
 
@@ -886,7 +886,7 @@ contains
                     xy(1) = max(aplus(1, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                     xy(2) = max(k(1, ia, 0, ip, iw, ie, is, ij, it), 1d-8)
 
-                    limit = max(1.5d0*a(ia, is), 1d-6)
+                    limit = max(1.5d0*a(ia), 1d-6)
 
                     call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
