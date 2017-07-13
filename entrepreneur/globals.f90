@@ -467,7 +467,7 @@ contains
       captax = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k, 0d0) - 0.08d0*r(it_com)*max(a(ia_com)-k, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
 
       ! compute income
-      incent = -(a(ia_com) + r(it_com)*max(a(ia_com)-k, 0d0) + profit + pen(ij_com, ip_com, it_com) &
+      incent = -(r(it_com)*max(a(ia_com)-k, 0d0) + profit + pen(ij_com, ip_com, it_com) &
                  - pencon - inctax - captax)
 
   end function
