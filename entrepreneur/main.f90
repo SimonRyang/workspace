@@ -1952,6 +1952,7 @@ contains
       yplot(ij) = incent(xplot(ij))
     enddo
     call plot(xplot, yplot)
+    call execplot
 
   end subroutine
 
