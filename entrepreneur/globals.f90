@@ -45,7 +45,7 @@ module globals
   real*8 :: alpha, delta, nu
 
   ! numerical parameters
-  real*8 :: a_l(NS), a_u(NS), a_grow(NS)
+  real*8 :: a_l, a_u, a_grow
   real*8 :: x_l, x_u, x_grow
   real*8 :: p_l, p_u
   real*8 :: damp, tol
@@ -90,7 +90,7 @@ module globals
   real*8 :: eff(JJ, NS), rpop(NS, JJ, 0:TT), pop(JJ, 0:TT), psi(NS, JJ+1), Gama(JJ), n_p
 
   ! individual variables
-  real*8 :: a(0:NA, NS), x(0:NX), p(0:NP)
+  real*8 :: a(0:NA), x(0:NX), p(0:NP)
   real*8, allocatable :: aplus(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: xplus(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: pplus(:, :, :, :, :, :, :, :, :)
@@ -572,7 +572,7 @@ contains
     integer :: ial, iar, ixl, ixr, ipl, ipr
 
     ! interpolate value function
-    call linint_Grow(a_plus, a_l(is), a_u(is), a_grow(is), NA, ial, iar, varphi)
+    call linint_Grow(a_plus, a_l, a_u a_grow, NA, ial, iar, varphi)
     call linint_Grow(x_plus, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
     call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
 

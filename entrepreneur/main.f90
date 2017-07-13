@@ -314,7 +314,7 @@ contains
 
     ! initialize asset grid
     do is = 1, NS
-      call grid_Cons_Grow(a(:, is), a_l(is), a_u(is), a_grow(is))
+      call grid_Cons_Grow(a(:), a_l, a_u, a_grow
     enddo
 
     ! initialize annuity grid
@@ -637,7 +637,7 @@ contains
                 ! get initial guess for the individual choices
                 xy(1) = max(aplus(0, ia, ix, ip, 1, 1, is, ij, it), 1d-4)
 
-                call fminsearch(xy(1), fret, a_l(is), a_u(is), valuefunc_r)
+                call fminsearch(xy(1), fret, a_l a_u, valuefunc_r)
 
                 ! copy decisions
                 aplus(:, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
@@ -687,7 +687,7 @@ contains
 
                     limit = max(1.5d0*a(ia, is), 1d-6)
 
-                    call fminsearch(xy(:2), fret, (/a_l(is), 0d0/), (/a_u(is), limit/), valuefunc_e)
+                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
                     ! copy decisions
                     aplus(1, ia, ix, ip, :, ie, is, ij, it) = xy(1)
@@ -732,7 +732,7 @@ contains
                 ! get initial guess for the individual choices
                 xy(1) = max(aplus(0, ia, ix, ip, 1, 1, is, ij, it), 1d-4)
 
-                call fminsearch(xy(1), fret, a_l(is), a_u(is), valuefunc_r)
+                call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
 
                 ! copy decisions
                 aplus(0, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
@@ -785,7 +785,7 @@ contains
 
                     limit = max(1.5d0*a(ia, is), 1d-6)
 
-                    call fminsearch(xy, fret, (/a_l(is), 0d0, x_l/), (/a_u(is), limit, x_u/), valuefunc_e)
+                    call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, limit, x_u/), valuefunc_e)
 
                     ! copy decisions
                     aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -833,7 +833,7 @@ contains
                   xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                   xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                  call fminsearch(xy, fret, (/a_l(is), 0d0, x_l/), (/a_u(is), 1d0, x_u/), valuefunc_w)
+                  call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, 1d0, x_u/), valuefunc_w)
 
                   ! copy decisions
                   aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -888,7 +888,7 @@ contains
 
                     limit = max(1.5d0*a(ia, is), 1d-6)
 
-                    call fminsearch(xy(:2), fret, (/a_l(is), 0d0/), (/a_u(is), limit/), valuefunc_e)
+                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
                     ! copy decisions
                     aplus(1, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -936,7 +936,7 @@ contains
                   xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                   xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
-                  call fminsearch(xy(:2), fret, (/a_l(is), 0d0/), (/a_u(is), 1d0/), valuefunc_w)
+                  call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
                   ! copy decisions
                   aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
@@ -982,7 +982,7 @@ contains
               xy(1) = max(aplus(0, 0, 0, 0, iw, ie, is, ij, it), 1d-4)
               xy(2) = max(l(0, 0, 0, 0, iw, ie, is, ij, it), 1d-4)
 
-              call fminsearch(xy(:2), fret, (/a_l(is), 0d0/), (/a_u(is), 1d0/), valuefunc_w)
+              call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
               ! copy decisions
               aplus(:, :, :, :, iw, ie, is, ij, it) = xy(1)
@@ -1113,7 +1113,7 @@ contains
 
                     ! interpolate yesterday's savings decision
                     call linint_Grow(aplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
-                             a_l(is), a_u(is), a_grow(is), NA, ial, iar, varphi)
+                             a_l, a_u, a_grow, NA, ial, iar, varphi)
 
                     ! interpolate yesterday's annuitized assets
                     call linint_Grow(xplus(io, ia, ix, ip, iw, ie, is, ij-1, itm), &
