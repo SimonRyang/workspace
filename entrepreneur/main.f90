@@ -1647,7 +1647,7 @@ contains
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ix, ip, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
                     endif
 
-                    netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon(io, ia, ix, ip, iw, ie, is, ij, it), 0d0) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
+                    netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon(io, ia, ix, ip, iw, ie, is, ij, it), 0d0)) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
                     wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia)! + beq(is, ij, it)
 
                   enddo ! io
