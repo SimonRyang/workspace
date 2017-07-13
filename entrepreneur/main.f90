@@ -1958,7 +1958,7 @@ contains
     call plot(xplot, zplot)
     zplot = netinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     call plot(xplot, zplot)
-    write(*,*)a(ia_com), k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
+    write(*,*)a(ia_com), 1.5d0, k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     call execplot
 
     write(*,*)-incent(k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com))
