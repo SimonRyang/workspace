@@ -1956,6 +1956,9 @@ contains
     call plot(xplot, zplot)
     zplot = netinc(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     call plot(xplot, zplot)
+    zplot = netinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
+    call plot(xplot, zplot)
+    write(*,*)k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     call execplot
 
   end subroutine
