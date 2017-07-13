@@ -1962,12 +1962,15 @@ contains
     write(*,*)a(ia_com), 1.5d0*a(ia_com), k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     call execplot
 
-    write(*,*)-incent(1.5d0*a(ia_com))
+    write(*,*)-incent(k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com))
     write(*,*)grossinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     write(*,*)netinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     write(*,*)pencon(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     write(*,*)inctax(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     write(*,*)captax(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
+    profit = theta(ie_com, is_com)*(k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu &
+             - delta*k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com) - r(it_com)*max(k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)-a(ia_com), 0d0)
+    write(*,*)tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
   end subroutine
 
