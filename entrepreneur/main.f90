@@ -314,7 +314,7 @@ contains
 
     ! initialize asset grid
     do is = 1, NS
-      call grid_Cons_Grow(a(:), a_l, a_u, a_grow
+      call grid_Cons_Grow(a(:), a_l, a_u, a_grow)
     enddo
 
     ! initialize annuity grid
@@ -637,7 +637,7 @@ contains
                 ! get initial guess for the individual choices
                 xy(1) = max(aplus(0, ia, ix, ip, 1, 1, is, ij, it), 1d-4)
 
-                call fminsearch(xy(1), fret, a_l a_u, valuefunc_r)
+                call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
 
                 ! copy decisions
                 aplus(:, ia, ix, ip,  :,  :, is, ij, it) = xy(1)

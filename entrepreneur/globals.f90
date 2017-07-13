@@ -572,7 +572,7 @@ contains
     integer :: ial, iar, ixl, ixr, ipl, ipr
 
     ! interpolate value function
-    call linint_Grow(a_plus, a_l, a_u a_grow, NA, ial, iar, varphi)
+    call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi)
     call linint_Grow(x_plus, x_l, x_u, x_grow, NX, ixl, ixr, varchi)
     call linint_Equi(p_plus, p_l, p_u, NP, ipl, ipr, varpsi)
 
