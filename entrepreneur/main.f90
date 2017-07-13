@@ -1576,7 +1576,7 @@ contains
     real*8 :: life_exp(NS), punb(NS, JJ)
     real*8 :: profit
     real*8 :: sum_help(0:NO, 0:NA, NS)
-    real*8 :: xplot(100), yplot(100)
+    real*8 :: xplot(100), yplot(100), zplot(100)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
@@ -1939,7 +1939,7 @@ contains
 
     endif
 
-    call grid_Cons_Equi(xplot, 0d0, 2d0)
+    call grid_Cons_Equi(xplot, 0d0, 1.8d0)
     ia_com = 5
     ix_com = 0
     ip_com = 0
@@ -1948,10 +1948,13 @@ contains
     is_com = 2
     ij_com = 5
     it_com = 0
+    write(*,*)1.5d0*a(ia_com)
     do ij = 1, 100
-      yplot(ij) = incent(xplot(ij))
+      yplot(ij) = -incent(xplot(ij))
+      zplot(ij) = theta(ie_com, is_com)*(xplot(ij)**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*xplot(ij) - r(it_com)*max(xplot(ij)-a(ia_com, is_com), 0d0)
     enddo
     call plot(xplot, yplot)
+    call plot(xplot, zplot)
     call execplot
 
   end subroutine
