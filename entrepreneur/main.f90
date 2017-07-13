@@ -1261,7 +1261,7 @@ contains
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
                       profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
-                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia, is), 0d0)
+                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia), 0d0)
                       KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1618,7 +1618,7 @@ contains
                     ! Cohort average variables
                     c_coh(io, ij, it) = c_coh(io, ij, it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
                                         *m(io, ia, ix, ip, iw, ie, is, ij, it)
-                    a_coh(io, ij, it) = a_coh(io, ij, it) + a(ia, is)*m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    a_coh(io, ij, it) = a_coh(io, ij, it) + a(ia)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                     ax_coh(io, ij, it) = ax_coh(io, ij, it) + x(ix)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                     io_p = int(oplus(io, ia, ix, ip, iw, ie, is, ij, it))
                     o_coh(io, io_p, ij, it) = o_coh(io, io_p, ij, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1626,7 +1626,7 @@ contains
                                      + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 1) then
                       profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
-                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia, is), 0d0)
+                               - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia), 0d0)
                       k_coh(ij, it) = k_coh(ij, it) + k(io, ia, ix, ip, iw, ie, is, ij, it) &
                                       *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       inc_coh(io, ij, it) = inc_coh(io, ij, it) + profit*m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1640,13 +1640,13 @@ contains
 
                     ! Individual variables
                     if (io == 0) then
-                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia, is)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it)*w(it)
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it)*w(it)
                     else
-                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia, is)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
                     endif
 
                     netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
-                    wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia, is)! + beq(is, ij, it)
+                    wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia)! + beq(is, ij, it)
 
                   enddo ! io
                 enddo ! is
@@ -1893,14 +1893,14 @@ contains
         call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 3), marker=1)
         call execplot()
 
-        call plot(a(:, 1), sum_help(0, :, 1), marker=1)
-        call plot(a(:, 2), sum_help(0, :, 2), marker=1)
-        call plot(a(:, 3), sum_help(0, :, 3), marker=1)
+        call plot(a(:), sum_help(0, :, 1), marker=1)
+        call plot(a(:), sum_help(0, :, 2), marker=1)
+        call plot(a(:), sum_help(0, :, 3), marker=1)
         call execplot()
 
-        call plot(a(:, 1), sum_help(1, :, 1), marker=1)
-        call plot(a(:, 2), sum_help(1, :, 2), marker=1)
-        call plot(a(:, 3), sum_help(1, :, 3), marker=1)
+        call plot(a(:), sum_help(1, :, 1), marker=1)
+        call plot(a(:), sum_help(1, :, 2), marker=1)
+        call plot(a(:), sum_help(1, :, 3), marker=1)
         call execplot()
 
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
