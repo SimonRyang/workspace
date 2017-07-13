@@ -1642,7 +1642,7 @@ contains
                     if (io == 0) then
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = a(ia)*r(it) + pen(ip, ij, it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it)*w(it)
                     else
-                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ip, ix, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
+                      grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ix, ip, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
                     endif
 
                     netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1958,7 +1958,7 @@ contains
     call plot(xplot, zplot)
     zplot = netinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     call plot(xplot, zplot)
-    write(*,*)k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
+    write(*,*)a(ia_com), k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     call execplot
 
   end subroutine
