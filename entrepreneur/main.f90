@@ -1950,6 +1950,7 @@ contains
     it_com = 0
     do ij = 1, 100
       yplot(ij) = incent(xplot(ij))
+    enddo
     call plot(xplot, yplot)
 
   end subroutine
