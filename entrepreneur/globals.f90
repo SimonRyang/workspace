@@ -185,7 +185,7 @@ contains
     pencon_com = taup(it_com)*min(wage*l_com, sscc(it_com)*inc_pen(it_com))
 
     ! calculate income tax
-    inctax_com = tarif(max(wage*l_com - 0.08d0*wage*l_com - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+    inctax_com = tarif(max(wage*l_com - 0.08d0*wage*l_com - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calculate capital gains tax
     captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.08d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_tax(0), 0d0)
@@ -298,7 +298,7 @@ contains
     endif
 
     ! calculate income tax
-    inctax_com = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+    inctax_com = tarif(max(profit - 0.08d0*profit - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calcualte capital gains tax
     captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 0.08d0*r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
@@ -461,7 +461,7 @@ contains
       endif
 
       ! calculate income tax
-      inctax = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
+      inctax = tarif(max(profit - 0.08d0*profit - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
       ! calcualte capital gains tax
       captax = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k, 0d0) - 0.08d0*r(it_com)*max(a(ia_com)-k, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
 
