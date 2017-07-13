@@ -10,7 +10,7 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 28
 
   ! allocate arrays
   if(allocated(aplus))deallocate(aplus)
@@ -184,8 +184,6 @@ contains
 
       write(*,'(i4,6f8.2,2i7,f14.8)')iter, (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
         ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), sum(pop_e(:, 0))/(sum(pop_w(:, 0))+sum(pop_e(:, 0)))*100d0, maxval(iamax), maxval(ixmax), DIFF(0)/YY(0)*100d0
-
-      write(*,*)inc_tax(0)
 
       if(abs(DIFF(0)/YY(0))*100d0 < tol)then
         call tock(calc)
@@ -569,6 +567,9 @@ contains
     do ij = JR, JJ
       pen(:, ij, it) = p(:)*kappa(it)*inc_pen(it)
     enddo
+
+    inc_tax(it) = (w(it)*LC(it) + PE(it) + PRE(it))/(sum(pop_w(:, it)) + sum(pop_e(:, it)) + sum(pop_re(:, it)))
+    inc_pen(it) = (w(it)*LC(it) + phi(it)*PE(it))/(sum(pop_w(:, it)) + phi(it)*sum(pop_e(:, it)))
 
     ! determine the income tax system
     dueink = inc_tax(0)
@@ -1329,9 +1330,6 @@ contains
 
     TAy(it) = TAy(it) + tauy(it)*(YC(it) - delta*KC(it) - w(it)*LC(it))
 
-    inc_tax(it) = (w(it)*LC(it) + PE(it) + PRE(it))/(sum(pop_w(:, it)) + sum(pop_e(:, it)) + sum(pop_re(:, it)))
-    inc_pen(it) = (w(it)*LC(it) + phi(it)*PE(it))/(sum(pop_w(:, it)) + phi(it)*sum(pop_e(:, it)))
-
     !write(*,*)'Done!'
     !call tock(calc)
 
@@ -1647,7 +1645,7 @@ contains
                       grossinc(io, ia, ix, ip, iw, ie, is, ij) = max(a(ia)-k(1, ia, ix, ip, iw, ie, is, ij, it), 0d0)*r(it) + pen(ip, ij, it) + profit
                     endif
 
-                    netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon(io, ia, ix, ip, iw, ie, is, ij, it), 0d0)) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
+                    netinc(io, ia, ix, ip, iw, ie, is, ij) = grossinc(io, ia, ix, ip, iw, ie, is, ij) - captax(io, ia, ix, ip, iw, ie, is, ij, it) - inctax(io, ia, ix, ip, iw, ie, is, ij, it) - pencon(io, ia, ix, ip, iw, ie, is, ij, it)
                     wealth(io, ia, ix, ip, iw, ie, is, ij) = a(ia)! + beq(is, ij, it)
 
                   enddo ! io
@@ -1963,7 +1961,7 @@ contains
     write(*,*)a(ia_com), 1.5d0*a(ia_com), k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     call execplot
 
-    write(*,*)-incent(k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com))
+    write(*,*)-incent(1.5d0*a(ia_com))
     write(*,*)grossinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     write(*,*)netinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     write(*,*)pencon(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
