@@ -188,10 +188,10 @@ contains
     inctax_com = tarif(max(wage*l_com - 0.08d0*wage*l_com - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calculate capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com, is_com)-0.08d0*r(it_com)*a(ia_com, is_com)-2d0*0.0267d0*inc_tax(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.08d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_tax(0), 0d0)
 
     ! calculate consumption
-    c_com = ((1d0+r(it_com))*a(ia_com, is_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
+    c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
@@ -287,7 +287,7 @@ contains
     v_ind = v(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
 
     ! entrepreneur's profit
-    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r(it_com)*max(k_com-a(ia_com, is_com), 0d0)
+    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r(it_com)*max(k_com-a(ia_com), 0d0)
 
     ! calculate contribution to pension system
     if (ij_com < JR) then
@@ -301,10 +301,10 @@ contains
     inctax_com = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
     ! calcualte capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com, is_com)-k_com, 0d0) - 0.08d0*r(it_com)*max(a(ia_com, is_com)-k_com, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k_com, 0d0) - 0.08d0*r(it_com)*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
 
     ! calculate consumption
-    c_com =  (a(ia_com, is_com) + r(it_com)*max(a(ia_com, is_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
+    c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
            - captax_com - inctax_com - pencon_com - mx_com - a_plus)*pinv(it_com)
 
     ! calculate next periods pension claims
@@ -412,10 +412,10 @@ contains
     inctax_com = tarif(pen(ip_com, ij_com, it_com))
 
     ! calculate capital gains tax
-    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com, is_com)-0.08d0*r(it_com)*a(ia_com, is_com)-2d0*0.0267d0*inc_tax(0), 0d0)
+    captax_com = taur(it_com)*1.055d0*max(r(it_com)*a(ia_com)-0.08d0*r(it_com)*a(ia_com)-2d0*0.0267d0*inc_tax(0), 0d0)
 
     ! calculate consumption
-    c_com = ((1d0+r(it_com))*a(ia_com, is_com) + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind &
+    c_com = ((1d0+r(it_com))*a(ia_com) + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind &
          - inctax_com - captax_com - a_plus)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
@@ -451,7 +451,7 @@ contains
       !##### OTHER VARIABLES ####################################################
       real*8 :: profit, pencon, inctax, captax
 
-      profit = theta(ie_com, is_com)*(k**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k - r(it_com)*max(k-a(ia_com, is_com), 0d0)
+      profit = theta(ie_com, is_com)*(k**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k - r(it_com)*max(k-a(ia_com), 0d0)
 
       ! calculate contribution to pension system
       if (ij_com < JR) then
@@ -464,10 +464,10 @@ contains
       inctax = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon_com, 0d0) + pen(ip_com, ij_com, it_com))
 
       ! calcualte capital gains tax
-      captax = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com, is_com)-k, 0d0) - 0.08d0*r(it_com)*max(a(ia_com, is_com)-k, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
+      captax = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k, 0d0) - 0.08d0*r(it_com)*max(a(ia_com)-k, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
 
       ! compute income
-      incent = -(a(ia_com, is_com) + r(it_com)*max(a(ia_com, is_com)-k, 0d0) + profit + pen(ij_com, ip_com, it_com) &
+      incent = -(a(ia_com) + r(it_com)*max(a(ia_com)-k, 0d0) + profit + pen(ij_com, ip_com, it_com) &
                  - pencon - inctax - captax)
 
   end function

@@ -1951,7 +1951,7 @@ contains
     write(*,*)1.5d0*a(ia_com)
     do ij = 1, 100
       yplot(ij) = -incent(xplot(ij))
-      zplot(ij) = theta(ie_com, is_com)*(xplot(ij)**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*xplot(ij) - r(it_com)*max(xplot(ij)-a(ia_com, is_com), 0d0)
+      zplot(ij) = theta(ie_com, is_com)*(xplot(ij)**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*xplot(ij) - r(it_com)*max(xplot(ij)-a(ia_com), 0d0)
     enddo
     call plot(xplot, yplot)
     call plot(xplot, zplot)
