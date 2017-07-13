@@ -1954,7 +1954,8 @@ contains
     enddo
     call plot(xplot, yplot)
     call plot(xplot, zplot)
-    call plot(0d0, w(it_com)*eff(ij_com, is_com)*eta(iw_com, is_com))
+    zplot = w(it_com)*eff(ij_com, is_com)*eta(iw_com, is_com)
+    call plot(xplot, zplot)
     call execplot
 
   end subroutine
