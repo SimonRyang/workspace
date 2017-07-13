@@ -464,9 +464,6 @@ contains
       inctax = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon, 0d0) + pen(ip_com, ij_com, it_com))
       ! calcualte capital gains tax
       captax = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k, 0d0) - 0.08d0*r(it_com)*max(a(ia_com)-k, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
-
-      write(*,*)r(it_com)*max(a(ia_com)-k, 0d0) + profit, pencon, inctax, captax
-
       ! compute income
       incent = -(r(it_com)*max(a(ia_com)-k, 0d0) + profit + pen(ij_com, ip_com, it_com) &
                  - pencon - inctax - captax)
