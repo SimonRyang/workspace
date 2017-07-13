@@ -1954,7 +1954,7 @@ contains
     enddo
     call plot(xplot, yplot)
     call plot(xplot, zplot)
-    zplot = netinc(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
+    zplot = netinc(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     call plot(xplot, zplot)
     call execplot
 
