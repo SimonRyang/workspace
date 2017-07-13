@@ -1576,7 +1576,7 @@ contains
     real*8 :: life_exp(NS), punb(NS, JJ)
     real*8 :: profit
     real*8 :: sum_help(0:NO, 0:NA, NS)
-    real*8 :: xplot(100), yplot(100), zplot(100)
+    real*8 :: xplot(1000), yplot(1000), zplot(1000)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
@@ -1948,7 +1948,7 @@ contains
     ij_com = 5
     it_com = 0
     call grid_Cons_Equi(xplot, 0d0, 1.5d0*a(ia_com))
-    do ij = 1, 100
+    do ij = 1, 1000
       yplot(ij) = -incent(xplot(ij))
       zplot(ij) = theta(ie_com, is_com)*(xplot(ij)**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*xplot(ij) - r(it_com)*max(xplot(ij)-a(ia_com), 0d0)
     enddo
