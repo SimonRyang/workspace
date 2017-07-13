@@ -1962,6 +1962,7 @@ contains
     call execplot
 
     write(*,*)-incent(k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com))
+    write(*,*)grossinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     write(*,*)netinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
     write(*,*)pencon(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     write(*,*)inctax(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
