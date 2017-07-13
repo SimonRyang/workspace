@@ -1576,6 +1576,7 @@ contains
     real*8 :: life_exp(NS), punb(NS, JJ)
     real*8 :: profit
     real*8 :: sum_help(0:NO, 0:NA, NS)
+    real*8 :: xplot(100), yplot(100)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
@@ -1937,6 +1938,19 @@ contains
       endif
 
     endif
+
+    call grid_Val_Equi(xplot, 0d0, 2d0, 100)
+    ia_com = 5
+    ix_com = 0
+    ip_com = 0
+    iw_com = 3
+    ie_com = 4
+    is_com = 2
+    ij_com = 5
+    it_com = 0
+    do ij = 1, 100
+      yplot(ij) = incent(xplot(ij))
+    call plot(xplot, yplot)
 
   end subroutine
 
