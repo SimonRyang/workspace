@@ -1939,7 +1939,7 @@ contains
 
     endif
 
-    call grid_Cons_Equi(xplot, 0d0, 2d0, 100)
+    call grid_Cons_Equi(xplot, 0d0, 2d0)
     ia_com = 5
     ix_com = 0
     ip_com = 0
