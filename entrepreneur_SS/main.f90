@@ -952,7 +952,7 @@ contains
                               *m(io, ia, ip, iw, ie, is, ij)
                   else
                     KE = KE + k(io, ia, ip, iw, ie, is, ij)*m(io, ia, ip, iw, ie, is, ij)
-                    YE = YE + theta(ie, is)*(k(io, ia, ip, iw, ie, is, ij)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                    YE = YE + theta(ie, is)*(k(io, ia, ip, iw, ie, is, ij)**alpha*(eff(ij, is)*eta(iw, is)*l_bar)**(1d0-alpha))**nu &
                               *m(io, ia, ip, iw, ie, is, ij)
                     if (ij < JR) PC = PC + phi*min(profent(k(io, ia, ip, iw, ie, is, ij), ij, ia, is, iw, ie), sscc*inc_pen) &
                               *m(io, ia, ip, iw, ie, is, ij)

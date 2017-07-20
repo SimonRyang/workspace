@@ -212,7 +212,7 @@ contains
     l_com = l_bar
 
     ! entrepreneur's profit
-    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu &
+    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*eta(iw_com, is_com)*l_bar)**(1d0-alpha))**nu &
              - delta*k_com - r*max(k_com-a(ia_com), 0d0)
 
     ! calculate contribution to pension system
@@ -355,7 +355,7 @@ contains
     real*8 :: profent
 
     ! compute profit
-    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r*max(k-a(ia), 0d0)
+    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*eta(iw, is)*l_bar)**(1d0-alpha))**nu - delta*k - r*max(k-a(ia), 0d0)
 
   end function
 
