@@ -683,8 +683,8 @@ contains
                       ia_com = ia
 
                       ! get initial guess for the individual choices
-                      xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
-                      xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-8)
+                      xy(1) = max(aplus(1, ia, ix, ip, iw, ie, is, ij, it), 1d-4)
+                      xy(2) = max(k(1, ia, ix, ip, iw, ie, is, ij, it), 1d-8)
 
                       limit = max(1.5d0*a(ia), 1d-6)
 
