@@ -1260,7 +1260,7 @@ contains
                       PC(it) = PC(it) + min(w(it)*eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it), sscc(it)*inc_pen(it)) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     else
-                      profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                      profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*eta(iw, is)*l_bar)**(1d0-alpha))**nu &
                                - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia), 0d0)
                       KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
