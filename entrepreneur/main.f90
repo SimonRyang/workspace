@@ -664,48 +664,50 @@ contains
         if (ent) then
 
           ! set up communication variables
-          iw_com = 1
           io_com = 1
 
-          !$omp parallel do copyin(io_com, iw_com, ij_com, it_com) collapse(4) schedule(dynamic, 1) private(xy, fret, limit) num_threads(numthreads)
+          !$omp parallel do copyin(io_com, ij_com, it_com) collapse(4) schedule(dynamic, 1) private(xy, fret, limit) num_threads(numthreads)
           do is = 1, NS
             do ie = 1, NE
-              do ip = 0, NP
-                do ix = 0, NX
-                  do ia = 0, NA
+              do iw = 1, NW
+                do ip = 0, NP
+                  do ix = 0, NX
+                    do ia = 0, NA
 
-                    ! set up communication variables
-                    is_com = is
-                    ie_com = ie
-                    ip_com = ip
-                    ix_com = ix
-                    ia_com = ia
+                      ! set up communication variables
+                      is_com = is
+                      ie_com = ie
+                      iw_com = iw
+                      ip_com = ip
+                      ix_com = ix
+                      ia_com = ia
 
-                    ! get initial guess for the individual choices
-                    xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
-                    xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-8)
+                      ! get initial guess for the individual choices
+                      xy(1) = max(aplus(1, ia, ix, ip, 1, ie, is, ij, it), 1d-4)
+                      xy(2) = max(k(1, ia, ix, ip, 1, ie, is, ij, it), 1d-8)
 
-                    limit = max(1.5d0*a(ia), 1d-6)
+                      limit = max(1.5d0*a(ia), 1d-6)
 
-                    call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
+                      call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, limit/), valuefunc_e)
 
-                    ! copy decisions
-                    aplus(1, ia, ix, ip, :, ie, is, ij, it) = xy(1)
-                    xplus(1, ia, ix, ip, :, ie, is, ij, it) = xplus_com
-                    k(1, ia, ix, ip, :, ie, is, ij, it) = k_com
-                    pplus(1, ia, ix, ip, :, ie, is, ij, it) = p(ip)
-                    c(1, ia, ix, ip, :, ie, is, ij, it) = max(c_com, 1d-10)
-                    l(1, ia, ix, ip, :, ie, is, ij, it) = l_com
-                    mx(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
-                    oplus(1, ia, ix, ip, :, ie, is, ij, it) = oplus_com
-                    pencon(1, ia, ix, ip, :, ie, is, ij, it) = 0d0
-                    inctax(1, ia, ix, ip, :, ie, is, ij, it) = inctax_com
-                    captax(1, ia, ix, ip, :, ie, is, ij, it) = captax_com
-                    VV(1, ia, ix, ip, :, ie, is, ij, it) = -fret
+                      ! copy decisions
+                      aplus(1, ia, ix, ip, iw, ie, is, ij, it) = xy(1)
+                      xplus(1, ia, ix, ip, iw, ie, is, ij, it) = xplus_com
+                      k(1, ia, ix, ip, iw, ie, is, ij, it) = k_com
+                      pplus(1, ia, ix, ip, iw, ie, is, ij, it) = p(ip)
+                      c(1, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                      l(1, ia, ix, ip, iw, ie, is, ij, it) = l_com
+                      mx(1, ia, ix, ip, iw, ie, is, ij, it) = 0d0
+                      oplus(1, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
+                      pencon(1, ia, ix, ip, iw, ie, is, ij, it) = 0d0
+                      inctax(1, ia, ix, ip, iw, ie, is, ij, it) = inctax_com
+                      captax(1, ia, ix, ip, iw, ie, is, ij, it) = captax_com
+                      VV(1, ia, ix, ip, iw, ie, is, ij, it) = -fret
 
-                  enddo ! ia
-                enddo ! ix
-              enddo ! ip
+                    enddo ! ia
+                  enddo ! ix
+                enddo ! ip
+              enddo ! iw
             enddo ! ie
           enddo ! is
           !$omp end parallel do
