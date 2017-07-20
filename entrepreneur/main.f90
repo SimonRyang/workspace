@@ -1263,7 +1263,7 @@ contains
                       profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*eta(iw, is)*l_bar)**(1d0-alpha))**nu &
                                - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia), 0d0)
                       KE(it) = KE(it) + k(io, ia, ix, ip, iw, ie, is, ij, it)*m(io, ia, ix, ip, iw, ie, is, ij, it)
-                      YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                      YE(it) = YE(it) + theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*eta(iw, is)*l_bar)**(1d0-alpha))**nu &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
                       if (ij < JR) PC(it) = PC(it) + (phi(it)*min(profit, sscc(it)*inc_pen(it))) &
                                                    ! + (1d0-phi(it))*0.05d0*inc_pen(it)) &
@@ -1626,7 +1626,7 @@ contains
                     os_coh(io, io_p, is, ij, it) = os_coh(io, io_p, is, ij, it) &
                                      + m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 1) then
-                      profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu &
+                      profit = theta(ie, is)*(k(io, ia, ix, ip, iw, ie, is, ij, it)**alpha*(eff(ij, is)*eta(iw, is)*l_bar)**(1d0-alpha))**nu &
                                - delta*k(io, ia, ix, ip, iw, ie, is, ij, it) - r(it)*max(k(io, ia, ix, ip, iw, ie, is, ij, it)-a(ia), 0d0)
                       k_coh(ij, it) = k_coh(ij, it) + k(io, ia, ix, ip, iw, ie, is, ij, it) &
                                       *m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1951,7 +1951,7 @@ contains
     call grid_Cons_Equi(xplot, 0d0, 1.5d0*a(ia_com))
     do ij = 1, 1000
       yplot(ij) = -incent(xplot(ij))
-      zplot(ij) = theta(ie_com, is_com)*(xplot(ij)**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*xplot(ij) - r(it_com)*max(xplot(ij)-a(ia_com), 0d0)
+      zplot(ij) = theta(ie_com, is_com)*(xplot(ij)**alpha*(eff(ij_com, is_com)*eta(iw_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*xplot(ij) - r(it_com)*max(xplot(ij)-a(ia_com), 0d0)
     enddo
     call plot(xplot, yplot)
     call plot(xplot, zplot)
