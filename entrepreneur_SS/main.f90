@@ -120,10 +120,10 @@ program main
 
   open(307, file='results.out')
 
-  do m1 = 1, 1, -1
-    do m2 = 1, 1, -1
-      do m3 = 1, 1, -1
-        do s1 = 1, 1, -1
+  do m1 = 5, 5, -1
+    do m2 = 5, 5, -1
+      do m3 = 5, 5, -1
+        do s1 = 5, 5, -1
           do s2 = 1, 1, -1
             do s3 = 1, 1, -1
               do rh1 = 1, 1, -1
