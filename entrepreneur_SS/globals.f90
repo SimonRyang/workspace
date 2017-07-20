@@ -30,7 +30,7 @@ module globals
   integer, parameter :: NP = 5
 
   ! number of occupations (-1)
-  integer, parameter :: NO = 0
+  integer, parameter :: NO = 1
 
   ! household parameters
   real*8 :: gamma, sigma, mu_b, beta, l_bar
@@ -160,12 +160,12 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_w = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
+      valuefunc_w = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
+        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
@@ -248,12 +248,12 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_e = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
+      valuefunc_e = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
 
-        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
+        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
@@ -328,7 +328,7 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_r = interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
+      valuefunc_r = interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
 
     endif
 
@@ -355,7 +355,7 @@ contains
     real*8 :: profent
 
     ! compute profit
-    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*eta(iw, is)*l_bar)**(1d0-alpha))**nu - delta*k - r*max(k-a(ia), 0d0)
+    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r*max(k-a(ia), 0d0)
 
   end function
 
@@ -464,8 +464,7 @@ contains
     interpolate_EV = (varphi*varpsi*EV(io, ial, ipl, iw, ie, is, ij) &
                       + varphi*(1d0-varpsi)*EV(io, ial, ipr, iw, ie, is, ij) &
                       + (1d0-varphi)*varpsi*EV(io, iar, ipl, iw, ie, is, ij) &
-                      + (1d0-varphi)*(1d0-varpsi)*EV(io, iar, ipr, iw, ie, is, ij)) &
-                     **(1d0-gamma)/(1d0-gamma)
+                      + (1d0-varphi)*(1d0-varpsi)*EV(io, iar, ipr, iw, ie, is, ij))
 
   end function
 
