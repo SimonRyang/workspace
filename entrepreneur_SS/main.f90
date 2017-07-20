@@ -120,15 +120,15 @@ program main
 
   open(307, file='results.out')
 
-  do m1 = 5, 1, -1
-    do m2 = 5, 1, -1
-      do m3 = 5, 1, -1
-        do s1 = 5, 1, -1
-          do s2 = 5, 1, -1
-            do s3 = 5, 1, -1
-              do rh1 = 5, 1, -1
-                do rh2 = 5, 1, -1
-                  do rh3 = 5, 1, -1
+  do m1 = 1, 1, -1
+    do m2 = 1, 1, -1
+      do m3 = 1, 1, -1
+        do s1 = 1, 1, -1
+          do s2 = 1, 1, -1
+            do s3 = 1, 1, -1
+              do rh1 = 1, 1, -1
+                do rh2 = 1, 1, -1
+                  do rh3 = 1, 1, -1
 
                     write(*,*) m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
                     write(*,*) mu_val(1,m1), mu_val(2,m2), mu_val(3,m3), sig_val(1,s1), sig_val(2,s2), sig_val(3,s3), rho_val(1,rh1), rho_val(2,rh2), rho_val(3,rh3)
@@ -182,38 +182,37 @@ program main
       end do
     end do
 
+    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
+    call execplot
 
-    ! call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
-    ! call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
-    ! call execplot
-    !
-    ! call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
-    ! call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
-    ! call execplot
-    !
-    ! call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
-    ! call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
-    ! call execplot
-    !
-    ! write(*,'(16f8.4)')shares_result(:, 1)
-    ! write(*,'(16f8.4)')shares_target(:, 1)
-    !
-    ! write(*,'(16f8.4)')shares_result(:, 2)
-    ! write(*,'(16f8.4)')shares_target(:, 2)
-    !
-    ! write(*,'(16f8.4)')shares_result(:, 3)
-    ! write(*,'(16f8.4)')shares_target(:, 3)
-    !
-    ! write(*,*)share_result
+    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
+    call execplot
 
-    ! call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 1), color='blue')
-    ! call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 2), color='red')
-    ! call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 3), color='green')
-    !
-    ! call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 1, 2:9)+os_coh(1, 1, 1, 2:9))*100d0, color='blue', linewidth=4d0)
-    ! call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 2, 2:9)+os_coh(1, 1, 2, 2:9))*100d0, color='red', linewidth=4d0)
-    ! call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 3, 2:9)+os_coh(1, 1, 3, 2:9))*100d0, color='green', linewidth=4d0)
-    ! call execplot()
+    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
+    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
+    call execplot
+
+    write(*,'(16f8.4)')shares_result(:, 1)
+    write(*,'(16f8.4)')shares_target(:, 1)
+
+    write(*,'(16f8.4)')shares_result(:, 2)
+    write(*,'(16f8.4)')shares_target(:, 2)
+
+    write(*,'(16f8.4)')shares_result(:, 3)
+    write(*,'(16f8.4)')shares_target(:, 3)
+
+    write(*,*)share_result
+
+    call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 1), color='blue')
+    call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 2), color='red')
+    call plot((/(dble(ij), ij=2,9)/), shares_target(2:9, 3), color='green')
+
+    call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 1, 2:9)+os_coh(1, 1, 1, 2:9))*100d0, color='blue', linewidth=4d0)
+    call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 2, 2:9)+os_coh(1, 1, 2, 2:9))*100d0, color='red', linewidth=4d0)
+    call plot((/(dble(ij), ij=2,9)/), (os_coh(1, 0, 3, 2:9)+os_coh(1, 1, 3, 2:9))*100d0, color='green', linewidth=4d0)
+    call execplot()
 
   ! close files
   close(307)
