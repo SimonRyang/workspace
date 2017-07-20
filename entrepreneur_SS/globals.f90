@@ -165,7 +165,7 @@ contains
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = util(c_com-0.2d0, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
