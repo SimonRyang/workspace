@@ -59,7 +59,7 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  swc = 0.1d0
+  swc = 0.0d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
@@ -111,8 +111,8 @@ program main
 
   share_target = 10.4035d0
 
-  mu_val(1, :) =  (/0.600d0, 0.595d0, 0.605d0, 0.590d0, 0.610d0/)
-  mu_val(2, :) =  (/0.550d0, 0.545d0, 0.565d0, 0.540d0, 0.560d0/)
+  mu_val(1, :) =  (/0.550d0, 0.595d0, 0.605d0, 0.590d0, 0.610d0/)
+  mu_val(2, :) =  (/0.500d0, 0.545d0, 0.565d0, 0.540d0, 0.560d0/)
   mu_val(3, :) =  (/0.200d0, 0.295d0, 0.305d0, 0.290d0, 0.310d0/)
   sig_val(1, :) = (/0.0370d0, 0.0365d0, 0.0375d0, 0.0360d0, 0.0380d0/)
   sig_val(2, :) = (/0.0380d0, 0.0375d0, 0.0385d0, 0.0370d0, 0.0390d0/)
@@ -373,7 +373,7 @@ contains
     Gama(8) = 1.8d0*pop(8)
     Gama(9) = 1.6d0*pop(9)
     Gama(1:4) = 0d0
-    Gama(1:JR-1) = 1d0
+    Gama(5:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
     Gama = Gama/sum(Gama)
 
