@@ -373,7 +373,7 @@ contains
     Gama(8) = 1.8d0*pop(8)
     Gama(9) = 1.6d0*pop(9)
     Gama(1:4) = 0d0
-    Gama(1:JR-1) = 1d0
+    Gama(5:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
     Gama = Gama/sum(Gama)
 
@@ -836,7 +836,7 @@ contains
     do is = 1, NS
       do ie = 1, NE
         do iw = 1, NW
-          m(0, 0, 0, iw, 3, is, 1) = dist_eta(iw, is)*dist_skill(is) !dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
+          m(0, 0, 0, iw, ie, is, 1) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
         enddo ! iw
       enddo ! ie
     enddo ! is
