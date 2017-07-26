@@ -33,7 +33,7 @@ module globals
   integer, parameter :: NO = 1
 
   ! household parameters
-  real*8 :: gamma, sigma, mu_b, beta, l_bar
+  real*8 :: gamma, sigma, mu_b, beta, l_bar, swc
 
   ! production parameters
   real*8 :: alpha, delta, nu
@@ -123,7 +123,7 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, valuefunc_help
+    real*8 :: a_plus, wage, c_help, valuefunc_help
 
     ! tomorrow's assets
     a_plus = xy(1)
@@ -150,7 +150,9 @@ contains
 
     ! calculate consumption
     c_com = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
-         - pencon_com - inctax_com - captax_com - a_plus)*pinv
+             - pencon_com - inctax_com - captax_com - a_plus)*pinv
+    c_help = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
+              - pencon_com - inctax_com - captax_com - a_plus - swc)*pinv
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
@@ -165,11 +167,12 @@ contains
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
+          c_com = c_help
           oplus_com = 1d0
         endif
 
@@ -230,6 +233,8 @@ contains
 
     ! calculate consumption
     c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
+           - captax_com - inctax_com - pencon_com - a_plus - swc)*pinv
+    c_help =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
            - captax_com - inctax_com - pencon_com - a_plus)*pinv
 
     ! calculate next periods pension claims
@@ -253,14 +258,12 @@ contains
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
 
-        valuefunc_help = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
           valuefunc_e = valuefunc_help
-          oplus_com = 1d0
-        elseif (.not. ent .and. oplus(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com) > 0d0) then
-          valuefunc_e = valuefunc_help
+          c_com = c_help
           oplus_com = 1d0
         endif
 
