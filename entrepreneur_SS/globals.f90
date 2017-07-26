@@ -153,7 +153,7 @@ contains
     c_com = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
              - pencon_com - inctax_com - captax_com - a_plus)*pinv
     c_help = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
-              - pencon_com - inctax_com - captax_com - a_plus - dble(ij_com-1)/(JR-2)*swc)*pinv
+              - pencon_com - inctax_com - captax_com - a_plus - dble(ij_com)/(JR-1)*swc)*pinv
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
@@ -175,7 +175,7 @@ contains
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
           c_com = c_help
-          cx_com = dble(ij_com-1)/(JR-2)*swc
+          cx_com = dble(ij_com)/(JR-1)*swc
           oplus_com = 1d0
         endif
 
