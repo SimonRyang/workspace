@@ -48,7 +48,7 @@ module globals
   real*8:: gy, by
   real*8 :: r, w, inc_pen, inc_tax, pinv
   real*8 :: KK, KC, KE, AA, LC, HH
-  real*8 :: YY, YC, YE, CC, II, GG, NEX
+  real*8 :: YY, YC, YE, CC, CCX, II, GG, NEX
   real*8 :: BB, BF, BQ
   real*8 :: TAc, TAr, TAw, TAy
 
@@ -81,6 +81,7 @@ module globals
   real*8, allocatable :: aplus(:, :, :, :, :, :, :)
   real*8, allocatable :: pplus(:, :, :, :, :, :, :)
   real*8, allocatable :: c(:, :, :, :, :, :, :)
+  real*8, allocatable :: cx(:, :, :, :, :, :, :)
   real*8, allocatable :: l(:, :, :, :, :, :, :)
   real*8, allocatable :: k(:, :, :, :, :, :, :)
   real*8, allocatable :: oplus(:, :, :, :, :, :, :)
@@ -93,7 +94,7 @@ module globals
 
   ! numerical variables
   integer :: io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com
-  real*8 :: c_com, l_com, k_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF
+  real*8 :: c_com, cx_com, l_com, k_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF
 
   ! statistical variables
   logical :: gini_on = .false.
@@ -104,7 +105,7 @@ module globals
   logical :: ent = .true.     ! .true. = endogenous decision to become an entrepreneur
 
   !$omp threadprivate(io_com, ia_com, ip_com, iw_com, ie_com, is_com, ij_com)
-  !$omp threadprivate(c_com, l_com, k_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
+  !$omp threadprivate(c_com, cx_com, l_com, k_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
 
 contains
 
@@ -157,6 +158,7 @@ contains
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
     valuefunc_help = 0d0
+    cx_com = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
@@ -173,6 +175,7 @@ contains
         if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
           c_com = c_help
+          cx_com = swc
           oplus_com = 1d0
         endif
 
@@ -248,6 +251,7 @@ contains
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_e = 0d0
     valuefunc_help = 0d0
+    cx_com = swc
     oplus_com = 0d0
 
     if (ij_com < JJ) then
@@ -264,6 +268,7 @@ contains
         if (valuefunc_help > valuefunc_e .and. ent) then
           valuefunc_e = valuefunc_help
           c_com = c_help
+          cx_com = 0d0
           oplus_com = 1d0
         endif
 

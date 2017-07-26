@@ -20,6 +20,7 @@ program main
   if(allocated(aplus))deallocate(aplus)
   if(allocated(pplus))deallocate(pplus)
   if(allocated(c))deallocate(c)
+  if(allocated(cx))deallocate(cx)
   if(allocated(l))deallocate(l)
   if(allocated(k))deallocate(k)
   if(allocated(oplus))deallocate(oplus)
@@ -32,6 +33,7 @@ program main
   allocate(aplus(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(pplus(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(c(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
+  allocate(cx(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(l(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(k(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
   allocate(oplus(0:1, 0:NA, 0:NP, NW, NE, NS, JJ))
@@ -511,6 +513,7 @@ contains
               aplus(:, ia, ip,  :,  :, is, ij) = xy(1)
               pplus(:, ia, ip,  :,  :, is, ij) = p(ip)
               c(:, ia, ip,  :,  :, is, ij) = max(c_com, 1d-10)
+              cx(:, ia, ip,  :,  :, is, ij) = cx_com
               l(:, ia, ip,  :,  :, is, ij) = 0d0
               k(:, ia, ip,  :,  :, is, ij) = 0d0
               oplus(:, ia, ip,  :,  :, is, ij) = 0d0
@@ -559,6 +562,7 @@ contains
                     k(1, ia, ip, iw, ie, is, ij) = k_com
                     pplus(1, ia, ip, iw, ie, is, ij) = pplus_com
                     c(1, ia, ip, iw, ie, is, ij) = max(c_com, 1d-10)
+                    cx(1, ia, ip, iw, ie, is, ij) = cx_com
                     l(1, ia, ip, iw, ie, is, ij) = l_com
                     oplus(1, ia, ip, iw, ie, is, ij) = oplus_com
                     pencon(1, ia, ip, iw, ie, is, ij) = pencon_com
@@ -600,6 +604,7 @@ contains
               aplus(0, ia, ip,  :,  :, is, ij) = xy(1)
               pplus(0, ia, ip,  :,  :, is, ij) = p(ip)
               c(0, ia, ip,  :,  :, is, ij) = max(c_com, 1d-10)
+              cx(0, ia, ip,  :,  :, is, ij) = cx_com
               l(0, ia, ip,  :,  :, is, ij) = 0d0
               k(0, ia, ip,  :,  :, is, ij) = 0d0
               oplus(0, ia, ip,  :,  :, is, ij) = 0d0
@@ -649,6 +654,7 @@ contains
                     k(1, ia, ip, iw, ie, is, ij) = k_com
                     pplus(1, ia, ip, iw, ie, is, ij) = pplus_com
                     c(1, ia, ip, iw, ie, is, ij) = max(c_com, 1d-10)
+                    cx(1, ia, ip, iw, ie, is, ij) = cx_com
                     l(1, ia, ip, iw, ie, is, ij) = l_com
                     oplus(1, ia, ip, iw, ie, is, ij) = oplus_com
                     pencon(1, ia, ip, iw, ie, is, ij) = pencon_com
@@ -693,6 +699,7 @@ contains
                   k(0, ia, ip, iw, ie, is, ij) = k_com
                   pplus(0, ia, ip, iw, ie, is, ij) = pplus_com
                   c(0, ia, ip, iw, ie, is, ij) = max(c_com, 1d-10)
+                  cx(0, ia, ip, iw, ie, is, ij) = cx_com
                   l(0, ia, ip, iw, ie, is, ij) = l_com
                   oplus(0, ia, ip, iw, ie, is, ij) = oplus_com
                   pencon(0, ia, ip, iw, ie, is, ij) = pencon_com
@@ -736,6 +743,7 @@ contains
               aplus(:, :, :, iw, ie, is, ij) = xy(1)
               pplus(:, :, :, iw, ie, is, ij) = pplus_com
               c(:, :, :, iw, ie, is, ij) = max(c_com, 1d-10)
+              cx(:, :, :, iw, ie, is, ij) = cx_com
               l(:, :, :, iw, ie, is, ij) = l_com
               k(:, :, :, iw, ie, is, ij) = 0d0
               oplus(:, :, :, iw, ie, is, ij) = oplus_com
@@ -911,6 +919,7 @@ contains
     ! calculate aggregates
     AA  = 0d0
     CC  = 0d0
+    CCX = 0d0
     LC  = 0d0
     HH  = 0d0
     KE  = 0d0
@@ -945,6 +954,8 @@ contains
                   AA = AA + aplus(io, ia, ip, iw, ie, is, ij) &
                             *m(io, ia, ip, iw, ie, is, ij)/(1d0+n_p)
                   CC = CC + c(io, ia, ip, iw, ie, is, ij) &
+                            *m(io, ia, ip, iw, ie, is, ij)
+                  CCX = CCX + cx(io, ia, ip, iw, ie, is, ij) &
                             *m(io, ia, ip, iw, ie, is, ij)
                   if (io == 0 .and. ij < JR) then
                     LC = LC + eff(ij, is)*eta(iw, is)*l(io, ia, ip, iw, ie, is, ij) &
@@ -1051,7 +1062,7 @@ contains
     taup = PP/PC
 
     ! get difference on goods market
-    DIFF = YY-CC-II-GG-NEX
+    DIFF = YY-CC-CCX-II-GG-NEX
 
   end subroutine
 
