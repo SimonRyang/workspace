@@ -200,7 +200,7 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, profit, valuefunc_help
+    real*8 :: a_plus, profit, c_help, valuefunc_help
 
     ! tomorrow's assets
     a_plus = xy(1)
