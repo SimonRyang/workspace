@@ -153,7 +153,7 @@ contains
     c_com = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
              - pencon_com - inctax_com - captax_com - a_plus)*pinv
     c_help = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
-              - pencon_com - inctax_com - captax_com - a_plus)*pinv
+              - pencon_com - inctax_com - captax_com - a_plus - swc)*pinv
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
@@ -236,7 +236,7 @@ contains
 
     ! calculate consumption
     c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
-           - captax_com - inctax_com - pencon_com - a_plus)*pinv
+           - captax_com - inctax_com - pencon_com - a_plus - swc)*pinv
     c_help =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
            - captax_com - inctax_com - pencon_com - a_plus)*pinv
 
