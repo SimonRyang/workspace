@@ -153,7 +153,7 @@ contains
     c_com = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
              - pencon_com - inctax_com - captax_com - a_plus)*pinv
     c_help = ((1d0+r)*a(ia_com) + wage*l_com + beq(is_com, ij_com) + pen(ip_com, ij_com) &
-              - pencon_com - inctax_com - captax_com - a_plus - swc)*pinv
+              - pencon_com - inctax_com - captax_com - a_plus)*pinv
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
@@ -232,11 +232,11 @@ contains
     inctax_com = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax - pencon_com, 0d0) + pen(ip_com, ij_com))
 
     ! calcualte capital gains tax
-    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.08d0*r*a(ia_com) - 2d0*0.0267d0*inc_tax, 0d0)
+    captax_com = taur*1.055d0*max(r*max(a(ia_com)-k_com, 0d0) - 0.08d0*r*max(a(ia_com)-k_com, 0d0) - 2d0*0.0267d0*inc_tax, 0d0)
 
     ! calculate consumption
     c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
-           - captax_com - inctax_com - pencon_com - a_plus - swc)*pinv
+           - captax_com - inctax_com - pencon_com - a_plus)*pinv
     c_help =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
            - captax_com - inctax_com - pencon_com - a_plus)*pinv
 
