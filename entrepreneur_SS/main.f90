@@ -59,7 +59,7 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  swc = 0.02d0
+  swc = 0.0d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
@@ -185,28 +185,28 @@ program main
       end do
     end do
 
-    call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
-    call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
-    call execplot
-
-    call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
-    call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
-    call execplot
-
-    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
-    call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
-    call execplot
-
-    write(*,'(16f8.4)')shares_result(:, 1)
-    write(*,'(16f8.4)')shares_target(:, 1)
-
-    write(*,'(16f8.4)')shares_result(:, 2)
-    write(*,'(16f8.4)')shares_target(:, 2)
-
-    write(*,'(16f8.4)')shares_result(:, 3)
-    write(*,'(16f8.4)')shares_target(:, 3)
-
-    write(*,*)share_result
+    ! call plot((/(dble(ij), ij=1,JJ)/), c_coh(0, :))
+    ! call plot((/(dble(ij), ij=1,JJ)/), c_coh(1, :))
+    ! call execplot
+    !
+    ! call plot((/(dble(ij), ij=1,JJ)/), a_coh(0, :))
+    ! call plot((/(dble(ij), ij=1,JJ)/), a_coh(1, :))
+    ! call execplot
+    !
+    ! call plot((/(dble(ij), ij=1,JJ)/), inc_coh(0, :))
+    ! call plot((/(dble(ij), ij=1,JJ)/), inc_coh(1, :))
+    ! call execplot
+    !
+    ! write(*,'(16f8.4)')shares_result(:, 1)
+    ! write(*,'(16f8.4)')shares_target(:, 1)
+    !
+    ! write(*,'(16f8.4)')shares_result(:, 2)
+    ! write(*,'(16f8.4)')shares_target(:, 2)
+    !
+    ! write(*,'(16f8.4)')shares_result(:, 3)
+    ! write(*,'(16f8.4)')shares_target(:, 3)
+    !
+    ! write(*,*)share_result
 
     call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
     call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
