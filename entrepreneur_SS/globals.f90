@@ -236,7 +236,7 @@ contains
 
     ! calculate consumption
     c_com =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
-           - captax_com - inctax_com - pencon_com - a_plus - (ij_com-1)/(JR-2)*swc)*pinv
+           - captax_com - inctax_com - pencon_com - a_plus - max((JR-1-ij_com)/(JR-2), 0d0)*swc)*pinv
     c_help =  (a(ia_com) + r*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com) + pen(ip_com, ij_com)  &
            - captax_com - inctax_com - pencon_com - a_plus)*pinv
 
@@ -251,7 +251,7 @@ contains
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_e = 0d0
     valuefunc_help = 0d0
-    cx_com = (ij_com-1)/(JR-2)*swc
+    cx_com = max((JR-1-ij_com)/(JR-2), 0d0)*swc
     oplus_com = 0d0
 
     if (ij_com < JJ) then
