@@ -126,7 +126,7 @@ module globals
   logical :: show_graphics = .false.
 
   !$omp threadprivate(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
-  !$omp threadprivate(c_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
+  !$omp threadprivate(c_com, cx_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
 
 contains
 
@@ -194,7 +194,7 @@ contains
     ! calculate consumption
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
-    c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
+    c_help = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
          - pencon_com - inctax_com - captax_com - mx_com - a_plus - dble(ij_com)/(JR-1)*swc)*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
