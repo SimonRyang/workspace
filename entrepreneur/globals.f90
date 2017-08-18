@@ -432,6 +432,7 @@ contains
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_r = 0d0
+    cx_com = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
