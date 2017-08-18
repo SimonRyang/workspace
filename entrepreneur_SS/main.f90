@@ -125,13 +125,13 @@ program main
 
   do m1 = 1, 1
     do m2 = 2, 2
-      do m3 = 3, 3
+      do m3 = 1, 1
         do s1 = 3, 3
-          do s2 = 2, 2
-            do s3 = 5, 5
-              do rh1 = 5, 5
+          do s2 = 3, 3
+            do s3 = 2, 2
+              do rh1 = 4, 4
                 do rh2 = 2, 2
-                  do rh3 = 4, 4
+                  do rh3 = 3, 3
 
                     write(*,*) m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
                     write(*,*) mu_val(1,m1), mu_val(2,m2), mu_val(3,m3), sig_val(1,s1), sig_val(2,s2), sig_val(3,s3), rho_val(1,rh1), rho_val(2,rh2), rho_val(3,rh3)
