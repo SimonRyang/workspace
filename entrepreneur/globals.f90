@@ -244,7 +244,7 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help
+    real*8 :: a_plus, p_hat, profit, c_help, v_ind, valuefunc_help
     real*8 :: temp1, temp2
     integer :: ij, itp, iij, itj
 
