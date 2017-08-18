@@ -65,7 +65,7 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
-  swc = 0.20d0
+  swc = 0.00d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
