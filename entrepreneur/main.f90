@@ -17,6 +17,7 @@ program main
   if(allocated(xplus))deallocate(xplus)
   if(allocated(pplus))deallocate(pplus)
   if(allocated(c))deallocate(c)
+  if(allocated(cx))deallocate(cx)
   if(allocated(l))deallocate(l)
   if(allocated(k))deallocate(k)
   if(allocated(mx))deallocate(mx)
@@ -32,6 +33,7 @@ program main
   allocate(xplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(pplus(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(c(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
+  allocate(cx(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(l(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(mx(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
   allocate(k(0:1, 0:NA, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT))
@@ -63,6 +65,7 @@ program main
   delta = 0.06d0
   nu = 0.88d0
   l_bar = 0.47d0
+  swc = 0.20d0
   ! convert variables into per period values
   delta = 1d0 - (1d0-delta)**5d0
 
@@ -644,6 +647,7 @@ contains
                 xplus(:, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
                 pplus(:, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
                 c(:, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
+                cx(:, ia, ix, ip,  :,  :, is, ij, it) = cx_com
                 l(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 k(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 mx(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
@@ -696,6 +700,7 @@ contains
                       k(1, ia, ix, ip, iw, ie, is, ij, it) = k_com
                       pplus(1, ia, ix, ip, iw, ie, is, ij, it) = p(ip)
                       c(1, ia, ix, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                      cx(1, ia, ix, ip, iw, ie, is, ij, it) = cx_com
                       l(1, ia, ix, ip, iw, ie, is, ij, it) = l_com
                       mx(1, ia, ix, ip, iw, ie, is, ij, it) = 0d0
                       oplus(1, ia, ix, ip, iw, ie, is, ij, it) = oplus_com
@@ -741,6 +746,7 @@ contains
                 xplus(0, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
                 pplus(0, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
                 c(0, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
+                cx(0, ia, ix, ip,  :,  :, is, ij, it) = cx_com
                 l(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 k(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
                 mx(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
@@ -795,6 +801,7 @@ contains
                     k(1, ia, :, ip, iw, ie, is, ij, it) = k_com
                     pplus(1, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                     c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                    cx(1, ia, :, ip, iw, ie, is, ij, it) = cx_com
                     l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
                     mx(1, ia, :, ip, iw, ie, is, ij, it) = mx_com
                     oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
@@ -843,6 +850,7 @@ contains
                   k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
                   pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                   c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                  cx(0, ia, :, ip, iw, ie, is, ij, it) = cx_com
                   l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
                   mx(0, ia, :, ip, iw, ie, is, ij, it) = mx_com
                   oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
@@ -898,6 +906,7 @@ contains
                     k(1, ia, :, ip, iw, ie, is, ij, it) = k_com
                     pplus(1, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                     c(1, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                    cx(1, ia, :, ip, iw, ie, is, ij, it) = cx_com
                     l(1, ia, :, ip, iw, ie, is, ij, it) = l_com
                     mx(1, ia, :, ip, iw, ie, is, ij, it) = 0d0
                     oplus(1, ia, :, ip, iw, ie, is, ij, it) = oplus_com
@@ -946,6 +955,7 @@ contains
                   k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
                   pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
                   c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                  cx(0, ia, :, ip, iw, ie, is, ij, it) = cx_com
                   l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
                   mx(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
                   oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
@@ -991,6 +1001,7 @@ contains
               xplus(:, :, :, :, iw, ie, is, ij, it) = 0d0
               pplus(:, :, :, :, iw, ie, is, ij, it) = pplus_com
               c(:, :, :, :, iw, ie, is, ij, it) = max(c_com, 1d-10)
+              cx(:, :, :, :, iw, ie, is, ij, it) = cx_com
               l(:, :, :, :, iw, ie, is, ij, it) = l_com
               mx(:, :, :, :, iw, ie, is, ij, it) = 0d0
               k(:, :, :, :, iw, ie, is, ij, it) = 0d0
@@ -1208,6 +1219,7 @@ contains
     ! calculate aggregates
     AA(it)  = 0d0
     CC(it)  = 0d0
+    CCX(it) = 0d0
     LC(it)  = 0d0
     HH(it)  = 0d0
     KE(it)  = 0d0
@@ -1249,11 +1261,13 @@ contains
                                       *m(io, ia, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
 
                     x_coh(ij, it) = x_coh(ij, it) + x(ix) &
-                              *m(io, ia, ix, ip, iw, ie, is, ij, it)
+                                                    *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     bx_coh(ij, it) = bx_coh(ij, it) + x(ix) &
                              *m(io, ia, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))
                     CC(it) = CC(it) + c(io, ia, ix, ip, iw, ie, is, ij, it) &
                               *m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    CCX(it) = CCX(it) + cx(io, ia, ix, ip, iw, ie, is, ij, it) &
+                                        *m(io, ia, ix, ip, iw, ie, is, ij, it)
                     if (io == 0 .and. ij < JR) then
                       LC(it) = LC(it) + eff(ij, is)*eta(iw, is)*l(io, ia, ix, ip, iw, ie, is, ij, it) &
                                 *m(io, ia, ix, ip, iw, ie, is, ij, it)
@@ -1398,7 +1412,7 @@ contains
     endif
 
     ! get difference on goods market
-    DIFF = YY(it)-CC(it)-II(it)-GG(it)-NEX(it)
+    DIFF = YY(it)-CC(it)-CCX(it)-II(it)-GG(it)-NEX(it)
 
   end subroutine
 
