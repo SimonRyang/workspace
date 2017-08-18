@@ -124,13 +124,13 @@ program main
   open(307, file='results.out')
 
   do m1 = 1, 1
-    do m2 = 2, 2
-      do m3 = 1, 1
+    do m2 = 1, 1
+      do m3 = 3, 3
         do s1 = 3, 3
-          do s2 = 3, 3
-            do s3 = 2, 2
-              do rh1 = 4, 4
-                do rh2 = 2, 2
+          do s2 = 4, 4
+            do s3 = 4, 4
+              do rh1 = 5, 5
+                do rh2 = 4, 4
                   do rh3 = 3, 3
 
                     write(*,*) m1, m2, m3, s1, s2, s3, rh1, rh2, rh3
