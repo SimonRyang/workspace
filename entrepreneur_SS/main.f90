@@ -359,7 +359,7 @@ contains
 
     pop = 0d0
     do is = 1, NS
-      pop(:) = pop(:) + rpop(is, :)*dist_skill(is)
+      pop(:) = pop(:) + rpop(is, :)
     enddo
 
     ! set distribution of bequests
@@ -409,8 +409,6 @@ contains
 
     ! open files
     open(21, file='output.out')
-
-    write(*,*)a
 
   end subroutine
 

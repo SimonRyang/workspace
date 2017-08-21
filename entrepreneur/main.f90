@@ -436,8 +436,6 @@ contains
     open(22, file='summary.out')
     open(23, file='output_mikrozensus2012.out')
 
-    write(*,*)a
-
   end subroutine
 
 
