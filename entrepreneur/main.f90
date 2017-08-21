@@ -1015,10 +1015,10 @@ contains
       !call tock(calc)
 
       write(*,*)'decisions:', ij
-      write(*,*)sum(c(:, :, 0, :, :, :, :, ij, it))
-      write(*,*)sum(aplus(:, :, 0, :, :, :, :, ij, it))
-      write(*,*)sum(l(:, :, 0, :, :, :, :, ij, it))
-      write(*,*)sum(k(:, :, 0, :, :, :, :, ij, it))
+      write(*,*)sum(c(0, :, 0, :, :, :, :, ij, it))
+      write(*,*)sum(aplus(0, :, 0, :, :, :, :, ij, it))
+      write(*,*)sum(l(0, :, 0, :, :, :, :, ij, it))
+      write(*,*)sum(k(0, :, 0, :, :, :, :, ij, it))
 
     enddo
 

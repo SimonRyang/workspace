@@ -759,10 +759,10 @@ contains
       !call tock(calc)
 
       write(*,*)'decisions:', ij
-      write(*,*)sum(c(:, :, :, :, :, :, ij))
-      write(*,*)sum(aplus(:, :, :, :, :, :, ij))
-      write(*,*)sum(l(:, :, :, :, :, :, ij))
-      write(*,*)sum(k(:, :, :, :, :, :, ij))
+      write(*,*)sum(c(0, :, :, :, :, :, ij))
+      write(*,*)sum(aplus(0, :, :, :, :, :, ij))
+      write(*,*)sum(l(0, :, :, :, :, :, ij))
+      write(*,*)sum(k(0, :, :, :, :, :, ij))
 
 
     enddo
