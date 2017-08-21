@@ -900,6 +900,7 @@ contains
     enddo ! ij
 
     write(*,*)'                           sum:', sum(m(:, :, :, :, :, :, :))
+    write(*,*)'                       ent sum:', sum(m(1, :, :, :, :, :, :))
 
   end subroutine
 
