@@ -503,17 +503,17 @@ contains
               call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
 
               ! copy decisions
-              aplus(:, ia, ip,  :,  :, is, ij) = xy(1)
-              pplus(:, ia, ip,  :,  :, is, ij) = p(ip)
-              c(:, ia, ip,  :,  :, is, ij) = max(c_com, 1d-10)
-              cx(:, ia, ip,  :,  :, is, ij) = 0d0
-              l(:, ia, ip,  :,  :, is, ij) = 0d0
-              k(:, ia, ip,  :,  :, is, ij) = 0d0
-              oplus(:, ia, ip,  :,  :, is, ij) = 0d0
-              pencon(:, ia, ip,  :,  :, is, ij) = 0d0
-              inctax(:, ia, ip,  :,  :, is, ij) = inctax_com
-              captax(:, ia, ip,  :,  :, is, ij) = captax_com
-              VV(:, ia, ip,  :,  :, is, ij) = -fret
+              aplus(0, ia, ip,  :,  :, is, ij) = xy(1)
+              pplus(0, ia, ip,  :,  :, is, ij) = p(ip)
+              c(0, ia, ip,  :,  :, is, ij) = max(c_com, 1d-10)
+              cx(0, ia, ip,  :,  :, is, ij) = 0d0
+              l(0, ia, ip,  :,  :, is, ij) = 0d0
+              k(0, ia, ip,  :,  :, is, ij) = 0d0
+              oplus(0, ia, ip,  :,  :, is, ij) = 0d0
+              pencon(0, ia, ip,  :,  :, is, ij) = 0d0
+              inctax(0, ia, ip,  :,  :, is, ij) = inctax_com
+              captax(0, ia, ip,  :,  :, is, ij) = captax_com
+              VV(0, ia, ip,  :,  :, is, ij) = -fret
 
             enddo ! ia
           enddo ! ip
