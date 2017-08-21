@@ -1188,6 +1188,7 @@ contains
   write(*,*)'distribution of pos. annuities:', sum(m(:, :, 1:, :, :, :, :, :, it))
   write(*,*)'distribution of zero annuities:', sum(m(:, :, 0, :, :, :, :, :, it))
   write(*,*)'                           sum:', sum(m(:, :, :, :, :, :, :, :, it))
+  write(*,*)'                       ent sum:', sum(m(1, :, :, :, :, :, :, :, it))
 
   end subroutine
 
