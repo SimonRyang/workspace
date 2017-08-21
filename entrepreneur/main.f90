@@ -89,8 +89,8 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 32d0
-  a_grow = 0.30d0
+  a_u    = 24d0
+  a_grow = 0.14d0
 
   ! size of the annuitiy grid
   x_l    = 0d0
@@ -946,7 +946,6 @@ contains
                   ! get initial guess for the individual choices
                   xy(1) = max(aplus(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
                   xy(2) = max(l(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
-                  xy(3) = max(mx(0, ia, 0, ip, iw, ie, is, ij, it), 1d-4)
 
                   call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
@@ -1187,6 +1186,9 @@ contains
       enddo ! io
 
     enddo ! ij
+
+  write(*,*)'distribution of pos. annuities:', sum(m(:, :, 1:, :, :, :, :, :, it))
+  write(*,*)'distribution of zero annuities:', sum(m(:, :, 1:, :, :, :, :, :, it))
 
   end subroutine
 
@@ -1595,6 +1597,7 @@ contains
     real*8 :: profit
     real*8 :: sum_help(0:NO, 0:NA, NS)
     real*8 :: xplot(1000), yplot(1000), zplot(1000)
+    real*8 :: shares_target(JJ, NS), shares_target(JJ, NS)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
@@ -1978,6 +1981,27 @@ contains
     call plot(xplot, zplot)
     write(*,*)a(ia_com), 1.5d0*a(ia_com), k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     call execplot
+
+
+    ! initialize target shares
+    open(303, file='shares.dat')
+    do ij = 1, JJ
+      read(303,'(3f6.2)')shares_target(ij, :)
+    enddo
+    close(303)
+    shares_target(:, :) = shares_target(:, :)
+    shares_result(:, 1) = (os_coh(1, 0, 1, :, it)+os_coh(1, 1, 1, :, it))*100d0
+    shares_result(:, 2) = (os_coh(1, 0, 2, :, it)+os_coh(1, 1, 2, :, it))*100d0
+    shares_result(:, 3) = (os_coh(1, 0, 3, :, it)+os_coh(1, 1, 3, :, it))*100d0
+
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
+    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
+
+    call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 1, :, it)+os_coh(1, 1, 1, :, it))*100d0, color='blue', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 2, :, it)+os_coh(1, 1, 2, :, it))*100d0, color='red', linewidth=4d0)
+    call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 3, :, it)+os_coh(1, 1, 3, :, it))*100d0, color='green', linewidth=4d0)
+    call execplot()
 
   end subroutine
 
