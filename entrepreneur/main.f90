@@ -414,7 +414,7 @@ contains
     call discretize_AR(0.910d0**5d0, -0.050d0, sigma5(0.910d0, 0.0350d0), theta(:, 1), pi_theta(:, :, 1), dist_theta(:, 1))
     theta(:, 1) = exp(theta(:, 1))!/sum(dist_theta(:, 1)*exp(theta(:, 1)))
 
-    call discretize_AR(0.920d0**5d0, -0.070d0, sigma5(0.920d0, 0.0375d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
+    call discretize_AR(0.920d0**5d0, -0.060d0, sigma5(0.920d0, 0.0375d0), theta(:, 2), pi_theta(:, :, 2), dist_theta(:, 2))
     theta(:, 2) = exp(theta(:, 2))!/sum(dist_theta(:, 2)*exp(theta(:, 2)))
 
     call discretize_AR(0.945d0**5d0, -0.140d0, sigma5(0.945d0, 0.0550d0), theta(:, 3), pi_theta(:, :, 3), dist_theta(:, 3))
