@@ -408,7 +408,7 @@ contains
     write(*,*)'eta:'
     write(*,*)eta
     write(*,*)'theta:'
-    write(*,*)'theta'
+    write(*,*)theta
 
     ! initial guesses for macro variables
     taup = 0.192d0
