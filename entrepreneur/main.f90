@@ -1597,7 +1597,7 @@ contains
     real*8 :: profit
     real*8 :: sum_help(0:NO, 0:NA, NS)
     real*8 :: xplot(1000), yplot(1000), zplot(1000)
-    real*8 :: shares_target(JJ, NS), shares_target(JJ, NS)
+    real*8 :: shares_target(JJ, NS), shares_result(JJ, NS)
 
     if(allocated(wealth))deallocate(wealth)
     if(allocated(grossinc))deallocate(grossinc)
