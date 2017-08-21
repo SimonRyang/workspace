@@ -1969,24 +1969,24 @@ contains
 
 
     ! initialize target shares
-    open(303, file='shares.dat')
-    do ij = 1, JJ
-      read(303,'(3f6.2)')shares_target(ij, :)
-    enddo
-    close(303)
-    shares_target(:, :) = shares_target(:, :)
-    shares_result(:, 1) = (os_coh(1, 0, 1, :, it)+os_coh(1, 1, 1, :, it))*100d0
-    shares_result(:, 2) = (os_coh(1, 0, 2, :, it)+os_coh(1, 1, 2, :, it))*100d0
-    shares_result(:, 3) = (os_coh(1, 0, 3, :, it)+os_coh(1, 1, 3, :, it))*100d0
-
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
-    call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
-
-    call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 1, :, it)+os_coh(1, 1, 1, :, it))*100d0, color='blue', linewidth=4d0)
-    call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 2, :, it)+os_coh(1, 1, 2, :, it))*100d0, color='red', linewidth=4d0)
-    call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 3, :, it)+os_coh(1, 1, 3, :, it))*100d0, color='green', linewidth=4d0)
-    call execplot()
+    ! open(303, file='shares.dat')
+    ! do ij = 1, JJ
+    !   read(303,'(3f6.2)')shares_target(ij, :)
+    ! enddo
+    ! close(303)
+    ! shares_target(:, :) = shares_target(:, :)
+    ! shares_result(:, 1) = (os_coh(1, 0, 1, :, it)+os_coh(1, 1, 1, :, it))*100d0
+    ! shares_result(:, 2) = (os_coh(1, 0, 2, :, it)+os_coh(1, 1, 2, :, it))*100d0
+    ! shares_result(:, 3) = (os_coh(1, 0, 3, :, it)+os_coh(1, 1, 3, :, it))*100d0
+    !
+    ! call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 1), color='blue')
+    ! call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 2), color='red')
+    ! call plot((/(dble(ij), ij=1,JJ)/), shares_target(:, 3), color='green')
+    !
+    ! call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 1, :, it)+os_coh(1, 1, 1, :, it))*100d0, color='blue', linewidth=4d0)
+    ! call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 2, :, it)+os_coh(1, 1, 2, :, it))*100d0, color='red', linewidth=4d0)
+    ! call plot((/(dble(ij), ij=1,JJ)/), (os_coh(1, 0, 3, :, it)+os_coh(1, 1, 3, :, it))*100d0, color='green', linewidth=4d0)
+    ! call execplot()
 
   end subroutine
 
