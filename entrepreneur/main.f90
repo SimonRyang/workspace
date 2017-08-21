@@ -114,7 +114,7 @@ program main
   !ent = .false.
   !labor = .false.
 
-  !show_graphics = .true.
+  show_graphics = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
