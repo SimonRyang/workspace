@@ -110,7 +110,7 @@ program main
   gini_on = .true.
 
   ! set switches
-  !ann = .true.
+  ann = .true.
   !ent = .false.
   !labor = .false.
 
