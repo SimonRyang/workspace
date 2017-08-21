@@ -114,7 +114,7 @@ program main
   ent = .false.
   !labor = .false.
 
-  show_graphics = .true.
+  !show_graphics = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -1015,10 +1015,10 @@ contains
       !call tock(calc)
 
       write(*,*)'decisions:', ij
-      write(*,*)sum(c(:, :, :, :, :, :, :, ij, it))
-      write(*,*)sum(aplus(:, :, :, :, :, :, :, ij, it))
-      write(*,*)sum(l(:, :, :, :, :, :, :, ij, it))
-      write(*,*)sum(k(:, :, :, :, :, :, :, ij, it))
+      write(*,*)sum(c(:, :, 0, :, :, :, :, ij, it))
+      write(*,*)sum(aplus(:, :, 0, :, :, :, :, ij, it))
+      write(*,*)sum(l(:, :, 0, :, :, :, :, ij, it))
+      write(*,*)sum(k(:, :, 0, :, :, :, :, ij, it))
 
     enddo
 
