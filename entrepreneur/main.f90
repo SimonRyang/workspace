@@ -612,6 +612,7 @@ contains
 
       !call tick(calc)
       write(*,*)'Optimize for age: ', ij
+      write(*,*)'Optimize for age: ', ij
 
       it = year(it_in, ij_in, ij)
 
