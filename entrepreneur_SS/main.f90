@@ -758,7 +758,7 @@ contains
       !write(*,*)'Done!'
       !call tock(calc)
 
-      write(*,*)'decisions:'
+      write(*,*)'decisions:', ij
       write(*,*)sum(c(:, :, :, :, :, :, ij))
       write(*,*)sum(aplus(:, :, :, :, :, :, ij))
       write(*,*)sum(l(:, :, :, :, :, :, ij))

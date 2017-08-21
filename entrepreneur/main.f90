@@ -1014,7 +1014,7 @@ contains
       !write(*,*)'Done!'
       !call tock(calc)
 
-      write(*,*)'decisions:'
+      write(*,*)'decisions:', ij
       write(*,*)sum(c(:, :, :, :, :, :, :, ij, it))
       write(*,*)sum(aplus(:, :, :, :, :, :, :, ij, it))
       write(*,*)sum(l(:, :, :, :, :, :, :, ij, it))
