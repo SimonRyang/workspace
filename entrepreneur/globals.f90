@@ -209,12 +209,12 @@ contains
       valuefunc_w = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JR-1) then
+      if (ij_com < JR-1 .and. ent) then
 
         valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_w .and. ent) then
+        if (valuefunc_help > valuefunc_w) then
           valuefunc_w = valuefunc_help
           c_com = c_help
           cx_com = dble(ij_com)/(JR-1)*swc
@@ -339,12 +339,12 @@ contains
       valuefunc_e = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JE-1) then
+      if (ij_com < JE-1 .and. ent) then
 
         valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_e .and. ent) then
+        if (valuefunc_help > valuefunc_e) then
           valuefunc_e = valuefunc_help
           c_com = c_help
           cx_com = 0d0
@@ -356,9 +356,10 @@ contains
     endif
 
      if (ij_com >= JR) then
-       valuefunc_e = valuefunc_e + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma)
+       valuefunc_e = -(valuefunc_e + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
+     else
+       valuefunc_e = -valuefunc_e
      endif
-    valuefunc_e = -valuefunc_e
 
   end function
 
