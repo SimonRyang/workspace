@@ -111,7 +111,7 @@ program main
 
   ! set switches
   !ann = .true.
-  ent = .false.
+  !ent = .false.
   !labor = .false.
 
   !show_graphics = .true.
