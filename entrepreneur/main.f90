@@ -442,12 +442,6 @@ contains
     KC(0) = 4.000d0
     LC(0) = 5.142d0
 
-
-        write(*,*)'eta:'
-        write(*,*)eta
-        write(*,*)'theta:'
-        write(*,*)theta
-
     ! open files
     open(21, file='output.out')
     open(22, file='summary.out')
