@@ -1961,27 +1961,27 @@ contains
 
     endif
 
-    ia_com = 8
-    ix_com = 0
-    ip_com = 0
-    iw_com = 3
-    ie_com = 4
-    is_com = 2
-    ij_com = 5
-    it_com = 0
-    call grid_Cons_Equi(xplot, 0d0, 1.5d0*a(ia_com))
-    do ij = 1, 1000
-      yplot(ij) = -incent(xplot(ij))
-      zplot(ij) = theta(ie_com, is_com)*(xplot(ij)**alpha*(eff(ij_com, is_com)*eta(iw_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*xplot(ij) - r(it_com)*max(xplot(ij)-a(ia_com), 0d0)
-    enddo
-    call plot(xplot, yplot)
-    call plot(xplot, zplot)
-    zplot = netinc(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
-    call plot(xplot, zplot)
-    zplot = netinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
-    call plot(xplot, zplot)
-    write(*,*)a(ia_com), 1.5d0*a(ia_com), k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
-    call execplot
+    ! ia_com = 8
+    ! ix_com = 0
+    ! ip_com = 0
+    ! iw_com = 3
+    ! ie_com = 4
+    ! is_com = 2
+    ! ij_com = 5
+    ! it_com = 0
+    ! call grid_Cons_Equi(xplot, 0d0, 1.5d0*a(ia_com))
+    ! do ij = 1, 1000
+    !   yplot(ij) = -incent(xplot(ij))
+    !   zplot(ij) = theta(ie_com, is_com)*(xplot(ij)**alpha*(eff(ij_com, is_com)*eta(iw_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*xplot(ij) - r(it_com)*max(xplot(ij)-a(ia_com), 0d0)
+    ! enddo
+    ! call plot(xplot, yplot)
+    ! call plot(xplot, zplot)
+    ! zplot = netinc(0, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
+    ! call plot(xplot, zplot)
+    ! zplot = netinc(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com)
+    ! call plot(xplot, zplot)
+    ! write(*,*)a(ia_com), 1.5d0*a(ia_com), k(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
+    ! call execplot
 
 
     ! initialize target shares
