@@ -579,7 +579,7 @@ contains
       if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
-    write(*,*)r, w, pen(:, JJ, it)
+    write(*,*)r(it), w(it), pen(:, JJ, it)
 
   end subroutine
 
