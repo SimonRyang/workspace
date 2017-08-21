@@ -634,19 +634,19 @@ contains
                 call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
 
                 ! copy decisions
-                aplus(:, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
-                xplus(:, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
-                pplus(:, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
-                c(:, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
-                cx(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                l(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                k(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                mx(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                oplus(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                pencon(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                inctax(:, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
-                captax(:, ia, ix, ip,  :,  :, is, ij, it) = captax_com
-                VV(:, ia, ix, ip,  :,  :, is, ij, it) = -fret
+                aplus(0, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
+                xplus(0, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
+                pplus(0, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
+                c(0, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
+                cx(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                l(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                k(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                mx(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                oplus(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                pencon(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                inctax(0, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
+                captax(0, ia, ix, ip,  :,  :, is, ij, it) = captax_com
+                VV(0, ia, ix, ip,  :,  :, is, ij, it) = -fret
 
               enddo ! ia
             enddo ! ix
@@ -679,19 +679,19 @@ contains
                 call fminsearch(xy(1), fret, a_l, a_u, valuefunc_r)
 
                 ! copy decisions
-                aplus(:, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
-                xplus(:, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
-                pplus(:, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
-                c(:, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
-                cx(:, ia, ix, ip,  :,  :, is, ij, it) = cx_com
-                l(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                k(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                mx(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                oplus(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                pencon(:, ia, ix, ip,  :,  :, is, ij, it) = 0d0
-                inctax(:, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
-                captax(:, ia, ix, ip,  :,  :, is, ij, it) = captax_com
-                VV(:, ia, ix, ip,  :,  :, is, ij, it) = -fret
+                aplus(0, ia, ix, ip,  :,  :, is, ij, it) = xy(1)
+                xplus(0, ia, ix, ip,  :,  :, is, ij, it) = xplus_com
+                pplus(0, ia, ix, ip,  :,  :, is, ij, it) = p(ip)
+                c(0, ia, ix, ip,  :,  :, is, ij, it) = max(c_com, 1d-10)
+                cx(0, ia, ix, ip,  :,  :, is, ij, it) = cx_com
+                l(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                k(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                mx(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                oplus(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                pencon(0, ia, ix, ip,  :,  :, is, ij, it) = 0d0
+                inctax(0, ia, ix, ip,  :,  :, is, ij, it) = inctax_com
+                captax(0, ia, ix, ip,  :,  :, is, ij, it) = captax_com
+                VV(0, ia, ix, ip,  :,  :, is, ij, it) = -fret
 
               enddo ! ia
             enddo ! ix
@@ -783,19 +783,19 @@ contains
                   call fminsearch(xy, fret, (/a_l, 0d0, x_l/), (/a_u, 1d0, x_u/), valuefunc_w)
 
                   ! copy decisions
-                  aplus(:, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                  xplus(:, ia, :, ip, iw, ie, is, ij, it) = xplus_com
-                  k(:, ia, :, ip, iw, ie, is, ij, it) = k_com
-                  pplus(:, ia, :, ip, iw, ie, is, ij, it) = pplus_com
-                  c(:, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
-                  cx(:, ia, :, ip, iw, ie, is, ij, it) = cx_com
-                  l(:, ia, :, ip, iw, ie, is, ij, it) = l_com
-                  mx(:, ia, :, ip, iw, ie, is, ij, it) = mx_com
-                  oplus(:, ia, :, ip, iw, ie, is, ij, it) = oplus_com
-                  pencon(:, ia, :, ip, iw, ie, is, ij, it) = pencon_com
-                  inctax(:, ia, :, ip, iw, ie, is, ij, it) = inctax_com
-                  captax(:, ia, :, ip, iw, ie, is, ij, it) = captax_com
-                  VV(:, ia, :, ip, iw, ie, is, ij, it) = -fret
+                  aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
+                  xplus(0, ia, :, ip, iw, ie, is, ij, it) = xplus_com
+                  k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
+                  pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
+                  c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                  cx(0, ia, :, ip, iw, ie, is, ij, it) = cx_com
+                  l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
+                  mx(0, ia, :, ip, iw, ie, is, ij, it) = mx_com
+                  oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
+                  pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
+                  inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
+                  captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
+                  VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
 
                 enddo ! ia
               enddo ! ip
@@ -889,19 +889,19 @@ contains
                   call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
                   ! copy decisions
-                  aplus(:, ia, :, ip, iw, ie, is, ij, it) = xy(1)
-                  xplus(:, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                  k(:, ia, :, ip, iw, ie, is, ij, it) = k_com
-                  pplus(:, ia, :, ip, iw, ie, is, ij, it) = pplus_com
-                  c(:, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
-                  cx(:, ia, :, ip, iw, ie, is, ij, it) = cx_com
-                  l(:, ia, :, ip, iw, ie, is, ij, it) = l_com
-                  mx(:, ia, :, ip, iw, ie, is, ij, it) = 0d0
-                  oplus(:, ia, :, ip, iw, ie, is, ij, it) = oplus_com
-                  pencon(:, ia, :, ip, iw, ie, is, ij, it) = pencon_com
-                  inctax(:, ia, :, ip, iw, ie, is, ij, it) = inctax_com
-                  captax(:, ia, :, ip, iw, ie, is, ij, it) = captax_com
-                  VV(:, ia, :, ip, iw, ie, is, ij, it) = -fret
+                  aplus(0, ia, :, ip, iw, ie, is, ij, it) = xy(1)
+                  xplus(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
+                  k(0, ia, :, ip, iw, ie, is, ij, it) = k_com
+                  pplus(0, ia, :, ip, iw, ie, is, ij, it) = pplus_com
+                  c(0, ia, :, ip, iw, ie, is, ij, it) = max(c_com, 1d-10)
+                  cx(0, ia, :, ip, iw, ie, is, ij, it) = cx_com
+                  l(0, ia, :, ip, iw, ie, is, ij, it) = l_com
+                  mx(0, ia, :, ip, iw, ie, is, ij, it) = 0d0
+                  oplus(0, ia, :, ip, iw, ie, is, ij, it) = oplus_com
+                  pencon(0, ia, :, ip, iw, ie, is, ij, it) = pencon_com
+                  inctax(0, ia, :, ip, iw, ie, is, ij, it) = inctax_com
+                  captax(0, ia, :, ip, iw, ie, is, ij, it) = captax_com
+                  VV(0, ia, :, ip, iw, ie, is, ij, it) = -fret
 
                 enddo ! ia
               enddo ! ip
@@ -989,19 +989,19 @@ contains
               call fminsearch(xy(:2), fret, (/a_l, 0d0/), (/a_u, 1d0/), valuefunc_w)
 
               ! copy decisions
-              aplus(:, :, :, :, iw, ie, is, ij, it) = xy(1)
-              xplus(:, :, :, :, iw, ie, is, ij, it) = 0d0
-              pplus(:, :, :, :, iw, ie, is, ij, it) = pplus_com
-              c(:, :, :, :, iw, ie, is, ij, it) = max(c_com, 1d-10)
-              cx(:, :, :, :, iw, ie, is, ij, it) = cx_com
-              l(:, :, :, :, iw, ie, is, ij, it) = l_com
-              mx(:, :, :, :, iw, ie, is, ij, it) = 0d0
-              k(:, :, :, :, iw, ie, is, ij, it) = 0d0
-              oplus(:, :, :, :, iw, ie, is, ij, it) = oplus_com
-              pencon(:, :, :, :, iw, ie, is, ij, it) = pencon_com
-              inctax(:, :, :, :, iw, ie, is, ij, it) = inctax_com
-              captax(:, :, :, :, iw, ie, is, ij, it) = captax_com
-              VV(:, :, :, :, iw, ie, is, ij, it) = -fret
+              aplus(0, :, :, :, iw, ie, is, ij, it) = xy(1)
+              xplus(0, :, :, :, iw, ie, is, ij, it) = 0d0
+              pplus(0, :, :, :, iw, ie, is, ij, it) = pplus_com
+              c(0, :, :, :, iw, ie, is, ij, it) = max(c_com, 1d-10)
+              cx(0, :, :, :, iw, ie, is, ij, it) = cx_com
+              l(0, :, :, :, iw, ie, is, ij, it) = l_com
+              mx(0, :, :, :, iw, ie, is, ij, it) = 0d0
+              k(0, :, :, :, iw, ie, is, ij, it) = 0d0
+              oplus(0, :, :, :, iw, ie, is, ij, it) = oplus_com
+              pencon(0, :, :, :, iw, ie, is, ij, it) = pencon_com
+              inctax(0, :, :, :, iw, ie, is, ij, it) = inctax_com
+              captax(0, :, :, :, iw, ie, is, ij, it) = captax_com
+              VV(0, :, :, :, iw, ie, is, ij, it) = -fret
 
             enddo ! iw
           enddo ! ie
