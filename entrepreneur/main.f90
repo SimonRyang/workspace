@@ -114,6 +114,8 @@ program main
   !ent = .false.
   !labor = .false.
 
+  show_graphics = .true.
+
   ! calculate initial equilibrium
   call get_SteadyState()
 
@@ -1905,25 +1907,25 @@ contains
         ! call plot((/(dble(ia), ia=0,NA)/), oplus(1, :, 0, 0, 2, 4, 1, 5, it), marker=2)
         ! call execplot()
         !
-        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
-        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 2), marker=1)
-        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 3), marker=1)
-        ! call execplot()
-        !
-        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 1), marker=1)
-        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 2), marker=1)
-        ! call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 3), marker=1)
-        ! call execplot()
-        !
-        ! call plot(a(:), sum_help(0, :, 1), marker=1)
-        ! call plot(a(:), sum_help(0, :, 2), marker=1)
-        ! call plot(a(:), sum_help(0, :, 3), marker=1)
-        ! call execplot()
-        !
-        ! call plot(a(:), sum_help(1, :, 1), marker=1)
-        ! call plot(a(:), sum_help(1, :, 2), marker=1)
-        ! call plot(a(:), sum_help(1, :, 3), marker=1)
-        ! call execplot()
+        call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 1), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 2), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), sum_help(0, :, 3), marker=1)
+        call execplot()
+
+        call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 1), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 2), marker=1)
+        call plot((/(dble(ia), ia=0,NA)/), sum_help(1, :, 3), marker=1)
+        call execplot()
+
+        call plot(a(:), sum_help(0, :, 1), marker=1)
+        call plot(a(:), sum_help(0, :, 2), marker=1)
+        call plot(a(:), sum_help(0, :, 3), marker=1)
+        call execplot()
+
+        call plot(a(:), sum_help(1, :, 1), marker=1)
+        call plot(a(:), sum_help(1, :, 2), marker=1)
+        call plot(a(:), sum_help(1, :, 3), marker=1)
+        call execplot()
         !
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 0), marker=1)
         ! call plot((/(dble(ij), ij=0,NA)/), sum_help(:, 1), marker=1)
