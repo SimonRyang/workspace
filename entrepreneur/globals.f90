@@ -315,7 +315,7 @@ contains
            - captax_com - inctax_com - pencon_com - mx_com - a_plus - max(dble(JR-ij_com)/(JR-1), 0d0)*swc)*pinv(it_com)
     c_help =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
            - captax_com - inctax_com - pencon_com - mx_com - a_plus)*pinv(it_com)
-    c_com = c_help
+    !c_com = c_help
 
     ! calculate next periods pension claims
     if (ij_com < JR) then
@@ -330,7 +330,7 @@ contains
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_e = 0d0
     valuefunc_help = 0d0
-    cx_com = 0d0 !max(dble(JR-ij_com)/(JR-1), 0d0)*swc
+    cx_com = max(dble(JR-ij_com)/(JR-1), 0d0)*swc
     oplus_com = 0d0
 
     if (ij_com < JJ) then
