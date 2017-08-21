@@ -758,6 +758,13 @@ contains
       !write(*,*)'Done!'
       !call tock(calc)
 
+      write(*,*)'decisions:'
+      write(*,*)sum(c(:, :, :, :, :, :, ij))
+      write(*,*)sum(aplus(:, :, :, :, :, :, ij))
+      write(*,*)sum(l(:, :, :, :, :, :, ij))
+      write(*,*)sum(k(:, :, :, :, :, :, ij))
+
+
     enddo
 
   end subroutine
