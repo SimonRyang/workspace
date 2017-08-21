@@ -318,9 +318,7 @@ contains
     write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w     ent  iamax  ixmax          DIFF'
 
     ! initialize asset grid
-    do is = 1, NS
-      call grid_Cons_Grow(a(:), a_l, a_u, a_grow)
-    enddo
+    call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
     ! initialize annuity grid
     call grid_Cons_Grow(x, x_l, x_u, x_grow)
@@ -353,7 +351,7 @@ contains
     l(:, :, :, :, :, :, :, :, 0) = 0.33d0
 
     ! initial guess for annuity investment
-    mx(:, :, :, :, :, :, :, :, 0) = 0.33d0
+    mx(:, :, :, :, :, :, :, :, 0) = 0d0 !0.33d0
 
     ! distribution of skill classes
     ! dist_skill(:) = (/0.2600d0, 0.5500d0, 0.1900d0/)
@@ -390,15 +388,6 @@ contains
     enddo
 
     ! set distribution of bequests
-    Gama(1) = 0.0d0*pop(1, 0)
-    Gama(2) = 0.0d0*pop(2, 0)
-    Gama(3) = 1.0d0*pop(3, 0)
-    Gama(4) = 1.2d0*pop(4, 0)
-    Gama(5) = 1.4d0*pop(5, 0)
-    Gama(6) = 1.6d0*pop(6, 0)
-    Gama(7) = 1.8d0*pop(7, 0)
-    Gama(8) = 1.8d0*pop(8, 0)
-    Gama(9) = 1.6d0*pop(9, 0)
     Gama(1:4) = 0d0
     Gama(5:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
@@ -446,6 +435,8 @@ contains
     open(21, file='output.out')
     open(22, file='summary.out')
     open(23, file='output_mikrozensus2012.out')
+
+    write(*,*)a
 
   end subroutine
 
@@ -552,7 +543,6 @@ contains
 
     !##### OTHER VARIABLES ####################################################
     integer :: ij
-    real*8 :: dueink
 
     ! calculate inverse goods price
     pinv(it) = 1d0/(1d0+tauc(it))
@@ -575,11 +565,9 @@ contains
     enddo
 
     ! determine the income tax system
-    dueink = inc_tax(0)
-
-    r1 = 0.286d0*dueink*2d0
-    r2 = 0.456d0*dueink*2d0
-    r3 = 1.786d0*dueink*2d0
+    r1 = 0.286d0*inc_tax(0)*2d0
+    r2 = 0.456d0*inc_tax(0)*2d0
+    r3 = 1.786d0*inc_tax(0)*2d0
 
     b1 = (t2-t1)/(r2-r1)
     b2 = (t3-t2)/(r3-r2)
@@ -590,6 +578,8 @@ contains
       !psix(:, ij, it) = 1d0/psi(:, ij)
       if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
+
+    write(*,*)r, w, pen(:, JJ, it)
 
   end subroutine
 
@@ -1105,7 +1095,7 @@ contains
     do is = 1, NS
       do ie = 1, NE
         do iw = 1, NW
-          m(0, 0, 0, 0, iw, ie, is, 1, it) = dist_theta(ie, is)*dist_eta(iw, is)*dist_skill(is)
+          m(0, 0, 0, 0, iw, ie, is, 1, it) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
         enddo ! iw
       enddo ! ie
     enddo ! is

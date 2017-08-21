@@ -363,15 +363,6 @@ contains
     enddo
 
     ! set distribution of bequests
-    Gama(1) = 0.0d0*pop(1)
-    Gama(2) = 0.0d0*pop(2)
-    Gama(3) = 1.0d0*pop(3)
-    Gama(4) = 1.2d0*pop(4)
-    Gama(5) = 1.4d0*pop(5)
-    Gama(6) = 1.6d0*pop(6)
-    Gama(7) = 1.8d0*pop(7)
-    Gama(8) = 1.8d0*pop(8)
-    Gama(9) = 1.6d0*pop(9)
     Gama(1:4) = 0d0
     Gama(5:JR-1) = 1d0
     Gama(JR:JJ) = 0d0
@@ -419,6 +410,8 @@ contains
     ! open files
     open(21, file='output.out')
 
+    write(*,*)a
+
   end subroutine
 
 
@@ -461,6 +454,8 @@ contains
 
     b1 = (t2-t1)/(r2-r1)
     b2 = (t3-t2)/(r3-r2)
+
+    write(*,*)r, w, pen(:, JJ)
 
   end subroutine
 
@@ -513,7 +508,7 @@ contains
               aplus(:, ia, ip,  :,  :, is, ij) = xy(1)
               pplus(:, ia, ip,  :,  :, is, ij) = p(ip)
               c(:, ia, ip,  :,  :, is, ij) = max(c_com, 1d-10)
-              cx(:, ia, ip,  :,  :, is, ij) = cx_com
+              cx(:, ia, ip,  :,  :, is, ij) = 0d0
               l(:, ia, ip,  :,  :, is, ij) = 0d0
               k(:, ia, ip,  :,  :, is, ij) = 0d0
               oplus(:, ia, ip,  :,  :, is, ij) = 0d0
@@ -853,6 +848,9 @@ contains
               do ia = 0, NA
                 do io = 0, NO
 
+                  ! skip if there is no household
+                  if (m(io, ia, ip, iw, ie, is, ij-1) <= 0d0) cycle
+
                   ! interpolate yesterday's savings decision
                   call linint_Grow(aplus(io, ia, ip, iw, ie, is, ij-1), &
                            a_l, a_u, a_grow, NA, ial, iar, varphi)
@@ -894,6 +892,8 @@ contains
       enddo ! io
 
     enddo ! ij
+
+    write(*,*)'                           sum:', sum(m(:, :, :, :, :, :, :))
 
   end subroutine
 
