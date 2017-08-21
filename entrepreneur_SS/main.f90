@@ -656,7 +656,7 @@ contains
             enddo ! iw
           enddo ! ie
         enddo ! is
-        !$omp end do nowait
+        !$omp end do
 
         if (ent) then
 
