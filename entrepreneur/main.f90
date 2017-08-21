@@ -89,7 +89,7 @@ program main
 
   ! size of the asset grid
   a_l    = 0d0
-  a_u    = 24d0
+  a_u    = 32d0
   a_grow = 0.14d0
 
   ! size of the annuitiy grid
@@ -611,7 +611,6 @@ contains
     do ij = JJ, 1, -1
 
       !call tick(calc)
-      write(*,*)'Optimize for age: ', ij
       write(*,*)'Optimize for age: ', ij
 
       it = year(it_in, ij_in, ij)
