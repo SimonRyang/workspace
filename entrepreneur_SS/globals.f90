@@ -164,12 +164,12 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_w = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
+      valuefunc_w = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JR-1) then
 
-        valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_w .and. ent) then
@@ -257,12 +257,12 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_e = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
+      valuefunc_e = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
       ! interpolate next period's value function as an entrepreneur
       if (ij_com < JE-1) then
 
-        valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
+        valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
         ! set next period's occupational decision
         if (valuefunc_help > valuefunc_e .and. ent) then
@@ -337,7 +337,7 @@ contains
     if (ij_com < JJ) then
 
       ! interpolate next period's value function as a worker/retiree
-      valuefunc_r = interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)**(1d0-gamma)/(1d0-gamma)
+      valuefunc_r = interpolate_EV(0, a_plus, pplus_com, iw_com, ie_com, is_com, ij_com+1)
 
     endif
 
@@ -473,7 +473,8 @@ contains
     interpolate_EV = (varphi*varpsi*EV(io, ial, ipl, iw, ie, is, ij) &
                       + varphi*(1d0-varpsi)*EV(io, ial, ipr, iw, ie, is, ij) &
                       + (1d0-varphi)*varpsi*EV(io, iar, ipl, iw, ie, is, ij) &
-                      + (1d0-varphi)*(1d0-varpsi)*EV(io, iar, ipr, iw, ie, is, ij))
+                      + (1d0-varphi)*(1d0-varpsi)*EV(io, iar, ipr, iw, ie, is, ij)) &
+                      **(1d0-gamma)/(1d0-gamma)
 
   end function
 
