@@ -114,14 +114,10 @@ program main
   !ent = .false.
   !labor = .false.
 
-  phi = 1d0
-
   !show_graphics = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
-
-stop
 
   ! set reform parameters
   !ann = .true.
