@@ -453,8 +453,6 @@ contains
     b1 = (t2-t1)/(r2-r1)
     b2 = (t3-t2)/(r3-r2)
 
-    write(*,*)r, w, pen(:, JJ)
-
   end subroutine
 
 
@@ -759,13 +757,6 @@ contains
       !write(*,*)'Done!'
       !call tock(calc)
 
-      write(*,*)'decisions:', ij
-      write(*,*)sum(c(:, :, :, :, :, :, ij))
-      write(*,*)sum(aplus(:, :, :, :, :, :, ij))
-      write(*,*)sum(l(:, :, :, :, :, :, ij))
-      write(*,*)sum(k(:, :, :, :, :, :, ij))
-
-
     enddo
 
   end subroutine
@@ -898,10 +889,7 @@ contains
       enddo ! io
 
     enddo ! ij
-
-    write(*,*)'                           sum:', sum(m(:, :, :, :, :, :, :))
-    write(*,*)'                       ent sum:', sum(m(1, :, :, :, :, :, :))
-
+    
   end subroutine
 
 

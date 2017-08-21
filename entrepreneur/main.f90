@@ -577,8 +577,6 @@ contains
       if (x_coh(ij, it) > 0d0) psix(:, ij, it) = (x_coh(ij, it) + bx_coh(ij, it))/x_coh(ij, it)
     enddo
 
-    write(*,*)r(it), w(it), pen(:, JJ, it)
-
   end subroutine
 
 
@@ -1016,12 +1014,6 @@ contains
       !write(*,*)'Done!'
       !call tock(calc)
 
-      write(*,*)'decisions:', ij
-      write(*,*)sum(c(:, :, 0, :, :, :, :, ij, it))
-      write(*,*)sum(aplus(:, :, 0, :, :, :, :, ij, it))
-      write(*,*)sum(l(:, :, 0, :, :, :, :, ij, it))
-      write(*,*)sum(k(:, :, 0, :, :, :, :, ij, it))
-
     enddo
 
   end subroutine
@@ -1184,11 +1176,6 @@ contains
       enddo ! io
 
     enddo ! ij
-
-  write(*,*)'distribution of pos. annuities:', sum(m(:, :, 1:, :, :, :, :, :, it))
-  write(*,*)'distribution of zero annuities:', sum(m(:, :, 0, :, :, :, :, :, it))
-  write(*,*)'                           sum:', sum(m(:, :, :, :, :, :, :, :, it))
-  write(*,*)'                       ent sum:', sum(m(1, :, :, :, :, :, :, :, it))
 
   end subroutine
 
