@@ -174,6 +174,7 @@ contains
 
                  endif
                enddo
+               enddo
 
                ! get optimal share of wealth invested into capital
 
