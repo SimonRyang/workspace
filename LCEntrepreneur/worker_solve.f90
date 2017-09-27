@@ -27,7 +27,7 @@ contains
         a_plus  = X(ix_p)
 
        ! calculate linear interpolation for future assets
-       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
 
        ! restrict values to grid just in case
        ial = min(ial, NA)
