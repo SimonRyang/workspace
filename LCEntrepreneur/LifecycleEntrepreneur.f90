@@ -243,19 +243,24 @@ contains
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
-            call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 0, 1, 1))
-            call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 3, 1, 1))
-            call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 5, 1, 1))
-            call execplot
+            ! call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 0, 1, 1))
+            ! call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 3, 1, 1))
+            ! call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 5, 1, 1))
+            ! call execplot
+            !
+            ! call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 0, 1, 1, 0))
+            ! call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 3, 1, 1, 0))
+            ! call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 5, 1, 1, 0))
+            ! call execplot
+            !
+            ! call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 0, 1, 1, 1))
+            ! call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 3, 1, 1, 1))
+            ! call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 5, 1, 1, 1))
+            ! call execplot
 
-            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 0, 1, 1, 0))
-            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 3, 1, 1, 0))
-            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 5, 1, 1, 0))
-            call execplot
-
-            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 0, 1, 1, 1))
-            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 3, 1, 1, 1))
-            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 5, 1, 1, 1))
+            call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 0, 1, 1))
+            call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 3, 1, 1))
+            call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 5, 1, 1))
             call execplot
 
         enddo
