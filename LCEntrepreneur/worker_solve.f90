@@ -34,7 +34,7 @@ contains
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       S_temp = (1d0 - psi(ij_com+1))*mu_b*max(a_p, 1d-10)**egam/egam
+       S_temp = (1d0 - psi(ij_com+1))*mu_b*max(a_plus, 1d-10)**egam/egam
 
        ! get value function
        do iw_p = 1, NW
