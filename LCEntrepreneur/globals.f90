@@ -46,7 +46,6 @@ module globals
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.015d0
-    real*8, parameter :: k_min = 0.0001d0
     real*8, parameter :: xi = 0.7d0
     real*8, parameter :: phi_k = 0.02d0
 
@@ -70,7 +69,7 @@ module globals
 
 
     ! size of the capital grid
-    real*8, parameter :: k_l = k_min
+    real*8, parameter :: k_l = 0d0
     real*8, parameter :: k_u = X_u*0.5d0/(1d0-xi)
     real*8, parameter :: k_grow = X_grow
 

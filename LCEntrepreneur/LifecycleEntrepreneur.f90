@@ -109,8 +109,7 @@ contains
         call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
         ! endogenous upper bound of housing grid
-        call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
-        k(0) = 0d0
+        call grid_Cons_Grow(k, k_l, k_u, k_grow)
 
         ! initialize value functions
         S = 1d-10**egam/egam; V = 1d-10**egam/egam
@@ -305,7 +304,7 @@ contains
 
                   ! derive interpolation weights
                   call linint_Grow(a_plus(ij-1, ia, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                  call linint_Grow(k_plus(ij-1, ia, ik, iw, ie), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+                  call linint_Grow(k_plus(ij-1, ia, ik, iw, ie), k_l, k_u, k_grow, NK, ikl, ikr, varphi_k)
 
                   ! restrict values to grid just in case
                   ial = min(ial, NA)
@@ -313,8 +312,8 @@ contains
                   varphi_a = max(min(varphi_a, 1d0),0d0)
 
                   ! restrict values to grid just in case
-                  ikl = min(ikl+1, NK)
-                  ikr = min(ikr+1, NK)
+                  ikl = min(ikl, NK)
+                  ikr = min(ikr, NK)
                   varphi_k = max(min(varphi_k, 1d0), 0d0)
 
                   do iw_p = 1, NW
@@ -326,14 +325,14 @@ contains
                           m(ij, iar, ikl, iw_p, ie_p) = m(ij, iar, ikl, iw_p, ie_p) + &
                                 (varphi_k-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ik, iw, ie)
                           m(ij, iar, ikr, iw_p, ie_p) = m(ij, iar, ikr, iw_p, ie_p) + &
-                                (1d0-varphi_k) *pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ik, iw, ie)
+                                (1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ik, iw, ie)
                       else
                         m(ij, ial, ikl, iw_p, ie_p) = m(ij, ial, ikl, iw_p, ie_p) + &
                               varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ik, iw, ie)
                         m(ij, ial, ikr, iw_p, ie_p) = m(ij, ial, ikr, iw_p, ie_p) + &
                               (varphi_a-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ik, iw, ie)
                         m(ij, iar, ikr, iw_p, ie_p) = m(ij, iar, ikr, iw_p, ie_p) + &
-                              (1d0-varphi_a) *pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ik, iw, ie)
+                              (1d0-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ik, iw, ie)
                       endif
                     enddo
                   enddo

@@ -37,7 +37,7 @@ contains
 
       ! derive interpolation weights
       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-      call linint_Grow(k_p, k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+      call linint_Grow(k_p, k_l, k_u, k_grow, NK, ikl, ikr, varphi_k)
 
       ! restrict values to grid just in case
       ial = min(ial, NA)
@@ -45,8 +45,8 @@ contains
       varphi_a = max(min(varphi_a, 1d0),0d0)
 
       ! restrict values to grid just in case
-      ikl = min(ikl+1, NK)
-      ikr = min(ikr+1, NK)
+      ikl = min(ikl, NK)
+      ikr = min(ikr, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
       S_temp = (1d0-psi(ij_com+1))*mu_b*max(ad_p+a_temp, 1d-10)**egam/egam
