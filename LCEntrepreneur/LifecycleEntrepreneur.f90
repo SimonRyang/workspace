@@ -102,18 +102,14 @@ contains
         theta = exp(theta)
 
         ! initialize asset grid
-        call grid_Cons_Grow(a, a_l, a_u, a_grow)
+        call grid_Cons_Grow(X, X_l, X_u, X_grow)
 
         ! initialize liquid asset grid
-        call grid_Cons_Grow(l, l_l, l_u, l_grow)
-
-        ! initialize downpayment grid
-        call grid_Cons_Grow(d(1:ND), d_l, d_u, d_grow)
-        d(0) = 0d0
+        call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
         ! endogenous upper bound of housing grid
-        call grid_Cons_Grow(h(1:ND), h_l, h_u, h_grow)
-        h(0) = 0d0
+        call grid_Cons_Grow(k(1:ND), k_l, k_u, k_grow)
+        k(0) = 0d0
 
         ! initialize value functions
         S = 1d-10**egam/egam; V = 1d-10**egam/egam

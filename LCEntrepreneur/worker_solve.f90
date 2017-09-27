@@ -22,10 +22,10 @@ contains
 
         integer, intent(in) :: ij, ix_p, ik, iw, ie
         integer :: ial, iar, iw_p, ie_p
-        real*8 :: al_p, EV, S_temp, varphi_a
+        real*8 :: a_p, EV, S_temp, varphi_a
 
         a_p  = X(ix_p)
-        
+
        ! calculate linear interpolation for future assets
        call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
 
@@ -40,7 +40,7 @@ contains
        do iw_p = 1, NW
          do ie_p = 1, NE
            EV = varphi_a*(egam*V(ij_com+1, ial, 0, iw_p, ie_p))**(1d0/egam) + &
-                    (1d0-varphi_X)*(egam*V(ij_com+1, iar, 0, iw_p, ie_p))**(1d0/egam)
+                    (1d0-varphi_a)*(egam*V(ij_com+1, iar, 0, iw_p, ie_p))**(1d0/egam)
            S_temp = S_temp + pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij_com+1)*EV**egam/egam
          enddo
        enddo
@@ -72,7 +72,7 @@ contains
       a_plus_t(ij, ia, ik, iw, ie, 0) = x_in
       k_plus_t(ij, ia, ik, iw, ie, 0) = 0d0
       c_t(ij, ia, ik, iw, ie, 0) = cons_com
-      V_t(ij, ia, ik, iw, ie, 0)) = -fret
+      V_t(ij, ia, ik, iw, ie, 0) = -fret
 
   end subroutine
 

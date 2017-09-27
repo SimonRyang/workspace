@@ -55,7 +55,7 @@ contains
       ! maximize value function for current entrepreneur (next period worker)
       else
 
-          cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*k(ik_com)**nu +(1d0-delta_k)*k(ik_com) + pen(ij) - X_plus
+          cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*k(ik_com)**nu +(1d0-delta_k)*k(ik_com) + pen(ij_com) - X_plus
 
           if(cons_com <= 0d0)then
               cons_w = -1d-10**egam/egam*(1d0+abs(cons_com))
