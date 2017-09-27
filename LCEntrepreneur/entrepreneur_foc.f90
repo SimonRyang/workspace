@@ -122,7 +122,7 @@ contains
            if(cons_com <= 0d0)then
               cons_e = -1d-10**egam/egam*(1d0+abs(cons_com))
            else
-                 cons_e = -(cons_com**egam/egam + beta*tomorrow)
+              cons_e = -(cons_com**egam/egam + beta*tomorrow)
            endif
 
       endif

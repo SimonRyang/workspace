@@ -300,7 +300,7 @@ contains
                 do ie = 1, NE
 
                   ! skip if there is no household
-                  if (m(ij, ia, ik, iw, ie) <= 0d0) cycle
+                  if (m(ij-1, ia, ik, iw, ie) <= 0d0) cycle
 
                   ! derive interpolation weights
                   call linint_Grow(a_plus(ij-1, ia, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
