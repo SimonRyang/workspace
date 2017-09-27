@@ -174,8 +174,6 @@ contains
 
                  endif
                enddo
-            else
-
 
                ! get optimal share of wealth invested into capital
 
@@ -305,6 +303,8 @@ contains
                         m(ij, iar, ikr, iw_p, ie_p) = m(ij, iar, ikr, iw_p, ie_p) + &
                               (1d0-varphi_a) *pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ik, iw, ie)
                       endif
+                    enddo
+                  enddo
 
                 enddo
               enddo
