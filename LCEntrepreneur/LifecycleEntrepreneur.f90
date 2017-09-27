@@ -344,11 +344,7 @@ contains
 
         enddo
 
-        call plot((/(dble(ia), ia=0,NA)/), m(1, :, 0, 1, 1))
-        call plot((/(dble(ia), ia=0,NA)/), m(2, :, 3, 1, 1))
-        call plot((/(dble(ia), ia=0,NA)/), m(10, :, 5, 1, 1))
-        call execplot
-
+        write(*,*)sum(m(1, :, :, :, :)), sum(m(2, :, :, :, :)), sum(m(10, :, :, :, :))
     end subroutine
 
 
