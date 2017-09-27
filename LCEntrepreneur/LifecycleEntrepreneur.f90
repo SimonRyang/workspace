@@ -133,7 +133,7 @@ contains
 
         implicit none
 
-        integer :: ij, ix_p, ia, ik, iw, ie
+        integer :: ij, ix, ix_p, ia, ik, iw, ie
 
         ! solve household problem recursively
 
