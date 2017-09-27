@@ -21,7 +21,7 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of transitory shock process values (worker)
-  integer, parameter :: NW = 5
+  integer, parameter :: NW = 20
 
   ! number of transitory shock process values (entrepreneur)
   integer, parameter :: NE = 5

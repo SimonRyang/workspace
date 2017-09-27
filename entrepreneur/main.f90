@@ -403,7 +403,7 @@ contains
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
     eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*exp(eta(:, 1)))
     write(*,*) eta(:, 1)
-    write(*,*) eta(NW, 1)/eta(1, 1)
+    write(*,*) eta(NW, 1)/eta(1, 1), eta(NW, 1)-eta(1,1)
 
     call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta(:, 2), pi_eta(:, :, 2), dist_eta(:, 2))
     eta(:, 2) = exp(eta(:, 2))/sum(dist_eta(:, 2)*exp(eta(:, 2)))
