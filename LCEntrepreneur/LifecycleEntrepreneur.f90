@@ -173,8 +173,10 @@ contains
                   V(JJ, ia, ik, :, :) = V_t(JJ, ia, ik, 1, 1, 0)
 
                  endif
+
                enddo
                enddo
+
 
                ! get optimal share of wealth invested into capital
 
@@ -362,7 +364,6 @@ contains
             o_coh(ij) = o_coh(ij)/sum(m(ij, :, :, :, :))
             k_coh(ij) = k_coh(ij)/sum(m(ij, :, :, :, :))
 
-        enddo
 
     end subroutine
 
