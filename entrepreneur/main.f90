@@ -110,11 +110,13 @@ program main
   gini_on = .true.
 
   ! set switches
-  ann = .true.
-  !ent = .false.
+  !ann = .true.
+  ent = .false.
   !labor = .false.
 
   !show_graphics = .true.
+
+    mu = 0d0
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -123,10 +125,11 @@ program main
   !ann = .true.
   !pen_debt = .true.
   !smopec = .true.
-  phi(1:TT) = 1d0
+  !phi(1:TT) = 1d0
   !lambda(1:TT) = 1d0
   !mu(1:TT) = 0d0
   !labor = .false.
+  mu(1:TT) = 1d0
 
   ! calculate transition path without lsra
   lsra_on = .false.
