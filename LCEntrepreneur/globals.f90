@@ -24,13 +24,13 @@ module globals
     integer, parameter :: NE = 5
 
     ! number of points on the asset grid
-    integer, parameter :: NX = 50
+    integer, parameter :: NX = 32
 
     ! number of points on the liquid asset grid
-    integer, parameter :: NA = 50
+    integer, parameter :: NA = 32
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 50
+    integer, parameter :: NK = 32
 
     ! number of occupation states
     integer, parameter :: NO = 1
