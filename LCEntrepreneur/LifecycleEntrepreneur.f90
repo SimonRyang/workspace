@@ -177,6 +177,7 @@ contains
                enddo
                enddo
 
+             endif
 
                ! get optimal share of wealth invested into capital
 
@@ -240,7 +241,6 @@ contains
                    enddo
                enddo
 
-            endif
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
         enddo
