@@ -49,7 +49,7 @@ contains
       ikr = min(idr+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = (1d0-phi(ij_com+1))*mu_b*max(ad_p+aliq_temp, 1d-10)**egam/egam
+      S_temp = (1d0-phi(ij_com+1))*mu_b*max(ad_p+a_temp, 1d-10)**egam/egam
 
       ! get optimal investment strategy
       do iw_p = 1, NW
@@ -70,7 +70,7 @@ contains
         enddo
       enddo
 
-      real_o = - S_temp**egam/egam + 100d0*abs(aliq_p-aliq_temp)
+      real_o = - S_temp**egam/egam + 100d0*abs(a_p-a_temp)
 
   end function
 
@@ -84,7 +84,7 @@ contains
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: cons_e, X_plus, tomorrow, varphi_a
+      real*8 :: cons_e, X_plus, tomorrow, varphi_x
       integer :: ixl, ixr
 
       ! calculate tomorrow's assets
@@ -99,30 +99,30 @@ contains
       varphi_a = max(min(varphi_a, 1d0),0d0)
 
       ! get next period value function
-      tomorrow = max(varphi_a*(egam*S(ij_com, ixl, ik_com, iw_com, ie_com 1))**(1d0/egam) +  &
+      tomorrow = max(varphi_a*(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
                      (1d0-varphi_a)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam), 1d-10)**egam/egam
 
 
       ! maximize value function for current worker (next period entrepreneur)
       if (ik_com == 0) then
 
-        cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com) + pen(ij_com) - a_plus
+        cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com) + pen(ij_com) - X_plus
 
            if(cons_com <= 0d0)then
-               cons_o = -1d-10**egam/egam*(1d0+abs(cons_com))
+               cons_e = -1d-10**egam/egam*(1d0+abs(cons_com))
            else
-               cons_o = -(cons_com**egam/egam + beta*tomorrow)
+               cons_e = -(cons_com**egam/egam + beta*tomorrow)
            endif
 
       ! maximize value function for current owner (next period owner)
       else
 
-        cons_com = (1d0+r)(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*k(ik_com)**nu +(1d0-delta_k)*k(ik_com) + pen(ij) - a_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*k(ik_com)**nu +(1d0-delta_k)*k(ik_com) + pen(ij_com) - X_plus
 
            if(cons_com <= 0d0)then
-              cons_o = -1d-10**egam/egam*(1d0+abs(cons_com))
+              cons_e = -1d-10**egam/egam*(1d0+abs(cons_com))
            else
-                 cons_o = -(cons_com**egam/egam + beta*tomorrow)
+                 cons_e = -(cons_com**egam/egam + beta*tomorrow)
            endif
 
       endif

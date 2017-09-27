@@ -109,7 +109,7 @@ module globals
     real*8 :: m(JJ, 0:NA, 0:NK, NW, NE)
 
     ! numerical variables
-    integer :: ij_com, ix_com, ia_com, ik_com, ia_p_com, id_p_com, il_p_com
+    integer :: ij_com, ix_com, ia_com, ik_com, ia_p_com, ix_p_com, iw_com, ie_com
     real*8 :: cons_com
 
 end module
