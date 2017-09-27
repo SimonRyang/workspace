@@ -158,8 +158,8 @@ contains
                   a_plus(JJ, ia, ik, :, :) = 0d0
                   k_plus(JJ, ia, ik, :, :) = 0d0
                   cons_com = max((1d0+r)*a(ia) + pen(JJ), 1d-10)
-                  c(JJ, ia, :, :, :) = cons_com
-                  V(JJ, ia, :, :, :) = cons_com**egam/egam
+                  c(JJ, ia, ik, :, :) = cons_com
+                  V(JJ, ia, ik, :, :) = cons_com**egam/egam
 
                 else
 
@@ -177,7 +177,7 @@ contains
                enddo
                enddo
 
-             endif
+             else
 
                ! get optimal share of wealth invested into capital
 
@@ -240,6 +240,8 @@ contains
                        enddo
                    enddo
                enddo
+
+             endif
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
