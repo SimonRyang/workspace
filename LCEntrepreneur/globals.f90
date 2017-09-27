@@ -84,11 +84,11 @@ module globals
     real*8 :: w, eff(JJ), pen(JJ+1), psi(JJ+1)
 
     ! cohort aggregate variables
-    real*8 :: c_coh(JJ, 0:1), y_coh(JJ), o_coh(JJ), omega_coh(JJ, 0:1)
-    real*8 :: a_coh(JJ, 0:1), al_coh(JJ, 0:1), k_coh(JJ)
+    real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), o_coh(JJ)
+    real*8 :: a_coh(JJ, 0:1), k_coh(JJ)
 
     ! different grids to discretize the state space
-    real*8 :: a(0:NA), d(0:ND), k(0:NK), l(0:NL)
+    real*8 :: a(0:NA), k(0:NK), X(0:NX)
 
     ! variables to store the policy functions
     real*8 :: a_plus(JJ+1, 0:NA, 0:NK, NW, NE), k_plus(JJ+1, 0:NA, 0:NK, NW, NE)
