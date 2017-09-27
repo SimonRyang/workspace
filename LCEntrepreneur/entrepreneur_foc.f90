@@ -46,10 +46,10 @@ contains
 
       ! restrict values to grid just in case
       ikl = min(ikl+1, NK)
-      ikr = min(idr+1, NK)
+      ikr = min(ikr+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = (1d0-phi(ij_com+1))*mu_b*max(ad_p+a_temp, 1d-10)**egam/egam
+      S_temp = (1d0-psi(ij_com+1))*mu_b*max(ad_p+a_temp, 1d-10)**egam/egam
 
       ! get optimal investment strategy
       do iw_p = 1, NW
@@ -65,7 +65,7 @@ contains
                        (1d0-varphi_a)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
           endif
 
-          S_temp = S_temp + pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij_com+1)*EV**egam/egam
+          S_temp = S_temp + pi_eta(iw_com, iw_p)*pi_theta(ie_com, ie_p)*psi(ij_com+1)*EV**egam/egam
 
         enddo
       enddo
@@ -96,7 +96,7 @@ contains
       ! restrict values to grid just in case
       ixl = min(ixl, NX)
       ixr = min(ixr, NX)
-      varphi_a = max(min(varphi_a, 1d0),0d0)
+      varphi_x = max(min(varphi_x, 1d0),0d0)
 
       ! get next period value function
       tomorrow = max(varphi_a*(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &

@@ -29,7 +29,7 @@ contains
         if (X(ix_p) > (1d0-xi)*k_min) then
 
            ! get best guess for the root of foc_real
-           if(ia_p > 0)then
+           if(ix_p > 0)then
               x_in = omega_k(ij, ix_p-1, ik, iw, ie)
            else
               x_in = 0d0
@@ -59,8 +59,8 @@ contains
         implicit none
 
         integer, intent(in) :: ij, ia, ik, iw, ie
-        real*8 :: x_in, fret, varphi_a, k_p
-        integer :: ial, iar
+        real*8 :: x_in, fret, varphi_x, k_p
+        integer :: ixl, ixr
 
         ! set up communication variables
         ij_com = ij; ia_com = ia; ik_com = ik; iw_com = iw; ie_com = ie
@@ -79,8 +79,8 @@ contains
         varphi_x = max(min(varphi_x, 1d0),0d0)
 
         ! get next period's capital size
-        k_p = max((1d0-xi)*k_min + (varphi_x*omega_h(ij, ixl, ik, iw, ie) +  &
-             (1d0-varphi_x)*omega_h(ij, ixr, ik, iw, ie))*(x_in-(1d0-xi)*k_min), 1d-10)/(1d0-xi)
+        k_p = max((1d0-xi)*k_min + (varphi_x*omega_k(ij, ixl, ik, iw, ie) +  &
+             (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie))*(x_in-(1d0-xi)*k_min), 1d-10)/(1d0-xi)
 
         X_plus_t(ij, ia, ik, iw, ie, 1) = x_in
         a_plus_t(ij, ia, ik, iw, ie, 1) = x_in - (1d0-xi)*k_p
