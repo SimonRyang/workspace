@@ -260,10 +260,10 @@ contains
             ! call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 5, 1, 1, 1))
             ! call execplot
 
-            ! call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 0, 1, 1))
-            ! call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 3, 1, 1))
-            ! call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 5, 1, 1))
-            ! call execplot
+            call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 0, 1, 1))
+            call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 3, 1, 1))
+            call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 5, 1, 1))
+            call execplot
 
             call plot((/(dble(ia), ia=0,NA)/), a_plus(ij, :, 0, 1, 1))
             call plot((/(dble(ia), ia=0,NA)/), a_plus(ij, :, 3, 1, 1))
