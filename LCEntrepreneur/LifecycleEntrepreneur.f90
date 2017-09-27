@@ -115,7 +115,7 @@ contains
         S = 1d-10**egam/egam; V = 1d-10**egam/egam
 
         ! initialize policy functions
-        a_plus = 0d0; k_plus = 0; c = 0d0
+        X_plus = 0d0; a_plus = 0d0; k_plus = 0; c = 0d0
         omega_k = 0d0
 
         ! initialize temporary policy and value functions
@@ -152,7 +152,7 @@ contains
               do ia = 0, NA
                 do ik = 0, NA
 
-                if (mu_b == 0d0) then
+                if (mu_b <= 1d0) then
 
                   X_plus(JJ, ia, ik, :, :) = 0d0
                   a_plus(JJ, ia, ik, :, :) = 0d0
