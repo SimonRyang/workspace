@@ -108,7 +108,7 @@ contains
         call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
         ! endogenous upper bound of housing grid
-        call grid_Cons_Grow(k(1:ND), k_l, k_u, k_grow)
+        call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
 
         ! initialize value functions
@@ -133,7 +133,7 @@ contains
 
         implicit none
 
-        integer :: ij, ix_p, ia, ik, il_p, id_p
+        integer :: ij, ix_p, ia, ik, iw, ie
 
         ! solve household problem recursively
 
@@ -144,7 +144,7 @@ contains
               omega_k(JJ, :, :, :, :) = 0d0
 
               do ix_p = 1, NX
-                  S(JJ, ix_p, :, :, :, :) = mu_b*a(ia_p)**egam/egam
+                  S(JJ, ix_p, :, :, :, :) = mu_b*X(ix_p)**egam/egam
               enddo
               S(JJ, 0, :, :, :, :) = 1d-10**egam/egam
 
@@ -154,12 +154,12 @@ contains
 
                 if (mu_b == 0d0) then
 
-                  X_plus(JJ, ia, ik, :, :, :) = 0d0
-                  a_plus(JJ, ia, ik, :, :, :) = 0d0
-                  k_plus(JJ, ia, ik, :, :, :) = 0d0
+                  X_plus(JJ, ia, ik, :, :) = 0d0
+                  a_plus(JJ, ia, ik, :, :) = 0d0
+                  k_plus(JJ, ia, ik, :, :) = 0d0
                   cons_com = max((1d0+r)*a(ia) + pen(JJ), 1d-10)
-                  c(JJ, ia, :, :, :, :) = cons_com
-                  V(JJ, ia, :, :, :, :) = cons_com**egam/egam
+                  c(JJ, ia, :, :, :) = cons_com
+                  V(JJ, ia, :, :, :) = cons_com**egam/egam
 
                 else
 
@@ -274,8 +274,8 @@ contains
                   if (m(ij, ia, ik, iw, ie) <= 0d0) cycle
 
                   ! derive interpolation weights
-                  call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                  call linint_Grow(k_p, k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+                  call linint_Grow(a_plus(ij-1, ia, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+                  call linint_Grow(a_plus(ij-1, ia, ik, iw, ie), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
 
                   ! restrict values to grid just in case
                   ial = min(ial, NA)
@@ -284,7 +284,7 @@ contains
 
                   ! restrict values to grid just in case
                   ikl = min(ikl+1, NK)
-                  ikr = min(idr+1, NK)
+                  ikr = min(ikr+1, NK)
                   varphi_k = max(min(varphi_k, 1d0), 0d0)
 
                   do iw_p = 1, NW
@@ -325,25 +325,24 @@ contains
         integer :: ij, ia, ik, iw, ie
 
         ! calculate cohort averages
-        c_coh = 0d0; y_coh = 0d0; o_coh = 0d0; a_coh = 0d0
-        omega_coh = 0d0; k_coh = 0d0
+        c_coh = 0d0; y_coh = 0d0; o_coh = 0d0; a_coh = 0d0; k_coh = 0d0
 
         do ij = 1, JJ
 
             do ia = 0, NA
-              do ix = 0, NX
+              do ik = 0, NK
                 do iw = 1, NW
                   do ie = 1, NE
                     if(ik == 0) then
-                      c_coh(ij, 0) = c_coh(ij,0) + c(ij, ia, ix, iw, ie)*m(ij, ia, ix, iw, ie)
-                      a_coh(ij+1, 0) = a_coh(ij+1,0) + a_plus(ij, ia, ix, iw, ie)*m(ij, ia, ix, iw, ie)
-                      y_coh(ij, 0) = y_coh(ij, 0) + w*eff(ij)*eta(iw)*m(ij, ia, ix, iw, ie)
+                      c_coh(ij, 0) = c_coh(ij,0) + c(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
+                      a_coh(ij+1, 0) = a_coh(ij+1,0) + a_plus(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
+                      y_coh(ij, 0) = y_coh(ij, 0) + w*eff(ij)*eta(iw)*m(ij, ia, ik, iw, ie)
                     else
-                      c_coh(ij, 1) = c_coh(ij,1) + c(ij, ia, ix, iw, ie)*m(ij, ia, ix, iw, ie)
-                      a_coh(ij+1, 1) = a_coh(ij+1,1) + a_plus(ij, ia, ix, iw, ie)*m(ij, ia, ix, iw, ie)
-                      k_coh(ij) = k_coh(ij) + k(ik)*m(ij, ia, ix, iw, ie)
-                      y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*k(ik)**nu*m(ij, ia, ix, iw, ie)
-                      o_coh(ij) = o_coh(ij) + m(ij, ia, ix, iw, ie)
+                      c_coh(ij, 1) = c_coh(ij,1) + c(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
+                      a_coh(ij+1, 1) = a_coh(ij+1,1) + a_plus(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
+                      k_coh(ij) = k_coh(ij) + k(ik)*m(ij, ia, ik, iw, ie)
+                      y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*k(ik)**nu*m(ij, ia, ik, iw, ie)
+                      o_coh(ij) = o_coh(ij) + m(ij, ia, ik, iw, ie)
                     endif
                   enddo
                 enddo
