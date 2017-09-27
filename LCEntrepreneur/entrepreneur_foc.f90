@@ -30,7 +30,7 @@ contains
       omega_k  = x_in
 
       ! determine future liquid wealth and future downpayment
-      ad_p = (1d0-xi)*k_min + omega_k*(X(ix_p_com)-(1d0-xi)*k_min)
+      ad_p = omega_k*X(ix_p_com)
       k_p =  ad_p/(1d0-xi)
       a_temp = X(ix_p_com)- ad_p
       a_p = max(a_temp, 0d0)
