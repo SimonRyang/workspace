@@ -305,7 +305,7 @@ contains
 
                   ! derive interpolation weights
                   call linint_Grow(a_plus(ij-1, ia, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                  call linint_Grow(a_plus(ij-1, ia, ik, iw, ie), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+                  call linint_Grow(k_plus(ij-1, ia, ik, iw, ie), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
 
                   ! restrict values to grid just in case
                   ial = min(ial, NA)
