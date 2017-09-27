@@ -24,13 +24,13 @@ module globals
     integer, parameter :: NE = 5
 
     ! number of points on the asset grid
-    integer, parameter :: NX = 32
+    integer, parameter :: NX = 50
 
     ! number of points on the liquid asset grid
-    integer, parameter :: NA = 32
+    integer, parameter :: NA = 50
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 4
+    integer, parameter :: NK = 50
 
     ! number of occupation states
     integer, parameter :: NO = 1
@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: gamma = 0.2d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: beta = 0.96d0
-    real*8, parameter :: mu_b = 0d0
+    real*8, parameter :: mu_b = 0.5d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.02d0
