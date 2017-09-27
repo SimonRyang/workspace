@@ -188,6 +188,7 @@ contains
                            ! next period worker
                            call solve_worker(ij, ix_p, ik, iw, ie)
                        enddo
+                     enddo
                    enddo
                enddo
 
