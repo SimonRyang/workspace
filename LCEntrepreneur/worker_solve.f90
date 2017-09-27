@@ -46,7 +46,7 @@ contains
        enddo
 
        S(ij, ix_p, ik, iw, ie, 0) = S_temp
-       omega_k(ij, ix_p, ik, iw, ie, 0) = 0d0
+       omega_k(ij, ix_p, ik, iw, ie) = 0d0
 
     end subroutine
 
