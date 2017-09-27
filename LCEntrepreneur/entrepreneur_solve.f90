@@ -69,7 +69,7 @@ contains
         x_in = max(X_plus_t(ij+1, ia, ik, iw, ie, 1), 1d-4)
 
         ! solve the household problem using rootfinding
-        call fminsearch(x_in, fret, 0d0, a_u, cons_e)
+        call fminsearch(x_in, fret, 0d0, X_u, cons_e)
 
         call linint_Grow(x_in, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
 

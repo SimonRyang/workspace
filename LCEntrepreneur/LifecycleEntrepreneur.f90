@@ -243,6 +243,10 @@ contains
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
+            call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 0, 1, 1))
+            call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 3, 1, 1))
+            call execplot
+
         enddo
 
     end subroutine

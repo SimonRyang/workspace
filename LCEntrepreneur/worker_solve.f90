@@ -22,9 +22,9 @@ contains
 
         integer, intent(in) :: ij, ix_p, ik, iw, ie
         integer :: ial, iar, iw_p, ie_p
-        real*8 :: a_p, EV, S_temp, varphi_a
+        real*8 :: a_plus, EV, S_temp, varphi_a
 
-        a_p  = X(ix_p)
+        a_plus  = X(ix_p)
 
        ! calculate linear interpolation for future assets
        call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
@@ -46,6 +46,7 @@ contains
        enddo
 
        S(ij, ix_p, ik, iw, ie, 0) = S_temp
+       omega_k(ij, ix_p, ik, iw, ie, 0) = 0d0
 
     end subroutine
 
@@ -65,7 +66,7 @@ contains
       x_in = max(X_plus_t(ij+1, ia, ik, iw, ie, 0), 1d-4)
 
       ! solve the household problem using rootfinding
-      call fminsearch(x_in, fret, 0d0, a_u, cons_w)
+      call fminsearch(x_in, fret, 0d0, X_u, cons_w)
 
       ! copy decisions
       X_plus_t(ij, ia, ik, iw, ie, 0) = x_in
