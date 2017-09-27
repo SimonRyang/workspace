@@ -245,10 +245,12 @@ contains
 
             call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 0, 1, 1))
             call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 3, 1, 1))
+            call plot((/(dble(ia), ia=0,NA)/), V(ij, :, 5, 1, 1))
             call execplot
 
-            call plot((/(dble(ia), ix=0,NX)/), S(ij, :, 0, 1, 1))
-            call plot((/(dble(ia), ix=0,NX)/), S(ij, :, 3, 1, 1))
+            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 0, 1, 1))
+            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 3, 1, 1))
+            call plot((/(dble(ix), ix=0,NX)/), S(ij, :, 5, 1, 1))
             call execplot
 
         enddo
