@@ -226,19 +226,19 @@ contains
                          do ie = 1, NE
 
                            ! decision on whether to be homeowner or renter next period
-                          !  if( V_t(ij, ia, ik, iw, ie, 1) > V_t(ij, ia, ik, iw, ie, 0) ) then
-                          !        X_plus(ij, ia, ik, iw, ie) = X_plus_t(ij, ia, ik, iw, ie, 1)
-                          !        k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 1)
-                          !        a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 1)
-                          !        c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 1)
-                          !        V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 1)
+                            ! if( V_t(ij, ia, ik, iw, ie, 1) > V_t(ij, ia, ik, iw, ie, 0) ) then
+                                  X_plus(ij, ia, ik, iw, ie) = X_plus_t(ij, ia, ik, iw, ie, 1)
+                                  k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 1)
+                                  a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 1)
+                                  c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 1)
+                                  V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 1)
                           !  else
-                             X_plus(ij, ia, ik, iw, ie) = X_plus_t(ij, ia, ik, iw, ie, 0)
-                             k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 0)
-                             a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 0)
-                             c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 0)
-                             V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 0)
-                          !  endif
+                          !    X_plus(ij, ia, ik, iw, ie) = X_plus_t(ij, ia, ik, iw, ie, 0)
+                          !    k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 0)
+                          !    a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 0)
+                          !    c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 0)
+                          !    V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 0)
+                          ! !  endif
 
                           enddo
 
@@ -273,6 +273,11 @@ contains
             call plot(a, a_plus(ij, :, 0, 1, 1))
             call plot(a, a_plus(ij, :, 3, 1, 1))
             call plot(a, a_plus(ij, :, 5, 1, 1))
+            call execplot
+
+            call plot(a, k_plus(ij, :, 0, 1, 1))
+            call plot(a, k_plus(ij, :, 3, 1, 1))
+            call plot(a, k_plus(ij, :, 5, 1, 1))
             call execplot
             !
             ! call plot(a, c(ij, :, 0, 1, 1))
