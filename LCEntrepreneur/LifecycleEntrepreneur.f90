@@ -252,11 +252,11 @@ contains
 
             write(*,*)sum(omega_k)
 
-            if (ij>0) cycle
+            if (ij>50) cycle
 
-            ! call plot(a(1:), S(ij, 1:, 0, 1, 5, 0))
-            ! call plot(a(1:), S(ij, 1:, 0, 1, 5, 1))
-            ! call execplot
+            call plot(k(1:), S(ij, 5, 1:, 1, 5, 0))
+            call plot(k(1:), S(ij, 5, 1:, 1, 5, 1))
+            call execplot
 
             call plot(a(1:), egam*V_t(ij, 1:, 0, 1, 5, 0)**(1d0/egam))
             call plot(a(1:), egam*V_t(ij, 1:, 0, 1, 5, 1)**(1d0/egam))
