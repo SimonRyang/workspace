@@ -101,6 +101,8 @@ contains
         call discretize_AR(rho, 0d0, sigma_theta, theta, pi_theta, dist_theta)
         theta = exp(theta)
 
+        write(*,*)theta
+
         ! initialize asset grid
         call grid_Cons_Grow(X, X_l, X_u, X_grow)
 
