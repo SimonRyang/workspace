@@ -24,7 +24,7 @@ contains
       ! variable declarations
       real*8 :: cons_w, X_plus, tomorrow, varphi_x
       integer :: ixl, ixr
-      
+
       ! calculate tomorrow's assets
       X_plus  = x_in
 
