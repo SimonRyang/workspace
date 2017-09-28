@@ -190,7 +190,7 @@ contains
                            do ie = 1, NE
 
                            ! next period entrepreneur
-                           call solve_entrepreneur(ij, ix_p, ik, iw, ie)
+                           !call solve_entrepreneur(ij, ix_p, ik, iw, ie)
 
                            ! next period worker
                            call solve_worker(ij, ix_p, ik, iw, ie)
@@ -207,7 +207,7 @@ contains
                          do ie = 1, NE
 
                            ! next period entrpreneur
-                           call solve_consumption_e(ij, ia, ik, iw, ie)
+                           !call solve_consumption_e(ij, ia, ik, iw, ie)
 
                            ! next period worker
                            call solve_consumption_w(ij, ia, ik, iw, ie)
@@ -226,17 +226,17 @@ contains
                          do ie = 1, NE
 
                            ! decision on whether to be homeowner or renter next period
-                           if( V_t(ij, ia, ik, iw, ie, 1) > V_t(ij, ia, ik, iw, ie, 0) ) then
+                           !if( V_t(ij, ia, ik, iw, ie, 1) > V_t(ij, ia, ik, iw, ie, 0) ) then
                                  k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 1)
                                  a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 1)
                                  c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 1)
                                  V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 1)
-                           else
-                             k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 0)
-                             a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 0)
-                             c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 0)
-                             V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 0)
-                           endif
+                          !  else
+                          !    k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 0)
+                          !    a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 0)
+                          !    c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 0)
+                          !    V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 0)
+                          !  endif
 
                           enddo
 
