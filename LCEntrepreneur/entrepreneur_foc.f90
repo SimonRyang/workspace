@@ -100,7 +100,7 @@ contains
 
       ! get next period value function
       tomorrow = (varphi_x      *(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
-                 (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam))**egam/egam
+                  (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam))**egam/egam
 
 
       ! maximize value function for current worker (next period entrepreneur)
