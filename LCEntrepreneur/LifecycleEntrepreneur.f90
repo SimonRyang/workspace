@@ -238,7 +238,7 @@ contains
                              a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 0)
                              c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 0)
                              V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 0)
-                           endif
+                           !endif
 
                           enddo
 
