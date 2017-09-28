@@ -232,14 +232,14 @@ contains
                                   a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 1)
                                   c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 1)
                                   V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 1)
+                                  write(*,*)ij, ia, ik, iw, ie
+                                  write(*,*)X_plus(ij, ia, ik, iw, ie), a_plus(ij, ia, ik, iw, ie), k_plus(ij, ia, ik, iw, ie)
                            else
                              X_plus(ij, ia, ik, iw, ie) = X_plus_t(ij, ia, ik, iw, ie, 0)
                              k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 0)
                              a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 0)
                              c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 0)
                              V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 0)
-                             if (k_plus(ij, ia, ik, iw, ie)>0d0)write(*,*)ij, ia, ik, iw, ie
-                             if (k_plus(ij, ia, ik, iw, ie)>0d0)write(*,*)X_plus(ij, ia, ik, iw, ie), a_plus(ij, ia, ik, iw, ie), k_plus(ij, ia, ik, iw, ie)
                            endif
 
                           enddo
@@ -251,6 +251,8 @@ contains
              endif
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
+
+            write(*,*)sum(omega_k)
 
             if (ij>0) cycle
             ! call plot(a, V(ij, :, 0, 1, 1))
