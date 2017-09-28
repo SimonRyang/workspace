@@ -154,6 +154,8 @@ contains
 
                 if (mu_b == 0d0) then
 
+                  S(JJ, :, :, :, :, :) = 0d0
+
                   X_plus(JJ, ia, ik, :, :) = 0d0
                   a_plus(JJ, ia, ik, :, :) = 0d0
                   k_plus(JJ, ia, ik, :, :) = 0d0

@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: gamma = 0.2d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: beta = 0.96d0
-    real*8, parameter :: mu_b = 0.2d0
+    real*8, parameter :: mu_b = 0.05d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.02d0
