@@ -36,7 +36,7 @@ module globals
     integer, parameter :: NO = 1
 
     ! household preference parameters
-    real*8, parameter :: gamma = 0.2d0
+    real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: beta = 0.96d0
     real*8, parameter :: mu_b = 0.05d0
