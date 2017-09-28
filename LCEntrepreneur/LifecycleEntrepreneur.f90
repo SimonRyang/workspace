@@ -252,7 +252,13 @@ contains
 
             write(*,*)sum(omega_k)
 
-            if (ij>0) cycle
+            if (ij>40) cycle
+
+
+             call plot(a, V_t(ij, :, 0, 1, 5, 0))
+             call plot(a, V_t(ij, :, 0, 1, 5, 1))
+             call execplot
+
             ! call plot(a, V(ij, :, 0, 1, 1))
             ! call plot(a, V(ij, :, 3, 1, 1))
             ! call plot(a, V(ij, :, 5, 1, 1))
