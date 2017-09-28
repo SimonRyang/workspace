@@ -65,7 +65,7 @@ contains
                        (1d0-varphi_a)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
           endif
 
-          S_temp = S_temp + pi_eta(iw_com, iw_p)*pi_theta(ie_com, ie_p)*psi(ij_com+1)*EV**egam/egam
+          S_temp = S_temp + pi_eta(iw_com, iw_p)*pi_theta(ie_com, ie_p)*psi(ij_com+1)*EV
 
         enddo
       enddo
