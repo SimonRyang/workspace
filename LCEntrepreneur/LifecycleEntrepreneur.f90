@@ -55,7 +55,7 @@ contains
         implicit none
 
         ! wage rate for effective labor and rental price
-        w = 0.1d0
+        w = 0.01d0
 
         ! set survival probabilities
         psi(:) = (/1.00000d0, 0.99923d0, 0.99914d0, 0.99914d0, 0.99912d0, &
@@ -114,7 +114,7 @@ contains
         S = 1d-10**egam/egam; V = 1d-10**egam/egam
 
         ! initialize policy functions
-        X_plus = 0d0; a_plus = 0d0; k_plus = 0; c = 0d0
+        X_plus = 0d0; a_plus = 0d0; k_plus = 0d0; c = 0d0
         omega_k = 0d0
 
         ! initialize temporary policy and value functions
