@@ -395,7 +395,7 @@ contains
                       c_coh(ij, 1) = c_coh(ij,1) + c(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
                       a_coh(ij+1, 1) = a_coh(ij+1,1) + a_plus(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
                       k_coh(ij) = k_coh(ij) + k(ik)*m(ij, ia, ik, iw, ie)
-                      y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*k(ik)**nu*m(ij, ia, ik, iw, ie)
+                      y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*(k(ik)**alpha*eff(ij)**(1d0-alpha))**nu*m(ij, ia, ik, iw, ie)
                       o_coh(ij) = o_coh(ij) + m(ij, ia, ik, iw, ie)
                     endif
                   enddo

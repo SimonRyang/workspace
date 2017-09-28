@@ -30,7 +30,7 @@ contains
          if(ix_p > 0)then
             x_in = omega_k(ij, ix_p-1, ik, iw, ie)
          else
-            x_in = 1d-4
+            x_in = 0d0
          endif
 
          ! solve the household problem using fminsearch

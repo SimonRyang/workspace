@@ -50,6 +50,7 @@ module globals
     real*8, parameter :: phi_k = 0.02d0
 
     ! production parameters
+    real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
 
     ! risk processes
