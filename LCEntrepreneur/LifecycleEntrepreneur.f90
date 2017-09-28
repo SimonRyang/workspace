@@ -238,6 +238,8 @@ contains
                              a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 0)
                              c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 0)
                              V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 0)
+                             if (k_plus(ij, ia, ik, iw, ie)>0d0)write(*,*)ij, ia, ik, iw, ie
+                             if (k_plus(ij, ia, ik, iw, ie)>0d0)write(*,*)X_plus(ij, ia, ik, iw, ie), a_plus(ij, ia, ik, iw, ie), k_plus(ij, ia, ik, iw, ie)
                            endif
 
                           enddo
