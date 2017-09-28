@@ -98,7 +98,7 @@ contains
         eta = exp(eta)
 
         ! discretize theta shocks
-        call discretize_AR(rho, 1d0, sigma_theta, theta, pi_theta, dist_theta)
+        call discretize_AR(rho, 0d0, sigma_theta, theta, pi_theta, dist_theta)
         theta = exp(theta)
 
         ! initialize asset grid
@@ -265,15 +265,15 @@ contains
             ! call plot(X(1:), S(ij, 1:, 5, 1, 1, 1))
             ! call execplot
 
-            ! call plot(X, X_plus(ij, :, 0, 1, 1))
-            ! call plot(X, X_plus(ij, :, 3, 1, 1))
-            ! call plot(X, X_plus(ij, :, 5, 1, 1))
-            ! call execplot
-            !
-            ! call plot(a, a_plus(ij, :, 0, 1, 1))
-            ! call plot(a, a_plus(ij, :, 3, 1, 1))
-            ! call plot(a, a_plus(ij, :, 5, 1, 1))
-            ! call execplot
+            call plot(X, X_plus(ij, :, 0, 1, 1))
+            call plot(X, X_plus(ij, :, 3, 1, 1))
+            call plot(X, X_plus(ij, :, 5, 1, 1))
+            call execplot
+
+            call plot(a, a_plus(ij, :, 0, 1, 1))
+            call plot(a, a_plus(ij, :, 3, 1, 1))
+            call plot(a, a_plus(ij, :, 5, 1, 1))
+            call execplot
             !
             ! call plot(a, c(ij, :, 0, 1, 1))
             ! call plot(a, c(ij, :, 3, 1, 1))
