@@ -118,7 +118,7 @@ contains
         omega_k = 0d0
 
         ! initialize temporary policy and value functions
-        a_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0; V_t = 0d0
+        X_plus_t = 0d0; a_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0; V_t = 0d0
 
         ! open files
         open(21, file='output.out')
