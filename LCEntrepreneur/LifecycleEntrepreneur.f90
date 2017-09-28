@@ -55,7 +55,7 @@ contains
         implicit none
 
         ! wage rate for effective labor and rental price
-        w = 0.01d0
+        w = 1d0
 
         ! set survival probabilities
         psi(:) = (/1.00000d0, 0.99923d0, 0.99914d0, 0.99914d0, 0.99912d0, &
@@ -252,11 +252,11 @@ contains
 
             write(*,*)sum(omega_k)
 
-            if (ij>40) cycle
+            if (ij>45) cycle
 
 
-             call plot(a, V_t(ij, :, 0, 1, 5, 0))
-             call plot(a, V_t(ij, :, 0, 1, 5, 1))
+             call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 0))
+             call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 1))
              call execplot
 
             ! call plot(a, V(ij, :, 0, 1, 1))
@@ -273,26 +273,26 @@ contains
             ! call plot(X(1:), S(ij, 1:, 3, 1, 1, 1))
             ! call plot(X(1:), S(ij, 1:, 5, 1, 1, 1))
             ! call execplot
-
-            call plot(X, X_plus(ij, :, 0, 1, 1))
-            call plot(X, X_plus(ij, :, 3, 1, 1))
-            call plot(X, X_plus(ij, :, 5, 1, 1))
-            call execplot
-
-            call plot(a, a_plus(ij, :, 0, 1, 1))
-            call plot(a, a_plus(ij, :, 3, 1, 1))
-            call plot(a, a_plus(ij, :, 5, 1, 1))
-            call execplot
-
-            call plot(X, omega_k(ij, :, 0, 1, 1))
-            call plot(X, omega_k(ij, :, 3, 1, 1))
-            call plot(X, omega_k(ij, :, 5, 1, 1))
-            call execplot
-
-            call plot(a, k_plus(ij, :, 0, 1, 1))
-            call plot(a, k_plus(ij, :, 3, 1, 1))
-            call plot(a, k_plus(ij, :, 5, 1, 1))
-            call execplot
+            !
+            ! call plot(X, X_plus(ij, :, 0, 1, 1))
+            ! call plot(X, X_plus(ij, :, 3, 1, 1))
+            ! call plot(X, X_plus(ij, :, 5, 1, 1))
+            ! call execplot
+            !
+            ! call plot(a, a_plus(ij, :, 0, 1, 1))
+            ! call plot(a, a_plus(ij, :, 3, 1, 1))
+            ! call plot(a, a_plus(ij, :, 5, 1, 1))
+            ! call execplot
+            !
+            ! call plot(X, omega_k(ij, :, 0, 1, 1))
+            ! call plot(X, omega_k(ij, :, 3, 1, 1))
+            ! call plot(X, omega_k(ij, :, 5, 1, 1))
+            ! call execplot
+            !
+            ! call plot(a, k_plus(ij, :, 0, 1, 1))
+            ! call plot(a, k_plus(ij, :, 3, 1, 1))
+            ! call plot(a, k_plus(ij, :, 5, 1, 1))
+            ! call execplot
             !
             ! call plot(a, c(ij, :, 0, 1, 1))
             ! call plot(a, c(ij, :, 3, 1, 1))
