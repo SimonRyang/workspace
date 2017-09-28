@@ -251,8 +251,9 @@ contains
              endif
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
-
+            call sleep(5)
             write(*,*)sum(omega_k)
+            call sleep(5)
 
             if (ij>0) cycle
             ! call plot(a, V(ij, :, 0, 1, 1))
