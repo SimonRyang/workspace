@@ -152,7 +152,7 @@ contains
               do ia = 0, NA
                 do ik = 0, NA
 
-                if (mu_b <= 1d0) then
+                if (mu_b == 0d0) then
 
                   X_plus(JJ, ia, ik, :, :) = 0d0
                   a_plus(JJ, ia, ik, :, :) = 0d0
