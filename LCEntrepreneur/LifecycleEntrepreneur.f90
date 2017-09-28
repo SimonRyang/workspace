@@ -250,6 +250,7 @@ contains
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
+            if (ij>JR) cycle
             ! call plot(a, V(ij, :, 0, 1, 1))
             ! call plot(a, V(ij, :, 3, 1, 1))
             ! call plot(a, V(ij, :, 5, 1, 1))
