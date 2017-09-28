@@ -99,8 +99,8 @@ contains
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
       ! get next period value function
-      tomorrow = max(varphi_x*(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
-                     (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam), 1d-10)**egam/egam
+      tomorrow = (varphi_x      *(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
+                 (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam))**egam/egam
 
 
       ! maximize value function for current worker (next period entrepreneur)
