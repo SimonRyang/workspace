@@ -258,8 +258,8 @@ contains
             call plot(a(1:), S(ij, 1:, 0, 1, 5, 1))
             call execplot
 
-            call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 0))
-            call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 1))
+            call plot(a(1:), egam*V_t(ij, 1:, 0, 1, 5, 0)**(1d0/egam))
+            call plot(a(1:), egam*V_t(ij, 1:, 0, 1, 5, 1)**(1d0/egam))
             call execplot
 
             ! call plot(a, V(ij, :, 0, 1, 1))

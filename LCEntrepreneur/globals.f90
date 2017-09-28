@@ -46,8 +46,7 @@ module globals
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.015d0
-    real*8, parameter :: xi = 0.7d0
-    real*8, parameter :: phi_k = 0.02d0
+    real*8, parameter :: xi = 1d0 !0.7d0
 
     ! production parameters
     real*8, parameter :: alpha = 0.36d0
@@ -55,7 +54,7 @@ module globals
 
     ! risk processes
     real*8, parameter :: sigma_eta  = 0.0738d0
-    real*8, parameter :: sigma_theta   = 0.106d0
+    real*8, parameter :: sigma_theta   = 0.0106d0
     real*8, parameter :: rho         = 0d0
 
     ! size of the asset grid
