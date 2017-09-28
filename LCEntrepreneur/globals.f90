@@ -45,7 +45,7 @@ module globals
     real*8, parameter :: r  = 0.02d0
 
     ! capital parameters
-    real*8, parameter :: delta_k = -0.15d0
+    real*8, parameter :: delta_k = 0.15d0
     real*8, parameter :: xi = 0.7d0
     real*8, parameter :: phi_k = 0.02d0
 
