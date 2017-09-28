@@ -55,7 +55,7 @@ contains
         implicit none
 
         ! wage rate for effective labor and rental price
-        w = 0.01d0
+        w = 1d0
 
         ! set survival probabilities
         psi(:) = (/1.00000d0, 0.99923d0, 0.99914d0, 0.99914d0, 0.99912d0, &
