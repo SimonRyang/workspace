@@ -143,12 +143,6 @@ contains
 
               omega_k(JJ, :, :, :, :) = 0d0
 
-              do ix_p = 1, NX
-                  S(JJ, ix_p, :, :, :, :) = mu_b*X(ix_p)**egam/egam
-              enddo
-              S(JJ, 0, :, :, :, :) = 1d-10**egam/egam
-
-
               do ia = 0, NA
                 do ik = 0, NA
 
@@ -165,6 +159,13 @@ contains
 
                 else
 
+
+                  do ix_p = 1, NX
+                      S(JJ, ix_p, :, :, :, :) = mu_b*X(ix_p)**egam/egam
+                  enddo
+                  S(JJ, 0, :, :, :, :) = 1d-10**egam/egam
+
+
                   ! with bequest motive we assume future worker
                   call solve_consumption_w(JJ, ia, ik, 1, 1)
 
@@ -177,7 +178,7 @@ contains
                  endif
 
                enddo
-               enddo
+             enddo
 
              else
 
@@ -272,15 +273,10 @@ contains
             call plot(a, a_plus(ij, :, 5, 1, 1))
             call execplot
 
-            ! call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 0, 1, 1))
-            ! call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 3, 1, 1))
-            ! call plot((/(dble(ia), ia=0,NA)/), c(ij, :, 5, 1, 1))
-            ! call execplot
-            !
-            ! call plot((/(dble(ia), ia=0,NA)/), a_plus(ij, :, 0, 1, 1))
-            ! call plot((/(dble(ia), ia=0,NA)/), a_plus(ij, :, 3, 1, 1))
-            ! call plot((/(dble(ia), ia=0,NA)/), a_plus(ij, :, 5, 1, 1))
-            ! call execplot
+            call plot(a, c(ij, :, 0, 1, 1))
+            call plot(a, c(ij, :, 3, 1, 1))
+            call plot(a, c(ij, :, 5, 1, 1))
+            call execplot
 
         enddo
 
