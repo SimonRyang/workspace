@@ -252,15 +252,15 @@ contains
 
             write(*,*)sum(omega_k)
 
-            ! if (ij>50) cycle
+            if (ij>40) cycle
 
-            ! call plot(a(1:), S(ij, 1:, 0, 1, 5, 0))
-            ! call plot(a(1:), S(ij, 1:, 0, 1, 5, 1))
-            ! call execplot
-            !
-            !  call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 0))
-            !  call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 1))
-            !  call execplot
+            call plot(a(1:), S(ij, 1:, 0, 1, 5, 0))
+            call plot(a(1:), S(ij, 1:, 0, 1, 5, 1))
+            call execplot
+
+            call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 0))
+            call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 1))
+            call execplot
 
             ! call plot(a, V(ij, :, 0, 1, 1))
             ! call plot(a, V(ij, :, 3, 1, 1))
