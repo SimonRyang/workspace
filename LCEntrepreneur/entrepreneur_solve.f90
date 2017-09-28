@@ -73,7 +73,7 @@ contains
         k_p = max((varphi_x*omega_k(ij, ixl, ik, iw, ie) +  &
              (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie))*x_in, 1d-10)/(1d0-xi)
 
-        if (x_in == 0d0 .and. k_p > 0d0) write(*,*)varphi_x, ixl, ixr
+        if (x_in == 0d0) write(*,*)varphi_x, ixl, ixr, k_p
 
         X_plus_t(ij, ia, ik, iw, ie, 1) = x_in
         a_plus_t(ij, ia, ik, iw, ie, 1) = x_in - (1d0-xi)*k_p
