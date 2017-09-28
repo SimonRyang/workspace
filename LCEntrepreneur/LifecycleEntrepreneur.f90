@@ -252,7 +252,7 @@ contains
 
             write(*,*)sum(omega_k)
 
-            if (ij>50) cycle
+            ! if (ij>50) cycle
 
 
              call plot(a(1:), V_t(ij, 1:, 0, 1, 5, 0))
