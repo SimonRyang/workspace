@@ -250,35 +250,35 @@ contains
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
-            call plot(a, V(ij, :, 0, 1, 1))
-            call plot(a, V(ij, :, 3, 1, 1))
-            call plot(a, V(ij, :, 5, 1, 1))
-            call execplot
-
-            call plot(X(1:), S(ij, 1:, 0, 1, 1, 0))
-            call plot(X(1:), S(ij, 1:, 3, 1, 1, 0))
-            call plot(X(1:), S(ij, 1:, 5, 1, 1, 0))
-            call execplot
-
-            call plot(X(1:), S(ij, 1:, 0, 1, 1, 1))
-            call plot(X(1:), S(ij, 1:, 3, 1, 1, 1))
-            call plot(X(1:), S(ij, 1:, 5, 1, 1, 1))
-            call execplot
-
-            call plot(X, X_plus(ij, :, 0, 1, 1))
-            call plot(X, X_plus(ij, :, 3, 1, 1))
-            call plot(X, X_plus(ij, :, 5, 1, 1))
-            call execplot
-
-            call plot(a, a_plus(ij, :, 0, 1, 1))
-            call plot(a, a_plus(ij, :, 3, 1, 1))
-            call plot(a, a_plus(ij, :, 5, 1, 1))
-            call execplot
-
-            call plot(a, c(ij, :, 0, 1, 1))
-            call plot(a, c(ij, :, 3, 1, 1))
-            call plot(a, c(ij, :, 5, 1, 1))
-            call execplot
+            ! call plot(a, V(ij, :, 0, 1, 1))
+            ! call plot(a, V(ij, :, 3, 1, 1))
+            ! call plot(a, V(ij, :, 5, 1, 1))
+            ! call execplot
+            !
+            ! call plot(X(1:), S(ij, 1:, 0, 1, 1, 0))
+            ! call plot(X(1:), S(ij, 1:, 3, 1, 1, 0))
+            ! call plot(X(1:), S(ij, 1:, 5, 1, 1, 0))
+            ! call execplot
+            !
+            ! call plot(X(1:), S(ij, 1:, 0, 1, 1, 1))
+            ! call plot(X(1:), S(ij, 1:, 3, 1, 1, 1))
+            ! call plot(X(1:), S(ij, 1:, 5, 1, 1, 1))
+            ! call execplot
+            !
+            ! call plot(X, X_plus(ij, :, 0, 1, 1))
+            ! call plot(X, X_plus(ij, :, 3, 1, 1))
+            ! call plot(X, X_plus(ij, :, 5, 1, 1))
+            ! call execplot
+            !
+            ! call plot(a, a_plus(ij, :, 0, 1, 1))
+            ! call plot(a, a_plus(ij, :, 3, 1, 1))
+            ! call plot(a, a_plus(ij, :, 5, 1, 1))
+            ! call execplot
+            !
+            ! call plot(a, c(ij, :, 0, 1, 1))
+            ! call plot(a, c(ij, :, 3, 1, 1))
+            ! call plot(a, c(ij, :, 5, 1, 1))
+            ! call execplot
 
         enddo
 
