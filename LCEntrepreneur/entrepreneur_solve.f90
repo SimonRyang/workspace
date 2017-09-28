@@ -70,11 +70,11 @@ contains
         varphi_x = max(min(varphi_x, 1d0),0d0)
 
         ! get next period's capital size
-        k_p = max((varphi_x*omega_k(ij, ixl, ik, iw, ie) +  &
-             (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie))*x_in, 1d-10)/(1d0-xi)
+        k_p = (varphi_x*omega_k(ij, ixl, ik, iw, ie) +  &
+             (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie))*x_in/(1d0-xi)
 
-        if (omega_k(ij, ixl, ik, iw, ie) > 0d0) write(*,*)'ixl', varphi_x, ixl, ixr, k_p
-        if (omega_k(ij, ixr, ik, iw, ie) > 0d0) write(*,*)'ixr', varphi_x, ixl, ixr, k_p
+        if (omega_k(ij, ixl, ik, iw, ie) <= 0d0) write(*,*)'ixl', varphi_x, ixl, ixr, k_p
+        if (omega_k(ij, ixr, ik, iw, ie) <= 0d0) write(*,*)'ixr', varphi_x, ixl, ixr, k_p
 
         X_plus_t(ij, ia, ik, iw, ie, 1) = x_in
         a_plus_t(ij, ia, ik, iw, ie, 1) = x_in - (1d0-xi)*k_p
