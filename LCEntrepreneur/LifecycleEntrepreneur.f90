@@ -190,10 +190,11 @@ contains
                            do ie = 1, NE
 
                            ! next period entrepreneur
-                           !call solve_entrepreneur(ij, ix_p, ik, iw, ie)
+                           call solve_entrepreneur(ij, ix_p, ik, iw, ie)
 
                            ! next period worker
                            call solve_worker(ij, ix_p, ik, iw, ie)
+
                        enddo
                      enddo
                    enddo
@@ -255,16 +256,16 @@ contains
             ! call plot(a, V(ij, :, 5, 1, 1))
             ! call execplot
             !
-            ! call plot(X(1:), S(ij, 1:, 0, 1, 1, 0))
-            ! call plot(X(1:), S(ij, 1:, 3, 1, 1, 0))
-            ! call plot(X(1:), S(ij, 1:, 5, 1, 1, 0))
-            ! call execplot
-            !
-            ! call plot(X(1:), S(ij, 1:, 0, 1, 1, 1))
-            ! call plot(X(1:), S(ij, 1:, 3, 1, 1, 1))
-            ! call plot(X(1:), S(ij, 1:, 5, 1, 1, 1))
-            ! call execplot
-            !
+            call plot(X(1:), S(ij, 1:, 0, 1, 1, 0))
+            call plot(X(1:), S(ij, 1:, 3, 1, 1, 0))
+            call plot(X(1:), S(ij, 1:, 5, 1, 1, 0))
+            call execplot
+
+            call plot(X(1:), S(ij, 1:, 0, 1, 1, 1))
+            call plot(X(1:), S(ij, 1:, 3, 1, 1, 1))
+            call plot(X(1:), S(ij, 1:, 5, 1, 1, 1))
+            call execplot
+
             ! call plot(X, X_plus(ij, :, 0, 1, 1))
             ! call plot(X, X_plus(ij, :, 3, 1, 1))
             ! call plot(X, X_plus(ij, :, 5, 1, 1))
