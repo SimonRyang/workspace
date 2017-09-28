@@ -275,6 +275,11 @@ contains
             call plot(a, a_plus(ij, :, 5, 1, 1))
             call execplot
 
+            call plot(X, omega_k(ij, :, 0, 1, 1))
+            call plot(X, omega_k(ij, :, 3, 1, 1))
+            call plot(X, omega_k(ij, :, 5, 1, 1))
+            call execplot
+
             call plot(a, k_plus(ij, :, 0, 1, 1))
             call plot(a, k_plus(ij, :, 3, 1, 1))
             call plot(a, k_plus(ij, :, 5, 1, 1))
