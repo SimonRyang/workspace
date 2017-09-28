@@ -57,12 +57,12 @@ contains
 
           if(varphi_a <= varphi_k)then
               EV = varphi_a           *(egam*V(ij_com+1, ial, ikl, iw_p, ie_p))**(1d0/egam) + &
-                       (varphi_k-varphi_a)*(egam*V(ij_com+1, iar, ikl, iw_p, ie_p))**(1d0/egam) + &
-                       (1d0-varphi_k)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
+                   (varphi_k-varphi_a)*(egam*V(ij_com+1, iar, ikl, iw_p, ie_p))**(1d0/egam) + &
+                   (1d0-varphi_k)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
           else
               EV = varphi_k           *(egam*V(ij_com+1, ial, ikl, iw_p, ie_p))**(1d0/egam) + &
-                       (varphi_a-varphi_k)*(egam*V(ij_com+1, ial, ikr, iw_p, ie_p))**(1d0/egam) + &
-                       (1d0-varphi_a)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
+                   (varphi_a-varphi_k)*(egam*V(ij_com+1, ial, ikr, iw_p, ie_p))**(1d0/egam) + &
+                   (1d0-varphi_a)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
           endif
 
           S_temp = S_temp + pi_eta(iw_com, iw_p)*pi_theta(ie_com, ie_p)*psi(ij_com+1)*EV
