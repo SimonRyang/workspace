@@ -49,6 +49,7 @@ module globals
     real*8, parameter :: xi = 0.7d0
 
     ! production parameters
+    real*8, parameter :: k_min = 0.2d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
 
@@ -66,7 +67,6 @@ module globals
     real*8, parameter :: a_l    = X_l
     real*8, parameter :: a_u    = X_u
     real*8, parameter :: a_grow = X_grow
-
 
     ! size of the capital grid
     real*8, parameter :: k_l = 0d0

@@ -30,7 +30,7 @@ contains
       omega_k  = x_in
 
       ! determine future liquid wealth and future downpayment
-      ad_p = omega_k*X(ix_p_com)
+      ad_p = (1d0-xi)*k_min + omega_k*(X(ix_p_com)-(1d0-xi)*k_min)
       k_p =  ad_p/(1d0-xi)
       a_temp = X(ix_p_com) - ad_p
       a_p = max(a_temp, 0d0)
@@ -94,7 +94,7 @@ contains
 
       ! get next period value function
       tomorrow = max(varphi_x      *(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
-                  (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam), 1d-10)**egam/egam
+                     (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam), 1d-10)**egam/egam
 
 
       ! maximize value function for current worker (next period entrepreneur)

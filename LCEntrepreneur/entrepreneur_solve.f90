@@ -26,19 +26,26 @@ contains
         ! set up communication variables
         ij_com = ij; ix_p_com = ix_p; ik_com = ik; iw_com = iw; ie_com = ie
 
-         ! get best guess for the root of foc_real
-         if(ix_p > 0)then
-            x_in = omega_k(ij, ix_p-1, ik, iw, ie)
-         else
-            x_in = 0d0
-         endif
+        if (X(ix_p) > (1d0-xi)*x_min)) then
 
-         ! solve the household problem using fminsearch
-         call fminsearch(x_in, fret, 0d0, 1d0, real_o)
+           ! get best guess for the root of foc_real
+           if(ix_p > 0)then
+              x_in = omega_k(ij, ix_p-1, ik, iw, ie)
+           else
+              x_in = 0d0
+           endif
 
-         ! portfolio share for capital
-         omega_k(ij, ix_p, ik, iw, ie) = x_in
-         S(ij, ix_p, ik, iw, ie, 1) = -fret
+           ! solve the household problem using fminsearch
+           call fminsearch(x_in, fret, 0d0, 1d0, real_o)
+
+           ! portfolio share for capital
+           omega_k(ij, ix_p, ik, iw, ie) = x_in
+           S(ij, ix_p, ik, iw, ie, 1) = -fret
+
+        else
+
+          omega_k(ij, ix_p, ik, iw, ie) = 0d0
+          S(ij, ix_p, ik, iw, ie, 1) = 1d-10**egam/egam
 
     end subroutine
 
