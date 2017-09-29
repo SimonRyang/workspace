@@ -256,14 +256,14 @@ contains
 
             !if (ij>50) cycle
 
-            ia_com = 25
+            ia_com = 4
             ik_com = 0
             iw_com = 3
             ie_com = 3
             do ix = 0, NX
               y_plot(ix) = cons_w(X(ix))
             enddo
-            call plot(X(4:25), y_plot(4:25))
+            call plot(X(2:6), y_plot(2:6))
             call execplot
 
             call solve_consumption_w(ij,ia_com,ik_com,iw_com,ie_com)
