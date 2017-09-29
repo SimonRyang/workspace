@@ -22,7 +22,7 @@ contains
 
         integer, intent(in) :: ij, ix_p, ik, iw, ie
         integer :: ial, iar
-        real*8 :: a_plus, EV, S_temp, varphi_a
+        real*8 :: a_plus, EV_temp, S_temp, varphi_a
 
         a_plus  = X(ix_p)
 
@@ -36,10 +36,10 @@ contains
 
        S_temp = (1d0 - psi(ij_com+1))*mu_b*max(a_plus, 1d-10)**egam/egam
 
-       EV = varphi_a*(egam*EV(ij_com+1, ial, 0, iw_com, ie_com))**(1d0/egam) + &
+       EV_temp = varphi_a*(egam*EV(ij_com+1, ial, 0, iw_com, ie_com))**(1d0/egam) + &
             (1d0-varphi_a)*(egam*EV(ij_com+1, iar, 0, iw_com, ie_com))**(1d0/egam)
 
-       S_temp = S_temp + psi(ij_com+1)*EV**egam/egam
+       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
        S(ij, ix_p, ik, iw, ie, 0) = S_temp
        omega_k(ij, ix_p, ik, iw, ie) = 0d0
