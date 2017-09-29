@@ -111,7 +111,7 @@ contains
         call grid_Cons_Grow(k, k_l, k_u, k_grow)
 
         ! initialize value functions
-         = 1d-10**egam/egam; EV = 1d-10**egam/egam; S = 1d-10**egam/egam
+        V = 1d-10**egam/egam; EV = 1d-10**egam/egam; S = 1d-10**egam/egam
 
         ! initialize policy functions
         X_plus = 0d0; a_plus = 0d0; k_plus = 0d0; c = 0d0
