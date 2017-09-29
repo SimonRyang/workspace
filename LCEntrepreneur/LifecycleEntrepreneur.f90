@@ -256,20 +256,20 @@ contains
 
             !if (ij>50) cycle
 
-            ia_com = 4
-            ik_com = 0
-            iw_com = 3
-            ie_com = 3
-            do ix = 0, NX
-              y_plot(ix) = cons_w(X(ix))
-            enddo
-            call plot(X(2:4), y_plot(2:4))
-            call execplot
-
-            call solve_consumption_w(ij,ia_com,ik_com,iw_com,ie_com)
-            write(*,*)X_plus_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
-            write(*,*)a_plus_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
-            write(*,*)c_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
+            ! ia_com = 4
+            ! ik_com = 0
+            ! iw_com = 3
+            ! ie_com = 3
+            ! do ix = 0, NX
+            !   y_plot(ix) = cons_w(X(ix))
+            ! enddo
+            ! call plot(X(2:4), y_plot(2:4))
+            ! call execplot
+            !
+            ! call solve_consumption_w(ij,ia_com,ik_com,iw_com,ie_com)
+            ! write(*,*)X_plus_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
+            ! write(*,*)a_plus_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
+            ! write(*,*)c_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
 
 
             ! call plot(k(:), S(ij, 5, :, 1, 5, 0))
