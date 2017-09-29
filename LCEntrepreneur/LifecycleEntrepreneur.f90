@@ -247,6 +247,8 @@ contains
 
              endif
 
+            call interpolate(ij, it)
+
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
             write(*,*)sum(omega_k)
@@ -307,6 +309,35 @@ contains
             ! call execplot
 
         enddo
+
+    end subroutine
+
+    ! calculates the expected valuefunction of cohort ij
+    subroutine interpolate(ij)
+
+      implicit none
+
+      integer, intent(in) :: ij
+
+      integer :: ia, ik, iw, iw_p, ie, ie_p
+
+      do ia = 0, NA
+        do ik = 0, NK
+          do iw = 1, NW
+            do ie = 1, NE
+
+            EV(ij, ia, ik, iw, ie) = 0d0
+              do ie_p = 1, NE
+                do iw_p = 1, NW
+                  EV(ij, ia, ik, iw, ie) = EV(ij, ia, ik, iw, ie) &
+                    +pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*V(ij, ia, ik, iw, ie)
+                enddo ! iw_p
+              enddo ! ie_p
+
+            enddo
+          enddo
+        enddo
+      enddo
 
     end subroutine
 
