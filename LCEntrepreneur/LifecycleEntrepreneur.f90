@@ -263,8 +263,11 @@ contains
             do ix = 0, NX
               y_plot(ix) = cons_w(X(ix))
             enddo
-            call plot(X(4:20), y_plot(4:20))
+            call plot(X(4:25), y_plot(4:25))
             call execplot
+
+            call solve_consumption_w(ij,ia_com,ik_com,iw_com,ie_com)
+            write(*,*)X_plus_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
 
 
             ! call plot(k(:), S(ij, 5, :, 1, 5, 0))
