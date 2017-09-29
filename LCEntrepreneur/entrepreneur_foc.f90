@@ -23,7 +23,7 @@ contains
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: real_o, ad_p, a_p, k_p, EV, S_temp, omega_k, varphi_k, varphi_a, a_temp
+      real*8 :: real_o, ad_p, a_p, k_p, EV_temp, S_temp, omega_k, varphi_k, varphi_a, a_temp
       integer :: ikl, ikr, ial, iar, iw_p, ie_p
 
       ! store real estate share

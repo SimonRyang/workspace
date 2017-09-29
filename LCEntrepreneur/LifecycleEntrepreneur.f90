@@ -426,6 +426,10 @@ contains
             enddo
           enddo
 
+          write(*,*)sum(m(ij, :, :, :, :))
+          write(*,*)sum(m(ij, :, 0, :, :))
+          write(*,*)sum(m(ij, :, 1:, :, :))
+
         enddo
 
     end subroutine
