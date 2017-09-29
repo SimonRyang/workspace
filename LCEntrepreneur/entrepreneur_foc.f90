@@ -49,7 +49,7 @@ contains
       ikr = min(ikr, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = (1d0-psi(ij_com+1))*mu_b*max(ad_p+a_p, 1d-10)**egam/egam
+      S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-10)**egam/egam
 
       ! get optimal investment strategy
       do iw_p = 1, NW
