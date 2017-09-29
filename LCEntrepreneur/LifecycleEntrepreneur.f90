@@ -253,8 +253,8 @@ contains
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
             write(*,*)sum(omega_k)
-            write(*,*)a_plus_t(ij, :, :, :, :, 0)
-            write(*,*)a_plus(ij, :, :, :, :)
+            write(*,*)sum(a_plus_t(ij, :, :, :, :, 0))
+            write(*,*)sum(a_plus(ij, :, :, :, :))
 
             !if (ij>50) cycle
 
