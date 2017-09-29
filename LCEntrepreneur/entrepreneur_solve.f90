@@ -47,6 +47,8 @@ contains
           omega_k(ij, ix_p, ik, iw, ie) = 0d0
           S(ij, ix_p, ik, iw, ie, 1) = 1d-10**egam/egam
 
+        endif
+
     end subroutine
 
 
