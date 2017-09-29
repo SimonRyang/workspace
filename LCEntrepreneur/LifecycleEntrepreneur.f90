@@ -133,6 +133,7 @@ contains
         implicit none
 
         integer :: ij, ix, ix_p, ia, ik, iw, ie
+        real*8:: y_plot(0:NX)
 
         ! solve household problem recursively
 
@@ -254,6 +255,17 @@ contains
             write(*,*)sum(omega_k)
 
             if (ij>50) cycle
+
+            ia_com = 2
+            ik_com = 0
+            iw_com = 3
+            ie_com = 3
+            do ix = 0, NX
+              y_plot(ix) = cons_w(X(ix))
+            enddo
+            call plot(X, y_plot)
+            call execplot
+
 
             ! call plot(k(:), S(ij, 5, :, 1, 5, 0))
             ! call plot(k(:), S(ij, 5, :, 1, 5, 1))
