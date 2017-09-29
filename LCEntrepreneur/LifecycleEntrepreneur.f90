@@ -343,7 +343,7 @@ contains
           do iw = 1, NW
             do ie = 1, NE
 
-            EV(ij, ia, ik, iw, ie) = 0d0
+              EV(ij, ia, ik, iw, ie) = 0d0
               do ie_p = 1, NE
                 do iw_p = 1, NW
                   EV(ij, ia, ik, iw, ie) = EV(ij, ia, ik, iw, ie) &
@@ -426,10 +426,6 @@ contains
             enddo
           enddo
 
-          write(*,*)sum(m(ij, :, :, :, :))
-          write(*,*)sum(m(ij, :, 0, :, :))
-          write(*,*)sum(m(ij, :, 1:, :, :))
-
         enddo
 
     end subroutine
@@ -477,7 +473,14 @@ contains
             o_coh(ij) = o_coh(ij)/sum(m(ij, :, :, :, :))
             k_coh(ij) = k_coh(ij)/sum(m(ij, :, :, :, :))
 
+            write(*,*)sum(c(ij, :, :, :, :)*m(ij, :, :, :, :))
+            write(*,*)sum(c(ij, :, 0, :, :)*m(ij, :, 0, :, :))
+            write(*,*)sum(c(ij, :, 1:, :, :)*m(ij, :, 1:, :, :))
+
+
         enddo
+
+
 
     end subroutine
 
