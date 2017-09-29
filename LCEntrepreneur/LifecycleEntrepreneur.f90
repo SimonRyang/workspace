@@ -158,7 +158,6 @@ contains
 
                 else
 
-
                   do ix_p = 1, NX
                       S(JJ, ix_p, :, :, :, :) = mu_b*X(ix_p)**egam/egam
                   enddo
@@ -272,8 +271,8 @@ contains
             ! call plot(a, V(ij, :, 5, 1, 1))
             call execplot
             !
-            call plot(X(:), S(ij, :, 0, 1, 1, 0))
-            call plot(X(:), S(ij, :, 3, 1, 1, 0))
+            call plot(X(1:), S(ij, 1:, 0, 1, 1, 0))
+            call plot(X(1:), S(ij, 1:, 3, 1, 1, 0))
             ! call plot(X(1:), S(ij, 1:, 5, 1, 1, 0))
             call execplot
             !
