@@ -253,8 +253,6 @@ contains
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
             write(*,*)sum(omega_k)
-            write(*,*)sum(a_plus_t(ij, :, :, :, :, 0))
-            write(*,*)sum(a_plus(ij, :, :, :, :))
 
             !if (ij>50) cycle
 
@@ -430,9 +428,6 @@ contains
 
         enddo
 
-        write(*,*)sum(m(1, :, 0, :, :)), sum(m(2, :, 0, :, :)), sum(m(10, :, 0, :, :)), sum(m(40, :, 0, :, :))
-        write(*,*)sum(m(1, :, 1:, :, :)), sum(m(2, :, 1:, :, :)), sum(m(10, :, 1:, :, :)), sum(m(40, :, 1:, :, :))
-        write(*,*)sum(m(1, 1:, :, :, :)), sum(m(2, 1:, :, :, :)), sum(m(10, 1:, :, :, :)), sum(m(40, 1:, :, :, :))
     end subroutine
 
 
@@ -468,8 +463,6 @@ contains
                 enddo
               enddo
             enddo
-          enddo
-
 
             c_coh(ij, 0) = c_coh(ij, 0)/sum(m(ij, :, 0, :, :))
             c_coh(ij, 1) = c_coh(ij, 1)/sum(m(ij, :, 1:NK, :, :))
@@ -480,6 +473,7 @@ contains
             o_coh(ij) = o_coh(ij)/sum(m(ij, :, :, :, :))
             k_coh(ij) = k_coh(ij)/sum(m(ij, :, :, :, :))
 
+        enddo
 
     end subroutine
 
