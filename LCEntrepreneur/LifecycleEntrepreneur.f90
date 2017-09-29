@@ -256,14 +256,14 @@ contains
 
             if (ij>50) cycle
 
-            ia_com = 2
+            ia_com = 25
             ik_com = 0
             iw_com = 3
             ie_com = 3
             do ix = 0, NX
               y_plot(ix) = cons_w(X(ix))
             enddo
-            call plot(X, y_plot)
+            call plot(X(:10), y_plot(:10))
             call execplot
 
 
