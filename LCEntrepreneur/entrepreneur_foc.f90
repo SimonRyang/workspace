@@ -52,23 +52,17 @@ contains
       S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-10)**egam/egam
 
       ! get optimal investment strategy
-      do iw_p = 1, NW
-        do ie_p = 1, NE
+      if(varphi_a <= varphi_k)then
+          EV_temp = varphi_a           *(egam*V(ij_com+1, ial, ikl, iw_p, ie_p))**(1d0/egam) + &
+                    (varphi_k-varphi_a)*(egam*V(ij_com+1, iar, ikl, iw_p, ie_p))**(1d0/egam) + &
+                    (1d0-varphi_k)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
+      else
+          EV_temp = varphi_k           *(egam*V(ij_com+1, ial, ikl, iw_p, ie_p))**(1d0/egam) + &
+                    (varphi_a-varphi_k)*(egam*V(ij_com+1, ial, ikr, iw_p, ie_p))**(1d0/egam) + &
+                    (1d0-varphi_a)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
+      endif
 
-          if(varphi_a <= varphi_k)then
-              EV = varphi_a           *(egam*V(ij_com+1, ial, ikl, iw_p, ie_p))**(1d0/egam) + &
-                   (varphi_k-varphi_a)*(egam*V(ij_com+1, iar, ikl, iw_p, ie_p))**(1d0/egam) + &
-                   (1d0-varphi_k)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
-          else
-              EV = varphi_k           *(egam*V(ij_com+1, ial, ikl, iw_p, ie_p))**(1d0/egam) + &
-                   (varphi_a-varphi_k)*(egam*V(ij_com+1, ial, ikr, iw_p, ie_p))**(1d0/egam) + &
-                   (1d0-varphi_a)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
-          endif
-
-          S_temp = S_temp + pi_eta(iw_com, iw_p)*pi_theta(ie_com, ie_p)*psi(ij_com+1)*EV
-
-        enddo
-      enddo
+      S_temp = S_temp + psi(ij_com+1)*EV_temp
 
       real_o = - S_temp**egam/egam + 100d0*abs(a_p-a_temp)
 
@@ -99,8 +93,8 @@ contains
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
       ! get next period value function
-      tomorrow = (varphi_x      *(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
-                  (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam))**egam/egam
+      tomorrow = max(varphi_x      *(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
+                  (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 1))**(1d0/egam), 1d-10)**egam/egam
 
 
       ! maximize value function for current worker (next period entrepreneur)

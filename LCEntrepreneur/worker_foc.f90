@@ -37,8 +37,8 @@ contains
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
       ! get next period value function
-      tomorrow = (varphi_x      *(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 0))**(1d0/egam) +  &
-                  (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 0))**(1d0/egam))**egam/egam
+      tomorrow = max(varphi_x      *(egam*S(ij_com, ixl, ik_com, iw_com, ie_com, 0))**(1d0/egam) +  &
+                     (1d0-varphi_x)*(egam*S(ij_com, ixr, ik_com, iw_com, ie_com, 0))**(1d0/egam), 1d-10)**egam/egam
 
       ! maximize value function for current worker (next period worker)
       if (ik_com == 0) then
