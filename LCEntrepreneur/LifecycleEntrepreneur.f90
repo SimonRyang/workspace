@@ -263,7 +263,7 @@ contains
             do ix = 0, NX
               y_plot(ix) = cons_w(X(ix))
             enddo
-            call plot(X(4:10), y_plot(4:10))
+            call plot(X(4:20), y_plot(4:20))
             call execplot
 
 
