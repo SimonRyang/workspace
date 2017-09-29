@@ -254,7 +254,7 @@ contains
 
             write(*,*)sum(omega_k)
 
-            if (ij>50) cycle
+            !if (ij>50) cycle
 
             ia_com = 25
             ik_com = 0
@@ -263,7 +263,7 @@ contains
             do ix = 0, NX
               y_plot(ix) = cons_w(X(ix))
             enddo
-            call plot(X(:10), y_plot(:10))
+            call plot(X(4:10), y_plot(4:10))
             call execplot
 
 
