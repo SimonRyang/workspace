@@ -32,7 +32,7 @@ contains
       ! determine future liquid wealth and future downpayment
       ad_p = omega_k*X(ix_p_com)
       k_p =  ad_p/(1d0-xi)
-      a_temp = X(ix_p_com)- ad_p
+      a_temp = X(ix_p_com) - ad_p
       a_p = max(a_temp, 0d0)
 
       ! derive interpolation weights
