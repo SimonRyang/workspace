@@ -36,8 +36,8 @@ contains
 
        S_temp = (1d0 - psi(ij_com+1))*mu_b*max(a_plus, 1d-10)**egam/egam
 
-       EV_temp = varphi_a*(egam*EV(ij_com+1, ial, 0, iw_com, ie_com))**(1d0/egam) + &
-            (1d0-varphi_a)*(egam*EV(ij_com+1, iar, 0, iw_com, ie_com))**(1d0/egam)
+       EV_temp = varphi_a      *(egam*EV(ij_com+1, ial, 0, iw_com, ie_com))**(1d0/egam) + &
+                 (1d0-varphi_a)*(egam*EV(ij_com+1, iar, 0, iw_com, ie_com))**(1d0/egam)
 
        S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
