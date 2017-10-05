@@ -68,7 +68,7 @@ contains
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
-      real_o = - S_temp + 100d0*abs(a_p-a_temp)
+      real_o = - S_temp + 1d10*abs(a_p-a_temp)
 
   end function
 
