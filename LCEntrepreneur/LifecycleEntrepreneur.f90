@@ -476,7 +476,7 @@ contains
 
         ! plot consumption for homeowner
         call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Entrepreneur')
-        call plot(dble(ages), a_coh(:, 1), legend='Assets       - Entrepreneur')
+        !call plot(dble(ages), a_coh(:, 1), legend='Assets       - Entrepreneur')
         call plot(dble(ages), y_coh(:, 1), legend='Income       - Entrepreneur')
         call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
         call execplot(xlabel='Age j', ylabel='Consumption/Assets')
