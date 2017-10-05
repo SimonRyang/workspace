@@ -38,8 +38,6 @@ contains
            ! solve the household problem using fminsearch
            call fminsearch(x_in, fret, 0d0, 1d0, real_o)
 
-           if (x_in < 0d0) write(*,*)'HELP!'
-
            ! portfolio share for capital
            omega_k(ij, ix_p, ik, iw, ie) = x_in
            S(ij, ix_p, ik, iw, ie, 1) = -fret
@@ -81,8 +79,11 @@ contains
         varphi_x = max(min(varphi_x, 1d0),0d0)
 
         ! get next period's capital size
-        k_p = ((1d0-xi)*k_min + (varphi_x*omega_k(ij, ixl, ik, iw, ie) +  &
-               (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie))*(x_in-(1d0-xi)*k_min))/(1d0-xi)
+        k_p = ((1d0-xi)*k_min + (varphi_x      *omega_k(ij, ixl, ik, iw, ie) +  &
+                                 (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie))*(x_in-(1d0-xi)*k_min))/(1d0-xi)
+
+
+        if (k_p < k_min) write(*,*)'HELP!'
 
         X_plus_t(ij, ia, ik, iw, ie, 1) = x_in
         a_plus_t(ij, ia, ik, iw, ie, 1) = x_in - (1d0-xi)*k_p
