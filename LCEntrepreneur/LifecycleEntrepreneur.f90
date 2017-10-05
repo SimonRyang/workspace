@@ -57,7 +57,7 @@ contains
         integer :: ij
 
         ! wage rate for effective labor and rental price
-        w = 2d0
+        w = 1d0
 
         ! set survival probabilities
         open(301, file='sp.dat')
