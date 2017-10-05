@@ -62,7 +62,6 @@ contains
         ! set survival probabilities
         open(301, file='sp.dat')
         do ij = 1, JJ+1
-          write(*,*)ij
           read(301,'(f13.8)')psi(ij)
         enddo
         close(301)
@@ -84,7 +83,7 @@ contains
         eta = exp(eta)
 
         ! discretize theta shocks
-        call discretize_AR(rho, -100d0, sigma_theta, theta, pi_theta, dist_theta)
+        call discretize_AR(rho, 0d0, sigma_theta, theta, pi_theta, dist_theta)
         theta = exp(theta)
 
         ! initialize asset grid
