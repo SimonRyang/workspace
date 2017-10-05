@@ -430,6 +430,11 @@ contains
               do ik = 0, NK
                 do iw = 1, NW
                   do ie = 1, NE
+
+
+                    if (k_plus(ij, ia, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ik, iw, ie) < k_min)write(*,*)'ERROR!'
+
+
                     if(ik == 0) then
                       c_coh(ij, 0) = c_coh(ij,0) + c(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
                       a_coh(ij, 0) = a_coh(ij,0) + a(ia)*m(ij, ia, ik, iw, ie)
