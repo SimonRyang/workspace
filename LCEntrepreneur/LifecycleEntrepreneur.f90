@@ -258,9 +258,9 @@ contains
             ! call plot(k(:), S(ij, 5, :, 1, 5, 1))
             ! call execplot
             !
-            ! call plot(a(1:), egam*V_t(ij, 1:, 0, 1, 5, 0)**(1d0/egam))
-            ! call plot(a(1:), egam*V_t(ij, 1:, 0, 1, 5, 1)**(1d0/egam))
-            ! call execplot
+            call plot(a(1:), egam*V_t(ij, 1:, 0, 2, 1, 0)**(1d0/egam))
+            call plot(a(1:), egam*V_t(ij, 1:, 0, 2, 1, 1)**(1d0/egam))
+            call execplot
             !
             ! call plot(k(1:), egam*V_t(ij, 0, 1:, 1, 5, 0)**(1d0/egam))
             ! call plot(k(1:), egam*V_t(ij, 0, 1:, 1, 5, 1)**(1d0/egam))
@@ -402,8 +402,6 @@ contains
                       endif
                     enddo
                   enddo
-
-                  if (ij >= JR .and. k_plus(ij-1, ia, ik, iw, ie) > 0d0) write(*,*)ij-1, ia, ik, iw, ie
 
                 enddo
               enddo
