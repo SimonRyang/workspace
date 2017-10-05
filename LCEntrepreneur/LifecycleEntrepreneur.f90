@@ -143,6 +143,10 @@ contains
 
               omega_k(JJ, :, :, :, :) = 0d0
 
+              do ix_p = 0, NX
+                  S(JJ, ix_p, :, :, :, :) = mu_b*max(X(ix_p), 1d-10)**egam/egam
+              enddo
+
               do ia = 0, NA
                 do ik = 0, NA
 
@@ -158,12 +162,6 @@ contains
                   V(JJ, ia, ik, :, :) = cons_com**egam/egam
 
                 else
-
-                  do ix_p = 1, NX
-                      S(JJ, ix_p, :, :, :, :) = mu_b*X(ix_p)**egam/egam
-                  enddo
-                  S(JJ, 0, :, :, :, :) = 1d-10**egam/egam
-
 
                   ! with bequest motive we assume future worker
                   call solve_consumption_w(JJ, ia, ik, 1, 1)
