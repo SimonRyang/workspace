@@ -66,8 +66,6 @@ contains
         enddo
         close(301)
 
-        psi(1:JJ) = 1d0
-
         ! initialize age earnings process
         eff(1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
                         2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)/1.4327164d0
@@ -405,12 +403,15 @@ contains
                     enddo
                   enddo
 
+                  if (ij >= JR .and. k_plus(ij-1, ia, ik, iw, ie) > 0d0) write(*,*)ij-1, ia, ik, iw, ie
+
                 enddo
               enddo
             enddo
           enddo
 
           write(*,*)sum(m(ij, :, :, :, :))
+          write(*,*)sum(m(ij, :, 1, :, :))
           write(*,*)sum(m(ij, :, 1:, :, :))
 
         enddo
