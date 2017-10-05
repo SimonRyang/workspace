@@ -54,6 +54,8 @@ contains
 
         implicit none
 
+        integer :: ij
+
         ! wage rate for effective labor and rental price
         w = 1d0
 
