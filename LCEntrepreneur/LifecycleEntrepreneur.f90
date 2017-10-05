@@ -84,7 +84,7 @@ contains
         eta = exp(eta)
 
         ! discretize theta shocks
-        call discretize_AR(rho, 0d0, sigma_theta, theta, pi_theta, dist_theta)
+        call discretize_AR(rho, -10d0, sigma_theta, theta, pi_theta, dist_theta)
         theta = exp(theta)
 
         ! initialize asset grid
