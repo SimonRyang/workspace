@@ -51,6 +51,7 @@ module globals
 
     ! production parameters
     real*8, parameter :: k_min = 0.4d0
+    real*8, parameter :: phi_k = 0.2d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
 
@@ -113,6 +114,24 @@ module globals
     real*8 :: cons_com
 
   contains
+
+    ! function that computes adjustment cost
+    function tr(k, k_p)
+
+       implicit none
+
+       ! input variable
+       real*8, intent(in) :: k, k_p
+       real*8 :: tr
+
+       tr = 0d0
+       if (h <= 0d0) then
+
+          tr = phi_k*(h_p - h)
+
+       endif
+
+    end function
 
     !##############################################################################
     ! FUNCTION sigma5

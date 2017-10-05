@@ -26,7 +26,7 @@ contains
         ! set up communication variables
         ij_com = ij; ix_p_com = ix_p; ik_com = ik; iw_com = iw; ie_com = ie
 
-        if (X(ix_p) > (1d0-xi)*k_min) then
+        if (X(ix_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
            ! get best guess for the root of foc_real
            if(ix_p > 0)then
