@@ -125,7 +125,7 @@ module globals
        real*8 :: tr
 
        tr = 0d0
-       if (h <= 0d0) then
+       if (k <= 0d0) then
 
           tr = phi_k*(k_p - k)
 
