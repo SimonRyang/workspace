@@ -497,6 +497,7 @@ contains
         call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Owner')
         call plot(dble(ages), a_coh(:, 1), legend='Assets       - Owner')
         call plot(dble(ages), y_coh(:, 1), legend='Labor Income - Owner)')
+        call plot(dble(ages), k_coh(:), legend='Labor Income - Owner)')
         call execplot(xlabel='Age j', ylabel='Consumption/assets')
 
         ! polt consumption for renter
