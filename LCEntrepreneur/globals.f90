@@ -47,11 +47,11 @@ module globals
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
-    real*8, parameter :: xi = 0d0 !1d0/3d0
+    real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
     real*8, parameter :: k_min = 0.4d0
-    real*8, parameter :: phi_k = 0.2d0
+    real*8, parameter :: phi_k = 4.2d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
 
