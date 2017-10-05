@@ -84,7 +84,7 @@ contains
         eta = exp(eta)
 
         ! discretize theta shocks
-        call discretize_AR(rho, -10d0, sigma_theta, theta, pi_theta, dist_theta)
+        call discretize_AR(rho, -100d0, sigma_theta, theta, pi_theta, dist_theta)
         theta = exp(theta)
 
         ! initialize asset grid
@@ -234,9 +234,6 @@ contains
             call interpolate(ij)
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
-
-            write(*,*)sum(omega_k)
-            write(*,*)sum(k_plus)
 
             if (ij>40) cycle
 
