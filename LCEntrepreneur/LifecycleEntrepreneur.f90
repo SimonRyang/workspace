@@ -465,7 +465,7 @@ contains
 
         integer :: ij, ages(JJ)
         ! set up age variable
-        ages = 20 + 5*(/ij-1, ij=1,JJ)/)
+        ages = 20 + 5*(/(ij-1, ij=1,JJ)/)
 
 
         ! polt homeownership ratio
