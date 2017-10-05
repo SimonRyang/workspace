@@ -83,7 +83,7 @@ contains
         eta = exp(eta)
 
         ! discretize theta shocks
-        call discretize_AR(rho, 0d0, sigma_theta, theta, pi_theta, dist_theta)
+        call discretize_AR(rho, -0.5d0, sigma_theta, theta, pi_theta, dist_theta)
         theta = exp(theta)
 
         ! initialize asset grid
@@ -455,8 +455,6 @@ contains
 
         enddo
 
-
-
     end subroutine
 
 
@@ -478,7 +476,7 @@ contains
         call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Owner')
         call plot(dble(ages), a_coh(:, 1), legend='Assets       - Owner')
         call plot(dble(ages), y_coh(:, 1), legend='Labor Income - Owner)')
-        call plot(dble(ages), k_coh(:), legend='Labor Income - Owner)')
+        call plot(dble(ages), k_coh(:), legend='Investment - Owner)')
         call execplot(xlabel='Age j', ylabel='Consumption/assets')
 
         ! polt consumption for renter
