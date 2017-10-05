@@ -258,9 +258,9 @@ contains
             ! call plot(k(:), S(ij, 5, :, 1, 5, 1))
             ! call execplot
             !
-            call plot(a(1:), egam*V_t(ij, 1:, 0, 2, 1, 0)**(1d0/egam))
-            call plot(a(1:), egam*V_t(ij, 1:, 0, 2, 1, 1)**(1d0/egam))
-            call execplot
+            ! call plot(a(1:), egam*V_t(ij, 1:, 0, 2, 1, 0)**(1d0/egam))
+            ! call plot(a(1:), egam*V_t(ij, 1:, 0, 2, 1, 1)**(1d0/egam))
+            ! call execplot
             !
             ! call plot(k(1:), egam*V_t(ij, 0, 1:, 1, 5, 0)**(1d0/egam))
             ! call plot(k(1:), egam*V_t(ij, 0, 1:, 1, 5, 1)**(1d0/egam))
@@ -408,10 +408,6 @@ contains
             enddo
           enddo
 
-          write(*,*)sum(m(ij, :, :, :, :))
-          write(*,*)sum(m(ij, :, 1, :, :))
-          write(*,*)sum(m(ij, :, 1:, :, :))
-
         enddo
 
     end subroutine
@@ -437,10 +433,6 @@ contains
 
                     ! skip if there is no household
                     if (m(ij, ia, ik, iw, ie) <= 0d0) cycle
-
-                    if (k_plus(ij, ia, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ik, iw, ie) < k_min)write(*,*)ij, ia, ik, iw, ie
-                    if (k_plus(ij, ia, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ik, iw, ie) < k_min)write(*,*)k_plus(ij, ia, ik, iw, ie), m(ij, ia, ik, iw, ie)
-
 
                     if(ik == 0) then
                       c_coh(ij, 0) = c_coh(ij,0) + c(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
