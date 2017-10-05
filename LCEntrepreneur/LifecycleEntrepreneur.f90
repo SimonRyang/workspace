@@ -473,17 +473,17 @@ contains
         call execplot(xlabel='Age j', ylabel='Entrepreneurship', ylim=(/0d0, 1d0/))
 
         ! plot consumption for homeowner
-        call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Owner')
-        call plot(dble(ages), a_coh(:, 1), legend='Assets       - Owner')
-        call plot(dble(ages), y_coh(:, 1), legend='Income       - Owner')
-        call plot(dble(ages), k_coh(:),    legend='Investment   - Owner')
+        call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Entrepreneur')
+        call plot(dble(ages), a_coh(:, 1), legend='Assets       - Entrepreneur')
+        call plot(dble(ages), y_coh(:, 1), legend='Income       - Entrepreneur')
+        call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
         call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
         ! polt consumption for renter
-        call plot(dble(ages), c_coh(:, 0), legend='Consumption  - Renter')
-        call plot(dble(ages), a_coh(:, 0), legend='Assets       - Renter')
-        call plot(dble(ages), y_coh(:, 0), legend='Labor Income - Renter')
-        call execplot(xlabel='Age j', ylabel='Consumption/Income')
+        call plot(dble(ages), c_coh(:, 0), legend='Consumption  - Worker')
+        call plot(dble(ages), a_coh(:, 0), legend='Assets       - Worker')
+        call plot(dble(ages), y_coh(:, 0), legend='Labor Income - Worker')
+        call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
     end subroutine
 

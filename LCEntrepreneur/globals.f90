@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: beta = 0.99d0**5d0
-    real*8, parameter :: mu_b = 0d0 ! 0.180d0
+    real*8, parameter :: mu_b = 0.180d0
     ! convert variables into per period values
 
     ! risk free rate and risk premium
@@ -50,7 +50,7 @@ module globals
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: k_min = 0.8d0
+    real*8, parameter :: k_min = 0d0 ! 0.8d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
 
