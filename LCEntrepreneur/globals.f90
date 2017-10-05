@@ -43,7 +43,7 @@ module globals
     ! convert variables into per period values
 
     ! risk free rate and risk premium
-    real*8, parameter :: r  = 0.2d0
+    real*8, parameter :: r  = 0.5d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
