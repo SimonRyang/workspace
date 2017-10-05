@@ -39,14 +39,13 @@ contains
        else
          S_temp = 0d0
        endif
-       
+
        EV_temp = varphi_a      *(egam*EV(ij+1, ial, 0, iw, ie))**(1d0/egam) + &
                  (1d0-varphi_a)*(egam*EV(ij+1, iar, 0, iw, ie))**(1d0/egam)
 
        S_temp = S_temp + psi(ij+1)*EV_temp**egam/egam
 
        S(ij, ix_p, ik, iw, ie, 0) = S_temp
-       omega_k(ij, ix_p, ik, iw, ie) = 0d0
 
     end subroutine
 
