@@ -435,6 +435,7 @@ contains
                     if (m(ij, ia, ik, iw, ie) <= 0d0) cycle
 
                     if (k_plus(ij, ia, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ik, iw, ie) < k_min)write(*,*)ij, ia, ik, iw, ie
+                    if (k_plus(ij, ia, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ik, iw, ie) < k_min)write(*,*)k_plus(ij, ia, ik, iw, ie), m(ij, ia, ik, iw, ie)
 
 
                     if(ik == 0) then
