@@ -55,7 +55,7 @@ module globals
 
     ! risk processes
     real*8, parameter :: sigma_eta  = 0.0738d0
-    real*8, parameter :: sigma_theta   = 0.0706d0
+    real*8, parameter :: sigma_theta   = 0.1106d0
     real*8, parameter :: rho         = 0d0
 
     ! size of the asset grid
