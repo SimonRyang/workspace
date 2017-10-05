@@ -465,24 +465,24 @@ contains
 
         integer :: ij, ages(JJ)
         ! set up age variable
-        ages = 20 + (/(ij, ij=1,JJ)/)
+        ages = 20 + 5*(/ij-1, ij=1,JJ)/)
 
 
         ! polt homeownership ratio
-        call plot(dble(ages), o_coh(:), legend='Homeownership')
-        call execplot(xlabel='Age j', ylabel='Homeownership', ylim=(/0d0, 1d0/))
+        call plot(dble(ages), o_coh(:), legend='Entrepreneurship')
+        call execplot(xlabel='Age j', ylabel='Entrepreneurship', ylim=(/0d0, 1d0/))
 
         ! plot consumption for homeowner
         call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Owner')
         call plot(dble(ages), a_coh(:, 1), legend='Assets       - Owner')
-        call plot(dble(ages), y_coh(:, 1), legend='Labor Income - Owner)')
-        call plot(dble(ages), k_coh(:), legend='Investment - Owner)')
-        call execplot(xlabel='Age j', ylabel='Consumption/assets')
+        call plot(dble(ages), y_coh(:, 1), legend='Income       - Owner')
+        call plot(dble(ages), k_coh(:),    legend='Investment   - Owner')
+        call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
         ! polt consumption for renter
         call plot(dble(ages), c_coh(:, 0), legend='Consumption  - Renter')
         call plot(dble(ages), a_coh(:, 0), legend='Assets       - Renter')
-        call plot(dble(ages), y_coh(:, 0), legend='Labor Income - Renter)')
+        call plot(dble(ages), y_coh(:, 0), legend='Labor Income - Renter')
         call execplot(xlabel='Age j', ylabel='Consumption/Income')
 
     end subroutine
