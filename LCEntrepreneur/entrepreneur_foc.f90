@@ -24,7 +24,7 @@ contains
 
       ! variable declarations
       real*8 :: real_o, ad_p, a_p, k_p, EV_temp, S_temp, omega_k, varphi_k, varphi_a, a_temp
-      integer :: ikl, ikr, ial, iar, iw_p, ie_p
+      integer :: ikl, ikr, ial, iar
 
       ! store real estate share
       omega_k  = x_in
@@ -53,13 +53,13 @@ contains
 
       ! get optimal investment strategy
       if(varphi_a <= varphi_k)then
-          EV_temp = varphi_a           *(egam*V(ij_com+1, ial, ikl, iw_p, ie_p))**(1d0/egam) + &
-                    (varphi_k-varphi_a)*(egam*V(ij_com+1, iar, ikl, iw_p, ie_p))**(1d0/egam) + &
-                    (1d0-varphi_k)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
+          EV_temp = varphi_a           *(egam*EV(ij_com+1, ial, ikl, iw_com, ie_com))**(1d0/egam) + &
+                    (varphi_k-varphi_a)*(egam*EV(ij_com+1, iar, ikl, iw_com, ie_com))**(1d0/egam) + &
+                    (1d0-varphi_k)     *(egam*EV(ij_com+1, iar, ikr, iw_com, ie_com))**(1d0/egam)
       else
-          EV_temp = varphi_k           *(egam*V(ij_com+1, ial, ikl, iw_p, ie_p))**(1d0/egam) + &
-                    (varphi_a-varphi_k)*(egam*V(ij_com+1, ial, ikr, iw_p, ie_p))**(1d0/egam) + &
-                    (1d0-varphi_a)     *(egam*V(ij_com+1, iar, ikr, iw_p, ie_p))**(1d0/egam)
+          EV_temp = varphi_k           *(egam*EV(ij_com+1, ial, ikl, iw_com, ie_com))**(1d0/egam) + &
+                    (varphi_a-varphi_k)*(egam*EV(ij_com+1, ial, ikr, iw_com, ie_com))**(1d0/egam) + &
+                    (1d0-varphi_a)     *(egam*EV(ij_com+1, iar, ikr, iw_com, ie_com))**(1d0/egam)
       endif
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp
