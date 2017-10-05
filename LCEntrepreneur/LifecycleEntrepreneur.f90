@@ -174,7 +174,7 @@ contains
                            do ie = 1, NE
 
                            ! next period entrepreneur
-                           if (ij < JR) call solve_entrepreneur(ij, ix_p, ik, iw, ie)
+                           call solve_entrepreneur(ij, ix_p, ik, iw, ie)
 
                            ! next period worker
                            call solve_worker(ij, ix_p, ik, iw, ie)
@@ -192,7 +192,7 @@ contains
                          do ie = 1, NE
 
                            ! next period entrpreneur
-                           if (ij < JR) call solve_consumption_e(ij, ia, ik, iw, ie)
+                           call solve_consumption_e(ij, ia, ik, iw, ie)
 
                            ! next period worker
                            call solve_consumption_w(ij, ia, ik, iw, ie)
