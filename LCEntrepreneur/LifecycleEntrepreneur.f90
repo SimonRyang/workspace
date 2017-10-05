@@ -57,7 +57,7 @@ contains
         integer :: ij
 
         ! wage rate for effective labor and rental price
-        w = 1d0
+        w = 2d0
 
         ! set survival probabilities
         open(301, file='sp.dat')
@@ -188,7 +188,7 @@ contains
                ! solve the consumption savings problem
                do ia = 0, NA
                    do ik = 0, NK
-                       do iw = 1, NW
+                      do iw = 1, NW
                          do ie = 1, NE
 
                            ! next period entrpreneur
