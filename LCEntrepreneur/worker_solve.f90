@@ -34,12 +34,12 @@ contains
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       S_temp = (1d0 - psi(ij_com+1))*mu_b*max(a_plus, 1d-10)**egam/egam
+       S_temp = (1d0 - psi(ij+1))*mu_b*max(a_plus, 1d-10)**egam/egam
 
-       EV_temp = varphi_a      *(egam*EV(ij_com+1, ial, 0, iw_com, ie_com))**(1d0/egam) + &
-                 (1d0-varphi_a)*(egam*EV(ij_com+1, iar, 0, iw_com, ie_com))**(1d0/egam)
+       EV_temp = varphi_a      *(egam*EV(ij+1, ial, 0, iw, ie))**(1d0/egam) + &
+                 (1d0-varphi_a)*(egam*EV(ij+1, iar, 0, iw, ie))**(1d0/egam)
 
-       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
+       S_temp = S_temp + psi(ij+1)*EV_temp**egam/egam
 
        S(ij, ix_p, ik, iw, ie, 0) = S_temp
        omega_k(ij, ix_p, ik, iw, ie) = 0d0
