@@ -84,7 +84,7 @@ contains
 
         ! discretize theta shocks
         call discretize_AR(rho, 0d0, sigma_theta, theta, pi_theta, dist_theta)
-        call discretize_AR(0.920d0**5d0, -0.070d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
+        call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
 
         theta = exp(theta)
 
