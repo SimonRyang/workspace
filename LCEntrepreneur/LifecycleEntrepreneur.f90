@@ -253,6 +253,7 @@ contains
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
             write(*,*)sum(omega_k)
+            write(*,*)sum(k_plus)
 
             if (ij>40) cycle
 
