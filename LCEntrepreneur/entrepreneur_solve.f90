@@ -84,7 +84,7 @@ contains
 
 
         if (k_p < k_min) write(*,*)'HELP!', (varphi_x      *omega_k(ij, ixl, ik, iw, ie) +  &
-                                 (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie)), x_in
+                                 (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie)), x_in-(1d0-xi)*k_min
 
         X_plus_t(ij, ia, ik, iw, ie, 1) = x_in
         a_plus_t(ij, ia, ik, iw, ie, 1) = x_in - (1d0-xi)*k_p
