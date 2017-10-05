@@ -254,7 +254,7 @@ contains
 
             write(*,*)sum(omega_k)
 
-            !if (ij>50) cycle
+            if (ij>40) cycle
 
             ! ia_com = 4
             ! ik_com = 0
