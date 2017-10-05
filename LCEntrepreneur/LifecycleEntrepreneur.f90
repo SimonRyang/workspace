@@ -62,6 +62,7 @@ contains
         ! set survival probabilities
         open(301, file='sp.dat')
         do ij = 1, JJ+1
+          write(*,*)ij
           read(301,'(f13.8)')psi(ij)
         enddo
         close(301)
