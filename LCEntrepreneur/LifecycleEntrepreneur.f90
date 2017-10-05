@@ -210,7 +210,6 @@ contains
                            ! next period worker
                            call solve_consumption_w(ij, ia, ik, iw, ie)
 
-
                          enddo
 
                        enddo
