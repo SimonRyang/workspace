@@ -346,7 +346,7 @@ contains
               do ie_p = 1, NE
                 do iw_p = 1, NW
                   EV(ij, ia, ik, iw, ie) = EV(ij, ia, ik, iw, ie) &
-                    +pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*V(ij, ia, ik, iw, ie)
+                    + pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*V(ij, ia, ik, iw, ie)
                 enddo ! iw_p
               enddo ! ie_p
 
