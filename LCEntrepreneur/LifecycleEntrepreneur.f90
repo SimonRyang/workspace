@@ -431,6 +431,8 @@ contains
                 do iw = 1, NW
                   do ie = 1, NE
 
+                    ! skip if there is no household
+                    if (m(ij-1, ia, ik, iw, ie) <= 0d0) cycle
 
                     if (k_plus(ij, ia, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ik, iw, ie) < k_min)write(*,*)'ERROR!'
 
