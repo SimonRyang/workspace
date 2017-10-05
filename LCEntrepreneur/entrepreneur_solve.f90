@@ -38,6 +38,8 @@ contains
            ! solve the household problem using fminsearch
            call fminsearch(x_in, fret, 0d0, 1d0, real_o)
 
+           if (x_in < 0d0) write(*,*)'HELP!'
+
            ! portfolio share for capital
            omega_k(ij, ix_p, ik, iw, ie) = x_in
            S(ij, ix_p, ik, iw, ie, 1) = -fret
