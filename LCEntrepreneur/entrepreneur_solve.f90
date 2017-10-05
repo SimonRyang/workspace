@@ -30,9 +30,9 @@ contains
 
            ! get best guess for the root of foc_real
            if(ix_p > 0)then
-              x_in = 0.5d0!omega_k(ij, ix_p-1, ik, iw, ie)
+              x_in = omega_k(ij, ix_p-1, ik, iw, ie)
            else
-              x_in = 0d0
+              x_in = 1d-4
            endif
 
            ! solve the household problem using fminsearch
