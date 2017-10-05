@@ -66,7 +66,7 @@ contains
                     (1d0-varphi_a)     *(egam*EV(ij_com+1, iar, ikr, iw_com, ie_com))**(1d0/egam)
       endif
 
-      S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam 
+      S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
       real_o = - S_temp + 100d0*abs(a_p-a_temp)
 
