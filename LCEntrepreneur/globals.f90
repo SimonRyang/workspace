@@ -38,10 +38,9 @@ module globals
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
-    real*8, parameter :: beta = 0.99d0
+    real*8, parameter :: beta = 0.99d0**5d0
     real*8, parameter :: mu_b = 0.180d0
     ! convert variables into per period values
-    beta = beta**5d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.02d0
