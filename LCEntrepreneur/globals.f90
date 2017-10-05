@@ -12,10 +12,10 @@ module globals
     implicit none
 
     ! number of years the household retires
-    integer, parameter :: JR = 45
+    integer, parameter :: JR = 10
 
     ! number of years the household lives
-    integer, parameter :: JJ = 80
+    integer, parameter :: JJ = 16
 
     ! number of productivity (eta) shocks
     integer, parameter :: NW = 5
@@ -38,15 +38,17 @@ module globals
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
-    real*8, parameter :: beta = 0.96d0
-    real*8, parameter :: mu_b = 0.5d0
+    real*8, parameter :: beta = 0.99d0
+    real*8, parameter :: mu_b = 0.180d0
+    ! convert variables into per period values
+    beta = beta**5d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.02d0
 
     ! capital parameters
-    real*8, parameter :: delta_k = 0.015d0
-    real*8, parameter :: xi = 0.7d0
+    real*8, parameter :: delta_k = 0.06d0
+    real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
     real*8, parameter :: k_min = 0.8d0
@@ -60,7 +62,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: X_l    = 0d0
-    real*8, parameter :: X_u    = 500d0
+    real*8, parameter :: X_u    = 50d0
     real*8, parameter :: X_grow = 0.075d0
 
     ! size of the liquid asset grid
@@ -110,5 +112,36 @@ module globals
     ! numerical variables
     integer :: ij_com, ix_com, ia_com, ik_com, ia_p_com, ix_p_com, iw_com, ie_com
     real*8 :: cons_com
+
+  contains
+
+    !##############################################################################
+    ! FUNCTION sigma5
+    !
+    ! Converts sigma of an one-year process into sigma of an five-year process
+    !##############################################################################
+    function sigma5(rho, sigma)
+
+      implicit none
+
+      !##### INPUT/OUTPUT VARIABLES #############################################
+      real*8, intent(in) :: rho, sigma
+      real*8 :: sigma5
+
+      !##### OTHER VARIABLES ####################################################
+      real*8 :: Gamma5
+      integer :: i, j
+
+      Gamma5 = 0d0
+      do i = 0, 4
+        do j = 0, 4
+          Gamma5 = Gamma5 + rho**abs(j-i)
+        enddo
+      enddo
+      Gamma5 = Gamma5/25d0
+
+      sigma5 = Gamma5*sigma*(1d0-rho**10d0)/(1d0-rho**2d0)
+
+    end function
 
 end module
