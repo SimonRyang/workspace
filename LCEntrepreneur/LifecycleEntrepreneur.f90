@@ -236,8 +236,8 @@ contains
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
-            if (ij>40) cycle
-
+            ! if (ij>40) cycle
+            !
             ! ia_com = 4
             ! ik_com = 0
             ! iw_com = 3
@@ -252,8 +252,7 @@ contains
             ! write(*,*)X_plus_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
             ! write(*,*)a_plus_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
             ! write(*,*)c_t(ij, ia_com, ik_com, iw_com, ie_com, 0)
-
-
+            !
             ! call plot(k(:), S(ij, 5, :, 1, 5, 0))
             ! call plot(k(:), S(ij, 5, :, 1, 5, 1))
             ! call execplot
