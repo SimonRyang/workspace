@@ -137,7 +137,7 @@ contains
               do ia = 0, NA
                 do ik = 0, NA
 
-                if (mu_b == 1d0) then
+                if (mu_b == 0d0) then
 
                   S(JJ, :, :, :, :, :) = 0d0
 
