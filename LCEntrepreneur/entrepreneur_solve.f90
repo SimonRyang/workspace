@@ -59,19 +59,20 @@ contains
         implicit none
 
         integer, intent(in) :: ij, ia, ik, iw, ie
-        real*8 :: x_in, fret, varphi_x, k_p
+        real*8 :: x_in(2), fret, varphi_x, k_p
         integer :: ixl, ixr
 
         ! set up communication variables
         ij_com = ij; ia_com = ia; ik_com = ik; iw_com = iw; ie_com = ie
 
         ! get best initial guess from future period
-        x_in = max(X_plus_t(ij+1, ia, ik, iw, ie, 1), 1d-4)
+        x_in(1) = max(X_plus_t(ij+1, ia, ik, iw, ie, 1), 1d-4)
+        x_in(2) = max(l_t(ij+1, ia, ik, iw, ie, 1), 1d-4)
 
         ! solve the household problem using rootfinding
-        call fminsearch(x_in, fret, 0d0, X_u, cons_e)
+        call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_e)
 
-        call linint_Grow(x_in, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+        call linint_Grow(x_in(1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
 
         ! restrict values to grid just in case
         ixl = min(ixl, NX)
@@ -82,10 +83,11 @@ contains
         k_p = ((1d0-xi)*k_min + (varphi_x      *omega_k(ij, ixl, ik, iw, ie) +  &
                                  (1d0-varphi_x)*omega_k(ij, ixr, ik, iw, ie))*(x_in-(1d0-xi)*k_min))/(1d0-xi)
 
-        X_plus_t(ij, ia, ik, iw, ie, 1) = x_in
-        a_plus_t(ij, ia, ik, iw, ie, 1) = x_in - (1d0-xi)*k_p
+        X_plus_t(ij, ia, ik, iw, ie, 1) = x_in(1)
+        a_plus_t(ij, ia, ik, iw, ie, 1) = x_in(1) - (1d0-xi)*k_p
         k_plus_t(ij, ia, ik, iw, ie, 1) = k_p
         c_t(ij, ia, ik, iw, ie, 1) = cons_com
+        l_t(ij, ia, ik, iw, ie, 1) = x_in(2)
         V_t(ij, ia, ik, iw, ie, 1) = -fret
 
     end subroutine

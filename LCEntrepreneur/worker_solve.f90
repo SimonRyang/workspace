@@ -62,7 +62,7 @@ contains
       x_in(2) = max(l_t(ij+1, ia, ik, iw, ie, 0), 1d-4)
 
       ! solve the household problem using rootfinding
-      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 1d0/), cons_w)
+      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_w)
 
       ! copy decisions
       X_plus_t(ij, ia, ik, iw, ie, 0) = x_in(1)

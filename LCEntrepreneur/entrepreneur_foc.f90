@@ -75,14 +75,15 @@ contains
       implicit none
 
       ! input variable
-      real*8, intent(in) :: x_in
+      real*8, intent(in) :: x_in(:)
 
       ! variable declarations
       real*8 :: cons_e, X_plus, tomorrow, varphi_x
       integer :: ixl, ixr
 
       ! calculate tomorrow's assets
-      X_plus  = x_in
+      X_plus  = x_in(1)
+      lab_com = x_in(2)
 
       ! calculate linear interpolation for future part of first order condition
       call linint_Grow(X_plus, X_l, X_u, X_grow, NX, ixl, ixr, varphi_x)
@@ -100,23 +101,23 @@ contains
       ! maximize value function for current worker (next period entrepreneur)
       if (ik_com == 0) then
 
-        cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com) + pen(ij_com) - X_plus
+        cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com)*lab_com + pen(ij_com) - X_plus
 
          if(cons_com <= 0d0)then
              cons_e = -1d-10**egam/egam*(1d0+abs(cons_com))
          else
-             cons_e = -(cons_com**egam/egam + beta*tomorrow)
+             cons_e = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
          endif
 
       ! maximize value function for current owner (next period owner)
       else
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*eff(ij_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com) - X_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com) - X_plus
 
          if(cons_com <= 0d0)then
             cons_e = -1d-10**egam/egam*(1d0+abs(cons_com))
          else
-            cons_e = -(cons_com**egam/egam + beta*tomorrow)
+            cons_e = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
          endif
 
       endif

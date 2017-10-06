@@ -144,6 +144,7 @@ contains
                   a_plus(JJ, ia, ik, :, :) = a_plus_t(JJ, ia, ik, 1, 1, 0)
                   k_plus(JJ, ia, ik, :, :) = k_plus_t(JJ, ia, ik, 1, 1, 0)
                   c(JJ, ia, ik, :, :) = c_t(JJ, ia, ik, 1, 1, 0)
+                  l(JJ, ia, ik, :, :) = l_t(JJ, ia, ik, 1, 1, 0)
                   V(JJ, ia, ik, :, :) = V_t(JJ, ia, ik, 1, 1, 0)
 
                enddo
@@ -200,12 +201,14 @@ contains
                                   k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 1)
                                   a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 1)
                                   c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 1)
+                                  l(ij, ia, ik, iw, ie) = l_t(ij, ia, ik, iw, ie, 1)
                                   V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 1)
                            else
                              X_plus(ij, ia, ik, iw, ie) = X_plus_t(ij, ia, ik, iw, ie, 0)
                              k_plus(ij, ia, ik, iw, ie) = k_plus_t(ij, ia, ik, iw, ie, 0)
                              a_plus(ij, ia, ik, iw, ie) = a_plus_t(ij, ia, ik, iw, ie, 0)
                              c(ij, ia, ik, iw, ie) = c_t(ij, ia, ik, iw, ie, 0)
+                             l(ij, ia, ik, iw, ie) = l_t(ij, ia, ik, iw, ie, 0)
                              V(ij, ia, ik, iw, ie) = V_t(ij, ia, ik, iw, ie, 0)
                            endif
 
