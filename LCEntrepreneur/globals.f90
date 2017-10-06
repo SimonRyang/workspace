@@ -93,11 +93,11 @@ module globals
 
     ! variables to store the policy functions
     real*8 :: X_plus(JJ+1, 0:NA, 0:NK, NW, NE), a_plus(JJ+1, 0:NA, 0:NK, NW, NE), k_plus(JJ+1, 0:NA, 0:NK, NW, NE)
-    real*8 :: c(JJ+1, 0:NA, 0:NK, NW, NE)
+    real*8 :: c(JJ+1, 0:NA, 0:NK, NW, NE), l(JJ+1, 0:NA, 0:NK, NW, NE)
 
     ! variables for temporary policy and value functions
     real*8 :: X_plus_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO), a_plus_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO), k_plus_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO)
-    real*8 :: c_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO)
+    real*8 :: c_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO), l_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO)
     real*8 :: V_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO)
 
     ! variables to store the portfolio choice decisions
