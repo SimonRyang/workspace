@@ -30,7 +30,7 @@ logical, private :: tbox_seed = .true.
 real*8,  private  :: tbox_gftol = 1d-8
 
 ! Maximum number of iterations
-integer, private  :: tbox_itermax_min = 200
+integer, private  :: tbox_itermax_min = 500
 
 ! Maximum number of iterations for brent_pow
 integer, parameter, private  :: tbox_tbox_itermax_pow_b = 150
