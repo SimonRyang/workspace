@@ -424,12 +424,12 @@ contains
                     if(ik == 0) then
                       c_coh(ij, 0) = c_coh(ij,0) + c(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
                       a_coh(ij, 0) = a_coh(ij,0) + a(ia)*m(ij, ia, ik, iw, ie)
-                      y_coh(ij, 0) = y_coh(ij, 0) + w*eff(ij)*eta(iw)*m(ij, ia, ik, iw, ie)
+                      y_coh(ij, 0) = y_coh(ij, 0) + w*eff(ij)*eta(iw)*l(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
                     else
                       c_coh(ij, 1) = c_coh(ij,1) + c(ij, ia, ik, iw, ie)*m(ij, ia, ik, iw, ie)
                       a_coh(ij, 1) = a_coh(ij,1) + a(ia)*m(ij, ia, ik, iw, ie)
                       k_coh(ij) = k_coh(ij) + k(ik)*m(ij, ia, ik, iw, ie)
-                      y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*(k(ik)**alpha*eff(ij)**(1d0-alpha))**nu*m(ij, ia, ik, iw, ie)
+                      y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ij, ia, ik, iw, ie))**(1d0-alpha))**nu*m(ij, ia, ik, iw, ie)
                       o_coh(ij) = o_coh(ij) + m(ij, ia, ik, iw, ie)
                     endif
                   enddo
