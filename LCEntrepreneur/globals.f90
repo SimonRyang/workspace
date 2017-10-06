@@ -111,7 +111,7 @@ module globals
 
     ! numerical variables
     integer :: ij_com, ix_com, ia_com, ik_com, ia_p_com, ix_p_com, iw_com, ie_com
-    real*8 :: cons_com
+    real*8 :: cons_com, lab_com
 
   contains
 

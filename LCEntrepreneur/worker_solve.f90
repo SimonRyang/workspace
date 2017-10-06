@@ -52,22 +52,24 @@ contains
       implicit none
 
       integer, intent(in) :: ij, ia, ik, iw, ie
-      real*8 :: x_in, fret
+      real*8 :: x_in(2), fret
 
       ! set up communication variables
       ij_com = ij; ia_com = ia; ik_com = ik; iw_com = iw; ie_com = ie
 
       ! get best initial guess from future period
-      x_in = max(X_plus_t(ij+1, ia, ik, iw, ie, 0), 1d-4)
+      x_in(1) = max(X_plus_t(ij+1, ia, ik, iw, ie, 0), 1d-4)
+      x_in(2) = max(l_t(ij+1, ia, ik, iw, ie, 0), 1d-4)
 
       ! solve the household problem using rootfinding
-      call fminsearch(x_in, fret, 0d0, X_u, cons_w)
+      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 1d0/), cons_w)
 
       ! copy decisions
-      X_plus_t(ij, ia, ik, iw, ie, 0) = x_in
-      a_plus_t(ij, ia, ik, iw, ie, 0) = x_in
+      X_plus_t(ij, ia, ik, iw, ie, 0) = x_in(1)
+      a_plus_t(ij, ia, ik, iw, ie, 0) = x_in(1)
       k_plus_t(ij, ia, ik, iw, ie, 0) = 0d0
       c_t(ij, ia, ik, iw, ie, 0) = cons_com
+      l_t(ij, ia, ik, iw, ie, 0) = x_in(2)
       V_t(ij, ia, ik, iw, ie, 0) = -fret
 
   end subroutine
