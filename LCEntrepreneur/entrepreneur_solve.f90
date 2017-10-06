@@ -20,7 +20,7 @@ contains
 
         implicit none
 
-        integer, intent(in) :: ij, ix_p, ik, iw, ie
+        integer, intent(in) :: ij, ix_p, ip_p, ik, iw, ie
         real*8 :: x_in, fret
 
         ! set up communication variables
@@ -30,7 +30,7 @@ contains
 
            ! get best guess for the root of foc_real
            if(ix_p > 0)then
-              x_in = omega_k(ij, ix_p-1, ik, iw, ie)
+              x_in = omega_k(ij, ix_p-1, ip_p, ik, iw, ie)
            else
               x_in = 1d-4
            endif
@@ -73,7 +73,7 @@ contains
         call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_e)
 
         call linint_Grow(x_in(1), x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
-        call linint_Equi(ep_plus_com, ep_l, ep_u, NP, ipl_p, ipr_p, varphi_p)
+        call linint_Equi(ep_plus_com, ep_l, ep_u, NP, ipl_p, ipr_p, varphi_ep)
 
         ! restrict values to grid just in case
         ixl_p = min(ixl_p, NX)

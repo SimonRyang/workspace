@@ -388,18 +388,18 @@ contains
                       do ie_p = 1, NE
 
                         if(varphi_a <= varphi_k)then
-                            m(ij, ial, ikl, iw_p, ie_p) = m(ij, ial, ikl, iw_p, ie_p) + &
+                            m(ij, ial, ip, ikl, iw_p, ie_p) = m(ij, ial, ip, ikl, iw_p, ie_p) + &
                                   varphi_a*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                            m(ij, iar, ikl, iw_p, ie_p) = m(ij, iar, ikl, iw_p, ie_p) + &
+                            m(ij, iar, ip, ikl, iw_p, ie_p) = m(ij, iar, ip, ikl, iw_p, ie_p) + &
                                   (varphi_k-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                            m(ij, iar, ikr, iw_p, ie_p) = m(ij, iar, ikr, iw_p, ie_p) + &
+                            m(ij, iar,  ip, ikr, iw_p, ie_p) = m(ij, iar, ip, ikr, iw_p, ie_p) + &
                                   (1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                         else
-                          m(ij, ial, ikl, iw_p, ie_p) = m(ij, ial, ikl, iw_p, ie_p) + &
+                          m(ij, ial, ip, ikl, iw_p, ie_p) = m(ij, ial,  ip, ikl, iw_p, ie_p) + &
                                 varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                          m(ij, ial, ikr, iw_p, ie_p) = m(ij, ial, ikr, iw_p, ie_p) + &
+                          m(ij, ial, ip, ikr, iw_p, ie_p) = m(ij, ial, ip, ikr, iw_p, ie_p) + &
                                 (varphi_a-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                          m(ij, iar, ikr, iw_p, ie_p) = m(ij, iar, ikr, iw_p, ie_p) + &
+                          m(ij, iar, ip, ikr, iw_p, ie_p) = m(ij, iar, ip, ikr, iw_p, ie_p) + &
                                 (1d0-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                         endif
                       enddo

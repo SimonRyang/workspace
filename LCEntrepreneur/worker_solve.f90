@@ -41,7 +41,7 @@ contains
 
        S_temp = S_temp + psi(ij+1)*EV_temp**egam/egam
 
-       S(ij, ix_p, ik, iw, ie, 0) = S_temp
+       S(ij, ix_p, ip_p, ik, iw, ie, 0) = S_temp
 
     end subroutine
 
