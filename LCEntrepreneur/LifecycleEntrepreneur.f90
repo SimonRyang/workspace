@@ -458,7 +458,7 @@ contains
             c_coh(ij, 0) = c_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
             c_coh(ij, 1) = c_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
             a_coh(ij, 1) = a_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
-            a_coh(ij, 0) = a_coh(ij, 0)/sum(m(ij, :, :, : , 0, :, :))
+            a_coh(ij, 0) = a_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
             y_coh(ij, 0) = y_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
             y_coh(ij, 1) = y_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
             o_coh(ij) = o_coh(ij)/sum(m(ij, :, :, :, :, :))
