@@ -78,7 +78,7 @@ contains
       real*8, intent(in) :: x_in(:)
 
       ! variable declarations
-      real*8 :: cons_e, X_plus, tomorrow, varphi_x
+      real*8 :: cons_e, X_plus, tomorrow, varphi_x, varphi_ep
       integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
       ! calculate tomorrow's assets
@@ -95,13 +95,13 @@ contains
       ! maximize value function for current worker (next period entrepreneur)
       if (ik_com == 0) then
 
-        cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com)*lab_com + pen(ij_com) - X_plus
+        cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com)*lab_com + pen(ij_com, ip_com) - X_plus
         ep_plus_com = (ep(ip_com)*dble(ij_com-1) + min(w*eff(ij_com)*eta(iw_com)*lab_com, ep_u))/dble(ij_com)
 
       ! maximize value function for current owner (next period owner)
       else
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com) - X_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com, ip_com) - X_plus
         ep_plus_com = (ep(ip_com)*dble(ij_com-1) + min(theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu, ep_u))/dble(ij_com)
 
       endif
@@ -118,7 +118,7 @@ contains
       ! restrict values to grid just in case
       ipl_p = min(ipl_p, NP)
       ipr_p = min(ipr_p, NP)
-      varphi_p = max(min(varphi_p, 1d0),0d0)
+      varphi_ep = max(min(varphi_ep, 1d0),0d0)
 
       ! get next period value function
       tomorrow = max(varphi_x*varphi_ep              *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &

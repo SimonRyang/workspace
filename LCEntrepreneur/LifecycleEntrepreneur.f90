@@ -351,59 +351,61 @@ contains
         integer :: ial, iar, ikl, ikr
         real*8 :: varphi_a, varphi_k
 
-        m(:, :, :, :, :) = 0d0
+        m(:, :, :, :, :, :) = 0d0
 
         do iw = 1, NW
           do ie = 1, NE
-              m(1, 0, 0, iw, ie) = dist_eta(iw)*dist_theta(ie)
+              m(1, 0, 0, 0, iw, ie) = dist_eta(iw)*dist_theta(ie)
           enddo
         enddo
 
         do ij = 2, JJ
 
           do ia = 0, NA
-            do ik = 0, NK
-              do iw = 1, NW
-                do ie = 1, NE
+            do ip = 0, NP
+              do ik = 0, NK
+                do iw = 1, NW
+                  do ie = 1, NE
 
-                  ! skip if there is no household
-                  if (m(ij-1, ia, ip, ik, iw, ie) <= 0d0) cycle
+                    ! skip if there is no household
+                    if (m(ij-1, ia, ip, ik, iw, ie) <= 0d0) cycle
 
-                  ! derive interpolation weights
-                  call linint_Grow(a_plus(ij-1, ia, ip, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                  call linint_Grow(k_plus(ij-1, ia, ip, ik, iw, ie), k_l, k_u, k_grow, NK, ikl, ikr, varphi_k)
+                    ! derive interpolation weights
+                    call linint_Grow(a_plus(ij-1, ia, ip, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+                    call linint_Grow(k_plus(ij-1, ia, ip, ik, iw, ie), k_l, k_u, k_grow, NK, ikl, ikr, varphi_k)
 
-                  ! restrict values to grid just in case
-                  ial = min(ial, NA)
-                  iar = min(iar, NA)
-                  varphi_a = max(min(varphi_a, 1d0),0d0)
+                    ! restrict values to grid just in case
+                    ial = min(ial, NA)
+                    iar = min(iar, NA)
+                    varphi_a = max(min(varphi_a, 1d0),0d0)
 
-                  ! restrict values to grid just in case
-                  ikl = min(ikl, NK)
-                  ikr = min(ikr, NK)
-                  varphi_k = max(min(varphi_k, 1d0), 0d0)
+                    ! restrict values to grid just in case
+                    ikl = min(ikl, NK)
+                    ikr = min(ikr, NK)
+                    varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-                  do iw_p = 1, NW
-                    do ie_p = 1, NE
+                    do iw_p = 1, NW
+                      do ie_p = 1, NE
 
-                      if(varphi_a <= varphi_k)then
+                        if(varphi_a <= varphi_k)then
+                            m(ij, ial, ikl, iw_p, ie_p) = m(ij, ial, ikl, iw_p, ie_p) + &
+                                  varphi_a*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                            m(ij, iar, ikl, iw_p, ie_p) = m(ij, iar, ikl, iw_p, ie_p) + &
+                                  (varphi_k-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                            m(ij, iar, ikr, iw_p, ie_p) = m(ij, iar, ikr, iw_p, ie_p) + &
+                                  (1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                        else
                           m(ij, ial, ikl, iw_p, ie_p) = m(ij, ial, ikl, iw_p, ie_p) + &
-                                varphi_a*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                          m(ij, iar, ikl, iw_p, ie_p) = m(ij, iar, ikl, iw_p, ie_p) + &
-                                (varphi_k-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                          m(ij, ial, ikr, iw_p, ie_p) = m(ij, ial, ikr, iw_p, ie_p) + &
+                                (varphi_a-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                           m(ij, iar, ikr, iw_p, ie_p) = m(ij, iar, ikr, iw_p, ie_p) + &
-                                (1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                      else
-                        m(ij, ial, ikl, iw_p, ie_p) = m(ij, ial, ikl, iw_p, ie_p) + &
-                              varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                        m(ij, ial, ikr, iw_p, ie_p) = m(ij, ial, ikr, iw_p, ie_p) + &
-                              (varphi_a-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                        m(ij, iar, ikr, iw_p, ie_p) = m(ij, iar, ikr, iw_p, ie_p) + &
-                              (1d0-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                      endif
+                                (1d0-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                        endif
+                      enddo
                     enddo
-                  enddo
 
+                  enddo
                 enddo
               enddo
             enddo
