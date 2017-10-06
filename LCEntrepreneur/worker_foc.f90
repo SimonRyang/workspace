@@ -49,7 +49,7 @@ contains
           if(cons_com <= 0d0)then
              cons_w = -1d-10**egam/egam*(1d0+abs(cons_com))
           else
-             cons_w = -(cons_com**egam/egam + beta*tomorrow)
+             cons_w = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma)))**egam/egam + beta*tomorrow)
           endif
 
       ! maximize value function for current entrepreneur (next period worker)
@@ -60,7 +60,7 @@ contains
           if(cons_com <= 0d0)then
               cons_w = -1d-10**egam/egam*(1d0+abs(cons_com))
            else
-              cons_w = -(cons_com**egam/egam + beta*tomorrow)
+              cons_w = -((cons_com**sigma*(1do-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
            endif
       endif
 
