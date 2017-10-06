@@ -67,7 +67,7 @@ contains
 
         ! get best initial guess from future period
         x_in(1) = max(X_plus_t(ij+1, ia, ik, iw, ie, 1), 1d-4)
-        x_in(2) = max(l_t(ij+1, ia, ik, iw, ie, 1), 1d-4)
+        x_in(2) = max(l_t(ij+1, ia, ik, iw, ie, 1), 0.33d0)
 
         ! solve the household problem using rootfinding
         call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_e)
