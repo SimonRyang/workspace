@@ -32,6 +32,9 @@ module globals
     ! number of points on the capital grid
     integer, parameter :: NK = 32
 
+    ! number of points on the pension claim grid
+    integer, parameter :: NP = 5
+
     ! number of occupation states
     integer, parameter :: NO = 1
 
@@ -71,6 +74,10 @@ module globals
     real*8, parameter :: a_u    = X_u
     real*8, parameter :: a_grow = X_grow
 
+    ! size of the pension claim grid
+    real*8, parameter :: ep_l    = 0d0
+    real*8, parameter :: ep_u    = 2d0
+
     ! size of the capital grid
     real*8, parameter :: k_l = 0d0
     real*8, parameter :: k_u = X_u/(1d0-xi)
@@ -83,36 +90,38 @@ module globals
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
     ! wages, transfer payments (old-age), survival probabilities and discount factor for housing utilty
-    real*8 :: w, eff(JJ), pen(JJ+1), psi(JJ+1)
+    real*8 :: w, eff(JJ), pen(JJ+1, 0:NP), psi(JJ+1)
 
     ! cohort aggregate variables
     real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), o_coh(JJ)
     real*8 :: a_coh(JJ, 0:1), k_coh(JJ)
 
     ! different grids to discretize the state space
-    real*8 :: X(0:NX), a(0:NA), k(0:NK)
+    real*8 :: X(0:NX), a(0:NA), ep(0:NP), k(0:NK)
 
     ! variables to store the policy functions
-    real*8 :: X_plus(JJ+1, 0:NA, 0:NK, NW, NE), a_plus(JJ+1, 0:NA, 0:NK, NW, NE), k_plus(JJ+1, 0:NA, 0:NK, NW, NE)
-    real*8 :: c(JJ+1, 0:NA, 0:NK, NW, NE), l(JJ+1, 0:NA, 0:NK, NW, NE)
+    real*8 :: X_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), a_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: ep_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), k_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: c(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), l(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables for temporary policy and value functions
-    real*8 :: X_plus_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO), a_plus_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO), k_plus_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO)
-    real*8 :: c_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO), l_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO)
-    real*8 :: V_t(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO)
+    real*8 :: X_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), a_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: ep_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: c_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! variables to store the portfolio choice decisions
-    real*8 :: omega_k(JJ+1, 0:NA, 0:NK, NW, NE)
+    real*8 :: omega_k(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables to store the value functions
-    real*8 :: V(JJ+1, 0:NA, 0:NK, NW, NE), EV(JJ+1, 0:NA, 0:NK, NW, NE), S(JJ+1, 0:NA, 0:NK, NW, NE, 0:NO)
+    real*8 :: V(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), EV(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), S(JJ+1, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! weights for the different gridpoints on the discretized state space
-    real*8 :: m(JJ, 0:NA, 0:NK, NW, NE)
+    real*8 :: m(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! numerical variables
-    integer :: ij_com, ix_com, ia_com, ik_com, ia_p_com, ix_p_com, iw_com, ie_com
-    real*8 :: cons_com, lab_com
+    integer :: ij_com, ix_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, ix_p_com
+    real*8 :: cons_com, lab_com, ep_plus_com
 
   contains
 
