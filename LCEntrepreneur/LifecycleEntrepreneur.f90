@@ -374,7 +374,7 @@ contains
 
                     ! derive interpolation weights
                     call linint_Grow(a_plus(ij-1, ia, ip, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                    call linint_Equi(ep_plus(ij-1, ia, ip, ik, iw, ie), ep_l, ep_u, a_grow, NP, ipl, ipr, varphi_ep)
+                    call linint_Equi(ep_plus(ij-1, ia, ip, ik, iw, ie), ep_l, ep_u, NP, ipl, ipr, varphi_ep)
                     call linint_Grow(k_plus(ij-1, ia, ip, ik, iw, ie), k_l, k_u, k_grow, NK, ikl, ikr, varphi_k)
 
                     ! restrict values to grid just in case
