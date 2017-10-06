@@ -350,8 +350,8 @@ contains
         implicit none
 
         integer :: ij, ia, ip, ik, iw, iw_p, ie, ie_p
-        integer :: ial, iar, ikl, ikr
-        real*8 :: varphi_a, varphi_k
+        integer :: ial, iar, ipl, ipr, ikl, ikr
+        real*8 :: varphi_a, varphi_ep, varphi_k
 
         m(:, :, :, :, :, :) = 0d0
 
@@ -374,12 +374,18 @@ contains
 
                     ! derive interpolation weights
                     call linint_Grow(a_plus(ij-1, ia, ip, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+                    call linint_Equi(ep_plus(ij-1, ia, ip, ik, iw, ie), ep_l, ep_u, a_grow, NP, ipl, ipr, varphi_ep)
                     call linint_Grow(k_plus(ij-1, ia, ip, ik, iw, ie), k_l, k_u, k_grow, NK, ikl, ikr, varphi_k)
 
                     ! restrict values to grid just in case
                     ial = min(ial, NA)
                     iar = min(iar, NA)
                     varphi_a = max(min(varphi_a, 1d0),0d0)
+
+                    ! restrict values to grid just in case
+                    ipl = min(ipl, NP)
+                    ipr = min(ipr, NP)
+                    varphi_ep = max(min(varphi_ep, 1d0), 0d0)
 
                     ! restrict values to grid just in case
                     ikl = min(ikl, NK)
@@ -389,21 +395,23 @@ contains
                     do iw_p = 1, NW
                       do ie_p = 1, NE
 
-                        if(varphi_a <= varphi_k)then
-                            m(ij, ial, ip, ikl, iw_p, ie_p) = m(ij, ial, ip, ikl, iw_p, ie_p) + &
-                                  varphi_a*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                            m(ij, iar, ip, ikl, iw_p, ie_p) = m(ij, iar, ip, ikl, iw_p, ie_p) + &
-                                  (varphi_k-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                            m(ij, iar,  ip, ikr, iw_p, ie_p) = m(ij, iar, ip, ikr, iw_p, ie_p) + &
-                                  (1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                        else
-                          m(ij, ial, ip, ikl, iw_p, ie_p) = m(ij, ial,  ip, ikl, iw_p, ie_p) + &
-                                varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                          m(ij, ial, ip, ikr, iw_p, ie_p) = m(ij, ial, ip, ikr, iw_p, ie_p) + &
-                                (varphi_a-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                          m(ij, iar, ip, ikr, iw_p, ie_p) = m(ij, iar, ip, ikr, iw_p, ie_p) + &
-                                (1d0-varphi_a)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
-                        endif
+                          m(ij, ial, ipl, ikl, iw_p, ie_p) = m(ij, ial, ipl, ikl, iw_p, ie_p) + &
+                                varphi_a*varphi_ep*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                          m(ij, ial, ipl, ikr, iw_p, ie_p) = m(ij, ial, ipl, ikr, iw_p, ie_p) + &
+                                varphi_a*varphi_ep*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                          m(ij, ial, ipr, ikl, iw_p, ie_p) = m(ij, ial, ipr, ikl, iw_p, ie_p) + &
+                                varphi_a*(1d0-varphi_ep)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                          m(ij, ial, ipr, ikr, iw_p, ie_p) = m(ij, ial, ipr, ikr, iw_p, ie_p) + &
+                                varphi_a*(1d0-varphi_ep)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                          m(ij, iar, ipl, ikl, iw_p, ie_p) = m(ij, iar, ipl, ikl, iw_p, ie_p) + &
+                                (1d0-varphi_a)*varphi_ep*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                          m(ij, iar, ipl, ikr, iw_p, ie_p) = m(ij, iar, ipl, ikr, iw_p, ie_p) + &
+                                (1d0-varphi_a)*varphi_ep*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                          m(ij, iar, ipr, ikl, iw_p, ie_p) = m(ij, iar, ipr, ikl, iw_p, ie_p) + &
+                                (1d0-varphi_a)*(1d0-varphi_ep)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                          m(ij, iar, ipr, ikr, iw_p, ie_p) = m(ij, iar, ipr, ikr, iw_p, ie_p) + &
+                                (1d0-varphi_a)*(1d0-varphi_ep)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+
                       enddo
                     enddo
 
@@ -432,24 +440,26 @@ contains
         do ij = 1, JJ
 
             do ia = 0, NA
-              do ik = 0, NK
-                do iw = 1, NW
-                  do ie = 1, NE
+              do ip = 0, NP
+                do ik = 0, NK
+                  do iw = 1, NW
+                    do ie = 1, NE
 
-                    ! skip if there is no household
-                    if (m(ij, ia, ip, ik, iw, ie) <= 0d0) cycle
+                      ! skip if there is no household
+                      if (m(ij, ia, ip, ik, iw, ie) <= 0d0) cycle
 
-                    if(ik == 0) then
-                      c_coh(ij, 0) = c_coh(ij,0) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
-                      a_coh(ij, 0) = a_coh(ij,0) + a(ia)*m(ij, ia, ip, ik, iw, ie)
-                      y_coh(ij, 0) = y_coh(ij, 0) + w*eff(ij)*eta(iw)*l(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
-                    else
-                      c_coh(ij, 1) = c_coh(ij,1) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
-                      a_coh(ij, 1) = a_coh(ij,1) + a(ia)*m(ij, ia, ip, ik, iw, ie)
-                      k_coh(ij) = k_coh(ij) + k(ik)*m(ij, ia, ip, ik, iw, ie)
-                      y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ij, ia, ip, ik, iw, ie))**(1d0-alpha))**nu*m(ij, ia, ip, ik, iw, ie)
-                      o_coh(ij) = o_coh(ij) + m(ij, ia, ip, ik, iw, ie)
-                    endif
+                      if(ik == 0) then
+                        c_coh(ij, 0) = c_coh(ij,0) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
+                        a_coh(ij, 0) = a_coh(ij,0) + a(ia)*m(ij, ia, ip, ik, iw, ie)
+                        y_coh(ij, 0) = y_coh(ij, 0) + w*eff(ij)*eta(iw)*l(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
+                      else
+                        c_coh(ij, 1) = c_coh(ij,1) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
+                        a_coh(ij, 1) = a_coh(ij,1) + a(ia)*m(ij, ia, ip, ik, iw, ie)
+                        k_coh(ij) = k_coh(ij) + k(ik)*m(ij, ia, ip, ik, iw, ie)
+                        y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ij, ia, ip, ik, iw, ie))**(1d0-alpha))**nu*m(ij, ia, ip, ik, iw, ie)
+                        o_coh(ij) = o_coh(ij) + m(ij, ia, ip, ik, iw, ie)
+                      endif
+                    enddo
                   enddo
                 enddo
               enddo
