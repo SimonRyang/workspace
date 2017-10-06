@@ -137,19 +137,6 @@ contains
               do ia = 0, NA
                 do ik = 0, NA
 
-                if (mu_b == 0d0) then
-
-                  S(JJ, :, :, :, :, :) = 0d0
-
-                  X_plus(JJ, ia, ik, :, :) = 0d0
-                  a_plus(JJ, ia, ik, :, :) = 0d0
-                  k_plus(JJ, ia, ik, :, :) = 0d0
-                  cons_com = max((1d0+r)*a(ia) + pen(JJ), 1d-10)
-                  c(JJ, ia, ik, :, :) = cons_com
-                  V(JJ, ia, ik, :, :) = cons_com**egam/egam
-
-                else
-
                   ! with bequest motive we assume future worker
                   call solve_consumption_w(JJ, ia, ik, 1, 1)
 
@@ -158,8 +145,6 @@ contains
                   k_plus(JJ, ia, ik, :, :) = k_plus_t(JJ, ia, ik, 1, 1, 0)
                   c(JJ, ia, ik, :, :) = c_t(JJ, ia, ik, 1, 1, 0)
                   V(JJ, ia, ik, :, :) = V_t(JJ, ia, ik, 1, 1, 0)
-
-                 endif
 
                enddo
              enddo

@@ -49,11 +49,7 @@ contains
       ikr = min(ikr, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      if (mu_b > 0d0) then
-        S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-10)**egam/egam
-      else
-        S_temp = 0d0
-      endif
+      S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-10)**egam/egam
 
       ! get optimal investment strategy
       if(varphi_a <= varphi_k)then

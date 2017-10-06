@@ -34,11 +34,7 @@ contains
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       if (mu_b > 0d0) then
-         S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-10)**egam/egam
-       else
-         S_temp = 0d0
-       endif
+       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-10)**egam/egam
 
        EV_temp = varphi_a      *(egam*EV(ij+1, ial, 0, iw, ie))**(1d0/egam) + &
                  (1d0-varphi_a)*(egam*EV(ij+1, iar, 0, iw, ie))**(1d0/egam)
