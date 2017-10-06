@@ -62,7 +62,7 @@ contains
       ! restrict values to grid just in case
       ipl_p = min(ipl_p, NP)
       ipr_p = min(ipr_p, NP)
-      varphi_p = max(min(varphi_p, 1d0),0d0)
+      varphi_ep = max(min(varphi_ep, 1d0),0d0)
 
       ! get next period value function
       tomorrow = max(varphi_x*varphi_ep              *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, 0))**(1d0/egam) +  &

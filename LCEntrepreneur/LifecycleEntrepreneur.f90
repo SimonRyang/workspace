@@ -54,7 +54,7 @@ contains
 
         implicit none
 
-        integer :: ij
+        integer :: ij, ip
 
         ! wage rate for effective labor and rental price
         w = 1d0
@@ -75,7 +75,9 @@ contains
 
         ! old-age transfers
         pen = 0d0
-        pen(JR:JJ) = kappa*w*eff(JR-1)
+        do ip = 0, NP
+          pen(JR:JJ, ip) = ep(ip)*kappa*w*eff(JR-1)
+        enddo
 
         ! discretize eta shocks
         call discretize_AR(rho, 0d0, sigma_eta, eta, pi_eta, dist_eta)
@@ -453,14 +455,14 @@ contains
               enddo
             enddo
 
-            c_coh(ij, 0) = c_coh(ij, 0)/sum(m(ij, :, 0, :, :))
-            c_coh(ij, 1) = c_coh(ij, 1)/sum(m(ij, :, 1:NK, :, :))
-            a_coh(ij, 0) = a_coh(ij, 0)/sum(m(ij, :, 0, :, :))
-            a_coh(ij, 1) = a_coh(ij, 1)/sum(m(ij, :, 1:NK, :, :))
-            y_coh(ij, 0) = y_coh(ij, 0)/sum(m(ij, :, 0, :, :))
-            y_coh(ij, 1) = y_coh(ij, 1)/sum(m(ij, :, 1:NK, :, :))
-            o_coh(ij) = o_coh(ij)/sum(m(ij, :, :, :, :))
-            k_coh(ij) = k_coh(ij)/sum(m(ij, :, 1:NK, :, :))
+            c_coh(ij, 0) = c_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
+            c_coh(ij, 1) = c_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
+            a_coh(ij, 1) = a_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
+            a_coh(ij, 0) = a_coh(ij, 0)/sum(m(ij, :, :, : , 0, :, :))
+            y_coh(ij, 0) = y_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
+            y_coh(ij, 1) = y_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
+            o_coh(ij) = o_coh(ij)/sum(m(ij, :, :, :, :, :))
+            k_coh(ij) = k_coh(ij)/sum(m(ij, :, :, 1:NK, :, :))
 
         enddo
 
