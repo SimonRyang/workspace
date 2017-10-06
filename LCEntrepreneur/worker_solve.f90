@@ -34,7 +34,7 @@ contains
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       if (mu_b > 0d0) then
+       if (mu_b == 0d0) then
          S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-10)**egam/egam
        else
          S_temp = 0d0
