@@ -267,6 +267,9 @@ subroutine solve_household()
                 enddo
             enddo
 
+            SO = 0d0
+            SR = 0d0
+
             do ia = 0, NA
                 do ie = 0, NE
                     do ih = 0, NH
