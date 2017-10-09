@@ -1,5 +1,5 @@
 MAINFILE = OLGHouse
-CFLAGS = 
+CFLAGS =
 CC = gfortran
 TARGET = Build/prog
 
@@ -10,7 +10,7 @@ all: $(TARGET)
 	-rm -f *.mod
 
 $(TARGET): Build/$(MAINFILE).o
-	$(CC) -qopenmp -O2 Build/$(MAINFILE).o -o $(TARGET)
+	$(CC) $(CFLAGS) Build/$(MAINFILE).o -o $(TARGET)
 
 Build/$(MAINFILE).o: $(MAINFILE).f90
 	mkdir -p Build
