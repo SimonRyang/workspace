@@ -5,6 +5,7 @@
 !            University of Wuerzburg
 !            maurice.hofmann@uni-wuerzburg.de
 !##############################################################################
+include'toolbox.f90'
 include'globals.f90'
 
 program OLG_House
@@ -36,7 +37,7 @@ subroutine get_SteadyState()
 
     ! start timer
     call tic()
-     
+
     ! iterate until value function converges
     do iter = 1, itermax
 
@@ -61,7 +62,7 @@ subroutine get_SteadyState()
 
         if(abs(DIFF/YY)*100d0 < sig) return
     enddo
-    
+
     write(*,*)'No Convergence'
 
 
@@ -98,7 +99,7 @@ subroutine initialize
                    0.00000001d0/)
 
     psi(:, 2) = psi(:, 1)
-    psi(:, 3) = psi(:, 1) 
+    psi(:, 3) = psi(:, 1)
 
     ! initialize age earnings process
     eff(1,:) = (/ 1.2987778,   1.4327164,   1.3882564  /)
@@ -202,8 +203,8 @@ end subroutine
 subroutine prices()
 
     implicit none
-    
-    integer :: ij  
+
+    integer :: ij
 
     ! calculate new prices
     r = Omega*alpha*(KK/LL)**(alpha-1d0)-delta_k
@@ -244,32 +245,32 @@ subroutine solve_household()
             ip_max = NP
         endif
 
-        if(ij == JJ)then 
+        if(ij == JJ)then
 
             omegaplus(JJ, :, :, :, :, :, :) = 0d0
             hplus(JJ, :, :, :, :, :) = 0d0
             aplus_t(JJ+1, :, : , :, :, :, :) = 0d0
             hplus_t(JJ+1, :, : , :, :, :, :) = 0d0
-            
+
             do ih = 0, NH
                 do ia_p = 0, NA
                     al_p = a(ia_p)-tr(h(ih),0d0)
-                    if (al_p > 0d0) then 
+                    if (al_p > 0d0) then
                          SO(JJ, :, :, :, ih, :, ia_p) = q_1*(1d0+al_p/q_2)**egam
                          SR(JJ, :, :, :, ih, :, ia_p) = q_1*(1d0+al_p/q_2)**egam
-                    else 
+                    else
                         SO(JJ, :, :, :, ih, :, ia_p) = 1d-10**egam/egam
                         SR(JJ, :, :, :, ih, :, ia_p) = 1d-10**egam/egam
                     endif
-                enddo        
+                enddo
             enddo
 
             do ia = 0, NA
                 do ie = 0, NE
-                    do ih = 0, NH                       
- 
-                        if (q_1 == 0d0) then 
-                     
+                    do ih = 0, NH
+
+                        if (q_1 == 0d0) then
+
                             aplus(JJ, :, ia, ie, ih, :) = 0d0
                             y(JJ, :, ia, ie, ih, : ) = 0d0
                             penp(JJ, :, ia, ie, ih, : ) = kappa*ybar*ep(ie)
@@ -277,7 +278,7 @@ subroutine solve_household()
                             yg(JJ, :, ia, ie, ih, : ) = (1d0+ rn)*(al(ia)-xi*h(ih)) + (1d0-delta_h)*h(ih) + b(ij) + &
                                                         penp(ij, 1, ia, ie, ih, 1)
 
-                            if (ih == 0) then 
+                            if (ih == 0) then
                                 ch_com = max((1d0-theta)*yg(JJ, 1, ia, ie, ih, 1)/ph, 1d-10)
                                 cons_com = max((yg(JJ, 1, ia, ie, ih, 1)-ph*ch_com)/p, 1d-10)
                                 V(JJ, :, ia, ie, ih, :) = (cons_com**theta*(chi*ch_com)**(1d0-theta))**egam/egam
@@ -287,31 +288,31 @@ subroutine solve_household()
                                 ch_com = h(ih)
                                 cons_com = max(yg(JJ, 1, ia, ie, ih, 1)/p, 1d-10)
                                 V(JJ, :, ia, ie, ih, :) = (cons_com**theta*ch_com**(1d0-theta))**egam/egam
-                                c(JJ, :, ia, ie, ih, :) = cons_com 
+                                c(JJ, :, ia, ie, ih, :) = cons_com
                                 ch(JJ, :, ia, ie, ih, :) = ch_com
-                            endif   
+                            endif
 
-                        else 
-                            
-                            ! with bequest motive we assume future renter 
+                        else
+
+                            ! with bequest motive we assume future renter
                             call solve_consumption_r(JJ, 1, ia, ie, ih, 1)
-                               
+
                             V(JJ, :, ia, ie, ih, :) = V_t(JJ, 1, ia, ie, ih, 1, 0)
                             aplus(JJ, :, ia, ie, ih, :) = aplus_t(JJ, 1, ia, ie, ih, 1, 0)
                             c(JJ, :, ia, ie, ih, :) = c_t(JJ, 1, ia, ie, ih, 1, 0)
                             ch(JJ, :, ia, ie, ih, :) = ch_t(JJ, 1, ia, ie, ih, 1, 0)
-                        endif    
+                        endif
                     enddo
                 enddo
             enddo
         else
-               
+
             ! get optimal share of wealth stored in real estate
-            do is = 1, is_max               
+            do is = 1, is_max
                 do ia = 0, NA
                     do ie = 0, NE
-                        do ih = 0, NH 
-                            do ip = 1, ip_max 
+                        do ih = 0, NH
+                            do ip = 1, ip_max
 
                 	            ! income and pension system
                                 if (ij >= JR)then
@@ -322,31 +323,31 @@ subroutine solve_household()
                                                                   penp(ij, 1, ia, ie, ih, 1)
                                 else
                                      y(ij, is, ia, ie, ih, ip) = w*eff(ij, is)*eta(is, ip)
-                                     penc(ij, is, ia, ie, ih, ip) = taup*min(y(ij, is, ia, ie, ih, ip), 2d0*ybar) 
+                                     penc(ij, is, ia, ie, ih, ip) = taup*min(y(ij, is, ia, ie, ih, ip), 2d0*ybar)
                                      penp(ij, is, ia, ie, ih, ip) = 0d0
                                      yg(JJ, :, ia, ie, ih, : ) = (1d0 + rn)*(al(ia)-xi*h(ih)) + (1d0-delta_h)*h(ih) + b(ij) + &
                                                                   w*eff(ij, is)*eta(is, ip) - penc(ij, is, ia, ie, ih, ip)
                                 endif
 
-                                do ia_p = 0, NA 
+                                do ia_p = 0, NA
 
                                     ! next period homeowner
                                     call solve_owner(ij, is, ia, ie, ih, ip, ia_p)
- 
+
                                     ! next period renter
                                     call solve_renter(ij, is, ia, ie, ih, ip, ia_p)
-                                enddo  
-                                
-                            enddo                                
+                                enddo
+
+                            enddo
                         enddo
                     enddo
                 enddo
-            enddo     
+            enddo
 
             ! solve the consumption savings problem
             do is = 1, is_max
                 do ia = 0, NA
-                    do ie = 0, NE 
+                    do ie = 0, NE
                         do ih = 0, NH
                             do ip = 1, ip_max
 
@@ -356,8 +357,8 @@ subroutine solve_household()
 
                                 ! next period renter
                                 call solve_consumption_r(ij, is, ia, ie, ih, ip)
-                            enddo    
-                        enddo   
+                            enddo
+                        enddo
                     enddo
                 enddo
             enddo
@@ -365,7 +366,7 @@ subroutine solve_household()
             ! decision whether to be owner or renter next period
             do is = 1, is_max
                 do ia = 0, NA
-                    do ie = 0, NE 
+                    do ie = 0, NE
                         do ih = 0, NH
                             do ip = 1, ip_max
 
@@ -383,13 +384,13 @@ subroutine solve_household()
                                     ch(ij, is, ia, ie, ih, ip) = ch_t(ij, is, ia, ie, ih, ip, 0)
                                     V(ij, is, ia, ie, ih, ip) = V_t(ij, is, ia, ie, ih, ip, 0)
                                 endif
-                            enddo    
+                            enddo
                         enddo
                     enddo
                 enddo
-            enddo    
+            enddo
 
-        endif            
+        endif
         write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
     enddo
@@ -428,7 +429,7 @@ subroutine get_distribution()
                    do ih = 0, NH
                        do ip = 1, NP
 
-                           h_p = hplus(ij, is, ia, ie, ih, ip) 
+                           h_p = hplus(ij, is, ia, ie, ih, ip)
 
                            ! interpolate yesterday's savings decision
                            call linint_Grow(aplus(ij, is, ia, ie, ih, ip), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
@@ -437,7 +438,7 @@ subroutine get_distribution()
                            iar = min(iar, NA)
                            varphi_a = max(min(varphi_a, 1d0), 0d0)
 
-                           if (h_p>= h_min) then                  
+                           if (h_p>= h_min) then
                               call linint_Grow(h_p, h_l, h_u, h_grow, NH-1, ihl, ihr, varphi_h)
 
                               ihl = min(ihl+1, NH)
@@ -445,8 +446,8 @@ subroutine get_distribution()
                               varphi_h = max(min(varphi_h, 1d0), 0d0)
 
                               ! redistribute households in period ij+1 based on their decision in ij and shock ip_p
-                              if (ij+1>=JR) then 
-                              
+                              if (ij+1>=JR) then
+
                                   phi(ij+1, is, ial, ie, ihl, ip) = phi(ij+1, is, ial, ie, ihl, ip) + &
                                                                       varphi_a*varphi_h*phi(ij, is, ia, ie, ih, ip)
                                   phi(ij+1, is, ial, ie, ihr, ip) = phi(ij+1, is, ial, ie, ihr, ip) + &
@@ -457,7 +458,7 @@ subroutine get_distribution()
                                                                       (1d0-varphi_a)*(1d0-varphi_h)*phi(ij, is, ia, ie, ih, ip)
 
                               else
-                                  
+
                                   ! get tomorrow's earning points
                                   ep_p = ep(ie) + mu*(lambda+(1d0-lambda)*min(y(ij, is, ia, ie, ih, ip)/ybar, 2d0))/dble(JR-1d0)
 
@@ -469,7 +470,7 @@ subroutine get_distribution()
                                   varphi_e = max(min(varphi_e, 1d0), 0d0)
 
                                   do ip_p = 1, NP
-     
+
                                       phi(ij+1, is, ial, iel, ihl, ip_p) = phi(ij+1, is, ial, iel, ihl, ip_p) + pi(is, ip, ip_p)&
                                                              *varphi_a*varphi_e*varphi_h*phi(ij, is, ia, ie, ih, ip)
                                       phi(ij+1, is, ial, iel, ihr, ip_p) = phi(ij+1, is, ial, iel, ihr, ip_p) + pi(is, ip, ip_p)&
@@ -488,19 +489,19 @@ subroutine get_distribution()
                                                         *(1d0-varphi_a)*(1d0-varphi_e)*(1d0-varphi_h)*phi(ij, is, ia, ie, ih, ip)
 
                                   enddo
-                              endif 
+                              endif
 
                            else
 
-                              if (ij+1>=JR) then 
-                              
+                              if (ij+1>=JR) then
+
                                   phi(ij+1, is, ial, ie, 0, ip) = phi(ij+1, is, ial, ie, 0, ip) + &
                                                                       varphi_a*phi(ij, is, ia, ie, ih, ip)
                                   phi(ij+1, is, iar, ie, 0, ip) = phi(ij+1, is, iar, ie, 0, ip) + &
                                                                       (1d0-varphi_a)*phi(ij, is, ia, ie, ih, ip)
 
                               else
-                                  
+
                                   ! get tomorrow's earning points
                                   ep_p = ep(ie) + mu*(lambda+(1d0-lambda)*min(y(ij, is, ia, ie, ih, ip)/ybar, 2d0))/dble(JR-1d0)
 
@@ -512,7 +513,7 @@ subroutine get_distribution()
                                   varphi_e = max(min(varphi_e, 1d0), 0d0)
 
                                   do ip_p = 1, NP
-     
+
                                       phi(ij+1, is, ial, iel, 0, ip_p) = phi(ij+1, is, ial, iel, 0, ip_p) + pi(is, ip, ip_p)&
                                                              *varphi_a*varphi_e*phi(ij, is, ia, ie, ih, ip)
                                       phi(ij+1, is, ial, ier, 0, ip_p) = phi(ij+1, is, ial, iel, 0, ip_p) + pi(is, ip, ip_p)&
@@ -523,7 +524,7 @@ subroutine get_distribution()
                                                              *(1d0-varphi_a)*(1d0-varphi_e)*phi(ij, is, ia, ie, ih, ip)
                                   enddo
 
-                              endif 
+                              endif
 
                            endif
 
@@ -561,7 +562,7 @@ subroutine aggregation()
     a_coh = 0d0; c_coh = 0d0; h_coh = 0d0; al_coh = 0d0; ch_coh = 0d0
     penp_coh = 0d0; penc_coh = 0d0; v_coh = 0d0; l_coh = 0d0; tr_coh = 0d0
     shr = 0d0
-     
+
     ! compute macroeconomic aggregates (normalized to the youngest cohort alive in period t)
     do ij = 1, JJ+1
         do is = 1, NS
@@ -569,23 +570,23 @@ subroutine aggregation()
                 do ie = 0, NE
                     do ih = 0, NH
                         do ip = 1, NP
- 
-                            a_coh(ij) = a_coh(ij) + a(ia)*phi(ij, is, ia, ie, ih, ip)/psi(ij, is) 
-                            c_coh(ij) = c_coh(ij) + c(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip) 
-                            h_coh(ij) = h_coh(ij) + h(ih)*phi(ij, is, ia, ie, ih, ip)/psi(ij, is) 
+
+                            a_coh(ij) = a_coh(ij) + a(ia)*phi(ij, is, ia, ie, ih, ip)/psi(ij, is)
+                            c_coh(ij) = c_coh(ij) + c(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip)
+                            h_coh(ij) = h_coh(ij) + h(ih)*phi(ij, is, ia, ie, ih, ip)/psi(ij, is)
                             l_coh(ij) = l_coh(ij) + eff(ij, is)*eta(is, ip)*phi(ij, is, ia, ie, ih, ip)
-                            al_coh(ij) = al_coh(ij) + al(ia)*phi(ij, is, ia, ie, ih, ip)/psi(ij, is) 
-                            ch_coh(ij) = ch_coh(ij) + ch(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip) 
+                            al_coh(ij) = al_coh(ij) + al(ia)*phi(ij, is, ia, ie, ih, ip)/psi(ij, is)
+                            ch_coh(ij) = ch_coh(ij) + ch(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip)
                             tr_coh(ij+1) = tr_coh(ij+1) + tr(h(ih), hplus(ij, is, ia, ie, ih, ip))/psi(ij, is)
-                            penp_coh(ij) = penp_coh(ij) + penp(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip) 
-                            penc_coh(ij) = penc_coh(ij) + penc(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip) 
-                            v_coh(ij) = v_coh(ij) + V(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip) 
-                            if (ih == 0) then 
+                            penp_coh(ij) = penp_coh(ij) + penp(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip)
+                            penc_coh(ij) = penc_coh(ij) + penc(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip)
+                            v_coh(ij) = v_coh(ij) + V(ij, is, ia, ie, ih, ip)*phi(ij, is, ia, ie, ih, ip)
+                            if (ih == 0) then
                                shr(ij, 0) = shr(ij, 0) + phi(ij, is, ia, ie, ih, ip)
-                            else    
+                            else
                                shr(ij, 1) = shr(ij, 1) + phi(ij, is, ia, ie, ih, ip)
-                            endif 
-                          
+                            endif
+
                         enddo
                     enddo
                 enddo
@@ -601,13 +602,13 @@ subroutine aggregation()
         PBEN = PBEN + penp_coh(ij)*rpop(ij)
         PCON = PCON + penc_coh(ij)*rpop(ij)
         BQ = BQ + (1d0-psi(ij, 1))*((1d0+rn)*a_coh(ij)+(1d0-delta_h)*h_coh(ij))*rpop(ij)/psi(ij, 1)
- 
+
     enddo
 
     ! get average income
     ybar = w*LL/workpop
 
-    ! compute stock of capital 
+    ! compute stock of capital
     KK = damp*(AAL-xi*HH-BB)+(1d0-damp)*KK
 
     !write(*,*)KK, LL, BQ, ybar
