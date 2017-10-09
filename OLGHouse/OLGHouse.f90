@@ -44,17 +44,10 @@ subroutine get_SteadyState()
         ! get new prices
         call prices()
 
-        write(*,*)r,w
-
         ! solve the household problem
         call solve_household()
-
-        write(*,*)r,w
-
         ! calculate the distribution of households over state space
         call get_distribution()
-
-        write(*,*)r,w
 
         ! aggregate individual decisions
         call aggregation()
@@ -634,6 +627,11 @@ subroutine aggregation()
 
     ! compute gap on goods market
     DIFF = YY-CC-GG-II-IHO-IHR-TRG
+
+    call plot((/(dble(ij), ij=1, JJ)/), a_coh)
+    call plot((/(dble(ij), ij=1, JJ)/), c_coh)
+    call plot((/(dble(ij), ij=1, JJ)/), h_coh)
+    call execplot
 
 end subroutine
 
