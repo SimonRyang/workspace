@@ -398,6 +398,10 @@ subroutine solve_household()
         endif
         write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
+        write(*,*)sum(c(ij, :, :, :, :, :))
+        write(*,*)sum(hplus(ij, :, :, :, :, :))
+        write(*,*)sum(aplus(ij, :, :, :, :, :))
+
     enddo
 
     call toc
@@ -540,7 +544,7 @@ subroutine get_distribution()
            enddo
        enddo
 
-       if (sum(phi(ij, :, :, :, :, :)) < 1d0-1d-10)write(*,'(a, i5, f8.2)')'X: ', ij, sum(phi(ij, :, :, :, :, :))
+       if (sum(phi(ij, :, :, :, :, :)) < 1d0-1d10)write(*,'(a, i5, f8.2)')'X: ', ij, sum(phi(ij, :, :, :, :, :))
 
    enddo
 
