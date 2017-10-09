@@ -221,13 +221,13 @@ contains
                     varphi_e = max(min(varphi_e, 1d0), 0d0)
 
                     ! get distributional weight
-                    dist = dist_skill(is)*pi(is, ip, ip)
+                    dist = pi(is, ip, ipp)
 
                     ! get expected future utility from value function (consumption)
-                    EV =  varphi_a*varphi_e*(egam*V(ij_com+1, is_com, ial, iel, 0, ipp))**(1d0/egam) + &
-                          varphi_a*(1d0-varphi_e)*(egam*V(ij_com+1, is_com, ial, ier, 0, ipp))**(1d0/egam) + &
-                          (1d0-varphi_a)*varphi_e*(egam*V(ij_com+1, is_com, iar, iel, 0, ipp))**(1d0/egam) + &
-                          (1d0-varphi_a)*(1d0-varphi_e)*(egam*V(ij_com+1, is_com, iar, ier, 0, ipp))**(1d0/egam)
+                    EV =  varphi_a*varphi_e*(egam*V(ij+1, is, ial, iel, 0, ipp))**(1d0/egam) + &
+                          varphi_a*(1d0-varphi_e)*(egam*V(ij+1, is, ial, ier, 0, ipp))**(1d0/egam) + &
+                          (1d0-varphi_a)*varphi_e*(egam*V(ij+1, is, iar, iel, 0, ipp))**(1d0/egam) + &
+                          (1d0-varphi_a)*(1d0-varphi_e)*(egam*V(ij+1, is, iar, ier, 0, ipp))**(1d0/egam)
 
                     EV = EV + dist*EV**egam/egam
                 enddo
@@ -424,7 +424,7 @@ contains
              do ip_p = 1, NP
 
                  ! get distributional weight
-                 dist = dist_skill(is_com)*pi(is_com, ip_com, ip_p)
+                 dist = pi(is_com, ip_com, ip_p)
 
                  ! get expected future utility from value function (consumption)
                  EV =  varphi_a*varphi_e*varphi_h*(egam*V(ij_com+1, is_com, ial, iel, ihl, ip_p))**(1d0/egam) + &
