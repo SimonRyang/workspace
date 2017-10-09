@@ -41,12 +41,10 @@ subroutine get_SteadyState()
     ! iterate until value function converges
     do iter = 1, itermax
 
-        write(*,*)r, w
-        write(*,*)AA, AAL
-        write(*,*)YY, CC, GG, II, KK, LL, IHO, IHR, TRG
-
         ! get new prices
         call prices()
+
+        write(*,*)r, w
 
         ! solve the household problem
         call solve_household()
