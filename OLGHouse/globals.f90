@@ -155,7 +155,7 @@ contains
 
            ! get lower limit
            omega_low = h_min*(1d0-xi)/a(ia_p)
-           x_in = max(omegaplus(ij, is, ia, ie, ih, ip, ia_p-1), omega_low+1d-4)
+           x_in = max(omegaplus(ij, is, ia, ie, ih, ip, ia_p-1), omega_low)
 
 
            ! solve the household problem using fminsearch
@@ -269,7 +269,7 @@ contains
       else
 
           ! get best initial guess from future period
-          x_in = max(aplus_t(ij+1, is, ia, ie, ih, ip, 1), amin+1d-4)
+          x_in = max(aplus_t(ij+1, is, ia, ie, ih, ip, 1), amin)
 
           ! solve the household problem using rootfinding
           call fminsearch(x_in, fret, amin, a_u, cons_o)
@@ -315,7 +315,7 @@ contains
       else
 
           ! get best initial guess from future period
-          x_in = max(aplus_t(ij+1, is, ia, ie, ih, ip, 0), amin+1d-4)
+          x_in = max(aplus_t(ij+1, is, ia, ie, ih, ip, 0), amin)
 
           ! solve the household problem using rootfinding
           call fminsearch(x_in, fret, amin, a_u, cons_r)

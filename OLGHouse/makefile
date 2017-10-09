@@ -1,6 +1,6 @@
 MAINFILE = OLGHouse
-CFLAGS =
-CC = gfortran
+CFLAGS = -qopenmp -02
+CC = ~/intel/bin/ifort
 TARGET = Build/prog
 
 all: $(TARGET)
