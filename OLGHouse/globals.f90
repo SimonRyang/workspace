@@ -47,7 +47,6 @@ module globals
     ! housing parameters
     real*8, parameter :: delta_h = 1d0-(1d0-0.02d0)**5
     real*8, parameter :: h_min = 2d0                ! minimum house size
-!    real*8, parameter :: h_min = 1d-10
     real*8, parameter :: xi = 0.7d0                 ! maximum mortgage share
     real*8, parameter :: phi_1 = 0.03d0
     real*8, parameter :: phi_2 = 0.06d0

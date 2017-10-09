@@ -1,5 +1,5 @@
 MAINFILE = OLGHouse
-CFLAGS = -qopenmp -O0 -traceback
+CFLAGS = -qopenmp -O0 -debug all -traceback
 CC = ~/intel/bin/ifort
 TARGET = Build/prog
 
