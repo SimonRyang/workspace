@@ -100,7 +100,8 @@ contains
         call grid_Cons_Equi(ep, ep_l, ep_u)
 
         ! endogenous upper bound of housing grid
-        call grid_Cons_Grow(k, k_l, k_u, k_grow)
+        call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
+        k(0) = 0d0
 
         ! initialize value functions
         V = 1d-10**egam/egam; EV = 1d-10**egam/egam; S = 1d-10**egam/egam
@@ -375,7 +376,7 @@ contains
                     ! derive interpolation weights
                     call linint_Grow(a_plus(ij-1, ia, ip, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
                     call linint_Equi(ep_plus(ij-1, ia, ip, ik, iw, ie), ep_l, ep_u, NP, ipl, ipr, varphi_ep)
-                    call linint_Grow(k_plus(ij-1, ia, ip, ik, iw, ie), k_l, k_u, k_grow, NK, ikl, ikr, varphi_k)
+                    call linint_Grow(k_plus(ij-1, ia, ip, ik, iw, ie), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
 
                     ! restrict values to grid just in case
                     ial = min(ial, NA)
@@ -387,10 +388,14 @@ contains
                     ipr = min(ipr, NP)
                     varphi_ep = max(min(varphi_ep, 1d0), 0d0)
 
-                    ! restrict values to grid just in case
-                    ikl = min(ikl, NK)
-                    ikr = min(ikr, NK)
-                    varphi_k = max(min(varphi_k, 1d0), 0d0)
+                    if(k_plus(ij-1, ia, ip, ik, iw, ie) > 0d0) then
+                      ! restrict values to grid just in case
+                      ikl = min(ikl+1, NK)
+                      ikr = min(ikr+1, NK)
+                      varphi_k = max(min(varphi_k, 1d0), 0d0)
+                    else
+                      ikl = 0; ikr = 0; varphi_k = 1d0
+                    endif
 
                     do iw_p = 1, NW
                       do ie_p = 1, NE
