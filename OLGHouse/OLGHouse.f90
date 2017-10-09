@@ -240,8 +240,8 @@ subroutine solve_household()
 
         ! check about how many is to iterate
         if(ij >= JR)then
-            is_max = 1
-            ip_max = 1
+            is_max = NP
+            ip_max = NP
         else
             is_max = NS
             ip_max = NP
