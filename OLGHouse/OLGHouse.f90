@@ -327,7 +327,7 @@ subroutine solve_household()
                                      y(ij, is, ia, ie, ih, ip) = w*eff(ij, is)*eta(is, ip)
                                      penc(ij, is, ia, ie, ih, ip) = taup*min(y(ij, is, ia, ie, ih, ip), 2d0*ybar)
                                      penp(ij, is, ia, ie, ih, ip) = 0d0
-                                     yg(ij, :, ia, ie, ih, : ) = (1d0 + rn)*(al(ia)-xi*h(ih)) + (1d0-delta_h)*h(ih) + b(ij) + &
+                                     yg(ij, is, ia, ie, ih, ip) = (1d0 + rn)*(al(ia)-xi*h(ih)) + (1d0-delta_h)*h(ih) + b(ij) + &
                                                                   w*eff(ij, is)*eta(is, ip) - penc(ij, is, ia, ie, ih, ip)
                                 endif
 
