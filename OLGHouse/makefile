@@ -1,5 +1,5 @@
 MAINFILE = OLGHouse
-CFLAGS = -qopenmp -O2
+CFLAGS = 
 CC = gfortran
 TARGET = Build/prog
 
