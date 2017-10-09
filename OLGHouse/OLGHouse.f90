@@ -544,7 +544,7 @@ subroutine get_distribution()
            enddo
        enddo
 
-       write(*,*)sum(phi(ij, :, :, :, :, :)
+       write(*,*)sum(phi(ij, :, :, :, :, :))
 
        if (sum(phi(ij, :, :, :, :, :)) < 1d0-1d10)write(*,'(a, i5, f8.2)')'X: ', ij, sum(phi(ij, :, :, :, :, :))
 
