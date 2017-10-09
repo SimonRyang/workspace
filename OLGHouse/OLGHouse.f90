@@ -192,7 +192,7 @@ subroutine initialize
 
     ! initialize temporary policy and value functions
     aplus_t = 0d0; hplus_t = 0d0; ch_t = 0d0; c_t = 0d0; V_t = 0d0
-
+write(*,*)
 
     ! open files
     open(21, file='output.out')
