@@ -233,6 +233,8 @@ subroutine solve_household()
     integer :: ij, is, ia, ie, ih, ip, ia_p, is_max, ip_max
     real*8 :: al_p
 
+    call tic
+
     ! solve household problem recursively
     do ij = JJ, 1, -1
 
@@ -395,6 +397,7 @@ subroutine solve_household()
 
     enddo
 
+    call toc
 
 
 end subroutine
