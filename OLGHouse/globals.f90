@@ -65,7 +65,7 @@ module globals
 
     ! size of the total asset grid
     real*8, parameter :: a_l    = 0.0d0
-    real*8, parameter :: a_u    = 500d0
+    real*8, parameter :: a_u    = 50d0
     real*8, parameter :: a_grow = 0.075d0
 
     ! size of the liquid asset grid
