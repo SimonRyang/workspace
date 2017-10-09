@@ -57,7 +57,7 @@ subroutine get_SteadyState()
 
         write(*,*)KK, CC, II, IHO, r,w
 
-        write(*,'(i4,2i7,6f8.2,f12.5)')iter, maxval(iamax), maxval(ihmax),&
+        write(*,'(i4,2i7,6f8.2,f16.5)')iter, maxval(iamax), maxval(ihmax),&
                                         (/5d0*KK, CC, II, IHO/)/YY*100d0, &
                                         ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
@@ -630,6 +630,7 @@ subroutine aggregation()
 
     ! compute gap on goods market
     DIFF = YY-CC-GG-II-IHO-IHR-TRG
+    write(*,*)DIFF
 
     call plot((/(dble(ij), ij=1, JJ)/), a_coh(:JJ))
     call plot((/(dble(ij), ij=1, JJ)/), c_coh(:JJ))
