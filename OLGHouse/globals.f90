@@ -32,7 +32,7 @@ module globals
     real*8, parameter :: beta = 0.96d0**5
     real*8, parameter :: theta = 0.6d0             ! consumption share
     real*8, parameter :: chi = 0.8d0    !0.65      ! ownership preference
-    real*8, parameter :: q_1 = 0d0                 ! bequest motive
+    real*8, parameter :: q_1 = 0.5d0                 ! bequest motive
     real*8, parameter :: q_2 = 10.0d0              ! bequest motive
 
 
