@@ -201,8 +201,8 @@ contains
             if(ij+1 >= JR)then
 
                 ! get expected future utility from value function (consumption)
-                EV = (varphi_a      *(egam*V(ij+1, is, ial, ie, 0, ip))**(1d0/egam) + &
-                      (1d0-varphi_a)*(egam*V(ij+1, is, iar, ie, 0, ip))**(1d0/egam))**egam/egam
+                EV = (varphi_a      *(egam*V(ij+1, is, ial, ie, 0, ip)) + &
+                      (1d0-varphi_a)*(egam*V(ij+1, is, iar, ie, 0, ip)))/egam
 
             else
 
