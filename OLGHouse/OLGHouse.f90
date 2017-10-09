@@ -522,7 +522,7 @@ subroutine get_distribution()
 
                                       phi(ij+1, is, ial, iel, 0, ip_p) = phi(ij+1, is, ial, iel, 0, ip_p) + pi(is, ip, ip_p)&
                                                              *varphi_a*varphi_e*phi(ij, is, ia, ie, ih, ip)
-                                      phi(ij+1, is, ial, ier, 0, ip_p) = phi(ij+1, is, ial, iel, 0, ip_p) + pi(is, ip, ip_p)&
+                                      phi(ij+1, is, ial, ier, 0, ip_p) = phi(ij+1, is, ial, ier, 0, ip_p) + pi(is, ip, ip_p)&
                                                              *varphi_a*(1d0-varphi_e)*phi(ij, is, ia, ie, ih, ip)
                                       phi(ij+1, is, iar, iel, 0, ip_p) = phi(ij+1, is, iar, iel, 0, ip_p) + pi(is, ip, ip_p)&
                                                              *(1d0-varphi_a)*varphi_e*phi(ij, is, ia, ie, ih, ip)
@@ -628,9 +628,9 @@ subroutine aggregation()
     ! compute gap on goods market
     DIFF = YY-CC-GG-II-IHO-IHR-TRG
 
-    call plot((/(dble(ij), ij=1, JJ)/), a_coh)
-    call plot((/(dble(ij), ij=1, JJ)/), c_coh)
-    call plot((/(dble(ij), ij=1, JJ)/), h_coh)
+    call plot((/(dble(ij), ij=1, JJ)/), a_coh(:JJ))
+    call plot((/(dble(ij), ij=1, JJ)/), c_coh(:JJ))
+    call plot((/(dble(ij), ij=1, JJ)/), h_coh(:JJ))
     call execplot
 
 end subroutine
