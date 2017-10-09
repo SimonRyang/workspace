@@ -43,18 +43,28 @@ subroutine get_SteadyState()
 
         ! get new prices
         call prices()
-        
+
+        write(*,*)r,w
+
         ! solve the household problem
         call solve_household()
+
+        write(*,*)r,w
 
         ! calculate the distribution of households over state space
         call get_distribution()
 
+        write(*,*)r,w
+
         ! aggregate individual decisions
         call aggregation()
 
+        write(*,*)r,w
+
         ! determine the government parameters
         call government()
+
+        write(*,*)r,w
 
         write(*,'(i4,2i7,6f8.2,f12.5)')iter, maxval(iamax), maxval(ihmax),&
                                         (/5d0*KK, CC, II, IHO/)/YY*100d0, &
