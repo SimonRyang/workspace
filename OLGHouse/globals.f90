@@ -472,12 +472,11 @@ contains
       ial = min(ial, NA)
       iar = min(iar, NA)
       varphi_a = max(min(varphi_a, 1d0),0d0)
-write(*,*)'1'
-write(*,*)varphi_a
+
       ! get next period value function
       tomorrow = max(varphi_a*(egam*SO(ij_com, is_com, ia_com, ie_com, ih_com, ip_com, ial))**(1d0/egam) +  &
                (1d0-varphi_a)*(egam*SO(ij_com, is_com, ia_com, ie_com, ih_com, ip_com, iar))**(1d0/egam), 1d-10)**egam/egam
-write(*,*)'2'
+
       ! maximize value function for current renter
       if (ih_com == 0) then
 
