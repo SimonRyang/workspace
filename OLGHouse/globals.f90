@@ -14,16 +14,16 @@ module globals
     integer, parameter :: NS = 3
 
     ! number of points on the asset grid
-    integer, parameter :: NA = 25
+    integer, parameter :: NA = 20
 
     ! number of points on earning points grid
     integer, parameter :: NE = 4
 
     ! number of points on the housing grid
-    integer, parameter :: NH = 25
+    integer, parameter :: NH = 20
 
     ! number of transitory productivity shocks
-    integer, parameter :: NP = 5
+    integer, parameter :: NP = 3
 
     ! household preference parameters
     real*8, parameter :: gamma = 0.2d0
@@ -32,7 +32,7 @@ module globals
     real*8, parameter :: beta = 0.96d0**5
     real*8, parameter :: theta = 0.6d0             ! consumption share
     real*8, parameter :: chi = 0.8d0    !0.65      ! ownership preference
-    real*8, parameter :: q_1 = 0.05d0                 ! bequest motive
+    real*8, parameter :: q_1 = 0.0d0                 ! bequest motive
     real*8, parameter :: q_2 = 10.0d0              ! bequest motive
 
 
