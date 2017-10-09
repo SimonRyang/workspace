@@ -1,5 +1,5 @@
 MAINFILE = OLGHouse
-CFLAGS = -qopenmp -02
+CFLAGS = -qopenmp 
 CC = ~/intel/bin/ifort
 TARGET = Build/prog
 

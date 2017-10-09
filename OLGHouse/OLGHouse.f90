@@ -43,9 +43,7 @@ subroutine get_SteadyState()
 
         ! get new prices
         call prices()
-
-        write(*,*)r, w
-
+        
         ! solve the household problem
         call solve_household()
 
