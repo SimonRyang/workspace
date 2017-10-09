@@ -22,7 +22,7 @@ module globals
     ! number of points on the housing grid
     integer, parameter :: NH = 25
 
-    ! number of transitory productivity shocks 
+    ! number of transitory productivity shocks
     integer, parameter :: NP = 5
 
     ! household preference parameters
@@ -30,10 +30,10 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: nu = 5d0                  ! risk aversion
     real*8, parameter :: beta = 0.96d0**5
-    real*8, parameter :: theta = 0.6d0             ! consumption share 
-    real*8, parameter :: chi = 0.8d0    !0.65      ! ownership preference 
-    real*8, parameter :: q_1 = 0d0                 ! bequest motive 
-    real*8, parameter :: q_2 = 10.0d0              ! bequest motive 
+    real*8, parameter :: theta = 0.6d0             ! consumption share
+    real*8, parameter :: chi = 0.8d0    !0.65      ! ownership preference
+    real*8, parameter :: q_1 = 0d0                 ! bequest motive
+    real*8, parameter :: q_2 = 10.0d0              ! bequest motive
 
 
     ! shock process parameters
@@ -46,9 +46,9 @@ module globals
 
     ! housing parameters
     real*8, parameter :: delta_h = 1d0-(1d0-0.02d0)**5
-    real*8, parameter :: h_min = 2d0                ! minimum house size 
+    real*8, parameter :: h_min = 2d0                ! minimum house size
 !    real*8, parameter :: h_min = 1d-10
-    real*8, parameter :: xi = 0.7d0                 ! maximum mortgage share 
+    real*8, parameter :: xi = 0.7d0                 ! maximum mortgage share
     real*8, parameter :: phi_1 = 0.03d0
     real*8, parameter :: phi_2 = 0.06d0
 
@@ -61,7 +61,7 @@ module globals
     ! government policy parameters
     real*8, parameter :: kappa = 0.0d0       ! pension replacement rate
     real*8, parameter :: mu = 0d0            ! paygo pension
-    real*8, parameter :: lambda = 0.0d0      ! pension progressivity  
+    real*8, parameter :: lambda = 0.0d0      ! pension progressivity
 
     ! size of the total asset grid
     real*8, parameter :: a_l    = 0.0d0
@@ -90,7 +90,7 @@ module globals
 
 
     ! the shock process
-    real*8 :: dist_skill(NS)  
+    real*8 :: dist_skill(NS)
     real*8 :: dist_eta(NS, NP), eta(NS, NP), pi(NS, NP, NP)
 
     ! demographic and other model parameters
@@ -112,8 +112,8 @@ module globals
     real*8 :: a(0:NA), h(0:NH), ep(0:NE), al(0:NA), b(JJ)
     real*8 :: aplus(JJ, NS, 0:NA, 0:NE, 0:NH, NP), hplus(JJ, NS, 0:NA, 0:NE, 0:NH, NP)
     real*8 :: c(JJ, NS, 0:NA, 0:NE, 0:NH, NP), ch(JJ, NS, 0:NA, 0:NE, 0:NH, NP)
-    real*8 :: omegaplus(JJ, NS, 0:NA, 0:NE, 0:NH, NP, 0:NA)  
-    real*8 :: penc(JJ, NS, 0:NA, 0:NE, 0:NH, NP), penp(JJ, NS, 0:NA, 0:NE, 0:NH, NP) 
+    real*8 :: omegaplus(JJ, NS, 0:NA, 0:NE, 0:NH, NP, 0:NA)
+    real*8 :: penc(JJ, NS, 0:NA, 0:NE, 0:NH, NP), penp(JJ, NS, 0:NA, 0:NE, 0:NH, NP)
     real*8 :: y(JJ, NS, 0:NA, 0:NE, 0:NH, NP), yg(JJ, NS, 0:NA, 0:NE, 0:NH, NP)
     real*8 :: phi(JJ+1, NS, 0:NA, 0:NE, 0:NH, NP)
     real*8 :: V(JJ, NS, 0:NA, 0:NE, 0:NH, NP)
@@ -122,12 +122,12 @@ module globals
     ! cohort average variables
     real*8 ::  a_coh(JJ+1), h_coh(JJ+1), c_coh(JJ), al_coh(JJ+1), ch_coh(JJ), tr_coh(JJ+1)
     real*8 ::  l_coh(JJ), penc_coh(JJ), penp_coh(JJ), v_coh(JJ),  shr(JJ+1, 0:1)
-    
+
 
     ! macroeconomic variables
     real*8 :: r, rn, w, wn, p, ph
-    real*8 :: ybar      
-    real*8 :: AA, AAL, BB, BQ, HH, HR, PBEN, PCON        
+    real*8 :: ybar
+    real*8 :: AA, AAL, BB, BQ, HH, HR, PBEN, PCON
     real*8 :: YY, CC, GG, II, KK, LL, IHO, IHR, TRG
 
 
@@ -151,11 +151,11 @@ contains
         ! set up communication variables
         ij_com = ij; is_com = is; ia_com = ia; ie_com = ie; ih_com = ih; ip_com = ip; ia_p_com = ia_p
 
-        if (a(ia_p) > ((1d0-xi)*h_min + tr(h(ih), h_min))) then 
+        if (a(ia_p) > ((1d0-xi)*h_min + tr(h(ih), h_min))) then
 
            ! get lower limit
            omega_low = h_min*(1d0-xi)/a(ia_p)
-           x_in = max(omegaplus(ij, is, ia, ie, ih, ip, ia_p-1), omega_low)
+           x_in = max(omegaplus(ij, is, ia, ie, ih, ip, ia_p-1), omega_low+1d-4)
 
 
            ! solve the household problem using fminsearch
@@ -164,13 +164,13 @@ contains
            ! portfolio share for housing
            omegaplus(ij, is, ia, ie, ih, ip, ia_p) = x_in
            SO(ij, is, ia, ie, ih, ip, ia_p) = -fret
-       else 
+       else
 
            ! portfolio share for housing
            omegaplus(ij, is, ia, ie, ih, ip, ia_p) = 0d0
            SO(ij, is, ia, ie, ih, ip, ia_p) = 1d-10**egam/egam
 
-       endif  
+       endif
 
     end subroutine
 
@@ -182,12 +182,12 @@ contains
         implicit none
 
         integer, intent(in) :: ij, is, ia, ie, ih, ip, ia_p
-        integer :: ial, iar, iel, ier, ipp   
+        integer :: ial, iar, iel, ier, ipp
         real*8 :: al_p, ep_p, varphi_a, varphi_e, dist, EV
 
 
         al_p  = a(ia_p) - tr(h(ih),0d0)
-        
+
         ! calculate linear interpolation for future assets
         call linint_Grow(al_p, al_l, al_u, al_grow, NA, ial, iar, varphi_a)
 
@@ -195,16 +195,16 @@ contains
         ial = min(ial, NA)
         iar = min(iar, NA)
         varphi_a = max(min(varphi_a, 1d0),0d0)
-         
+
         if (al_p >= 0d0) then
-           
-       
+
+
             if(ij+1 >= JR)then
 
                 ! get expected future utility from value function (consumption)
                 EV = (varphi_a      *(egam*V(ij+1, is, ial, ie, 0, ip))**(1d0/egam) + &
                       (1d0-varphi_a)*(egam*V(ij+1, is, iar, ie, 0, ip))**(1d0/egam))**egam/egam
-  
+
             else
 
                 do ipp = 1, NP
@@ -227,20 +227,20 @@ contains
                     EV =  varphi_a*varphi_e*(egam*V(ij_com+1, is_com, ial, iel, 0, ipp))**(1d0/egam) + &
                           varphi_a*(1d0-varphi_e)*(egam*V(ij_com+1, is_com, ial, ier, 0, ipp))**(1d0/egam) + &
                           (1d0-varphi_a)*varphi_e*(egam*V(ij_com+1, is_com, iar, iel, 0, ipp))**(1d0/egam) + &
-                          (1d0-varphi_a)*(1d0-varphi_e)*(egam*V(ij_com+1, is_com, iar, ier, 0, ipp))**(1d0/egam) 
- 
+                          (1d0-varphi_a)*(1d0-varphi_e)*(egam*V(ij_com+1, is_com, iar, ier, 0, ipp))**(1d0/egam)
+
                     EV = EV + dist*EV**egam/egam
                 enddo
             endif
 
             SR(ij, is, ia, ie, ih, ip, ia_p) = psi(ij+1, is)*EV + (1d0-psi(ij+1, is))*q_1*(1d0+max(al_p, 1d-10)/q_2)**egam/egam
 
-        else 
+        else
 
             SR(ij, is, ia, ie, ih, ip, ia_p)  = 1d-10**egam/egam
 
-        endif          
-        
+        endif
+
 
     end subroutine
 
@@ -269,7 +269,7 @@ contains
       else
 
           ! get best initial guess from future period
-          x_in = max(aplus_t(ij+1, is, ia, ie, ih, ip, 1), amin)
+          x_in = max(aplus_t(ij+1, is, ia, ie, ih, ip, 1), amin+1d-4)
 
           ! solve the household problem using rootfinding
           call fminsearch(x_in, fret, amin, a_u, cons_o)
@@ -278,7 +278,7 @@ contains
 
           omegah = varphi_a*omegaplus(ij, is, ia, ie, ih, ip, ial) + (1d0-varphi_a)*omegaplus(ij, is, ia, ie, ih, ip, iar)
           hplus_t(ij, is, ia, ie, ih, ip, 1) = omegah*x_in/(1d0-xi)
-        
+
       endif
 
       ! copy decisions
@@ -315,7 +315,7 @@ contains
       else
 
           ! get best initial guess from future period
-          x_in = max(aplus_t(ij+1, is, ia, ie, ih, ip, 0), amin)
+          x_in = max(aplus_t(ij+1, is, ia, ie, ih, ip, 0), amin+1d-4)
 
           ! solve the household problem using rootfinding
           call fminsearch(x_in, fret, amin, a_u, cons_r)
@@ -330,7 +330,7 @@ contains
       V_t(ij, is, ia, ie, ih, ip, 0) = -fret
 
   end subroutine
-  
+
 
 !   Functions for renters and owners
 
@@ -344,19 +344,19 @@ contains
        real*8, intent(in) :: h, h_p
        real*8 :: tr
 
-       
+
        tr = 0d0
-       if ((1-delta_h)*h > h_p) then 
+       if ((1-delta_h)*h > h_p) then
 
           tr = phi_1*((1-delta_h)*h - h_p)
 
        elseif (h_p > h) then
-        
+
           tr = phi_2*(h_p - h)
 
        endif
-       
-          
+
+
     end function
 
 
@@ -393,7 +393,7 @@ contains
       iar = min(iar, NA)
       varphi_a = max(min(varphi_a, 1d0), 0d0)
 
-      if (al_p > 0d0) then 
+      if (al_p > 0d0) then
 
          if(ij_com+1 >= JR)then
 
@@ -409,7 +409,7 @@ contains
              endif
 
          else
-         
+
              ! get tomorrow's earning points
              ep_p = ep(ie_com) + mu*(lambda+(1d0-lambda)*  &
                     min(y(ij_com, is_com, ia_com, ie_com, ih_com, ip_com)/ybar, 2d0))/dble(JR-1d0)
@@ -420,7 +420,7 @@ contains
              iel = min(iel, NE)
              ier = min(ier, NE)
              varphi_e = max(min(varphi_e, 1d0), 0d0)
-         
+
              do ip_p = 1, NP
 
                  ! get distributional weight
@@ -434,19 +434,19 @@ contains
                        (1d0-varphi_a)*varphi_e*varphi_h*(egam*V(ij_com+1, is_com, iar, iel, ihl, ip_p))**(1d0/egam) + &
                        (1d0-varphi_a)*varphi_e*(1d0-varphi_h)*(egam*V(ij_com+1, is_com, iar, iel, ihr, ip_p))**(1d0/egam) + &
                        (1d0-varphi_a)*(1d0-varphi_e)*varphi_h*(egam*V(ij_com+1, is_com, iar, ier, ihl, ip_p))**(1d0/egam) + &
-                       (1d0-varphi_a)*(1d0-varphi_e)*(1d0-varphi_h)*(egam*V(ij_com+1, is_com, iar, ier, ihr, ip_p))**(1d0/egam) 
- 
+                       (1d0-varphi_a)*(1d0-varphi_e)*(1d0-varphi_h)*(egam*V(ij_com+1, is_com, iar, ier, ihr, ip_p))**(1d0/egam)
+
                  EV = EV + dist*EV**egam/egam
              enddo
          endif
 
          real_o = -(psi(ij_com+1, is_com)*EV + (1d0-psi(ij_com+1, is_com))*q_1*(1d0+max(al_p+h_p, 1d-10)/q_2)**egam/egam)
 
-      else 
+      else
 
          real_o = 1000d0*abs(al_p)
 
-      endif          
+      endif
 
   end function
 
@@ -478,18 +478,18 @@ contains
       tomorrow = max(varphi_a*(egam*SO(ij_com, is_com, ia_com, ie_com, ih_com, ip_com, ial))**(1d0/egam) +  &
                (1d0-varphi_a)*(egam*SO(ij_com, is_com, ia_com, ie_com, ih_com, ip_com, iar))**(1d0/egam), 1d-10)**egam/egam
 
-      ! maximize value function for current renter 
+      ! maximize value function for current renter
       if (ih_com == 0) then
 
            ch_com = (1d0-theta)*(yg(ij_com, is_com, ia_com, ie_com, ih_com, ip_com)- a_plus)/ph
-           cons_com = (yg(ij_com, is_com, ia_com, ie_com, ih_com, ip_com) - a_plus - ph*ch_com)/p 
+           cons_com = (yg(ij_com, is_com, ia_com, ie_com, ih_com, ip_com) - a_plus - ph*ch_com)/p
            if(ch_com <= 0d0 .or. cons_com <= 0d0)then
                cons_o = -1d-10**egam/egam*(1d0+abs(cons_com))
            else
                cons_o = -((cons_com**theta*(chi*ch_com)**(1d0-theta))**egam/egam + beta*tomorrow)
-           endif                            
+           endif
 
-      ! maximize value function for current owner 
+      ! maximize value function for current owner
       else
 
            cons_com = (yg(ij_com, is_com, ia_com, ie_com, ih_com, ip_com) - a_plus)/p
@@ -532,31 +532,31 @@ contains
       ! get next period value function
       tomorrow = max(varphi_a*(egam*SR(ij_com, is_com, ia_com, ie_com, ih_com, ip_com, ial))**(1d0/egam)   +  &
                (1d0-varphi_a)*(egam*SR(ij_com, is_com, ia_com, ie_com, ih_com, ip_com, iar))**(1d0/egam), 1d-10)**egam/egam
- 
-      ! maximize value function for current renter 
+
+      ! maximize value function for current renter
       if (ih_com == 0) then
- 
+
           ch_com = (1d0-theta)*(yg(ij_com, is_com, ia_com, ie_com, ih_com, ip_com) - a_plus)/ph
           cons_com = (yg(ij_com, is_com, ia_com, ie_com, ih_com, ip_com) - a_plus - ph*ch_com)/p
- 
+
           if((ch_com <= 0d0) .or. (cons_com <= 0d0))then
              cons_r = -1d-10**egam/egam*(1d0+abs(cons_com))
           else
              cons_r = -((cons_com**theta*(chi*ch_com)**(1d0-theta))**egam/egam + beta*tomorrow)
           endif
- 
-      ! maximize value function for current owner 
+
+      ! maximize value function for current owner
       else
-      
-          cons_com = (yg(ij_com, is_com, ia_com, ie_com, ih_com, ip_com) - a_plus)/p 
+
+          cons_com = (yg(ij_com, is_com, ia_com, ie_com, ih_com, ip_com) - a_plus)/p
           ch_com = h(ih_com)
-          
+
           if(cons_com <= 0d0)then
               cons_r = -1d-10**egam/egam*(1d0+abs(cons_com))
           else
               cons_r = -((cons_com**theta*h(ih_com)**(1d0-theta))**egam/egam + beta*tomorrow)
           endif
-      endif 
+      endif
 
   end function
 
