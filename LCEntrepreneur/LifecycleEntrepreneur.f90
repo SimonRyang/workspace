@@ -184,7 +184,7 @@ contains
                      enddo
                    enddo
                enddo
-               !$omp end parralel do
+               !$omp end parallel do
 
 
                 !$omp parallel do schedule(dynamic) num_threads(numthreads)
@@ -206,7 +206,7 @@ contains
                    enddo
                  enddo
                enddo
-             !$omp end parralel do
+             !$omp end parallel do
 
                ! decision whether to be owner or renter next period
                do ia = 0, NA
