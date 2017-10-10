@@ -147,6 +147,7 @@ contains
 
                     ! with bequest motive we assume future worker
                     call solve_consumption_w(JJ, ia, ip, ik, 1, 1)
+                    call solve_consumption_e(JJ, ia, ip, ik, 1, 1)
 
                     X_plus(JJ, ia, ip, ik, :, :) = X_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     a_plus(JJ, ia, ip, ik, :, :) = a_plus_t(JJ, ia, ip, ik, 1, 1, 0)
@@ -175,12 +176,7 @@ contains
                              call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
 
                              ! next period entrepreneur
-                             if (ij < JR-1) then
-                               call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
-                             else
-                               S(ij, ix_p, ip_p, ik, iw, ie, 1) = S(JJ, ia, ip, ik, iw, ie, 0)
-                               omega_k(ij, ix_p, ip_p, ik, iw, ie) = 0d0
-                             endif
+                             call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
 
                           enddo
                        enddo
@@ -202,17 +198,7 @@ contains
                          call solve_consumption_w(ij, ia, ip, ik, iw, ie)
 
                          ! next period entrpreneur
-                         if (ij < JR-1) then
-                           call solve_consumption_e(ij, ia, ip, ik, iw, ie)
-                         else
-                           X_plus_t(ij, ia, ip, ik, iw, ie, 1) = X_plus_t(JJ, ia, ip, ik, iw, ie, 0)
-                           a_plus_t(ij, ia, ip, ik, iw, ie, 1) = a_plus_t(JJ, ia, ip, ik, iw, ie, 0)
-                           ep_plus_t(ij, ia, ip, ik, iw, ie, 1) = ep_plus_t(JJ, ia, ip, ik, iw, ie, 0)
-                           k_plus_t(ij, ia, ip, ik, iw, ie, 1) = k_plus_t(JJ, ia, ip, ik, iw, ie, 0)
-                           c_t(ij, ia, ip, ik, iw, ie, 1) = c_t(JJ, ia, ip, ik, iw, ie, 0)
-                           l_t(ij, ia, ip, ik, iw, ie, 1) = l_t(JJ, ia, ip, ik, iw, ie, 0)
-                           V_t(ij, ia, ip, ik, iw, ie, 1) = V_t(JJ, ia, ip, ik, iw, ie, 0)
-                         endif
+                         call solve_consumption_e(ij, ia, ip, ik, iw, ie)
 
                        enddo
                      enddo
