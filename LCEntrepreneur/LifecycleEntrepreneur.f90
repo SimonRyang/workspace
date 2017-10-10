@@ -173,11 +173,16 @@ contains
                            do iw = 1, NW
                              do ie = 1, NE
 
-                             ! next period entrepreneur
-                             call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
-
                              ! next period worker
                              call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
+
+                             ! next period entrepreneur
+                             if (ij < JR) then
+                               call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
+                             else
+                               S(ij, ix_p, ip_p, ik, iw, ie, 1) = S(JJ, ia, ip, ik, 1, 1, 0)
+                               omega_k(ij, ix_p, ip_p, ik, iw, ie) = 0d0
+                             endif
 
                           enddo
                        enddo
@@ -195,11 +200,11 @@ contains
                     do iw = 1, NW
                        do ie = 1, NE
 
-                         ! next period entrpreneur
-                         call solve_consumption_e(ij, ia, ip, ik, iw, ie)
-
                          ! next period worker
                          call solve_consumption_w(ij, ia, ip, ik, iw, ie)
+
+                         ! next period entrpreneur
+                         call solve_consumption_e(ij, ia, ip, ik, iw, ie)
 
                        enddo
                      enddo
