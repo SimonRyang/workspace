@@ -214,6 +214,7 @@ contains
                            c_t(ij, ia, ip, ik, iw, ie, 1) = c_t(JJ, ia, ip, ik, iw, ie, 0)
                            l_t(ij, ia, ip, ik, iw, ie, 1) = l_t(JJ, ia, ip, ik, iw, ie, 0)
                            V_t(ij, ia, ip, ik, iw, ie, 1) = V_t(JJ, ia, ip, ik, iw, ie, 0)
+                         endif
                        enddo
 
                        enddo
