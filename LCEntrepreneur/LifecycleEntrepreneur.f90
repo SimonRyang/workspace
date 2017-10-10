@@ -246,6 +246,8 @@ contains
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
+            write(*,*)sum(l(ij, :, :, :, :, :))
+
             ! if (ij>40) cycle
             !
             ! ia_com = 4
@@ -390,13 +392,11 @@ contains
                     iar = min(iar, NA)
                     varphi_a = max(min(varphi_a, 1d0),0d0)
 
-                    ! restrict values to grid just in case
                     ipl = min(ipl, NP)
                     ipr = min(ipr, NP)
                     varphi_ep = max(min(varphi_ep, 1d0), 0d0)
 
                     if(k_plus(ij-1, ia, ip, ik, iw, ie) > 0d0) then
-                      ! restrict values to grid just in case
                       ikl = min(ikl+1, NK)
                       ikr = min(ikr+1, NK)
                       varphi_k = max(min(varphi_k, 1d0), 0d0)
