@@ -207,6 +207,7 @@ contains
                enddo
              !$omp end parallel do
 
+                !$omp parallel do schedule(dynamic) num_threads(numthreads)
                ! decision whether to be owner or renter next period
                do ia = 0, NA
                  do ip = 0, NP
@@ -238,6 +239,7 @@ contains
                     enddo
                   enddo
                enddo
+               !$omp end parallel do
 
              endif
 
@@ -329,6 +331,7 @@ contains
 
       integer :: ia, ip, ik, iw, iw_p, ie, ie_p
 
+      !$omp parallel do schedule(dynamic,1) private(ie_p, iw_p) num_threads(numthreads)
       do ia = 0, NA
         do ip = 0, NP
           do ik = 0, NK
@@ -348,6 +351,7 @@ contains
           enddo
         enddo
       enddo
+      !$omp end parallel do
 
     end subroutine
 
