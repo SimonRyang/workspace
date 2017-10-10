@@ -540,7 +540,7 @@ contains
         call plot(dble(ages), c_coh(:, 0), legend='Consumption  - Worker')
         call plot(dble(ages), a_coh(:, 0), legend='Assets       - Worker')
         call plot(dble(ages), y_coh(:, 0), legend='Labor Income - Worker')
-        call plot(dble(ages), l_coh(:, 1), legend='Labor        - Worker')
+        call plot(dble(ages), l_coh(:, 0), legend='Labor        - Worker')
         call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
     end subroutine
