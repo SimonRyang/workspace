@@ -166,7 +166,7 @@ contains
 
                ! get optimal share of wealth invested into capital
 
-                  !omp parallel do collapse(1) schedule(dynamic) num_threads(numthreads)
+                  !$omp parallel do schedule(dynamic) num_threads(numthreads)
                    do ix_p = 0, NX
                      do ip_p = 0, NP
                          do ik = 0, NK
@@ -184,10 +184,10 @@ contains
                      enddo
                    enddo
                enddo
-               !omp end parralel do
+               !$omp end parralel do
 
 
-                !omp parallel do collapse(1) schedule(dynamic) num_threads(numthreads)
+                !$omp parallel do schedule(dynamic) num_threads(numthreads)
                ! solve the consumption savings problem
                do ia = 0, NA
                  do ip = 0, NP
@@ -206,7 +206,7 @@ contains
                    enddo
                  enddo
                enddo
-             !omp end parralel do
+             !$omp end parralel do
 
                ! decision whether to be owner or renter next period
                do ia = 0, NA
