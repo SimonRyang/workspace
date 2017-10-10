@@ -83,12 +83,10 @@ contains
         enddo
 
         ! discretize eta shocks
-        call discretize_AR(rho, 0d0, sigma_eta, eta, pi_eta, dist_eta)
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
         eta = exp(eta)
 
         ! discretize theta shocks
-        call discretize_AR(rho, 0d0, sigma_theta, theta, pi_theta, dist_theta)
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
 
         theta = exp(theta)
@@ -231,7 +229,7 @@ contains
                        do ie = 1, NE
 
                          ! decision on whether to be homeowner or renter next period
-                          if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0) .and. .false.) then
+                          if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then
                                 X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 a_plus(ij, ia, ip, ik, iw, ie) = a_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 ep_plus(ij, ia, ip, ik, iw, ie) = ep_plus_t(ij, ia, ip, ik, iw, ie, 1)
