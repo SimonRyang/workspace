@@ -20,6 +20,7 @@ program LifecycleEntrepreneur
     use entrepreneur_foc
     use worker_solve
     use worker_foc
+    use omp_lib
 
     implicit none
 
