@@ -233,6 +233,9 @@ contains
                              V(ij, ia, ip, ik, iw, ie) = V_t(ij, ia, ip, ik, iw, ie, 0)
                            endif
 
+                           if (l(ij, ia, ip, ik, iw, ie) > 1d0) write(*,*)'1: ', ij, ia, ip, ik, iw, ie
+                           if (l(ij, ia, ip, ik, iw, ie) < 0d0) write(*,*)'0: ', ij, ia, ip, ik, iw, ie
+
                         enddo
                        enddo
                     enddo
@@ -245,7 +248,6 @@ contains
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
-            write(*,*)sum(l(ij, :, :, :, :, :))
 
             ! if (ij>40) cycle
             !
