@@ -93,7 +93,7 @@ module globals
     real*8 :: w, eff(JJ), pen(JJ+1, 0:NP), psi(JJ+1)
 
     ! cohort aggregate variables
-    real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), o_coh(JJ)
+    real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), l_coh(JJ, 0:1), o_coh(JJ)
     real*8 :: a_coh(JJ, 0:1), k_coh(JJ)
 
     ! different grids to discretize the state space

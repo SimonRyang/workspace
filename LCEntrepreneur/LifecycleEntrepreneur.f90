@@ -447,7 +447,7 @@ contains
         integer :: ij, ia, ip, ik, iw, ie
 
         ! calculate cohort averages
-        c_coh = 0d0; y_coh = 0d0; o_coh = 0d0; a_coh = 0d0; k_coh = 0d0
+        c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; k_coh = 0d0
 
         do ij = 1, JJ
 
@@ -461,14 +461,16 @@ contains
                       if (m(ij, ia, ip, ik, iw, ie) <= 0d0) cycle
 
                       if(ik == 0) then
-                        c_coh(ij, 0) = c_coh(ij,0) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
-                        a_coh(ij, 0) = a_coh(ij,0) + a(ia)*m(ij, ia, ip, ik, iw, ie)
+                        c_coh(ij, 0) = c_coh(ij, 0) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
+                        a_coh(ij, 0) = a_coh(ij, 0) + a(ia)*m(ij, ia, ip, ik, iw, ie)
+                        l_coh(ij, 0) = l_coh(ij, 0) + l(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
                         y_coh(ij, 0) = y_coh(ij, 0) + w*eff(ij)*eta(iw)*l(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
                       else
-                        c_coh(ij, 1) = c_coh(ij,1) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
-                        a_coh(ij, 1) = a_coh(ij,1) + a(ia)*m(ij, ia, ip, ik, iw, ie)
+                        c_coh(ij, 1) = c_coh(ij, 1) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
+                        a_coh(ij, 1) = a_coh(ij, 1) + a(ia)*m(ij, ia, ip, ik, iw, ie)
                         k_coh(ij) = k_coh(ij) + k(ik)*m(ij, ia, ip, ik, iw, ie)
                         y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ij, ia, ip, ik, iw, ie))**(1d0-alpha))**nu*m(ij, ia, ip, ik, iw, ie)
+                        l_coh(ij, 1) = l_coh(ij, 1) + l(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
                         o_coh(ij) = o_coh(ij) + m(ij, ia, ip, ik, iw, ie)
                       endif
                     enddo
@@ -509,6 +511,7 @@ contains
         call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Entrepreneur')
         call plot(dble(ages), a_coh(:, 1), legend='Assets       - Entrepreneur')
         call plot(dble(ages), y_coh(:, 1), legend='Income       - Entrepreneur')
+        call plot(dble(ages), l_coh(:, 1), legend='Labor        - Entrepreneur')
         call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
         call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
@@ -516,6 +519,7 @@ contains
         call plot(dble(ages), c_coh(:, 0), legend='Consumption  - Worker')
         call plot(dble(ages), a_coh(:, 0), legend='Assets       - Worker')
         call plot(dble(ages), y_coh(:, 0), legend='Labor Income - Worker')
+        call plot(dble(ages), l_coh(:, 1), legend='Labor        - Worker')
         call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
     end subroutine
