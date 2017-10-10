@@ -175,10 +175,10 @@ contains
                              call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
 
                              ! next period entrepreneur
-                             if (ij < JR) then
+                             if (ij < JR-1) then
                                call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
                              else
-                               S(ij, ix_p, ip_p, ik, iw, ie, 1) = S(JJ, ia, ip, ik, 1, 1, 0)
+                               S(ij, ix_p, ip_p, ik, iw, ie, 1) = S(JJ, ia, ip, ik, iw, ie, 0)
                                omega_k(ij, ix_p, ip_p, ik, iw, ie) = 0d0
                              endif
 
@@ -202,7 +202,7 @@ contains
                          call solve_consumption_w(ij, ia, ip, ik, iw, ie)
 
                          ! next period entrpreneur
-                         if (ij <JR) then
+                         if (ij < JR-1) then
                            call solve_consumption_e(ij, ia, ip, ik, iw, ie)
                          else
                            X_plus_t(ij, ia, ip, ik, iw, ie, 1) = X_plus_t(JJ, ia, ip, ik, iw, ie, 0)
@@ -229,7 +229,7 @@ contains
                        do ie = 1, NE
 
                          ! decision on whether to be homeowner or renter next period
-                          if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0) .and. .false.) then
+                          if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then
                                 X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 a_plus(ij, ia, ip, ik, iw, ie) = a_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 ep_plus(ij, ia, ip, ik, iw, ie) = ep_plus_t(ij, ia, ip, ik, iw, ie, 1)
