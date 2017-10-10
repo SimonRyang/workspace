@@ -229,7 +229,7 @@ contains
                        do ie = 1, NE
 
                          ! decision on whether to be homeowner or renter next period
-                          if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then
+                          if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0) .and. .false.) then
                                 X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 a_plus(ij, ia, ip, ik, iw, ie) = a_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 ep_plus(ij, ia, ip, ik, iw, ie) = ep_plus_t(ij, ia, ip, ik, iw, ie, 1)
