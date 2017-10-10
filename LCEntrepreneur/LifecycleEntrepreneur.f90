@@ -507,6 +507,8 @@ contains
             o_coh(ij) = o_coh(ij)/sum(m(ij, :, :, :, :, :))
             k_coh(ij) = k_coh(ij)/sum(m(ij, :, :, 1:NK, :, :))
 
+            write(*,*)l_coh(ij, 0)
+
         enddo
 
     end subroutine
