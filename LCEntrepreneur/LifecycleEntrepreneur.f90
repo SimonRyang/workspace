@@ -204,7 +204,17 @@ contains
                          call solve_consumption_w(ij, ia, ip, ik, iw, ie)
 
                          ! next period entrpreneur
-                         call solve_consumption_e(ij, ia, ip, ik, iw, ie)
+                         if (ij <JR) then
+                           call solve_consumption_e(ij, ia, ip, ik, iw, ie)
+                         else
+                           X_plus_t(ij, ia, ip, ik, iw, ie, 1) = X_plus_t(JJ, ia, ip, ik, iw, ie, 0)
+                           a_plus_t(ij, ia, ip, ik, iw, ie, 1) = a_plus_t(JJ, ia, ip, ik, iw, ie, 0)
+                           ep_plus_t(ij, ia, ip, ik, iw, ie, 1) = ep_plus_t(JJ, ia, ip, ik, iw, ie, 0)
+                           k_plus_t(ij, ia, ip, ik, iw, ie, 1) = k_plus_t(JJ, ia, ip, ik, iw, ie, 0)
+                           c_t(ij, ia, ip, ik, iw, ie, 1) = c_t(JJ, ia, ip, ik, iw, ie, 0)
+                           l_t(ij, ia, ip, ik, iw, ie, 1) = l_t(JJ, ia, ip, ik, iw, ie, 0)
+                           V_t(ij, ia, ip, ik, iw, ie, 1) = V_t(JJ, ia, ip, ik, iw, ie, 0)
+                       enddo
 
                        enddo
                      enddo
