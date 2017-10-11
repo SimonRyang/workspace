@@ -440,6 +440,8 @@ contains
             enddo
           enddo
 
+          write(*,*)sum(m(ij, :, 0, :, :, :)), sum(m(ij, :, 1, :, :, :)), sum(m(ij, :, 2, :, :, :))
+
         enddo
 
     end subroutine
