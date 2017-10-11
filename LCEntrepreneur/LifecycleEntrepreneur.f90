@@ -7,19 +7,19 @@
 !
 include "toolbox.f90"
 include "globals.f90"
-include "worker_solve.f90"
 include "worker_foc.f90"
-include "entrepreneur_solve.f90"
+include "worker_solve.f90"
 include "entrepreneur_foc.f90"
+include "entrepreneur_solve.f90"
 
 program LifecycleEntrepreneur
 
     ! load modules
     use globals
-    use entrepreneur_solve
     use entrepreneur_foc
-    use worker_solve
+    use entrepreneur_solve
     use worker_foc
+    use worker_solve
     use omp_lib
 
     implicit none
