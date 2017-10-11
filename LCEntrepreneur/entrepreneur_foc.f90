@@ -101,13 +101,19 @@ contains
       ! maximize value function for current worker (next period entrepreneur)
       if (ik_com == 0) then
 
-        if (income /= w*eff(ij_com)*eta(iw_com)*lab_com)write(*,*)'Error1!'
+        if (income /= w*eff(ij_com)*eta(iw_com)*lab_com) then
+          write(*,*)'Error1!'
+          call sleep(1)
+      endif
         cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com)*lab_com + pen(ij_com, ip_com) - X_plus
         p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
 
       ! maximize value function for current owner (next period owner)
       else
-        if (income /= theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com))write(*,*)'Error2!'
+        if (income /= theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)) then
+          write(*,*)'Error2!'
+          call sleep(1)
+        endif
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com, ip_com) - X_plus
         p_plus_com = (p(ip_com)*dble(ij_com-1) + phi*mu*(lambda + (1d0-lambda)*min(theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu, p_u)))/dble(ij_com)
 
