@@ -30,12 +30,15 @@ contains
       lab_com = x_in(2)
 
       ! current occupation
-      io = int(ik > 0)
+      io = int(ik_com > 0)
 
       income = (1d0-dble(io))*w*eff(ij_com)*eta(iw_com)*lab_com + &
                dble(io)*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
       p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*dble(io))*mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
+
+
+      cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - X_plus
 
       if (ij_com >= JR) then
         p_plus_com = p(ip_com)
