@@ -183,7 +183,7 @@ contains
                !$omp end parallel do
 
 
-                !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij) default(none)
+                !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij)
                ! solve the consumption savings problem
                do ia = 0, NA
                  do ip = 0, NP
