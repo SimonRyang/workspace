@@ -27,8 +27,8 @@ program LifecycleEntrepreneur
     integer, parameter :: numthreads = 56
 
     ! set government variables
-    mu     = 1d0
-    lambda = 1d0
+    mu     = 0d0
+    lambda = 0d0
     phi    = 0d0
 
     ! initialize remaining variables
