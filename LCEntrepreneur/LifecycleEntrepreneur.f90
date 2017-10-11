@@ -137,9 +137,7 @@ contains
         ! solve household problem recursively
 
         do ij = JJ, 1, -1
-
-          write(*,*)abs(dble(ij<JJ))
-
+          
             if(ij == JJ)then
 
               omega_k(JJ, :, :, :, :, :) = 0d0
