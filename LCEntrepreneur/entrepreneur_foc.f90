@@ -83,7 +83,7 @@ contains
 
       ! calculate tomorrow's assets
       X_plus  = x_in(1)
-      lab_com = x_in(2)
+      lab_com = max(x_in(2), 0d0)
 
       ! current occupation
       io = abs(ik_com > 0)
