@@ -84,7 +84,7 @@ contains
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
-          pen(JR:JJ, ip) = ep(ip)*kappa*w*eff(JR-1)
+          pen(JR:JJ, ip) = p(ip)*kappa*w*eff(JR-1)
         enddo
 
         ! discretize eta shocks
