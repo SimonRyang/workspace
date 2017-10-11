@@ -201,7 +201,7 @@ module globals
       if (X(ix_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
          ! get best guess for the root of foc_real
-         if(ix_p > 0)then
+         if(ix_p > 0 .and. .false.)then
             x_in = omega_k(ij, ix_p-1, ip_p, ik, iw, ie)
          else
             x_in = 1d-4

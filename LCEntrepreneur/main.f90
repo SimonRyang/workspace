@@ -165,15 +165,15 @@ contains
                   !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij) default(none)
                    do ix_p = 0, NX
                      do ip_p = 0, NP
-                         do ik = 0, NK
-                           do iw = 1, NW
-                             do ie = 1, NE
+                       do ik = 0, NK
+                         do iw = 1, NW
+                           do ie = 1, NE
 
-                             ! next period worker
-                             call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
+                           ! next period worker
+                           call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
 
-                             ! next period entrepreneur
-                             call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
+                           ! next period entrepreneur
+                           call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
 
                           enddo
                        enddo
