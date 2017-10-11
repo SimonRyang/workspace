@@ -78,20 +78,20 @@ contains
       real*8, intent(in) :: x_in(:)
 
       ! variable declarations
-      real*8 :: cons_e, X_plus, income, tomorrow, varphi_x, varphi_p
-      integer :: io, ixl_p, ixr_p, ipl_p, ipr_p
+      real*8 :: cons_e, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
+      integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
       ! calculate tomorrow's assets
       X_plus  = x_in(1)
       lab_com = max(x_in(2), 0d0)
 
       ! current occupation
-      io = abs(ik_com > 0)
+      ind_o = abs(dble(ik_com > 0))
 
-      income = (1d0-dble(io))*w*eff(ij_com)*eta(iw_com)*lab_com + &
-               dble(io)*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
+      income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
+               ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
-      p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*dble(io))*mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
+      p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
 
 
       cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - X_plus
