@@ -174,7 +174,7 @@ module globals
       x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, 0), 0.33d0)
 
       ! solve the household problem using rootfinding
-      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_w)
+      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), value_func)
 
       ! copy decisions
       X_plus_t(ij, ia, ip, ik, iw, ie, 0) = x_in(1)
@@ -241,7 +241,7 @@ module globals
       x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, 1), 0.33d0)
 
       ! solve the household problem using rootfinding
-      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_w)
+      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), value_func)
 
       call linint_Grow(x_in(1), x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
       call linint_Equi(p_plus_com, p_l, p_u, NP, ipl_p, ipr_p, varphi_p)
@@ -325,7 +325,7 @@ module globals
   end function
 
     ! the first order condition regarding consumption
-    function cons_w(x_in)
+    function value_func(x_in)
 
         implicit none
 
@@ -333,7 +333,7 @@ module globals
         real*8, intent(in) :: x_in(:)
 
         ! variable declarations
-        real*8 :: cons_w, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
+        real*8 :: value_func, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
         integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
         ! calculate tomorrow's assets
@@ -375,13 +375,13 @@ module globals
                        (1d0-varphi_x)*(1d0-varphi_p)  *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
 
         if(cons_com <= 0d0)then
-           cons_w = -1d-18**egam/egam*(1d0+abs(cons_com))
+           value_func = -1d-18**egam/egam*(1d0+abs(cons_com))
         elseif(lab_com < 0d0) then
-          cons_w = -1d-18**egam/egam*(1d0+abs(lab_com))
+          value_func = -1d-18**egam/egam*(1d0+abs(lab_com))
         elseif(lab_com >= 1d0) then
-          cons_w = -1d-18**egam/egam*lab_com
+          value_func = -1d-18**egam/egam*lab_com
         else
-           cons_w = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
+           value_func = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
         endif
 
     end function
