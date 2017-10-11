@@ -10,7 +10,6 @@ module entrepreneur_solve
     use toolbox
     use globals
     use entrepreneur_foc
-    use worker_foc
 
     implicit none
 
