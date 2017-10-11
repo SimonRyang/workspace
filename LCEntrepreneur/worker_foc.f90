@@ -32,11 +32,6 @@ contains
       ! current occupation
       io = abs(ik_com > 0)
 
-      if (ik_com>0) then
-        write(*,*)io
-      call sleep(3)
-    endif
-
       income = (1d0-dble(io))*w*eff(ij_com)*eta(iw_com)*lab_com + &
                dble(io)*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
