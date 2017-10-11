@@ -7,10 +7,10 @@
 !
 include "toolbox.f90"
 include "globals.f90"
-include "entrepreneur_foc.f90"
-include "entrepreneur_solve.f90"
-include "worker_foc.f90"
 include "worker_solve.f90"
+include "worker_foc.f90"
+include "entrepreneur_solve.f90"
+include "entrepreneur_foc.f90"
 
 program LifecycleEntrepreneur
 
