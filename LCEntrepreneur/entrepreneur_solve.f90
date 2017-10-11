@@ -10,6 +10,7 @@ module entrepreneur_solve
     use toolbox
     use globals
     use entrepreneur_foc
+    use renter_foc
 
     implicit none
 
