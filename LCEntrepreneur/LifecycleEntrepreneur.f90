@@ -138,7 +138,7 @@ contains
 
         do ij = JJ, 1, -1
 
-          write(*,*)dble(ij<JJ)
+          write(*,*)abs(dble(ij<JJ))
 
             if(ij == JJ)then
 
