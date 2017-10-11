@@ -1,4 +1,4 @@
-p!##############################################################################
+!##############################################################################
 ! PROGRAM Portfolio Choice with housing decision
 !
 ! copyright: Hans Fehr and Maurice Hofmann
