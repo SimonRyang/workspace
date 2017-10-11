@@ -22,7 +22,7 @@ contains
       real*8, intent(in) :: x_in(:)
 
       ! variable declarations
-      real*8 :: cons_w, X_plus, tomorrow, varphi_x, varphi_p
+      real*8 :: cons_w, X_plus, wage, profit, tomorrow, varphi_x, varphi_p
       integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
       ! calculate tomorrow's assets

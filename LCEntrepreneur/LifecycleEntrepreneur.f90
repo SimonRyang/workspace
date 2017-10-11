@@ -28,7 +28,7 @@ program LifecycleEntrepreneur
 
     ! set government variables
     mu     = 1d0
-    lambda = 1d0
+    lambda = 0d0
     phi    = 0d0
 
     ! initialize remaining variables
@@ -67,6 +67,8 @@ contains
         ! wage rate for effective labor and rental price
         w = 1d0
 
+
+        write(*,*)dble(w>0d0)
         ! set survival probabilities
         open(301, file='sp.dat')
         do ij = 1, JJ+1
@@ -439,8 +441,6 @@ contains
               enddo
             enddo
           enddo
-
-          write(*,'(7f10.7)')sum(m(ij, :, :, :, :, :)), sum(m(ij, :, 0, :, :, :)), sum(m(ij, :, 1, :, :, :)), sum(m(ij, :, 2, :, :, :)), sum(m(ij, :, 3, :, :, :)), sum(m(ij, :, 4, :, :, :)), sum(m(ij, :, 7, :, :, :))
 
         enddo
 
