@@ -29,7 +29,7 @@ program LifecycleEntrepreneur
     ! set government variables
     mu     = 1d0
     lambda = 0d0
-    phi    = 0d0
+    phi    = 1d0
 
     ! initialize remaining variables
     call initialize()
@@ -440,7 +440,7 @@ contains
             enddo
           enddo
 
-          write(*,'(7f8.5)')sum(m(ij, :, :, :, :, :)), sum(m(ij, :, 0, :, :, :)), sum(m(ij, :, 1, :, :, :)), sum(m(ij, :, 2, :, :, :)), sum(m(ij, :, 3, :, :, :)), sum(m(ij, :, 4, :, :, :)), sum(m(ij, :, 7, :, :, :))
+          write(*,'(7f10.7)')sum(m(ij, :, :, :, :, :)), sum(m(ij, :, 0, :, :, :)), sum(m(ij, :, 1, :, :, :)), sum(m(ij, :, 2, :, :, :)), sum(m(ij, :, 3, :, :, :)), sum(m(ij, :, 4, :, :, :)), sum(m(ij, :, 7, :, :, :))
 
         enddo
 
