@@ -102,7 +102,7 @@ contains
       if (ik_com == 0) then
 
         if (income /= w*eff(ij_com)*eta(iw_com)*lab_com) then
-          write(*,*)'Error1!'
+          write(*,*)'Error1!', io, income - w*eff(ij_com)*eta(iw_com)*lab_com
           call sleep(1)
       endif
         cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com)*lab_com + pen(ij_com, ip_com) - X_plus
@@ -111,7 +111,7 @@ contains
       ! maximize value function for current owner (next period owner)
       else
         if (income /= theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)) then
-          write(*,*)'Error2!'
+          write(*,*)'Error2!', io, income - theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
           call sleep(1)
         endif
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com, ip_com) - X_plus
