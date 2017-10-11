@@ -1,4 +1,4 @@
-MAINFILE = LifecycleEntrepreneur
+MAINFILE = main
 CFLAGS = -qopenmp -O2
 CC = ~/intel/bin/ifort
 TARGET = Build/prog
