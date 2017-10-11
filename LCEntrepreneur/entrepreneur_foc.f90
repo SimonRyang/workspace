@@ -144,7 +144,11 @@ contains
                      (1d0-varphi_x)*(1d0-varphi_p)  *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
 
       if(cons_com <= 0d0)then
-         cons_e = -1d-10**egam/egam*(1d0+abs(cons_com))
+         cons_e = -1d-18**egam/egam*(1d0+abs(cons_com))
+      elseif(lab_com < 0d0) then
+        cons_e = -1d-18**egam/egam*(1d0+abs(lab_com))
+      elseif(lab_com >= 1d0) then
+        cons_e = -1d-18**egam/egam*lab_com
       else
          cons_e = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
       endif
