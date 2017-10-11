@@ -91,27 +91,12 @@ contains
       income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
                ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
-      p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
-
-
       cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - X_plus
-
-
-      ! 
-      ! ! maximize value function for current worker (next period entrepreneur)
-      ! if (ik_com == 0) then
-      !   cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com)*lab_com + pen(ij_com, ip_com) - X_plus
-      !   p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
-      !
-      ! ! maximize value function for current owner (next period owner)
-      ! else
-      !   cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com, ip_com) - X_plus
-      !   p_plus_com = (p(ip_com)*dble(ij_com-1) + phi*mu*(lambda + (1d0-lambda)*min(theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu, p_u)))/dble(ij_com)
-      !
-      ! endif
 
       if (ij_com >= JR) then
         p_plus_com = p(ip_com)
+      else
+        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
       endif
 
       ! calculate linear interpolation for future part of first order condition
