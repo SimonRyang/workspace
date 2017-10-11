@@ -79,7 +79,7 @@ contains
 
       ! variable declarations
       real*8 :: cons_e, X_plus, income, tomorrow, varphi_x, varphi_p
-      integer :: ixl_p, ixr_p, ipl_p, ipr_p
+      integer :: io, ixl_p, ixr_p, ipl_p, ipr_p
 
       ! calculate tomorrow's assets
       X_plus  = x_in(1)
