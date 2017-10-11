@@ -15,7 +15,7 @@ module entrepreneur_foc
 contains
 
   ! the first order condition with respect to next period real estate
-  function real_o(x_in)
+  function inv_o(x_in)
 
       implicit none
 
@@ -23,7 +23,7 @@ contains
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: real_o, ad_p, a_p, k_p, EV_temp, S_temp, omega_k, varphi_k, varphi_a, a_temp
+      real*8 :: inv_o, ad_p, a_p, k_p, EV_temp, S_temp, omega_k, varphi_k, varphi_a, a_temp
       integer :: ikl_p, ikr_p, ial_p, iar_p
 
       ! store real estate share
@@ -64,7 +64,7 @@ contains
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
-      real_o = - S_temp + 100d0*abs(a_p-a_temp)
+      inv_o = - S_temp + 100d0*abs(a_p-a_temp)
 
   end function
 

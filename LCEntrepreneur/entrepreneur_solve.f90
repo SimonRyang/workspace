@@ -10,7 +10,7 @@ module entrepreneur_solve
     use toolbox
     use globals
     use entrepreneur_foc
-    use renter_foc
+    use worker_foc
 
     implicit none
 
@@ -37,7 +37,7 @@ contains
            endif
 
            ! solve the household problem using fminsearch
-           call fminsearch(x_in, fret, 0d0, 1d0, real_o)
+           call fminsearch(x_in, fret, 0d0, 1d0, inv_o)
 
            ! portfolio share for capital
            omega_k(ij, ix_p, ip_p, ik, iw, ie) = x_in
