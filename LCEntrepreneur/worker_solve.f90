@@ -55,7 +55,7 @@ contains
       real*8 :: x_in(2), fret
 
       ! set up communication variables
-      ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie, io_p_com = 0
+      ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = 0
 
       ! get best initial guess from future period
       x_in(1) = max(X_plus_t(ij+1, ia, ip, ik, iw, ie, 0), 1d-4)
