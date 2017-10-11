@@ -27,7 +27,7 @@ program LifecycleEntrepreneur
     integer, parameter :: numthreads = 56
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 0d0
     phi    = 0d0
 
@@ -440,7 +440,7 @@ contains
             enddo
           enddo
 
-          write(*,*)sum(m(ij, :, 0, :, :, :)), sum(m(ij, :, 1, :, :, :)), sum(m(ij, :, 2, :, :, :))
+          write(*,*)sum(m(ij, :, :, :, :, :)), sum(m(ij, :, 0, :, :, :)), sum(m(ij, :, 1, :, :, :)), sum(m(ij, :, 2, :, :, :))
 
         enddo
 
