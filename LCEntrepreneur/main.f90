@@ -197,21 +197,6 @@ contains
                          ! next period entrpreneur
                          call solve_consumption_e(ij, ia, ip, ik, iw, ie)
 
-                       enddo
-                     enddo
-                   enddo
-                 enddo
-               enddo
-             !$omp end parallel do
-
-                !$omp parallel do schedule(dynamic) num_threads(numthreads)
-               ! decision whether to be owner or renter next period
-               do ia = 0, NA
-                 do ip = 0, NP
-                   do ik = 0, NK
-                     do iw = 1, NW
-                       do ie = 1, NE
-
                          ! decision on whether to be homeowner or renter next period
                           if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then
                                 X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 1)
@@ -231,12 +216,12 @@ contains
                              V(ij, ia, ip, ik, iw, ie) = V_t(ij, ia, ip, ik, iw, ie, 0)
                            endif
 
-                        enddo
                        enddo
-                    enddo
-                  enddo
+                     enddo
+                   enddo
+                 enddo
                enddo
-               !$omp end parallel do
+             !$omp end parallel do
 
              endif
 
