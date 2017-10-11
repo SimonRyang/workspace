@@ -198,7 +198,7 @@ contains
                          call solve_consumption_e(ij, ia, ip, ik, iw, ie)
 
                          ! decision on whether to be homeowner or renter next period
-                          if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0) .and. .false.) then
+                          if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then
                                 X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 a_plus(ij, ia, ip, ik, iw, ie) = a_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 p_plus(ij, ia, ip, ik, iw, ie) = p_plus_t(ij, ia, ip, ik, iw, ie, 1)
