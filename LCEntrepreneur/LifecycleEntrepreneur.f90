@@ -69,6 +69,9 @@ contains
 
 
         write(*,*)dble(w>0d0)
+        write(*,*)dble(w>=0d0)
+        write(*,*)dble(w==0d0)
+        write(*,*)dble(w==1d0)
         ! set survival probabilities
         open(301, file='sp.dat')
         do ij = 1, JJ+1
