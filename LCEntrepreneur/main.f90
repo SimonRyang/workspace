@@ -162,7 +162,7 @@ contains
 
                ! get optimal share of wealth invested into capital
 
-                  !$omp parallel do schedule(dynamic) num_threads(numthreads)
+                  !$omp parallel do schedule(dynamic) num_threads(1)
                    do ix_p = 0, NX
                      do ip_p = 0, NP
                          do ik = 0, NK
@@ -204,7 +204,7 @@ contains
                enddo
              !$omp end parallel do
 
-                !$omp parallel do schedule(dynamic) num_threads(numthreads)
+                !$omp parallel do schedule(dynamic) num_threads(1)
                ! decision whether to be owner or renter next period
                do ia = 0, NA
                  do ip = 0, NP
