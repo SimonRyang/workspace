@@ -440,7 +440,7 @@ contains
             enddo
           enddo
 
-          write(*,*)sum(m(ij, :, :, :, :, :)), sum(m(ij, :, 0, :, :, :)), sum(m(ij, :, 1, :, :, :)), sum(m(ij, :, 2, :, :, :))
+          write(*,'(7f8.5)')sum(m(ij, :, :, :, :, :)), sum(m(ij, :, 0, :, :, :)), sum(m(ij, :, 1, :, :, :)), sum(m(ij, :, 2, :, :, :)), sum(m(ij, :, 3, :, :, :)), sum(m(ij, :, 4, :, :, :)), sum(m(ij, :, 7, :, :, :))
 
         enddo
 
