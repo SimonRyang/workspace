@@ -67,7 +67,7 @@ contains
       ! copy decisions
       X_plus_t(ij, ia, ip, ik, iw, ie, 0) = x_in(1)
       a_plus_t(ij, ia, ip, ik, iw, ie, 0) = x_in(1)
-      ep_plus_t(ij, ia, ip, ik, iw, ie, 0) = ep_plus_com
+      p_plus_t(ij, ia, ip, ik, iw, ie, 0) = p_plus_com
       k_plus_t(ij, ia, ip, ik, iw, ie, 0) = 0d0
       c_t(ij, ia, ip, ik, iw, ie, 0) = cons_com
       l_t(ij, ia, ip, ik, iw, ie, 0) = x_in(2)

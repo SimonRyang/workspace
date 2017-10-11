@@ -52,14 +52,13 @@ contains
     end subroutine
 
 
-
     ! solve the household's consumption-savings decision
     subroutine solve_consumption_e(ij, ia, ip, ik, iw, ie)
 
         implicit none
 
         integer, intent(in) :: ij, ia, ip, ik, iw, ie
-        real*8 :: x_in(2), fret, varphi_x, varphi_ep, k_p
+        real*8 :: x_in(2), fret, varphi_x, varphi_p, k_p
         integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
         ! set up communication variables
@@ -73,7 +72,7 @@ contains
         call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_e)
 
         call linint_Grow(x_in(1), x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
-        call linint_Equi(ep_plus_com, ep_l, ep_u, NP, ipl_p, ipr_p, varphi_ep)
+        call linint_Equi(p_plus_com, p_l, p_u, NP, ipl_p, ipr_p, varphi_p)
 
         ! restrict values to grid just in case
         ixl_p = min(ixl_p, NX)
@@ -82,13 +81,13 @@ contains
 
         ipl_p = min(ipl_p, NP)
         ipr_p = min(ipr_p, NP)
-        varphi_ep = max(min(varphi_ep, 1d0),0d0)
+        varphi_p = max(min(varphi_p, 1d0),0d0)
 
         ! get next period's capital size
-        k_p = ((1d0-xi)*k_min + (varphi_x*varphi_ep            *omega_k(ij, ixl_p, ipl_p, ik, iw, ie) +  &
-                                 varphi_x*(1d0-varphi_ep)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
-                                 (1d0-varphi_x)*varphi_ep      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
-                                 (1d0-varphi_x)*(1d0-varphi_ep)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+        k_p = ((1d0-xi)*k_min + (varphi_x*varphi_p            *omega_k(ij, ixl_p, ipl_p, ik, iw, ie) +  &
+                                 varphi_x*(1d0-varphi_p)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
+                                 (1d0-varphi_x)*varphi_p      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
+                                 (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
 
         X_plus_t(ij, ia, ip, ik, iw, ie, 1) = x_in(1)
         a_plus_t(ij, ia, ip, ik, iw, ie, 1) = x_in(1) - (1d0-xi)*k_p

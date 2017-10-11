@@ -1,4 +1,4 @@
-!##############################################################################
+p!##############################################################################
 ! PROGRAM Portfolio Choice with housing decision
 !
 ! copyright: Hans Fehr and Maurice Hofmann
@@ -25,6 +25,11 @@ program LifecycleEntrepreneur
     implicit none
 
     integer, parameter :: numthreads = 56
+
+    ! set government variables
+    mu     = 1d0
+    lambda = 1d0
+    phi    = 0d0
 
     ! initialize remaining variables
     call initialize()
@@ -98,7 +103,7 @@ contains
         call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
         ! initialize pension claim grid
-        call grid_Cons_Equi(ep, ep_l, ep_u)
+        call grid_Cons_Equi(p, p_l, p_u)
 
         ! endogenous upper bound of housing grid
         call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
@@ -108,11 +113,11 @@ contains
         V = 1d-10**egam/egam; EV = 1d-10**egam/egam; S = 1d-10**egam/egam
 
         ! initialize policy functions
-        X_plus = 0d0; a_plus = 0d0; ep_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
+        X_plus = 0d0; a_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
         omega_k = 0d0
 
         ! initialize temporary policy and value functions
-        X_plus_t = 0d0; a_plus_t = 0d0; ep_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0; V_t = 0d0
+        X_plus_t = 0d0; a_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0; V_t = 0d0
 
         ! open files
         open(21, file='output.out')
@@ -151,7 +156,7 @@ contains
 
                     X_plus(JJ, ia, ip, ik, :, :) = X_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     a_plus(JJ, ia, ip, ik, :, :) = a_plus_t(JJ, ia, ip, ik, 1, 1, 0)
-                    ep_plus(JJ, ia, ip, ik, :, :) = ep_plus_t(JJ, ia, ip, ik, 1, 1, 0)
+                    p_plus(JJ, ia, ip, ik, :, :) = p_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     k_plus(JJ, ia, ip, ik, :, :) = k_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     c(JJ, ia, ip, ik, :, :) = c_t(JJ, ia, ip, ik, 1, 1, 0)
                     l(JJ, ia, ip, ik, :, :) = l_t(JJ, ia, ip, ik, 1, 1, 0)
@@ -219,7 +224,7 @@ contains
                           if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then
                                 X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 a_plus(ij, ia, ip, ik, iw, ie) = a_plus_t(ij, ia, ip, ik, iw, ie, 1)
-                                ep_plus(ij, ia, ip, ik, iw, ie) = ep_plus_t(ij, ia, ip, ik, iw, ie, 1)
+                                p_plus(ij, ia, ip, ik, iw, ie) = p_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 k_plus(ij, ia, ip, ik, iw, ie) = k_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 c(ij, ia, ip, ik, iw, ie) = c_t(ij, ia, ip, ik, iw, ie, 1)
                                 l(ij, ia, ip, ik, iw, ie) = l_t(ij, ia, ip, ik, iw, ie, 1)
@@ -227,7 +232,7 @@ contains
                            else
                              X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 0)
                              a_plus(ij, ia, ip, ik, iw, ie) = a_plus_t(ij, ia, ip, ik, iw, ie, 0)
-                             ep_plus(ij, ia, ip, ik, iw, ie) = ep_plus_t(ij, ia, ip, ik, iw, ie, 0)
+                             p_plus(ij, ia, ip, ik, iw, ie) = p_plus_t(ij, ia, ip, ik, iw, ie, 0)
                              k_plus(ij, ia, ip, ik, iw, ie) = k_plus_t(ij, ia, ip, ik, iw, ie, 0)
                              c(ij, ia, ip, ik, iw, ie) = c_t(ij, ia, ip, ik, iw, ie, 0)
                              l(ij, ia, ip, ik, iw, ie) = l_t(ij, ia, ip, ik, iw, ie, 0)
@@ -363,7 +368,7 @@ contains
 
         integer :: ij, ia, ip, ik, iw, iw_p, ie, ie_p
         integer :: ial, iar, ipl, ipr, ikl, ikr
-        real*8 :: varphi_a, varphi_ep, varphi_k
+        real*8 :: varphi_a, varphi_p, varphi_k
 
         m(:, :, :, :, :, :) = 0d0
 
@@ -386,7 +391,7 @@ contains
 
                     ! derive interpolation weights
                     call linint_Grow(a_plus(ij-1, ia, ip, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                    call linint_Equi(ep_plus(ij-1, ia, ip, ik, iw, ie), ep_l, ep_u, NP, ipl, ipr, varphi_ep)
+                    call linint_Equi(p_plus(ij-1, ia, ip, ik, iw, ie), p_l, p_u, NP, ipl, ipr, varphi_p)
                     call linint_Grow(k_plus(ij-1, ia, ip, ik, iw, ie), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
 
                     ! restrict values to grid just in case
@@ -396,7 +401,7 @@ contains
 
                     ipl = min(ipl, NP)
                     ipr = min(ipr, NP)
-                    varphi_ep = max(min(varphi_ep, 1d0), 0d0)
+                    varphi_p = max(min(varphi_p, 1d0), 0d0)
 
                     if(k_plus(ij-1, ia, ip, ik, iw, ie) > 0d0) then
                       ikl = min(ikl+1, NK)
@@ -410,21 +415,21 @@ contains
                       do ie_p = 1, NE
 
                           m(ij, ial, ipl, ikl, iw_p, ie_p) = m(ij, ial, ipl, ikl, iw_p, ie_p) + &
-                                varphi_a*varphi_ep*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                varphi_a*varphi_p*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                           m(ij, ial, ipl, ikr, iw_p, ie_p) = m(ij, ial, ipl, ikr, iw_p, ie_p) + &
-                                varphi_a*varphi_ep*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                varphi_a*varphi_p*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                           m(ij, ial, ipr, ikl, iw_p, ie_p) = m(ij, ial, ipr, ikl, iw_p, ie_p) + &
-                                varphi_a*(1d0-varphi_ep)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                varphi_a*(1d0-varphi_p)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                           m(ij, ial, ipr, ikr, iw_p, ie_p) = m(ij, ial, ipr, ikr, iw_p, ie_p) + &
-                                varphi_a*(1d0-varphi_ep)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                varphi_a*(1d0-varphi_p)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                           m(ij, iar, ipl, ikl, iw_p, ie_p) = m(ij, iar, ipl, ikl, iw_p, ie_p) + &
-                                (1d0-varphi_a)*varphi_ep*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                (1d0-varphi_a)*varphi_p*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                           m(ij, iar, ipl, ikr, iw_p, ie_p) = m(ij, iar, ipl, ikr, iw_p, ie_p) + &
-                                (1d0-varphi_a)*varphi_ep*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                (1d0-varphi_a)*varphi_p*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                           m(ij, iar, ipr, ikl, iw_p, ie_p) = m(ij, iar, ipr, ikl, iw_p, ie_p) + &
-                                (1d0-varphi_a)*(1d0-varphi_ep)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                (1d0-varphi_a)*(1d0-varphi_p)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
                           m(ij, iar, ipr, ikr, iw_p, ie_p) = m(ij, iar, ipr, ikr, iw_p, ie_p) + &
-                                (1d0-varphi_a)*(1d0-varphi_ep)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
+                                (1d0-varphi_a)*(1d0-varphi_p)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ip, ik, iw, ie)
 
                       enddo
                     enddo
