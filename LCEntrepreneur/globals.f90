@@ -123,6 +123,7 @@ module globals
 
     !$omp threadprivate(ij_com, ix_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, ix_p_com)
     !$omp threadprivate(cons_com, lab_com, p_plus_com)
+    !$omp private(io_p_com)
 
 
   contains
