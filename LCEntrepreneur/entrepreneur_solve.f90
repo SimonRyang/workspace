@@ -62,14 +62,14 @@ contains
         integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
         ! set up communication variables
-        ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie
+        ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = 1
 
         ! get best initial guess from future period
         x_in(1) = max(X_plus_t(ij+1, ia, ip, ik, iw, ie, 1), 1d-4)
         x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, 1), 0.33d0)
 
         ! solve the household problem using rootfinding
-        call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_e)
+        call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.8d0/), cons_w)
 
         call linint_Grow(x_in(1), x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
         call linint_Equi(p_plus_com, p_l, p_u, NP, ipl_p, ipr_p, varphi_p)
