@@ -78,22 +78,36 @@ contains
       real*8, intent(in) :: x_in(:)
 
       ! variable declarations
-      real*8 :: cons_e, X_plus, tomorrow, varphi_x, varphi_p
+      real*8 :: cons_e, X_plus, income, tomorrow, varphi_x, varphi_p
       integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
       ! calculate tomorrow's assets
       X_plus  = x_in(1)
       lab_com = x_in(2)
 
+      ! current occupation
+      io = abs(ik_com > 0)
+
+      income = (1d0-dble(io))*w*eff(ij_com)*eta(iw_com)*lab_com + &
+               dble(io)*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
+
+      p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*dble(io))*mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
+
+
+      cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - X_plus
+
+
+
       ! maximize value function for current worker (next period entrepreneur)
       if (ik_com == 0) then
 
+        if (income /= w*eff(ij_com)*eta(iw_com)*lab_com)write(*,*)'Error1!'
         cons_com = (1d0+r)*a(ia_com) + w*eff(ij_com)*eta(iw_com)*lab_com + pen(ij_com, ip_com) - X_plus
         p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
 
       ! maximize value function for current owner (next period owner)
       else
-
+        if (income /= w*eff(ij_com)*eta(iw_com)*lab_com)write(*,*)'Error2!'
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com, ip_com) - X_plus
         p_plus_com = (p(ip_com)*dble(ij_com-1) + phi*mu*(lambda + (1d0-lambda)*min(theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu, p_u)))/dble(ij_com)
 
