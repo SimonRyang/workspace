@@ -39,7 +39,7 @@ contains
       else
 
           cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com) + pen(ij_com, ip_com) - X_plus
-          p_plus_com = (p(ip_com)*dble(ij_com-1) + min(theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu, p_u))/dble(ij_com)
+          p_plus_com = (p(ip_com)*dble(ij_com-1) + phi*mu*(lambda + (1d0-lambda)*min(theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu, p_u)))/dble(ij_com)
 
       endif
 
