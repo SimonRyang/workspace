@@ -72,7 +72,7 @@ module globals
     real*8, parameter :: k_grow = X_grow
 
     ! pension fraction of last income
-    real*8, parameter :: kappa = 0.8d0
+    real*8, parameter :: kappa = 0.2d0
 
     ! measure time
     integer :: time
@@ -81,7 +81,7 @@ module globals
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
     ! wages, transfer payments (old-age), survival probabilities and discount factor for housing utilty
-    real*8 :: w, eff(JJ), pen(JJ+1, 0:NP), psi(JJ+1)
+    real*8 :: w, eff(JJ), pen(JJ, 0:NP), psi(JJ+1)
 
     ! government variables
     real*8 :: lambda, phi, mu

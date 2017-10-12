@@ -95,7 +95,6 @@ contains
         do ip = 0, NP
           pen(JR:JJ, ip) = p(ip)*kappa*w*eff(JR-1)
         enddo
-        write(*,*)pen
 
         ! initialize value functions
         V = 1d-16**egam/egam; EV = 1d-16**egam/egam; S = 1d-16**egam/egam
