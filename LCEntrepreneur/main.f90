@@ -221,6 +221,9 @@ contains
                enddo
              !$omp end parallel do
 
+
+             endif
+
             call interpolate(ij)
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
