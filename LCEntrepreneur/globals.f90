@@ -1,10 +1,3 @@
-!##############################################################################
-! MODULE globals
-!
-! copyright: Hans Fehr and Maurice Hofmann
-!            University of Wuerzburg
-!##############################################################################
-
 module globals
 
     use toolbox
@@ -189,7 +182,7 @@ module globals
 
         else
 
-          omega_k(ij, ix_p, ip_p, ik, iw, ie) = 0d0
+          omega_k(ij, ix_p, ip_p, ik, iw, ie) = 1d0
           S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-16**egam/egam
 
         endif

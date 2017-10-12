@@ -1,10 +1,3 @@
-!##############################################################################
-! PROGRAM Portfolio Choice with housing decision
-!
-! copyright: Hans Fehr and Maurice Hofmann
-!            University of Wuerzburg
-!##############################################################################
-!
 include "toolbox.f90"
 include "globals.f90"
 
@@ -474,8 +467,6 @@ contains
             l_coh(ij, 1) = l_coh(ij, 1)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
             o_coh(ij) = o_coh(ij)/max(sum(m(ij, :, :, :, :, :)), 1d-16)
             k_coh(ij) = k_coh(ij)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
-
-            write(*,*)sum(k_coh)
 
         enddo
 
