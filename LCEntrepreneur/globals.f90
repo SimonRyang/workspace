@@ -149,7 +149,7 @@ module globals
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-16)**egam/egam
+       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-12)**egam/egam
 
        EV_temp = varphi_a      *(egam*EV(ij+1, ial, ip_p, 0, iw, ie))**(1d0/egam) + &
                  (1d0-varphi_a)*(egam*EV(ij+1, iar, ip_p, 0, iw, ie))**(1d0/egam)
@@ -190,7 +190,7 @@ module globals
         else
 
           omega_k(ij, ix_p, ip_p, ik, iw, ie) = 1d0
-          S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-16**egam/egam
+          S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-12**egam/egam
 
         endif
 
@@ -283,7 +283,7 @@ module globals
       ikr_p = min(ikr_p+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-16)**egam/egam
+      S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-12)**egam/egam
 
       ! get optimal investment strategy
       if(varphi_a <= varphi_k)then
@@ -298,7 +298,7 @@ module globals
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
-      inv_o = - S_temp + 1d-16**egam/egam*abs(a_p-a_temp)
+      inv_o = - (S_temp + 1d-12**egam/egam*abs(a_p-a_temp))
 
   end function
 
@@ -357,11 +357,11 @@ module globals
         endif
 
         if(cons_com <= 0d0)then
-           value_func = -1d-16**egam/egam*(1d0+abs(cons_com))
+           value_func = -1d-12**egam/egam*(1d0+abs(cons_com))
         elseif(lab_com < 0d0) then
-          value_func = -1d-16**egam/egam*(1d0+abs(lab_com))
+          value_func = -1d-12**egam/egam*(1d0+abs(lab_com))
         elseif(lab_com >= 1d0) then
-          value_func = -1d-16**egam/egam*lab_com
+          value_func = -1d-12**egam/egam*lab_com
         else
            value_func = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
         endif
