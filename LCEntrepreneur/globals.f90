@@ -81,6 +81,9 @@ module globals
     ! pension fraction of last income
     real*8, parameter :: kappa = 0.5d0
 
+    ! measure time
+    integer :: time
+
     ! discretized shocks
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
