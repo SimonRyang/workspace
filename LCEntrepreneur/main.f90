@@ -181,6 +181,11 @@ contains
                enddo
                !$omp end parallel do
 
+               call plot(X, omega_k(ij, :, 2, 0, 3, 3))
+               call plot(X, omega_k(ij, :, 2, 4, 3, 3))
+               call execplot
+
+
                 !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij)
                ! solve the consumption savings problem
                do ia = 0, NA
