@@ -352,10 +352,15 @@ module globals
           tomorrow = 0d0
         else
           ! get next period value function
-          tomorrow = max(varphi_x*varphi_p              *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                         varphi_x*(1d0-varphi_p)        *(egam*S(ij_com, ixl_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                         (1d0-varphi_x)*varphi_p        *(egam*S(ij_com, ixr_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                         (1d0-varphi_x)*(1d0-varphi_p)  *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+          if(varphi_x <= varphi_k) then
+            tomorrow = max(varphi_x*          *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (varphi_p-varphi_x)*(egam*S(ij_com, ixr_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (1d0-varphi_p)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+           else
+          tomorrow = max(varphi_p           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                         (varphi_x-varphi_p)*(egam*S(ij_com, ixl_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                         (1d0-varphi_x)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+           endif
         endif
 
         if(cons_com <= 0d0)then
