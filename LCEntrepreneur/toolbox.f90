@@ -2417,7 +2417,7 @@ contains
         !##### INPUT/OUTPUT VARIABLES #############################################
 
         ! point where to calculate function
-        real*8, intent(out) :: x
+        real*8, intent(in) :: x
 
         ! left end of the distribution
         real*8, optional :: a
@@ -2464,7 +2464,7 @@ contains
         !##### INPUT/OUTPUT VARIABLES #############################################
 
         ! point where to calculate function
-        real*8, intent(out) :: x
+        real*8, intent(in) :: x
 
         ! left end of the distribution
         real*8, optional :: a
@@ -2513,7 +2513,7 @@ contains
         !##### INPUT/OUTPUT VARIABLES #############################################
 
         ! point where to calculate function
-        real*8, intent(out) :: x
+        real*8, intent(in) :: x
 
         ! left end of the distribution
         real*8, optional :: a
