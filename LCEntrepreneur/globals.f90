@@ -85,6 +85,7 @@ module globals
 
     ! government variables
     real*8 :: lambda, phi, mu
+    real*8 :: taup
 
     ! cohort aggregate variables
     real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), l_coh(JJ, 0:1), o_coh(JJ)
@@ -324,7 +325,7 @@ module globals
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
         else
-          p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(w*eff(ij_com)*eta(iw_com)*lab_com, p_u)))/dble(ij_com)
+          p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
         endif
 
         ! calculate linear interpolation for future part of first order condition
