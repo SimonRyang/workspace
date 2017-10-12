@@ -462,16 +462,16 @@ contains
               enddo
             enddo
 
-            c_coh(ij, 0) = c_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
-            c_coh(ij, 1) = c_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
-            a_coh(ij, 0) = a_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
-            a_coh(ij, 1) = a_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
-            y_coh(ij, 0) = y_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
-            y_coh(ij, 1) = y_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
-            l_coh(ij, 0) = l_coh(ij, 0)/sum(m(ij, :, :, 0, :, :))
-            l_coh(ij, 1) = l_coh(ij, 1)/sum(m(ij, :, :, 1:NK, :, :))
-            o_coh(ij) = o_coh(ij)/sum(m(ij, :, :, :, :, :))
-            k_coh(ij) = k_coh(ij)/sum(m(ij, :, :, 1:NK, :, :))
+            c_coh(ij, 0) = c_coh(ij, 0)/max(sum(m(ij, :, :, 0, :, :)), 1d-16)
+            c_coh(ij, 1) = c_coh(ij, 1)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
+            a_coh(ij, 0) = a_coh(ij, 0)/max(sum(m(ij, :, :, 0, :, :)), 1d-16)
+            a_coh(ij, 1) = a_coh(ij, 1)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
+            y_coh(ij, 0) = y_coh(ij, 0)/max(sum(m(ij, :, :, 0, :, :)), 1d-16)
+            y_coh(ij, 1) = y_coh(ij, 1)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
+            l_coh(ij, 0) = l_coh(ij, 0)/max(sum(m(ij, :, :, 0, :, :)), 1d-16)
+            l_coh(ij, 1) = l_coh(ij, 1)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
+            o_coh(ij) = o_coh(ij)/max(sum(m(ij, :, :, :, :, :)), 1d-16)
+            k_coh(ij) = k_coh(ij)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
 
         enddo
 
