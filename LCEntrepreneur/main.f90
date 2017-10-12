@@ -221,21 +221,6 @@ contains
                enddo
              !$omp end parallel do
 
-             if (ij<JR) then
-               call plot(X(:14), omega_k(ij, :14, 2, 0, 3, 3))
-               call plot(X(:14), omega_k(ij, :14, 2, 4, 3, 3))
-               call plot(X(:14), omega_k(ij, :14, 2, 4, 3, 5))
-               call execplot
-
-               call plot(X(:14), k_plus_t(ij, :14, 2, 0, 3, 3, 0))
-               call plot(X(:14), k_plus_t(ij, :14, 2, 0, 3, 3, 1))
-               call plot(X(:14), l_t(ij, :14, 2, 0, 3, 3, 0))
-               call plot(X(:14), l_t(ij, :14, 2, 0, 3, 3, 1))
-               call execplot
-            endif
-
-             endif
-
             call interpolate(ij)
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
