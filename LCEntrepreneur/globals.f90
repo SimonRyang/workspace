@@ -54,7 +54,7 @@ module globals
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: k_min = 0.05d0
+    real*8, parameter :: k_min = 0.5d0
     real*8, parameter :: phi_k = 0.2d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
@@ -160,6 +160,42 @@ module globals
 
     end subroutine
 
+    ! solve the household's decision of how much wealth to invest into firm capital
+    subroutine solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
+
+        implicit none
+
+        integer, intent(in) :: ij, ix_p, ip_p, ik, iw, ie
+        real*8 :: x_in, fret
+
+        ! set up communication variables
+        ij_com = ij; ix_p_com = ix_p; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
+
+        if (X(ix_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
+
+           ! get best guess for the root of foc_real
+           if(ix_p > 0)then
+              x_in = omega_k(ij+1, ix_p, ip_p, ik, iw, ie)
+           else
+              x_in = 1d-4
+           endif
+
+           ! solve the household problem using fminsearch
+           call fminsearch(x_in, fret, 0d0, 1d0, inv_o)
+
+           ! portfolio share for capital
+           omega_k(ij, ix_p, ip_p, ik, iw, ie) = x_in
+           S(ij, ix_p, ip_p, ik, iw, ie, 1) = -fret
+
+        else
+
+          omega_k(ij, ix_p, ip_p, ik, iw, ie) = 0d0
+          S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-16**egam/egam
+
+        endif
+
+    end subroutine
+
 
   ! solve the household's consumption-savings decision
   subroutine solve_consumption(ij, ia, ip, ik, iw, ie, io_p)
@@ -202,6 +238,8 @@ module globals
         k_p = 0d0
       endif
 
+      if (io_p == 1 .and. k_p < k_min)write(*,*)k_min, k_p
+
       ! copy decisions
       X_plus_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(1)
       a_plus_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p
@@ -209,42 +247,6 @@ module globals
       c_t(ij, ia, ip, ik, iw, ie, io_p) = cons_com
       l_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(2)
       V_t(ij, ia, ip, ik, iw, ie, io_p) = -fret
-
-  end subroutine
-
-  ! solve the household's decision of how much wealth to invest into firm capital
-  subroutine solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
-
-      implicit none
-
-      integer, intent(in) :: ij, ix_p, ip_p, ik, iw, ie
-      real*8 :: x_in, fret
-
-      ! set up communication variables
-      ij_com = ij; ix_p_com = ix_p; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
-
-      if (X(ix_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
-
-         ! get best guess for the root of foc_real
-         if(ix_p > 0)then
-            x_in = omega_k(ij+1, ix_p, ip_p, ik, iw, ie)
-         else
-            x_in = 1d-4
-         endif
-
-         ! solve the household problem using fminsearch
-         call fminsearch(x_in, fret, 0d0, 1d0, inv_o)
-
-         ! portfolio share for capital
-         omega_k(ij, ix_p, ip_p, ik, iw, ie) = x_in
-         S(ij, ix_p, ip_p, ik, iw, ie, 1) = -fret
-
-      else
-
-        omega_k(ij, ix_p, ip_p, ik, iw, ie) = 0d0
-        S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-16**egam/egam
-
-      endif
 
   end subroutine
 
