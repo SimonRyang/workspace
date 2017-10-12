@@ -73,6 +73,7 @@ contains
         do ip = 0, NP
           pen(JR:JJ, ip) = p(ip)*kappa*w*eff(JR-1)
         enddo
+        write(*,*)pen
 
         ! discretize eta shocks
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
