@@ -182,9 +182,6 @@ contains
                enddo
                !$omp end parallel do
 
-               write(*,*)sum(omega_k(ij, :, :, :, :, :))
-
-
                 !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij)
                ! solve the consumption savings problem
                do ia = 0, NA
