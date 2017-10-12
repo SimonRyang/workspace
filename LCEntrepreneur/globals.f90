@@ -47,7 +47,7 @@ module globals
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: k_min = 0.2d0
+    real*8, parameter :: k_min = 0.4d0
     real*8, parameter :: phi_k = 0.2d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
@@ -320,7 +320,7 @@ module globals
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - X_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*income  - X_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
