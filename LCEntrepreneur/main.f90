@@ -214,6 +214,8 @@ contains
                              V(ij, ia, ip, ik, iw, ie) = V_t(ij, ia, ip, ik, iw, ie, 0)
                            endif
 
+                           if (ij < JR-1 .and. k_plus(ij, ia, ip, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ip, ik, iw, ie) < k_min)write(*,*)k_min, k_plus(ij, ia, ip, ik, iw, ie), X_plus(ij, ia, ip, ik, iw, ie)
+
                        enddo
                      enddo
                    enddo
