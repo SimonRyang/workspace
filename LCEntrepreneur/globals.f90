@@ -167,8 +167,6 @@ module globals
       real*8 :: x_in(2), fret, varphi_x, varphi_p, k_p, test
       integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
-      test = 1d0/0d0
-
       ! set up communication variables
       ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
 
