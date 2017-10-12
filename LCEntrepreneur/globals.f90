@@ -194,10 +194,10 @@ module globals
         varphi_p = max(min(varphi_p, 1d0),0d0)
 
         ! get next period's capital size
-        k_p = ((1d0-xi)*k_min + (varphi_x*varphi_p            *omega_k(ij, ixl_p, ipl_p, ik, iw, ie) +  &
-                                 varphi_x*(1d0-varphi_p)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
-                                 (1d0-varphi_x)*varphi_p      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
-                                 (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+        k_p = (varphi_x*varphi_p            *omega_k(ij, ixl_p, ipl_p, ik, iw, ie) +  &
+               varphi_x*(1d0-varphi_p)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
+               (1d0-varphi_x)*varphi_p      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
+               (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*x_in(1))/(1d0-xi)
       else
         k_p = 0d0
       endif
@@ -257,16 +257,15 @@ module globals
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: inv_o, ad_p, a_p, k_p, EV_temp, S_temp, omega_k, varphi_k, varphi_a, a_temp
+      real*8 :: inv_o, a_p, k_p, EV_temp, S_temp, omega_k, varphi_k, varphi_a, a_temp
       integer :: ikl_p, ikr_p, ial_p, iar_p
 
       ! store real estate share
       omega_k  = x_in
 
       ! determine future liquid wealth and future downpayment
-      ad_p = (1d0-xi)*k_min + omega_k*(X(ix_p_com)-(1d0-xi)*k_min)
-      k_p =  ad_p/(1d0-xi)
-      a_temp = X(ix_p_com) - ad_p - tr(k(ik_com), k_p)
+      k_p = omega_k*X(ix_p_com)/(1d0-xi)
+      a_temp = X(ix_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
       a_p = max(a_temp, 0d0)
 
       ! derive interpolation weights
