@@ -72,7 +72,7 @@ module globals
     real*8, parameter :: k_grow = X_grow
 
     ! pension fraction of last income
-    real*8, parameter :: kappa = 0.8d0
+    real*8, parameter :: kappa = 0.1d0
 
     ! measure time
     integer :: time
