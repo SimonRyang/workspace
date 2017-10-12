@@ -144,7 +144,6 @@ contains
 
                     ! with bequest motive we assume future worker
                     call solve_consumption(JJ, ia, ip, ik, 1, 1, 0)
-                    call solve_consumption(JJ, ia, ip, ik, 1, 1, 1)
 
                     X_plus(JJ, ia, ip, ik, :, :) = X_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     a_plus(JJ, ia, ip, ik, :, :) = a_plus_t(JJ, ia, ip, ik, 1, 1, 0)
