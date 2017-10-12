@@ -229,10 +229,14 @@ module globals
         varphi_p = max(min(varphi_p, 1d0),0d0)
 
         ! get next period's capital size
-        k_p = ((1d0-xi)*k_min + (varphi_x*varphi_p            *omega_k(ij, ixl_p, ipl_p, ik, iw, ie) +  &
-                                 varphi_x*(1d0-varphi_p)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
-                                 (1d0-varphi_x)*varphi_p      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
-                                 (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+        if (varphi_x <= varphi_p) then
+          k_p = ((1d0-xi)*k_min + (varphi_x             *omega_k(ij, ixl_p, ipl_p, ik, iw, ie) +  &
+                                   (varphi_p-varphi_x)  *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
+                                   (1d0-varphi_p)       *omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+        else
+          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k(ij, ixl_p, ipl_p, ik, iw, ie) +  &
+                                   (varphi_x-varphi_p)  *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
+                                   (1d0-varphi_x)       *omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
 
       endif
 
