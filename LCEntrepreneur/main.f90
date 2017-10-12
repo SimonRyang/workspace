@@ -102,7 +102,7 @@ contains
         k(0) = 0d0
 
         ! initialize value functions
-        V = 1d-10**egam/egam; EV = 1d-10**egam/egam; S = 1d-10**egam/egam
+        V = 1d-16**egam/egam; EV = 1d-16**egam/egam; S = 1d-16**egam/egam
 
         ! initialize policy functions
         X_plus = 0d0; a_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
