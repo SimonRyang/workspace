@@ -182,9 +182,9 @@ contains
                !$omp end parallel do
 
                if (ij<JR) then
-                 call plot(X(:10), omega_k(ij, :10, 2, 0, 3, 3))
-                 call plot(X(:10), omega_k(ij, :10, 2, 4, 3, 3))
-                 call plot(X(:10), omega_k(ij, :10, 4, 4, 3, 3))
+                 call plot(X(:14), omega_k(ij, :14, 2, 0, 3, 3))
+                 call plot(X(:14), omega_k(ij, :14, 2, 4, 3, 3))
+                 call plot(X(:14), omega_k(ij, :14, 2, 4, 3, 5))
                  call execplot
               endif
 
