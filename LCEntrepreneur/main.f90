@@ -143,8 +143,8 @@ contains
                   do ik = 0, NA
 
                     ! with bequest motive we assume future worker
-                    call solve_consumption_w(JJ, ia, ip, ik, 1, 1, 0)
-                    call solve_consumption_w(JJ, ia, ip, ik, 1, 1, 1)
+                    call solve_consumption(JJ, ia, ip, ik, 1, 1, 0)
+                    call solve_consumption(JJ, ia, ip, ik, 1, 1, 1)
 
                     X_plus(JJ, ia, ip, ik, :, :) = X_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     a_plus(JJ, ia, ip, ik, :, :) = a_plus_t(JJ, ia, ip, ik, 1, 1, 0)
@@ -194,10 +194,10 @@ contains
                        do ie = 1, NE
 
                          ! next period worker
-                         call solve_consumption_w(ij, ia, ip, ik, iw, ie, 0)
+                         call solve_consumption(ij, ia, ip, ik, iw, ie, 0)
 
                          ! next period entrpreneur
-                         call solve_consumption_w(ij, ia, ip, ik, iw, ie, 1)
+                         call solve_consumption(ij, ia, ip, ik, iw, ie, 1)
 
                          ! decision on whether to be homeowner or renter next period
                           if( V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then
