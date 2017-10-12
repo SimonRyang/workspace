@@ -177,7 +177,7 @@ module globals
       ! solve the household problem using rootfinding
       call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), value_func)
 
-      if (io_p = 1) then
+      if (io_p == 1) then
         call linint_Grow(x_in(1), x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
         call linint_Equi(p_plus_com, p_l, p_u, NP, ipl_p, ipr_p, varphi_p)
 
