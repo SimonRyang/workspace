@@ -189,7 +189,7 @@ module globals
 
         else
 
-          omega_k(ij, ix_p, ip_p, ik, iw, ie) = 0d0
+          omega_k(ij, ix_p, ip_p, ik, iw, ie) = 1d0
           S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-16**egam/egam
 
         endif
@@ -216,6 +216,9 @@ module globals
       ! solve the household problem using rootfinding
       call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), value_func)
 
+      ! determine future investment
+      k_p = 0d0
+
       if (io_p == 1) then
 
         call linint_Grow(x_in(1), x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
@@ -235,10 +238,6 @@ module globals
                                  varphi_x*(1d0-varphi_p)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
                                  (1d0-varphi_x)*varphi_p      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
                                  (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-
-      else
-
-        k_p = 0d0
 
       endif
 
