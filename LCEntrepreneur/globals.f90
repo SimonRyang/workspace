@@ -283,7 +283,7 @@ module globals
       ikr_p = min(ikr_p+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-10)**egam/egam
+      S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
       if(varphi_a <= varphi_k)then
@@ -298,7 +298,7 @@ module globals
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
-      inv_o = - S_temp + 1d-16*abs(a_p-a_temp)**egam/egam
+      inv_o = - S_temp + 1d-16*abs(a_p-a_temp)
 
   end function
 
