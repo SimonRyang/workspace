@@ -149,7 +149,7 @@ module globals
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-12)**egam/egam
+       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-16)**egam/egam
 
        EV_temp = varphi_a      *(egam*EV(ij+1, ial, ip_p, 0, iw, ie))**(1d0/egam) + &
                  (1d0-varphi_a)*(egam*EV(ij+1, iar, ip_p, 0, iw, ie))**(1d0/egam)
@@ -190,7 +190,7 @@ module globals
         else
 
           omega_k(ij, ix_p, ip_p, ik, iw, ie) = 1d0
-          S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-12**egam/egam
+          S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-16**egam/egam
 
         endif
 
@@ -217,6 +217,7 @@ module globals
       call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), value_func)
 
       if (io_p == 1) then
+
         call linint_Grow(x_in(1), x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
         call linint_Equi(p_plus_com, p_l, p_u, NP, ipl_p, ipr_p, varphi_p)
 
@@ -234,9 +235,11 @@ module globals
                                  varphi_x*(1d0-varphi_p)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
                                  (1d0-varphi_x)*varphi_p      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
                                  (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-        !if (ij < JR-1 .and. k_p < k_min)write(*,*)ia, ip, ik, k_min, k_p, x_in(1)
+
       else
+
         k_p = 0d0
+
       endif
 
       ! copy decisions
@@ -283,7 +286,7 @@ module globals
       ikr_p = min(ikr_p+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-12)**egam/egam
+      S_temp = (1d0-psi(ij_com+1))*mu_b*max(X(ix_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
       if(varphi_a <= varphi_k)then
@@ -298,7 +301,7 @@ module globals
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
-      inv_o = - (S_temp + 1d-12**egam/egam*abs(a_p-a_temp))
+      inv_o = - (S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
 
   end function
 
@@ -357,11 +360,11 @@ module globals
         endif
 
         if(cons_com <= 0d0)then
-           value_func = -1d-12**egam/egam*(1d0+abs(cons_com))
+           value_func = -1d-16**egam/egam*(1d0+abs(cons_com))
         elseif(lab_com < 0d0) then
-          value_func = -1d-12**egam/egam*(1d0+abs(lab_com))
+          value_func = -1d-16**egam/egam*(1d0+abs(lab_com))
         elseif(lab_com >= 1d0) then
-          value_func = -1d-12**egam/egam*lab_com
+          value_func = -1d-16**egam/egam*lab_com
         else
            value_func = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
         endif
