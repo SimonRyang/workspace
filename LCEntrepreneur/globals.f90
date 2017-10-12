@@ -86,6 +86,7 @@ module globals
     ! government variables
     real*8 :: lambda, phi, mu
     real*8 :: taup
+    real*8 :: tauc
 
     ! cohort aggregate variables
     real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), l_coh(JJ, 0:1), o_coh(JJ)
@@ -320,7 +321,7 @@ module globals
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, 2d0*p_u)  - X_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - X_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
