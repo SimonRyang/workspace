@@ -181,14 +181,6 @@ contains
                enddo
                !$omp end parallel do
 
-               if (ij<JR) then
-                 call plot(X(:14), omega_k(ij, :14, 2, 0, 3, 3))
-                 call plot(X(:14), omega_k(ij, :14, 2, 4, 3, 3))
-                 call plot(X(:14), omega_k(ij, :14, 2, 4, 3, 5))
-                 call execplot
-              endif
-
-
                 !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij)
                ! solve the consumption savings problem
                do ia = 0, NA
@@ -228,6 +220,15 @@ contains
                  enddo
                enddo
              !$omp end parallel do
+
+             if (ij<JR) then
+               call plot(X(:14), omega_k(ij, :14, 2, 0, 3, 3))
+               call plot(X(:14), omega_k(ij, :14, 2, 4, 3, 3))
+               call plot(X(:14), omega_k(ij, :14, 2, 4, 3, 5))
+               call plot(X(:14), l_t(ij, :14, 2, 4, 3, 5, 0))
+               call plot(X(:14), l_t(ij, :14, 2, 4, 3, 5, 1))
+               call execplot
+            endif
 
              endif
 
