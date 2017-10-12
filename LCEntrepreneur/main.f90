@@ -183,8 +183,8 @@ contains
 
                if (ij<JR) then
                  call plot(X(:10), omega_k(ij, :10, 2, 0, 3, 3))
-                 call plot(X(:10), omega_k(ij, :10, 2, 4, 3, 3))
-                 call plot(X(:10), omega_k(ij, :10, 2, 8, 3, 3))
+                 call plot(X(:10), omega_k(ij, :10, 4, 4, 3, 3))
+                 call plot(X(:10), omega_k(ij, :10, 6, 8, 3, 3))
                  call execplot
               endif
 
