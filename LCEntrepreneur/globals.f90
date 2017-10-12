@@ -164,7 +164,7 @@ module globals
       implicit none
 
       integer, intent(in) :: ij, ia, ip, ik, iw, ie, io_p
-      real*8 :: x_in(2), fret, varphi_x, varphi_p, k_p, test
+      real*8 :: x_in(2), fret, varphi_x, varphi_p, k_p
       integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
       ! set up communication variables
