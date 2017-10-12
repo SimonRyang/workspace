@@ -146,7 +146,7 @@ module globals
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-10)**egam/egam
+       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-16)**egam/egam
 
        EV_temp = varphi_a      *(egam*EV(ij+1, ial, ip_p, 0, iw, ie))**(1d0/egam) + &
                  (1d0-varphi_a)*(egam*EV(ij+1, iar, ip_p, 0, iw, ie))**(1d0/egam)
@@ -343,7 +343,7 @@ module globals
         ipr_p = min(ipr_p, NP)
         varphi_p = max(min(varphi_p, 1d0),0d0)
 
-        if (ij_com == JJ .and. mu_b == 0) then
+        if (ij_com == JJ .and. mu_b == 0d0) then
           tomorrow = 0d0
         else
           ! get next period value function
