@@ -23,6 +23,8 @@ program main
     lambda = 0d0
     phi    = 1d0/0d0
 
+write(*,*)phi
+
     ! initialize remaining variables
     call initialize()
 
