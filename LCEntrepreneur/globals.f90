@@ -189,7 +189,7 @@ module globals
 
         else
 
-          omega_k(ij, ix_p, ip_p, ik, iw, ie) = 0d0
+          omega_k(ij, ix_p, ip_p, ik, iw, ie) = 1d0
           S(ij, ix_p, ip_p, ik, iw, ie, 1) = 1d-16**egam/egam
 
         endif
@@ -234,11 +234,10 @@ module globals
                varphi_x*(1d0-varphi_p)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
                (1d0-varphi_x)*varphi_p      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
                (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*x_in(1)/(1d0-xi)
+        if (ij < JR-1 .and. k_p < k_min)write(*,*)k_min, k_p
       else
         k_p = 0d0
       endif
-
-      if (ij < JR-1 .and. io_p == 1 .and. k_p < k_min)write(*,*)k_min, k_p
 
       ! copy decisions
       X_plus_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(1)
