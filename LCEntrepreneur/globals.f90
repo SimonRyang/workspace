@@ -72,7 +72,7 @@ module globals
     real*8, parameter :: k_grow = X_grow
 
     ! pension fraction of last income
-    real*8, parameter :: kappa = 0.5d0
+    real*8, parameter :: kappa = 0.8d0
 
     ! measure time
     integer :: time
@@ -323,6 +323,7 @@ module globals
         ! current occupation
         ind_o = abs(dble(ik_com > 0))
 
+        ! calculate current income
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
