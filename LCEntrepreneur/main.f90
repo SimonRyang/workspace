@@ -68,13 +68,6 @@ contains
         ! earnings process is during retirement equal to zero
         eff(JR:JJ) = 0d0
 
-        ! old-age transfers
-        pen = 0d0
-        do ip = 0, NP
-          pen(JR:JJ, ip) = p(ip)*kappa*w*eff(JR-1)
-        enddo
-        write(*,*)pen
-
         ! discretize eta shocks
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
         eta = exp(eta)
@@ -96,6 +89,13 @@ contains
         ! endogenous upper bound of housing grid
         call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
+
+        ! old-age transfers
+        pen = 0d0
+        do ip = 0, NP
+          pen(JR:JJ, ip) = p(ip)*kappa*w*eff(JR-1)
+        enddo
+        write(*,*)pen
 
         ! initialize value functions
         V = 1d-16**egam/egam; EV = 1d-16**egam/egam; S = 1d-16**egam/egam
