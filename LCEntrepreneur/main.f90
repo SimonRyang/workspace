@@ -21,9 +21,7 @@ program main
     ! set government variables
     mu     = 1d0
     lambda = 0d0
-    phi    = 1d0/0d0
-
-write(*,*)phi
+    phi    = 1d0
 
     ! initialize remaining variables
     call initialize()
