@@ -1,5 +1,5 @@
 MAINFILE = main
-CFLAGS = -qopenmp -O2 -ansi-alias
+CFLAGS = -qopenmp -O2 -ansi-alias -check all
 CC = ~/intel/bin/ifort
 TARGET = Build/prog
 

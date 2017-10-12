@@ -103,7 +103,7 @@ module globals
     real*8 :: c(JJ, 0:NA, 0:NP, 0:NK, NW, NE), l(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables for temporary policy and value functions
-    real*8 :: X_plus_t(JJ-1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), a_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: X_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), a_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
     real*8 :: k_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), p_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
     real*8 :: c_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
     real*8 :: V_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
