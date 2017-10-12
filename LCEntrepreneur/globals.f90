@@ -343,10 +343,7 @@ module globals
         ipr_p = min(ipr_p, NP)
         varphi_p = max(min(varphi_p, 1d0),0d0)
 
-        write(*,*)max(varphi_x*varphi_p              *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                       varphi_x*(1d0-varphi_p)        *(egam*S(ij_com, ixl_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                       (1d0-varphi_x)*varphi_p        *(egam*S(ij_com, ixr_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                       (1d0-varphi_x)*(1d0-varphi_p)  *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)
+        write(*,*)egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam)
 
         ! get next period value function
         tomorrow = max(varphi_x*varphi_p              *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
