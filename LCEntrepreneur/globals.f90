@@ -238,7 +238,7 @@ module globals
         k_p = 0d0
       endif
 
-      if (ij < JR-2 .and. io_p == 1 .and. k_p < k_min)write(*,*)k_min, k_p
+      if (ij < JR-1 .and. io_p == 1 .and. k_p < k_min)write(*,*)k_min, k_p
 
       ! copy decisions
       X_plus_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(1)
