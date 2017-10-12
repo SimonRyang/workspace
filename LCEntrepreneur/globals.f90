@@ -98,18 +98,18 @@ module globals
     real*8 :: X(0:NX), a(0:NA), p(0:NP), k(0:NK)
 
     ! variables to store the policy functions
-    real*8 :: X_plus(JJ, 0:NA, 0:NP, 0:NK, NW, NE), a_plus(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
-    real*8 :: p_plus(JJ, 0:NA, 0:NP, 0:NK, NW, NE), k_plus(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
-    real*8 :: c(JJ, 0:NA, 0:NP, 0:NK, NW, NE), l(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: X_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), a_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: p_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), k_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: c(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), l(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables for temporary policy and value functions
-    real*8 :: X_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), a_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: k_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), p_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: c_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: V_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: X_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), a_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: k_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), p_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: c_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! variables to store the portfolio choice decisions
-    real*8 :: omega_k(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: omega_k(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables to store the value functions
     real*8 :: V(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), EV(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), S(JJ+1, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
