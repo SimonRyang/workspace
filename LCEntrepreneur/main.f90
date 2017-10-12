@@ -229,10 +229,6 @@ contains
 
             call interpolate(ij)
 
-            write(*,*)sum(V(ij, :, :, :, :, :))
-            write(*,*)sum(c(ij, :, :, :, :, :))
-            write(*,*)sum(a_plus(ij, :, :, :, :, :))
-
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
 
