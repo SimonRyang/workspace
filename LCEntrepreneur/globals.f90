@@ -298,7 +298,7 @@ module globals
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
-      inv_o = - S_temp + 1d16*abs(a_p-a_temp)
+      inv_o = - S_temp + 1d-16*abs(a_p-a_temp)**egam/egam
 
   end function
 
