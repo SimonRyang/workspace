@@ -197,7 +197,7 @@ module globals
         k_p = (varphi_x*varphi_p            *omega_k(ij, ixl_p, ipl_p, ik, iw, ie) +  &
                varphi_x*(1d0-varphi_p)      *omega_k(ij, ixl_p, ipr_p, ik, iw, ie) +  &
                (1d0-varphi_x)*varphi_p      *omega_k(ij, ixr_p, ipl_p, ik, iw, ie) +  &
-               (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*x_in(1))/(1d0-xi)
+               (1d0-varphi_x)*(1d0-varphi_p)*omega_k(ij, ixr_p, ipr_p, ik, iw, ie))*x_in(1)/(1d0-xi)
       else
         k_p = 0d0
       endif
