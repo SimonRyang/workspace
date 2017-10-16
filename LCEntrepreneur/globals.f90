@@ -408,7 +408,7 @@ module globals
       integer :: iamax(JJ), ikmax(JJ)
 
       !##### OTHER VARIABLES ####################################################
-      integer :: ia, ik
+      integer :: ij, ia, ik
 
       iamax = 0
       ixmax = 0
