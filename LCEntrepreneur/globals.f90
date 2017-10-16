@@ -86,7 +86,6 @@ module globals
     ! government variables
     real*8 :: lambda, phi, mu
     real*8 :: taup
-    real*8 :: tauc
 
     ! cohort aggregate variables
     real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), l_coh(JJ, 0:1), o_coh(JJ)
@@ -117,6 +116,7 @@ module globals
 
     ! numerical variables
     integer :: ij_com, ix_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, ix_p_com, io_p_com
+    integer :: iamax(JJ), ikmax(JJ)
     real*8 :: cons_com, lab_com, p_plus_com
 
     !$omp threadprivate(ij_com, ix_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, ix_p_com, io_p_com)
@@ -394,6 +394,49 @@ module globals
        endif
 
     end function
+
+    !##############################################################################
+    ! FUNCTION check_grid
+    !
+    ! Checks for the maximum gridpoint used
+    !##############################################################################
+    subroutine check_grid(iamax, ikmax)
+
+      implicit none
+
+      !##### INPUT/OUTPUT VARIABLES #############################################
+      integer :: iamax(JJ), ikmax(JJ)
+
+      !##### OTHER VARIABLES ####################################################
+      integer :: ia, ik
+
+      iamax = 0
+      ixmax = 0
+
+      do ij = 1, JJ
+
+        ! check for the maximum asset grid point used at a certain age
+        do ia = NA, 0, -1
+          if (sum(m(ij, ia, :, :, :, :)) > 0d0) then
+            iamax(ij) = ia
+            exit
+          endif
+        enddo ! ia
+
+        ! check for the maximum annuitie grid point used at a certain age
+        if (ann) then
+          do ik = NK, 0, -1
+            if (sum(m(ij, :, :, ik, :, :)) > 0d0) then
+              ikmax(ij) = ik
+              exit
+            endif
+          enddo ! ix
+        endif
+
+      enddo ! ij
+
+
+    end subroutine
 
     !##############################################################################
     ! FUNCTION sigma5

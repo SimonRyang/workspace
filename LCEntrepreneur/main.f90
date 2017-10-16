@@ -16,7 +16,6 @@ program main
     lambda = 0d0
     phi    = 0d0
     taup   = 0.184d0
-    tauc   = 0.190d0
 
     ! initialize remaining variables
     call initialize()
@@ -209,8 +208,6 @@ contains
                              V(ij, ia, ip, ik, iw, ie) = V_t(ij, ia, ip, ik, iw, ie, 0)
                            endif
 
-                           if (k_plus(ij, ia, ip, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ip, ik, iw, ie) < k_min)write(*,*)k_min, k_plus(ij, ia, ip, ik, iw, ie), X_plus(ij, ia, ip, ik, iw, ie)
-                           if (k_plus(ij, ia, ip, ik, iw, ie) > 0d0 .and. X_plus(ij, ia, ip, ik, iw, ie) < (1d0-xi)*k_min)write(*,*)k_min, k_plus(ij, ia, ip, ik, iw, ie), X_plus(ij, ia, ip, ik, iw, ie)
                        enddo
                      enddo
                    enddo
@@ -398,6 +395,9 @@ contains
             l_coh(ij, 1) = l_coh(ij, 1)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
             o_coh(ij) = o_coh(ij)/max(sum(m(ij, :, :, :, :, :)), 1d-16)
             k_coh(ij) = k_coh(ij)/max(sum(m(ij, :, :, 1:NK, :, :)), 1d-16)
+
+            call check_grid(iamax,ikmax)
+            write(*,*)maxval(iamax), maxval(ikmax)
 
         enddo
 
