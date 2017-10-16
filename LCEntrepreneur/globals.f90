@@ -411,7 +411,7 @@ module globals
       integer :: ij, ia, ik
 
       iamax = 0
-      ixmax = 0
+      ikmax = 0
 
       do ij = 1, JJ
 
