@@ -208,9 +208,6 @@ contains
                              V(ij, ia, ip, ik, iw, ie) = V_t(ij, ia, ip, ik, iw, ie, 0)
                            endif
 
-                           if (k_plus(ij, ia, ip, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ip, ik, iw, ie) < k_min)write(*,*)k_plus(ij, ia, ip, ik, iw, ie), a_plus(ij, ia, ip, ik, iw, ie), X_plus(ij, ia, ip, ik, iw, ie)
-
-
                        enddo
                      enddo
                    enddo
@@ -368,6 +365,8 @@ contains
 
                       ! skip if there is no household
                       if (m(ij, ia, ip, ik, iw, ie) <= 0d0) cycle
+
+                      if (k_plus(ij, ia, ip, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ip, ik, iw, ie) < k_min) write(*,*)k_plus(ij, ia, ip, ik, iw, ie), a_plus(ij, ia, ip, ik, iw, ie), X_plus(ij, ia, ip, ik, iw, ie)
 
                       if(ik == 0) then
                         c_coh(ij, 0) = c_coh(ij, 0) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)

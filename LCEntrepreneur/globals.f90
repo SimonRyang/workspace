@@ -54,7 +54,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: X_l    = 0d0
-    real*8, parameter :: X_u    = 16d0
+    real*8, parameter :: X_u    = 8d0
     real*8, parameter :: X_grow = 0.005d0
 
     ! size of the liquid asset grid
