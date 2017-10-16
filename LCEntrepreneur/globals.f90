@@ -11,10 +11,10 @@ module globals
     integer, parameter :: JJ = 16
 
     ! number of productivity (eta) shocks
-    integer, parameter :: NW = 9
+    integer, parameter :: NW = 5
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 9
+    integer, parameter :: NE = 5
 
     ! number of points on the asset grid
     integer, parameter :: NX = 32
@@ -26,7 +26,7 @@ module globals
     integer, parameter :: NK = 32
 
     ! number of points on the pension claim grid
-    integer, parameter :: NP = 5
+    integer, parameter :: NP = 4
 
     ! number of occupation states
     integer, parameter :: NO = 1
