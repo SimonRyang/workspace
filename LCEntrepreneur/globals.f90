@@ -424,14 +424,12 @@ module globals
         enddo ! ia
 
         ! check for the maximum annuitie grid point used at a certain age
-        if (ann) then
-          do ik = NK, 0, -1
-            if (sum(m(ij, :, :, ik, :, :)) > 0d0) then
-              ikmax(ij) = ik
-              exit
-            endif
-          enddo ! ix
-        endif
+        do ik = NK, 0, -1
+          if (sum(m(ij, :, :, ik, :, :)) > 0d0) then
+            ikmax(ij) = ik
+            exit
+          endif
+        enddo ! ik
 
       enddo ! ij
 
