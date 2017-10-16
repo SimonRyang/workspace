@@ -54,7 +54,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: X_l    = 0d0
-    real*8, parameter :: X_u    = 50d0
+    real*8, parameter :: X_u    = 32d0
     real*8, parameter :: X_grow = 0.075d0
 
     ! size of the liquid asset grid
@@ -68,7 +68,7 @@ module globals
 
     ! size of the capital grid
     real*8, parameter :: k_l = 0d0
-    real*8, parameter :: k_u = X_u/(1d0-xi)
+    real*8, parameter :: k_u = 0.5d0*X_u/(1d0-xi)
     real*8, parameter :: k_grow = X_grow
 
     ! pension fraction of last income
