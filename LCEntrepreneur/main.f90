@@ -16,6 +16,7 @@ program main
     lambda = 0d0
     phi    = 0d0
     taup   = 0.184d0
+    tauc   = 0.190d0
 
     ! initialize remaining variables
     call initialize()
@@ -365,6 +366,8 @@ contains
 
                       ! skip if there is no household
                       if (m(ij, ia, ip, ik, iw, ie) <= 0d0) cycle
+
+                      if (k_plus(ij, ia, ip, ik, iw) > 0d0 .and. k_plus(ij, ia, ip, ik, iw) < k_min)write(*,*)k_plus(ij, ia, ip, ik, iw), a_plus(ij, ia, ip, ik, iw), X_plus(ij, ia, ip, ik, iw)
 
                       if(ik == 0) then
                         c_coh(ij, 0) = c_coh(ij, 0) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
