@@ -208,7 +208,7 @@ contains
                              V(ij, ia, ip, ik, iw, ie) = V_t(ij, ia, ip, ik, iw, ie, 0)
                            endif
 
-                           if (k_plus(ij, ia, ip, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ip, ik, iw, ie) < k_min)write(*,*)k_plus(ij, ia, ip, ik, iw, ie), a_plus(ij, ia, ip, ik, iw, ie), X_plus(ij, ia, ip, ik, iw, ie)
+                           if (k_plus(ij, ia, ip, ik, iw, ie) > 0d0)write(*,*)k_plus(ij, ia, ip, ik, iw, ie), a_plus(ij, ia, ip, ik, iw, ie), X_plus(ij, ia, ip, ik, iw, ie)
 
 
                        enddo
