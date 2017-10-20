@@ -209,12 +209,7 @@ module globals
       x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, io_p), 0.33d0)
 
       ! solve the household problem using rootfinding
-      if (ij<JR) then
-        call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), value_func)
-      else
-        call fminsearch((/x_in(1)/), fret, (/X_l/), (/X_u/), value_func)
-      endif
-
+      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), value_func)
 
       ! determine future investment
       k_p = 0d0
