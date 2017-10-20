@@ -317,26 +317,22 @@ module globals
         real*8, intent(in) :: x_in(:)
 
         ! variable declarations
-        real*8 :: cons_w, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
+        real*8 :: cons_w, X_plus, income, tomorrow, varphi_x, varphi_p
         integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
         ! calculate tomorrow's assets
         X_plus  = x_in(1)
         lab_com = max(x_in(2), 0d0)
 
-        ! current occupation
-        ind_o = abs(dble(ik_com > 0))
-
         ! calculate current income
-        income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
-                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
+        income = w*eff(ij_com)*eta(iw_com)*lab_com
 
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - X_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
         else
-          p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
+          p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
         endif
 
         ! calculate linear interpolation for future part of first order condition
@@ -358,13 +354,13 @@ module globals
         if (ij_com < JJ .or. mu_b /= 0d0) then
 
           if(varphi_x <= varphi_p) then
-            tomorrow = max(varphi_x           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_p-varphi_x)*(egam*S(ij_com, ixr_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_p)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_x           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, 0))**(1d0/egam) +  &
+                           (varphi_p-varphi_x)*(egam*S(ij_com, ixr_p, ipl_p, ik_com, iw_com, ie_com, 0))**(1d0/egam) +  &
+                           (1d0-varphi_p)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, 0))**(1d0/egam), 1d-10)**egam/egam
           else
-            tomorrow = max(varphi_p           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_x-varphi_p)*(egam*S(ij_com, ixl_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_x)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_p           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, 0))**(1d0/egam) +  &
+                           (varphi_x-varphi_p)*(egam*S(ij_com, ixl_p, ipr_p, ik_com, iw_com, ie_com, 0))**(1d0/egam) +  &
+                           (1d0-varphi_x)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, 0))**(1d0/egam), 1d-10)**egam/egam
            endif
 
         endif
@@ -390,26 +386,22 @@ module globals
         real*8, intent(in) :: x_in(:)
 
         ! variable declarations
-        real*8 :: cons_e, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
+        real*8 :: cons_e, X_plus, income, tomorrow, varphi_x, varphi_p
         integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
         ! calculate tomorrow's assets
         X_plus  = x_in(1)
         lab_com = max(x_in(2), 0d0)
 
-        ! current occupation
-        ind_o = abs(dble(ik_com > 0))
-
         ! calculate current income
-        income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
-                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
+        income = theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - X_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
         else
-          p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
+          p_plus_com = (p(ip_com)*dble(ij_com-1) + phi*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
         endif
 
         ! calculate linear interpolation for future part of first order condition
@@ -431,13 +423,13 @@ module globals
         if (ij_com < JJ .or. mu_b /= 0d0) then
 
           if(varphi_x <= varphi_p) then
-            tomorrow = max(varphi_x           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_p-varphi_x)*(egam*S(ij_com, ixr_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_p)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_x           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
+                           (varphi_p-varphi_x)*(egam*S(ij_com, ixr_p, ipl_p, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
+                           (1d0-varphi_p)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, 1))**(1d0/egam), 1d-10)**egam/egam
           else
-            tomorrow = max(varphi_p           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_x-varphi_p)*(egam*S(ij_com, ixl_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_x)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_p           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
+                           (varphi_x-varphi_p)*(egam*S(ij_com, ixl_p, ipr_p, ik_com, iw_com, ie_com, 1))**(1d0/egam) +  &
+                           (1d0-varphi_x)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, 1))**(1d0/egam), 1d-10)**egam/egam
            endif
 
         endif
