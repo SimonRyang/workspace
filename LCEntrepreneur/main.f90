@@ -187,7 +187,7 @@ contains
                          call solve_consumption(ij, ia, ip, ik, iw, ie, 0)
 
                          ! next period entrpreneur
-                         call solve_consumption(ij, ia, ip, ik, iw, ie, 1)
+                         if(ij<JR-1)call solve_consumption(ij, ia, ip, ik, iw, ie, 1)
 
                          ! decision on whether to be homeowner or renter next period
                           if(ij < JR-1 .and. V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then

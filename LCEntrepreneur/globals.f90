@@ -211,6 +211,7 @@ module globals
       ! solve the household problem using rootfinding
       call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), value_func)
 
+
       ! determine future investment
       k_p = 0d0
 
