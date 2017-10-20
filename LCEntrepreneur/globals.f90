@@ -115,11 +115,11 @@ module globals
     real*8 :: m(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! numerical variables
-    integer :: ij_com, ix_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, ix_p_com
+    integer :: ij_com, ix_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, ix_p_com, io_p_com
     integer :: iamax(JJ), ikmax(JJ)
     real*8 :: cons_com, lab_com, p_plus_com
 
-    !$omp threadprivate(ij_com, ix_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, ix_p_com)
+    !$omp threadprivate(ij_com, ix_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, ix_p_com, io_p_com)
     !$omp threadprivate(cons_com, lab_com, p_plus_com)
 
 
@@ -202,7 +202,7 @@ module globals
       integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
       ! set up communication variables
-      ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie
+      ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
 
       ! get best initial guess from future period
       x_in(1) = max(X_plus_t(ij+1, ia, ip, ik, iw, ie, io_p), 1d-4)
@@ -327,7 +327,7 @@ module globals
         ! calculate current income
         income = w*eff(ij_com)*eta(iw_com)*lab_com
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - taup*min(income, p_u)  - X_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - X_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
@@ -396,7 +396,7 @@ module globals
         ! calculate current income
         income = theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - phi*taup*min(income, p_u)  - X_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - X_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
