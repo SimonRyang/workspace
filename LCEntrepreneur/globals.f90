@@ -212,7 +212,7 @@ module globals
       if (ij<JR) then
         call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), value_func)
       else
-        call fminsearch(x_in(1), fret, (/X_l/), (/X_u/), value_func)
+        call fminsearch((/x_in(1)/), fret, (/X_l/), (/X_u/), value_func)
       endif
 
 
