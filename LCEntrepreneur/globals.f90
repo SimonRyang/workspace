@@ -327,7 +327,7 @@ module globals
         ! calculate current income
         income = w*eff(ij_com)*eta(iw_com)*lab_com
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - X_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - taup*min(income, p_u)  - X_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
@@ -396,7 +396,7 @@ module globals
         ! calculate current income
         income = theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - X_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - phi*taup*min(income, p_u)  - X_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
