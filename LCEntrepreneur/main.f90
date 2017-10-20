@@ -166,7 +166,7 @@ contains
                            call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
 
                            ! next period entrepreneur
-                           if(ij<JR)call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
+                           if(ij<JR-1)call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
 
                           enddo
                        enddo
