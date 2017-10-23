@@ -421,7 +421,7 @@ module globals
         implicit none
 
         ! input variable
-        real*8, intent(in) :: x_in
+        real*8, intent(in) :: x_in(:)
 
         ! variable declarations
         real*8 :: cons_o, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
