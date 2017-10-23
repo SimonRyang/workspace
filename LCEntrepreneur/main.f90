@@ -129,7 +129,7 @@ contains
               omega_k(JJ, :, :, :, :, :) = 0d0
 
               do iq_p = 0, NQ
-                  S(JJ, iq_p, :, :, :, :, :) = mu_b*max(Q(iq_p), 1d-10)**egam/egam
+                  S(JJ, iq_p, :, :, :, :, 0) = mu_b*max(Q(iq_p), 1d-10)**egam/egam
               enddo
 
               do ia = 0, NA
