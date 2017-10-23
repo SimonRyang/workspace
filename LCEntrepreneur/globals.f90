@@ -211,13 +211,13 @@ module globals
 
        S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
 
-       if (varphi_a <= varphi_k) then
+       if (varphi_a <= varphi_x) then
          EV_temp = varphi_a             *(egam*EV(ij+1, ial_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
-                   (varphi_k - varphi_a)*(egam*EV(ij+1, iar_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
-                   (1d0-varphi_k)       *(egam*EV(ij+1, iar_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam)
+                   (varphi_x - varphi_a)*(egam*EV(ij+1, iar_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
+                   (1d0-varphi_x)       *(egam*EV(ij+1, iar_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam)
         else
-          EV_temp = varphi_k             *(egam*EV(ij+1, ial_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
-                    (varphi_a - varphi_k)*(egam*EV(ij+1, ial_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam) + &
+          EV_temp = varphi_x             *(egam*EV(ij+1, ial_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
+                    (varphi_a - varphi_x)*(egam*EV(ij+1, ial_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam) + &
                     (1d0-varphi_a)       *(egam*EV(ij+1, iar_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam)
         endif
 
@@ -278,12 +278,12 @@ module globals
       endif
 
       ! copy decisions
-      Q_plus_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(1)
-      a_plus_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p
-      k_plus_t(ij, ia, ip, ik, iw, ie, io_p) = k_p
-      c_t(ij, ia, ip, ik, iw, ie, io_p) = cons_com
-      l_t(ij, ia, ip, ik, iw, ie, io_p) = lab_com
-      V_t(ij, ia, ip, ik, iw, ie, io_p) = -fret
+      Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1)
+      a_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p
+      k_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = k_p
+      c_t(ij, ia, ix, ip, ik, iw, ie, io_p) = cons_com
+      l_t(ij, ia, ix, ip, ik, iw, ie, io_p) = lab_com
+      V_t(ij, ia, ix, ip, ik, iw, ie, io_p) = -fret
 
   end subroutine
 
@@ -296,7 +296,7 @@ module globals
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: inv_w, a_p, x_p, k_p, EV_temp, S_temp, omega_k, varphi_a, varphi_x, a_temp
+      real*8 :: inv_w, a_p, x_p, k_p, EV_temp, S_temp, omega_x, varphi_a, varphi_x, a_temp
       integer :: ial_p, iar_p, ixl_p, ixr_p
 
       ! store real estate share
@@ -325,13 +325,13 @@ module globals
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
-        EV_temp = varphi_a            *(egam*EV(ij_com+1, ial_p, 0, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                  (varhpi_x-varphi_a) *(egam*EV(ij_com+1, iar_p, 0, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                  varphi_x            *(egam*EV(ij_com+1, iar_p, 0, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam)
+        EV_temp = varphi_a            *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                  (varhpi_x-varphi_a) *(egam*EV(ij_com+1, iar_p, ixl_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                  varphi_x            *(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
       else
-        EV_temp = varphi_x            *(egam*EV(ij_com+1, ial_p, 0, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                  (varhpi_a-varphi_x) *(egam*EV(ij_com+1, ial_p, 0, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
-                  varphi_y            *(egam*EV(ij_com+1, iar_p, 0, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam)
+        EV_temp = varphi_x            *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                  (varhpi_a-varphi_x) *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                  varphi_y            *(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
       endif
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
