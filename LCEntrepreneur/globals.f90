@@ -100,7 +100,7 @@ module globals
     real*8 :: a_coh(JJ, 0:1), k_coh(JJ)
 
     ! different grids to discretize the state space
-    real*8 :: Q(0:NQ), a(0:NA), p(0:NP), k(0:NK)
+    real*8 :: Q(0:NQ), a(0:NA), x(0:NX), p(0:NP), k(0:NK)
 
     ! variables to store the policy functions
     real*8 :: Q_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), a_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
@@ -119,7 +119,7 @@ module globals
     real*8 :: omega_x_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! variables to store the value functions
-    real*8 :: V(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), EV(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), S(JJ, 0:NQ, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), EV(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), S(JJ, 0:NQ, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! weights for the different gridpoints on the discretized state space
     real*8 :: m(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
@@ -142,7 +142,7 @@ module globals
 
       integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
       integer :: ial, iar, ixl, ixr
-      real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a
+      real*8 :: x_in, fret, a_p, x_p, EV_temp, S_temp, varphi_a
 
       ! set up communication variables
       ij_com = ij; iq_p_com = iq_p; ix_com = ix; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
@@ -155,7 +155,7 @@ module globals
 
        ! portfolio share for capital
        omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = x_in
-       S(ij, iq_p, ip_p, ix, ik, iw, ie, 0) = -fret
+       S(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = -fret
 
     end subroutine
 
@@ -191,27 +191,27 @@ module globals
 
         integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
         integer :: ial_p, iar_p, ixl_p, ixr_p
-        real*8 :: a_p, k_p, EV_temp, S_temp, varphi_a, varphi_x
+        real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
         a_p  = Q(iq_p)
-        x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*X(ix)
+        x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix)
 
        ! calculate linear interpolation for future assets
        call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial_p, iar_p, varphi_a)
        call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
 
        ! restrict values to grid just in case
-       ial = min(ial, NA)
-       iar = min(iar, NA)
+       ial_p = min(ial_p, NA)
+       iar_p = min(iar_p, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       ixl = min(ixl, NX)
-       ixr = min(ixr, NX)
+       ixl_p = min(ixl_p, NX)
+       ixr_p = min(ixr_p, NX)
        varphi_x = max(min(varphi_x, 1d0),0d0)
 
        S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
 
-       if (varphi_a <= varphi_p) then
+       if (varphi_a <= varphi_k) then
          EV_temp = varphi_a             *(egam*EV(ij+1, ial_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
                    (varphi_k - varphi_a)*(egam*EV(ij+1, iar_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
                    (1d0-varphi_k)       *(egam*EV(ij+1, iar_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam)
@@ -229,20 +229,20 @@ module globals
 
 
   ! solve the household's consumption-savings decision
-  subroutine solve_consumption(ij, ia, ip, ik, iw, ie, io_p)
+  subroutine solve_consumption(ij, ia, ix, ip, ik, iw, ie, io_p)
 
       implicit none
 
-      integer, intent(in) :: ij, ia, ip, ik, iw, ie, io_p
+      integer, intent(in) :: ij, ia, ix, ip, ik, iw, ie, io_p
       real*8 :: x_in(2), fret, varphi_q, varphi_p, k_p
       integer :: iql_p, iqr_p, ipl_p, ipr_p
 
       ! set up communication variables
-      ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
+      ij_com = ij; ia_com = ia; ix_com = ix; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(ij, ia, ip, ik, iw, ie, io_p), 1d-4)
-      x_in(2) = max(l_t(ij, ia, ip, ik, iw, ie, io_p), 0.33d0)
+      x_in(1) = max(Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p), 1d-4)
+      x_in(2) = max(l_t(ij, ia, ix, ip, ik, iw, ie, io_p), 0.33d0)
 
       ! solve the household problem using rootfinding
       call fminsearch(x_in, fret, (/Q_l, 0d0/), (/Q_u, 0.99d0/), cons_o)
@@ -266,13 +266,13 @@ module globals
 
         ! get next period's capital size
         if (varphi_q <= varphi_p) then
-          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k(ij, iql_p, ipl_p, ik, iw, ie) +  &
-                                   (varphi_p-varphi_q)  *omega_k(ij, iqr_p, ipl_p, ik, iw, ie) +  &
-                                   (1d0-varphi_p)       *omega_k(ij, iqr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k(ij, iql_p, ix, ipl_p, ik, iw, ie) +  &
+                                   (varphi_p-varphi_q)  *omega_k(ij, iqr_p, ix, ipl_p, ik, iw, ie) +  &
+                                   (1d0-varphi_p)       *omega_k(ij, iqr_p, ix, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         else
-          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k(ij, iql_p, ipl_p, ik, iw, ie) +  &
-                                   (varphi_q-varphi_p)  *omega_k(ij, iql_p, ipr_p, ik, iw, ie) +  &
-                                   (1d0-varphi_q)       *omega_k(ij, iqr_p, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k(ij, iql_p, ix, ipl_p, ik, iw, ie) +  &
+                                   (varphi_q-varphi_p)  *omega_k(ij, iql_p, ix, ipr_p, ik, iw, ie) +  &
+                                   (1d0-varphi_q)       *omega_k(ij, iqr_p, ix, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         endif
 
       endif
