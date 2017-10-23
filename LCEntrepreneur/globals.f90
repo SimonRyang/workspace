@@ -97,7 +97,7 @@ module globals
 
     ! cohort aggregate variables
     real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), l_coh(JJ, 0:1), o_coh(JJ)
-    real*8 :: a_coh(JJ, 0:1), k_coh(JJ)
+    real*8 :: a_coh(JJ, 0:1), x_coh(JJ, 0:1) k_coh(JJ)
 
     ! different grids to discretize the state space
     real*8 :: Q(0:NQ), a(0:NA), x(0:NX), p(0:NP), k(0:NK)
@@ -190,35 +190,35 @@ module globals
         implicit none
 
         integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
-        integer :: ial_p, iar_p, ixl_p, ixr_p
+        integer :: ial, iar, ixl, ixr
         real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
         a_p  = Q(iq_p)
         x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix)
 
        ! calculate linear interpolation for future assets
-       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial_p, iar_p, varphi_a)
-       call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
+       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+       call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
 
        ! restrict values to grid just in case
-       ial_p = min(ial_p, NA)
-       iar_p = min(iar_p, NA)
+       ial = min(ial, NA)
+       iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       ixl_p = min(ixl_p, NX)
-       ixr_p = min(ixr_p, NX)
+       ixl = min(ixl, NX)
+       ixr = min(ixr, NX)
        varphi_x = max(min(varphi_x, 1d0),0d0)
 
        S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
 
        if (varphi_a <= varphi_x) then
-         EV_temp = varphi_a             *(egam*EV(ij+1, ial_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
-                   (varphi_x - varphi_a)*(egam*EV(ij+1, iar_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
-                   (1d0-varphi_x)       *(egam*EV(ij+1, iar_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam)
+         EV_temp = varphi_a             *(egam*EV(ij+1, ial, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
+                   (varphi_x - varphi_a)*(egam*EV(ij+1, iar, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
+                   (1d0-varphi_x)       *(egam*EV(ij+1, iar, ixr, ip_p, 0, iw, ie))**(1d0/egam)
         else
-          EV_temp = varphi_x             *(egam*EV(ij+1, ial_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
-                    (varphi_a - varphi_x)*(egam*EV(ij+1, ial_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam) + &
-                    (1d0-varphi_a)       *(egam*EV(ij+1, iar_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam)
+          EV_temp = varphi_x             *(egam*EV(ij+1, ial, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
+                    (varphi_a - varphi_x)*(egam*EV(ij+1, ial, ixr, ip_p, 0, iw, ie))**(1d0/egam) + &
+                    (1d0-varphi_a)       *(egam*EV(ij+1, iar, ixr, ip_p, 0, iw, ie))**(1d0/egam)
         endif
 
        S_temp = S_temp + psi(ij+1)*EV_temp**egam/egam
@@ -235,7 +235,7 @@ module globals
 
       integer, intent(in) :: ij, ia, ix, ip, ik, iw, ie, io_p
       real*8 :: x_in(2), fret, varphi_q, varphi_p, k_p
-      integer :: iql_p, iqr_p, ipl_p, ipr_p
+      integer :: iql_p, iqr_p, ipl, ipr
 
       ! set up communication variables
       ij_com = ij; ia_com = ia; ix_com = ix; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
@@ -253,26 +253,26 @@ module globals
       if (io_p == 1) then
 
         call linint_Grow(x_in(1), Q_l, Q_u, Q_grow, NQ, iql_p, iqr_p, varphi_q)
-        call linint_Equi(p_plus_com, p_l, p_u, NP, ipl_p, ipr_p, varphi_p)
+        call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
 
         ! restrict values to grid just in case
         iql_p = min(iql_p, NQ)
         iqr_p = min(iqr_p, NQ)
         varphi_q = max(min(varphi_q, 1d0),0d0)
 
-        ipl_p = min(ipl_p, NP)
-        ipr_p = min(ipr_p, NP)
+        ipl = min(ipl, NP)
+        ipr = min(ipr, NP)
         varphi_p = max(min(varphi_p, 1d0),0d0)
 
         ! get next period's capital size
         if (varphi_q <= varphi_p) then
-          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k(ij, iql_p, ix, ipl_p, ik, iw, ie) +  &
-                                   (varphi_p-varphi_q)  *omega_k(ij, iqr_p, ix, ipl_p, ik, iw, ie) +  &
-                                   (1d0-varphi_p)       *omega_k(ij, iqr_p, ix, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k(ij, iql_p, ix, ipl, ik, iw, ie) +  &
+                                   (varphi_p-varphi_q)  *omega_k(ij, iqr_p, ix, ipl, ik, iw, ie) +  &
+                                   (1d0-varphi_p)       *omega_k(ij, iqr_p, ix, ipr, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         else
-          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k(ij, iql_p, ix, ipl_p, ik, iw, ie) +  &
-                                   (varphi_q-varphi_p)  *omega_k(ij, iql_p, ix, ipr_p, ik, iw, ie) +  &
-                                   (1d0-varphi_q)       *omega_k(ij, iqr_p, ix, ipr_p, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k(ij, iql_p, ix, ipl, ik, iw, ie) +  &
+                                   (varphi_q-varphi_p)  *omega_k(ij, iql_p, ix, ipr, ik, iw, ie) +  &
+                                   (1d0-varphi_q)       *omega_k(ij, iqr_p, ix, ipr, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         endif
 
       endif
@@ -297,7 +297,7 @@ module globals
 
       ! variable declarations
       real*8 :: inv_w, a_p, x_p, k_p, EV_temp, S_temp, omega_x, varphi_a, varphi_x, a_temp
-      integer :: ial_p, iar_p, ixl_p, ixr_p
+      integer :: ial, iar, ixl, ixr
 
       ! store real estate share
       omega_x  = x_in
@@ -309,29 +309,29 @@ module globals
       a_p = max(a_temp, 0d0)
 
       ! derive interpolation weights
-      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial_p, iar_p, varphi_a)
-      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
+      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
 
       ! restrict values to grid just in case
-      ial_p = min(ial_p, NA)
-      iar_p = min(iar_p, NA)
+      ial = min(ial, NA)
+      iar = min(iar, NA)
       varphi_a = max(min(varphi_a, 1d0),0d0)
 
-      ixl_p = min(ixl_p, NX)
-      ixr_p = min(ixr_p, NX)
+      ixl = min(ixl, NX)
+      ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
       S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
-        EV_temp = varphi_a            *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  (varphi_x-varphi_a) *(egam*EV(ij_com+1, iar_p, ixl_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  varphi_x            *(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
+        EV_temp = varphi_a            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                  (varphi_x-varphi_a) *(egam*EV(ij_com+1, iar, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                  varphi_x            *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
       else
-        EV_temp = varphi_x            *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  (varphi_a-varphi_x) *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  varphi_a            *(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
+        EV_temp = varphi_x            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                  (varphi_a-varphi_x) *(egam*EV(ij_com+1, ial, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                  varphi_a            *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
       endif
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
@@ -350,7 +350,7 @@ module globals
 
       ! variable declarations
       real*8 :: inv_e, a_p, x_p, k_p, EV_temp, S_temp, omega_x, omega_k, varphi_a, varphi_x, varphi_k, a_temp
-      integer :: ial_p, iar_p, ixl_p, ixr_p, ikl_p, ikr_p
+      integer :: ial, iar, ixl, ixr, ikl, ikr
 
       ! store real estate share
       omega_x  = x_in(1)
@@ -363,34 +363,34 @@ module globals
       a_p = max(a_temp, 0d0)
 
       ! derive interpolation weights
-      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial_p, iar_p, varphi_a)
-      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
-      call linint_Grow(k_p, k_l, k_u, k_grow, NK-1, ikl_p, ikr_p, varphi_k)
+      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+      call linint_Grow(k_p, k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
 
       ! restrict values to grid just in case
-      ial_p = min(ial_p, NA)
-      iar_p = min(iar_p, NA)
+      ial = min(ial, NA)
+      iar = min(iar, NA)
       varphi_a = max(min(varphi_a, 1d0),0d0)
 
-      ixl_p = min(ixl_p, NX)
-      ixr_p = min(ixr_p, NX)
+      ixl = min(ixl, NX)
+      ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
-      ikl_p = min(ikl_p+1, NK)
-      ikr_p = min(ikr_p+1, NK)
+      ikl = min(ikl+1, NK)
+      ikr = min(ikr+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
       S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
-      EV_temp = varphi_a*varphi_x*varphi_k                  *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*varphi_x*(1d0-varphi_k)            *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*(1d0-varphi_x)*varphi_k            *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*(1d0-varphi_x)*(1d0-varphi_k)      *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
-                (1d0-varphi_a)*varphi_x*varphi_k            *(egam*EV(ij_com+1, iar_p, ixl_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                (1d0-varphi_a)*varphi_x*(1d0-varphi_k)      *(egam*EV(ij_com+1, iar_p, ixl_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
-                (1d0-varphi_a)*(1d0-varphi_x)*varphi_k      *(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                (1d0-varphi_a)*(1d0-varphi_x)*(1d0-varphi_k)*(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam)
+      EV_temp = varphi_a*varphi_x*varphi_k                  *(egam*EV(ij_com+1, ial, ixl, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*varphi_x*(1d0-varphi_k)            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*(1d0-varphi_x)*varphi_k            *(egam*EV(ij_com+1, ial, ixr, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*(1d0-varphi_x)*(1d0-varphi_k)      *(egam*EV(ij_com+1, ial, ixr, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
+                (1d0-varphi_a)*varphi_x*varphi_k            *(egam*EV(ij_com+1, iar, ixl, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
+                (1d0-varphi_a)*varphi_x*(1d0-varphi_k)      *(egam*EV(ij_com+1, iar, ixl, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
+                (1d0-varphi_a)*(1d0-varphi_x)*varphi_k      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
+                (1d0-varphi_a)*(1d0-varphi_x)*(1d0-varphi_k)*(egam*EV(ij_com+1, iar, ixr, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam)
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
@@ -408,7 +408,7 @@ module globals
 
         ! variable declarations
         real*8 :: cons_o, Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
-        integer :: iql_p, iqr_p, ipl_p, ipr_p
+        integer :: iql_p, iqr_p, ipl, ipr
 
         ! calculate tomorrow's assets
         Q_plus  = x_in(1)
@@ -435,7 +435,7 @@ module globals
 
         ! calculate linear interpolation for future part of first order condition
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql_p, iqr_p, varphi_q)
-        call linint_Equi(p_plus_com, p_l, p_u, NP, ipl_p, ipr_p, varphi_p)
+        call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
 
         ! restrict values to grid just in case
         iql_p = min(iql_p, NQ)
@@ -443,8 +443,8 @@ module globals
         varphi_q = max(min(varphi_q, 1d0),0d0)
 
         ! restrict values to grid just in case
-        ipl_p = min(ipl_p, NP)
-        ipr_p = min(ipr_p, NP)
+        ipl = min(ipl, NP)
+        ipr = min(ipr, NP)
         varphi_p = max(min(varphi_p, 1d0),0d0)
 
         ! get next period value function
@@ -452,13 +452,13 @@ module globals
         if (ij_com < JJ .or. mu_b /= 0d0) then
 
           if(varphi_q <= varphi_p) then
-            tomorrow = max(varphi_q           *(egam*S(ij_com, iql_p, ix_com, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_p-varphi_q)*(egam*S(ij_com, iqr_p, ix_com, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_p)     *(egam*S(ij_com, iqr_p, ix_com, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_q           *(egam*S(ij_com, iql_p, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (varphi_p-varphi_q)*(egam*S(ij_com, iqr_p, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (1d0-varphi_p)     *(egam*S(ij_com, iqr_p, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
           else
-            tomorrow = max(varphi_p           *(egam*S(ij_com, iql_p, ix_com, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_q-varphi_p)*(egam*S(ij_com, iql_p, ix_com, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_q)     *(egam*S(ij_com, iqr_p, ix_com, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_p           *(egam*S(ij_com, iql_p, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (varphi_q-varphi_p)*(egam*S(ij_com, iql_p, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (1d0-varphi_q)     *(egam*S(ij_com, iqr_p, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
            endif
 
         endif
