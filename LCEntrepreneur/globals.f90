@@ -349,7 +349,7 @@ module globals
       real*8, intent(in) :: x_in(:)
 
       ! variable declarations
-      real*8 :: inv_e, a_p, x_p, k_p, EV_temp, S_temp, omega_k, varphi_a, varphi_x, varphi_k, a_temp
+      real*8 :: inv_e, a_p, x_p, k_p, EV_temp, S_temp, omega_x, omega_k, varphi_a, varphi_x, varphi_k, a_temp
       integer :: ial_p, iar_p, ixl_p, ixr_p, ikl_p, ikr_p
 
       ! store real estate share
