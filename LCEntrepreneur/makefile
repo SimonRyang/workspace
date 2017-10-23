@@ -1,5 +1,5 @@
 MAINFILE = main
-CFLAGS = -qopenmp -O2 -mcmodel=large -check bounds -check uninit -fpe0 -traceback
+CFLAGS = -qopenmp -O2 -mcmodel=large -check all -check uninit -fpe0 -traceback
 CC = ~/intel/bin/ifort
 TARGET = Build/prog
 
