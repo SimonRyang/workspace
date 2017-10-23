@@ -77,7 +77,7 @@ contains
         theta = exp(theta)
 
         ! initialize asset grid
-        call grid_Cons_Grow(X, X_l, X_u, X_grow)
+        call grid_Cons_Grow(Q, X_l, X_u, X_grow)
 
         ! initialize liquid asset grid
         call grid_Cons_Grow(a, a_l, a_u, a_grow)
@@ -99,11 +99,11 @@ contains
         V = 1d-16**egam/egam; EV = 1d-16**egam/egam; S = 1d-16**egam/egam
 
         ! initialize policy functions
-        X_plus = 0d0; a_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
+        Q_plus = 0d0; a_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
         omega_k = 0d0
 
         ! initialize temporary policy and value functions
-        X_plus_t = 0d0; a_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0; V_t = 0d0
+        Q_plus_t = 0d0; a_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0; V_t = 0d0
 
         ! open files
         open(21, file='output.out')
@@ -117,8 +117,8 @@ contains
 
         implicit none
 
-        integer :: ij, ix, ix_p, ia, ip, ip_p, ik, iw, ie
-        real*8:: y_plot(0:NX)
+        integer :: ij, iq, iq_p, ia, ip, ip_p, ik, iw, ie
+        real*8:: y_plot(0:NQ)
 
         ! solve household problem recursively
 
@@ -128,8 +128,8 @@ contains
 
               omega_k(JJ, :, :, :, :, :) = 0d0
 
-              do ix_p = 0, NX
-                  S(JJ, ix_p, :, :, :, :, :) = mu_b*max(X(ix_p), 1d-10)**egam/egam
+              do iq_p = 0, NQ
+                  S(JJ, iq_p, :, :, :, :, :) = mu_b*max(Q(iq_p), 1d-10)**egam/egam
               enddo
 
               do ia = 0, NA
@@ -139,7 +139,7 @@ contains
                     ! with bequest motive we assume future worker
                     call solve_consumption(JJ, ia, ip, ik, 1, 1, 0)
 
-                    X_plus(JJ, ia, ip, ik, :, :) = X_plus_t(JJ, ia, ip, ik, 1, 1, 0)
+                    Q_plus(JJ, ia, ip, ik, :, :) = Q_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     a_plus(JJ, ia, ip, ik, :, :) = a_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     p_plus(JJ, ia, ip, ik, :, :) = p_plus_t(JJ, ia, ip, ik, 1, 1, 0)
                     k_plus(JJ, ia, ip, ik, :, :) = k_plus_t(JJ, ia, ip, ik, 1, 1, 0)
@@ -156,7 +156,7 @@ contains
                ! get optimal share of wealth invested into capital
 
                   !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij) default(none)
-                   do ix_p = 0, NX
+                   do iq_p = 0, NQ
                      do ip_p = 0, NP
                        do ik = 0, NK
                          do iw = 1, NW
@@ -164,14 +164,14 @@ contains
 
                              if(ij>=JR) then
                                ! next period retiree
-                               call solve_retiree(ij, ix_p, ip_p, ik, iw, ie)
+                               call solve_retiree(ij, iq_p, ip_p, ik, iw, ie)
                              else
 
                                ! next period worker
-                               call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
+                               call solve_worker(ij, iq_p, ip_p, ik, iw, ie)
 
                                ! next period entrepreneur
-                               call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
+                               call solve_entrepreneur(ij, iq_p, ip_p, ik, iw, ie)
                              endif
                           enddo
                        enddo
@@ -196,7 +196,7 @@ contains
 
                          ! decision on whether to be homeowner or renter next period
                           if(ij < JR-1 .and. V_t(ij, ia, ip, ik, iw, ie, 1) > V_t(ij, ia, ip, ik, iw, ie, 0)) then
-                                X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 1)
+                                Q_plus(ij, ia, ip, ik, iw, ie) = Q_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 a_plus(ij, ia, ip, ik, iw, ie) = a_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 p_plus(ij, ia, ip, ik, iw, ie) = p_plus_t(ij, ia, ip, ik, iw, ie, 1)
                                 k_plus(ij, ia, ip, ik, iw, ie) = k_plus_t(ij, ia, ip, ik, iw, ie, 1)
@@ -204,7 +204,7 @@ contains
                                 l(ij, ia, ip, ik, iw, ie) = l_t(ij, ia, ip, ik, iw, ie, 1)
                                 V(ij, ia, ip, ik, iw, ie) = V_t(ij, ia, ip, ik, iw, ie, 1)
                            else
-                             X_plus(ij, ia, ip, ik, iw, ie) = X_plus_t(ij, ia, ip, ik, iw, ie, 0)
+                             Q_plus(ij, ia, ip, ik, iw, ie) = Q_plus_t(ij, ia, ip, ik, iw, ie, 0)
                              a_plus(ij, ia, ip, ik, iw, ie) = a_plus_t(ij, ia, ip, ik, iw, ie, 0)
                              p_plus(ij, ia, ip, ik, iw, ie) = p_plus_t(ij, ia, ip, ik, iw, ie, 0)
                              k_plus(ij, ia, ip, ik, iw, ie) = k_plus_t(ij, ia, ip, ik, iw, ie, 0)
@@ -371,7 +371,7 @@ contains
                       ! skip if there is no household
                       if (m(ij, ia, ip, ik, iw, ie) <= 0d0) cycle
 
-                      if (k_plus(ij, ia, ip, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ip, ik, iw, ie) < k_min) write(*,*)k_plus(ij, ia, ip, ik, iw, ie), a_plus(ij, ia, ip, ik, iw, ie), X_plus(ij, ia, ip, ik, iw, ie)
+                      if (k_plus(ij, ia, ip, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ip, ik, iw, ie) < k_min) write(*,*)k_plus(ij, ia, ip, ik, iw, ie), a_plus(ij, ia, ip, ik, iw, ie), Q_plus(ij, ia, ip, ik, iw, ie)
 
                       if(ik == 0) then
                         c_coh(ij, 0) = c_coh(ij, 0) + c(ij, ia, ip, ik, iw, ie)*m(ij, ia, ip, ik, iw, ie)
