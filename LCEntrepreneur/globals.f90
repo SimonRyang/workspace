@@ -237,7 +237,7 @@ module globals
       implicit none
 
       integer, intent(in) :: ij, ia, ix, ip, ik, iw, ie, io_p
-      real*8 :: x_in(2), fret, x_p, k_p, varphi_q, varphi_p
+      real*8 :: x_in(2), fret, x_p, mx, k_p, varphi_q, varphi_p
       integer :: iql, iqr, ipl, ipr
 
       ! set up communication variables
@@ -266,16 +266,16 @@ module globals
       x_p = 0d0
 
       if (varphi_q <= varphi_p) then
-        x_p = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
+        mx = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
               (varphi_p-varphi_q)  *omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
               (1d0-varphi_p)       *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
       else
-        x_p = (varphi_p             *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
+        mx = (varphi_p             *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
                (varphi_q-varphi_p)  *omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
                (1d0-varphi_q)       *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
       endif
 
-      x_p = (1d0+r)/psi(ij)*x(ix)
+      x_p = (1d0+r)/psi(ij)*x(ix) + m_p
 
       ! determine future investment
       k_p = 0d0
@@ -297,7 +297,7 @@ module globals
 
       ! copy decisions
       Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1)
-      a_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p - x_p
+      a_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p - mx
       x_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_p
       k_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = k_p
       c_t(ij, ia, ix, ip, ik, iw, ie, io_p) = cons_com
