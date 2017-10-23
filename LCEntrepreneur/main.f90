@@ -130,8 +130,8 @@ contains
 
             if(ij == JJ)then
 
-              omega_k(JJ, :, :, :, :, :) = 0d0
-              omega_x(JJ, :, :, :, :, :) = 0d0
+              omega_k(JJ, :, :, :, :, :, :) = 0d0
+              omega_x(JJ, :, :, :, :, :, :) = 0d0
 
               do iq_p = 0, NQ
                   S(JJ, iq_p, :, :, :, :, :, 0) = mu_b*max(Q(iq_p), 1d-10)**egam/egam
