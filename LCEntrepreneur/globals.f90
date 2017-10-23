@@ -228,7 +228,7 @@ module globals
       implicit none
 
       integer, intent(in) :: ij, ia, ip, ik, iw, ie, io_p
-      real*8 :: x_in(2), xy, fret, varphi_x, varphi_p, k_p
+      real*8 :: x_in(2), fret, varphi_x, varphi_p, k_p
       integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
       ! set up communication variables
@@ -242,8 +242,7 @@ module globals
       if (ij < JR) then
         call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), cons_o)
       else
-        xy = max(X_plus_t(ij+1, ia, ip, ik, iw, ie, io_p), 1d-4)
-        call fminsearch(xy, fret, X_l, X_u, cons_r)
+        call fminsearch(x_in(1), fret, X_l, X_u, cons_r)
       endif
 
       ! determine future investment
@@ -425,7 +424,7 @@ module globals
         real*8, intent(in) :: x_in
 
         ! variable declarations
-        real*8 :: cons_o, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
+        real*8 :: cons_r, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
         integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
         ! calculate tomorrow's assets
@@ -478,13 +477,7 @@ module globals
         endif
 
         if(cons_com <= 0d0)then
-           cons_o = -1d-16**egam/egam*(1d0+abs(cons_com))
-        elseif(lab_com < 0d0) then
-          cons_o = -1d-16**egam/egam*(1d0+abs(lab_com))
-        elseif(lab_com >= 1d0) then
-          cons_o = -1d-16**egam/egam*lab_com
-        else
-           cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
+           cons_r = -1d-16**egam/egam*(1d0+abs(cons_com))
         endif
 
     end function
