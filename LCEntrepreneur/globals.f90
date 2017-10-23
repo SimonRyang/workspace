@@ -148,7 +148,7 @@ module globals
       ij_com = ij; iq_p_com = iq_p; ix_com = ix; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
 
        ! get best guess for the root of foc_real
-       x_in = max(omega_x(ij, iq_p, ix, ip_p, ik, iw, ie), 1d-4)
+       x_in = max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie), 1d-4)
 
        ! solve the household problem using fminsearch
        call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
@@ -266,13 +266,13 @@ module globals
       x_p = 0d0
 
       if (varphi_q <= varphi_p) then
-        x_p = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie) +  &
-              (varphi_p-varphi_q)  *omega_x_t(ij, iqr, ix, ipl, ik, iw, ie) +  &
-              (1d0-varphi_p)       *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie))*x_in(1)
+        x_p = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
+              (varphi_p-varphi_q)  *omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
+              (1d0-varphi_p)       *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
       else
-        x_p = (varphi_p             *omega_x_t(ij, iql, ix, ipl, ik, iw, ie) +  &
-               (varphi_q-varphi_p)  *omega_x_t(ij, iql, ix, ipr, ik, iw, ie) +  &
-               (1d0-varphi_q)       *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie))*x_in(1)
+        x_p = (varphi_p             *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
+               (varphi_q-varphi_p)  *omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
+               (1d0-varphi_q)       *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
       endif
 
       x_p = (1d0+r)/psi(ij)*x(ix)
@@ -284,13 +284,13 @@ module globals
 
         ! get next period's capital size
         if (varphi_q <= varphi_p) then
-          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k(ij, iql, ix, ipl, ik, iw, ie) +  &
-                                   (varphi_p-varphi_q)  *omega_k(ij, iqr, ix, ipl, ik, iw, ie) +  &
-                                   (1d0-varphi_p)       *omega_k(ij, iqr, ix, ipr, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
+                                   (varphi_p-varphi_q)  *omega_k_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
+                                   (1d0-varphi_p)       *omega_k_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         else
-          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k(ij, iql, ix, ipl, ik, iw, ie) +  &
-                                   (varphi_q-varphi_p)  *omega_k(ij, iql, ix, ipr, ik, iw, ie) +  &
-                                   (1d0-varphi_q)       *omega_k(ij, iqr, ix, ipr, ik, iw, ie))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
+                                   (varphi_q-varphi_p)  *omega_k_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
+                                   (1d0-varphi_q)       *omega_k_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         endif
 
       endif
