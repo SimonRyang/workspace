@@ -297,7 +297,7 @@ module globals
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: inv_w, a_p, x_p, k_p, EV_temp, S_temp, omega_x, varphi_a, varphi_x, a_temp
+      real*8 :: inv_w, a_p, x_p, EV_temp, S_temp, omega_x, varphi_a, varphi_x, a_temp
       integer :: ial, iar, ixl, ixr
 
       ! store real estate share
@@ -305,7 +305,6 @@ module globals
 
       ! determine future liquid wealth and future downpayment
       x_p = (1d0+r)/psi(ij_com)*x(ix_com) + omega_x*Q(iq_p_com)
-      k_p = 0d0
       a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com)
       a_p = max(a_temp, 0d0)
 
