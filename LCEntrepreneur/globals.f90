@@ -238,8 +238,8 @@ module globals
       ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(ij+1, ia, ip, ik, iw, ie, io_p), 1d-4)
-      x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, io_p), 0.33d0)
+      x_in(1) = max(Q_plus_t(ij, ia, ip, ik, iw, ie, io_p), 1d-4)
+      x_in(2) = max(l_t(ij, ia, ip, ik, iw, ie, io_p), 0.33d0)
 
       ! solve the household problem using rootfinding
       call fminsearch(x_in, fret, (/Q_l, 0d0/), (/Q_u, 0.99d0/), cons_o)
