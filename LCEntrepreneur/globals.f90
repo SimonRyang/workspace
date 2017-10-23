@@ -275,7 +275,7 @@ module globals
                (1d0-varphi_q)       *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
       endif
 
-      x_p = (1d0+r)/psi(ij)*x(ix) + m_p
+      x_p = (1d0+r)/psi(ij)*x(ix) + mx
 
       ! determine future investment
       k_p = 0d0
