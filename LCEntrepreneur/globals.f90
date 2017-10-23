@@ -239,7 +239,11 @@ module globals
       x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, io_p), 0.33d0)
 
       ! solve the household problem using rootfinding
-      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), cons_o)
+      if (ij < JR) then
+        call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), cons_o)
+      else
+        call fminsearch(x_in, fret, X_l, X_u, cons_r)
+      endif
 
       ! determine future investment
       k_p = 0d0
@@ -410,6 +414,80 @@ module globals
         endif
 
     end function
+
+    ! the first order condition regarding consumption
+    function cons_r(x_in)
+
+        implicit none
+
+        ! input variable
+        real*8, intent(in) :: x_in
+
+        ! variable declarations
+        real*8 :: cons_o, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
+        integer :: ixl_p, ixr_p, ipl_p, ipr_p
+
+        ! calculate tomorrow's assets
+        X_plus  = x_in(1)
+        lab_com = 0d0
+
+        ! current occupation
+        ind_o = abs(dble(ik_com > 0))
+
+        ! calculate current income
+        income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
+                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
+
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - X_plus
+
+        if (ij_com >= JR) then
+          p_plus_com = p(ip_com)
+        else
+          p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
+        endif
+
+        ! calculate linear interpolation for future part of first order condition
+        call linint_Grow(X_plus, X_l, X_u, X_grow, NX, ixl_p, ixr_p, varphi_x)
+        call linint_Equi(p_plus_com, p_l, p_u, NP, ipl_p, ipr_p, varphi_p)
+
+        ! restrict values to grid just in case
+        ixl_p = min(ixl_p, NX)
+        ixr_p = min(ixr_p, NX)
+        varphi_x = max(min(varphi_x, 1d0),0d0)
+
+        ! restrict values to grid just in case
+        ipl_p = min(ipl_p, NP)
+        ipr_p = min(ipr_p, NP)
+        varphi_p = max(min(varphi_p, 1d0),0d0)
+
+        ! get next period value function
+        tomorrow = 0d0
+        if (ij_com < JJ .or. mu_b /= 0d0) then
+
+          if(varphi_x <= varphi_p) then
+            tomorrow = max(varphi_x           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (varphi_p-varphi_x)*(egam*S(ij_com, ixr_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (1d0-varphi_p)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+          else
+            tomorrow = max(varphi_p           *(egam*S(ij_com, ixl_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (varphi_x-varphi_p)*(egam*S(ij_com, ixl_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (1d0-varphi_x)     *(egam*S(ij_com, ixr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+           endif
+
+        endif
+
+        if(cons_com <= 0d0)then
+           cons_o = -1d-16**egam/egam*(1d0+abs(cons_com))
+        elseif(lab_com < 0d0) then
+          cons_o = -1d-16**egam/egam*(1d0+abs(lab_com))
+        elseif(lab_com >= 1d0) then
+          cons_o = -1d-16**egam/egam*lab_com
+        else
+           cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
+        endif
+
+    end function
+
 
     ! function that defines adjustment cost
     function tr(k, k_p)
