@@ -22,9 +22,6 @@ module globals
     ! number of points on the liquid asset grid
     integer, parameter :: NA = 32
 
-    ! number of points on the annuity asset grid
-    integer, parameter :: NX = 32
-
     ! number of points on the capital grid
     integer, parameter :: NK = 32
 
@@ -98,21 +95,21 @@ module globals
     real*8 :: Q(0:NQ), a(0:NA), p(0:NP), k(0:NK)
 
     ! variables to store the policy functions
-    real*8 :: Q_plus(JJ, 0:NA, 0:NP, 0:NK, NW, NE), a_plus(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
-    real*8 :: p_plus(JJ, 0:NA, 0:NP, 0:NK, NW, NE), k_plus(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: Q_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), a_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: p_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), k_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
     real*8 :: c(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), l(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables for temporary policy and value functions
-    real*8 :: Q_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), a_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: k_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), p_plus_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: c_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: V_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: Q_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), a_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: k_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), p_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: c_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! variables to store the portfolio choice decisions
-    real*8 :: omega_k(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: omega_k(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables to store the value functions
-    real*8 :: V(JJ, 0:NA, 0:NP, 0:NK, NW, NE), EV(JJ, 0:NA, 0:NP, 0:NK, NW, NE), S(JJ, 0:NQ, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), EV(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), S(JJ+1, 0:NQ, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! weights for the different gridpoints on the discretized state space
     real*8 :: m(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
@@ -238,8 +235,8 @@ module globals
       ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(ij, ia, ip, ik, iw, ie, io_p), 1d-4)
-      x_in(2) = max(l_t(ij, ia, ip, ik, iw, ie, io_p), 0.33d0)
+      x_in(1) = max(Q_plus_t(ij+1, ia, ip, ik, iw, ie, io_p), 1d-4)
+      x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, io_p), 0.33d0)
 
       ! solve the household problem using rootfinding
       call fminsearch(x_in, fret, (/Q_l, 0d0/), (/Q_u, 0.99d0/), cons_o)
