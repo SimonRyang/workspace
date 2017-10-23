@@ -22,6 +22,9 @@ module globals
     ! number of points on the liquid asset grid
     integer, parameter :: NA = 32
 
+    ! number of points on the annuity asset grid
+    integer, parameter :: NX = 32
+
     ! number of points on the capital grid
     integer, parameter :: NK = 32
 
@@ -62,6 +65,11 @@ module globals
     real*8, parameter :: a_u    = Q_u
     real*8, parameter :: a_grow = Q_grow
 
+    ! size of the annuity grid
+    real*8, parameter :: x_l    = Q_l
+    real*8, parameter :: x_u    = Q_u
+    real*8, parameter :: x_grow = Q_grow
+
     ! size of the pension claim grid
     real*8, parameter :: p_l    = 0d0
     real*8, parameter :: p_u    = 2d0
@@ -95,129 +103,127 @@ module globals
     real*8 :: Q(0:NQ), a(0:NA), p(0:NP), k(0:NK)
 
     ! variables to store the policy functions
-    real*8 :: Q_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), a_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
-    real*8 :: p_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), k_plus(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: Q_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), a_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
+    real*8 :: p_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), k_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
     real*8 :: c(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), l(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables for temporary policy and value functions
-    real*8 :: Q_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), a_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: k_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), p_plus_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: c_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: V_t(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: Q_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: a_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO), x_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: p_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO), k_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: c_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! variables to store the portfolio choice decisions
-    real*8 :: omega_k(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: omega_x(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), omega_k(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
+    real*8 :: omega_x_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! variables to store the value functions
-    real*8 :: V(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), EV(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), S(JJ+1, 0:NQ, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), EV(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), S(JJ, 0:NQ, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! weights for the different gridpoints on the discretized state space
-    real*8 :: m(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: m(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
 
     ! numerical variables
-    integer :: ij_com, iq_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com
+    integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com
     integer :: iamax(JJ), ikmax(JJ)
-    real*8 :: cons_com, lab_com, p_plus_com
+    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
 
-    !$omp threadprivate(ij_com, iq_com, ia_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
-    !$omp threadprivate(cons_com, lab_com, p_plus_com)
+    !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
+    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com)
 
 
   contains
 
     ! solve the household's decision of how much wealth to invest into capital
-    subroutine solve_worker(ij, iq_p, ip_p, ik, iw, ie)
+    subroutine solve_worker(ij, iq_p, ix, ip_p, ik, iw, ie)
 
-        implicit none
+      implicit none
 
-        integer, intent(in) :: ij, iq_p, ip_p, ik, iw, ie
-        integer :: ial, iar
-        real*8 :: a_plus, EV_temp, S_temp, varphi_a
+      integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
+      integer :: ial, iar, ixl, ixr
+      real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a
 
-        a_plus  = Q(iq_p)
+      ! set up communication variables
+      ij_com = ij; iq_p_com = iq_p; ix_com = ix; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
 
-       ! calculate linear interpolation for future assets
-       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+       ! get best guess for the root of foc_real
+       x_in = max(omega_x(ij, iq_p, ix, ip_p, ik, iw, ie), 1d-4)
 
-       ! restrict values to grid just in case
-       ial = min(ial, NA)
-       iar = min(iar, NA)
-       varphi_a = max(min(varphi_a, 1d0),0d0)
+       ! solve the household problem using fminsearch
+       call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
 
-       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-16)**egam/egam
-
-       EV_temp = varphi_a      *(egam*EV(ij+1, ial, ip_p, 0, iw, ie))**(1d0/egam) + &
-                 (1d0-varphi_a)*(egam*EV(ij+1, iar, ip_p, 0, iw, ie))**(1d0/egam)
-
-       S_temp = S_temp + psi(ij+1)*EV_temp**egam/egam
-
-       S(ij, iq_p, ip_p, ik, iw, ie, 0) = S_temp
+       ! portfolio share for capital
+       omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = x_in
+       S(ij, iq_p, ip_p, ix, ik, iw, ie, 0) = -fret
 
     end subroutine
 
     ! solve the household's decision of how much wealth to invest into firm capital
-    subroutine solve_entrepreneur(ij, iq_p, ip_p, ik, iw, ie)
+    subroutine solve_entrepreneur(ij, iq_p, ix, ip_p, ik, iw, ie)
 
         implicit none
 
-        integer, intent(in) :: ij, iq_p, ip_p, ik, iw, ie
-        real*8 :: x_in, fret
+        integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
+        real*8 :: x_in(2), fret
 
         ! set up communication variables
         ij_com = ij; iq_p_com = iq_p; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
 
-        if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
+       ! get best guess for the root of foc_real
+        x_in(1) = max(omega_x(ij+1, iq_p, ix, ip_p, ik, iw, ie), 1d-4)
+        x_in(2) = max(omega_k(ij+1, iq_p, ix, ip_p, ik, iw, ie), 1d-4)
 
-           ! get best guess for the root of foc_real
-           if(iq_p > 0)then
-              x_in = omega_k(ij+1, iq_p, ip_p, ik, iw, ie)
-           else
-              x_in = 1d-4
-           endif
+       ! solve the household problem using fminsearch
+       call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
 
-           ! solve the household problem using fminsearch
-           call fminsearch(x_in, fret, 0d0, 1d0, inv_o)
-
-           ! portfolio share for capital
-           omega_k(ij, iq_p, ip_p, ik, iw, ie) = x_in
-           S(ij, iq_p, ip_p, ik, iw, ie, 1) = -fret
-
-        else
-
-          omega_k(ij, iq_p, ip_p, ik, iw, ie) = 1d0
-          S(ij, iq_p, ip_p, ik, iw, ie, 1) = 1d-16**egam/egam
-
-        endif
+       ! portfolio share for capital
+       omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1) = x_in(1)
+       omega_k(ij, iq_p, ix, ip_p, ik, iw, ie) = x_in(2)
+       S(ij, iq_p, ix, ip_p, ik, iw, ie, 1) = -fret
 
     end subroutine
 
     ! solve the household's decision of how much wealth to invest into capital
-    subroutine solve_retiree(ij, iq_p, ip_p, ik, iw, ie)
+    subroutine solve_retiree(ij, iq_p, ix, ip_p, ik, iw, ie)
 
         implicit none
 
-        integer, intent(in) :: ij, iq_p, ip_p, ik, iw, ie
-        integer :: ial, iar
-        real*8 :: a_plus, EV_temp, S_temp, varphi_a
+        integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
+        integer :: ial_p, iar_p, ixl_p, ixr_p
+        real*8 :: a_p, k_p, EV_temp, S_temp, varphi_a, varphi_x
 
-        a_plus  = Q(iq_p)
+        a_p  = Q(iq_p)
+        x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*X(ix)
 
        ! calculate linear interpolation for future assets
-       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial_p, iar_p, varphi_a)
+       call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
 
        ! restrict values to grid just in case
        ial = min(ial, NA)
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-16)**egam/egam
+       ixl = min(ixl, NX)
+       ixr = min(ixr, NX)
+       varphi_x = max(min(varphi_x, 1d0),0d0)
 
-       EV_temp = varphi_a      *(egam*EV(ij+1, ial, ip_p, 0, iw, ie))**(1d0/egam) + &
-                 (1d0-varphi_a)*(egam*EV(ij+1, iar, ip_p, 0, iw, ie))**(1d0/egam)
+       S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
+
+       if (varphi_a <= varphi_p) then
+         EV_temp = varphi_a             *(egam*EV(ij+1, ial_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
+                   (varphi_k - varphi_a)*(egam*EV(ij+1, iar_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
+                   (1d0-varphi_k)       *(egam*EV(ij+1, iar_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam)
+        else
+          EV_temp = varphi_k             *(egam*EV(ij+1, ial_p, ixl_p, ip_p, 0, iw, ie))**(1d0/egam) + &
+                    (varphi_a - varphi_k)*(egam*EV(ij+1, ial_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam) + &
+                    (1d0-varphi_a)       *(egam*EV(ij+1, iar_p, ixr_p, ip_p, 0, iw, ie))**(1d0/egam)
+        endif
 
        S_temp = S_temp + psi(ij+1)*EV_temp**egam/egam
 
-       S(ij, iq_p, ip_p, ik, iw, ie, 0) = S_temp
+       S(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = S_temp
 
     end subroutine
 
@@ -235,8 +241,8 @@ module globals
       ij_com = ij; ia_com = ia; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(ij+1, ia, ip, ik, iw, ie, io_p), 1d-4)
-      x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, io_p), 0.33d0)
+      x_in(1) = max(Q_plus_t(ij, ia, ip, ik, iw, ie, io_p), 1d-4)
+      x_in(2) = max(l_t(ij, ia, ip, ik, iw, ie, io_p), 0.33d0)
 
       ! solve the household problem using rootfinding
       call fminsearch(x_in, fret, (/Q_l, 0d0/), (/Q_u, 0.99d0/), cons_o)
@@ -282,7 +288,7 @@ module globals
   end subroutine
 
   ! the first order condition with respect to next period real estate
-  function inv_o(x_in)
+  function inv_w(x_in)
 
       implicit none
 
@@ -290,19 +296,75 @@ module globals
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: inv_o, a_p, k_p, EV_temp, S_temp, omega_k, varphi_k, varphi_a, a_temp
-      integer :: ikl_p, ikr_p, ial_p, iar_p
+      real*8 :: inv_e, a_p, x_p, k_p, EV_temp, S_temp, omega_k, varphi_a, varphi_x, a_temp
+      integer :: ial_p, iar_p, ixl_p, ixr_p
 
       ! store real estate share
-      omega_k  = x_in
+      omega_x  = x_in
 
       ! determine future liquid wealth and future downpayment
-      k_p =((1d0-xi)*k_min + omega_k*(Q(iq_p_com)-(1d0-xi)*k_min))/(1d0-xi)
-      a_temp = Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
+      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + omega_x*Q(iq_p_com)
+      k_p = 0d0
+      a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com)
       a_p = max(a_temp, 0d0)
 
       ! derive interpolation weights
       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial_p, iar_p, varphi_a)
+      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
+
+      ! restrict values to grid just in case
+      ial_p = min(ial_p, NA)
+      iar_p = min(iar_p, NA)
+      varphi_a = max(min(varphi_a, 1d0),0d0)
+
+      ixl_p = min(ixl_p, NX)
+      ixr_p = min(ixr_p, NX)
+      varphi_x = max(min(varphi_x, 1d0),0d0)
+
+      S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
+
+      ! get optimal investment strategy
+      if (varphi_a <= varphi_x) then
+        EV_temp = varphi_a            *(egam*EV(ij_com+1, ial_p, 0, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
+                  (varhpi_x-varphi_a) *(egam*EV(ij_com+1, iar_p, 0, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
+                  varphi_x            *(egam*EV(ij_com+1, iar_p, 0, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam)
+      else
+        EV_temp = varphi_x            *(egam*EV(ij_com+1, ial_p, 0, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
+                  (varhpi_a-varphi_x) *(egam*EV(ij_com+1, ial_p, 0, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
+                  varphi_y            *(egam*EV(ij_com+1, iar_p, 0, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam)
+      endif
+
+      S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
+
+      inv_e = - (S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
+
+  end function
+
+  ! the first order condition with respect to next period real estate
+  function inv_e(x_in)
+
+      implicit none
+
+      ! input variable
+      real*8, intent(in) :: x_in(:)
+
+      ! variable declarations
+      real*8 :: inv_e, a_p, x_p, k_p, EV_temp, S_temp, omega_k, varphi_a, varphi_x, varphi_k, a_temp
+      integer :: ial_p, iar_p, ixl_p, ixr_p, ikl_p, ikr_p
+
+      ! store real estate share
+      omega_x  = x_in(1)
+      omega_k  = x_in(2)
+
+      ! determine future liquid wealth and future downpayment
+      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + omega_x*Q(iq_p_com)
+      k_p =((1d0-xi)*k_min + omega_k*(Q(iq_p_com)-(1d0-xi)*k_min))/(1d0-xi)
+      a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
+      a_p = max(a_temp, 0d0)
+
+      ! derive interpolation weights
+      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial_p, iar_p, varphi_a)
+      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl_p, ixr_p, varphi_x)
       call linint_Grow(k_p, k_l, k_u, k_grow, NK-1, ikl_p, ikr_p, varphi_k)
 
       ! restrict values to grid just in case
@@ -310,27 +372,29 @@ module globals
       iar_p = min(iar_p, NA)
       varphi_a = max(min(varphi_a, 1d0),0d0)
 
-      ! restrict values to grid just in case
+      ixl_p = min(ixl_p, NX)
+      ixr_p = min(ixr_p, NX)
+      varphi_x = max(min(varphi_x, 1d0),0d0)
+
       ikl_p = min(ikl_p+1, NK)
       ikr_p = min(ikr_p+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = (1d0-psi(ij_com+1))*mu_b*max(Q(iq_p_com), 1d-16)**egam/egam
+      S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
-      if(varphi_a <= varphi_k)then
-          EV_temp = varphi_a           *(egam*EV(ij_com+1, ial_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                    (varphi_k-varphi_a)*(egam*EV(ij_com+1, iar_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                    (1d0-varphi_k)     *(egam*EV(ij_com+1, iar_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam)
-      else
-          EV_temp = varphi_k           *(egam*EV(ij_com+1, ial_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                    (varphi_a-varphi_k)*(egam*EV(ij_com+1, ial_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
-                    (1d0-varphi_a)     *(egam*EV(ij_com+1, iar_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam)
-      endif
+      EV_temp = varphi_a*varphi_x*varphi_k                  *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*varphi_x*(1d0-varhpi_k)            *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*(1d0-varphi_x)*varhpi_k            *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*(1d0-varphi_x)*(1d0-varhpi_k)      *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
+                (1d0-varphi_a)*varphi_x*varphi_k            *(egam*EV(ij_com+1, iar_p, ixl_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
+                (1d0-varphi_a)*varphi_x*(1d0-varphi_k)      *(egam*EV(ij_com+1, iar_p, ixl_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
+                (1d0-varphi_a)*(1d0-varphi_x)*varphi_k      *(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
+                (1d0-varphi_a)*(1d0-varphi_x)*(1d0-varphi_k)*(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam)
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
-      inv_o = - (S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
+      inv_e = - (S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
 
   end function
 
