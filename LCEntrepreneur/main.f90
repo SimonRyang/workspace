@@ -77,7 +77,7 @@ contains
         theta = exp(theta)
 
         ! initialize asset grid
-        call grid_Cons_Grow(Q, X_l, X_u, X_grow)
+        call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
 
         ! initialize liquid asset grid
         call grid_Cons_Grow(a, a_l, a_u, a_grow)
