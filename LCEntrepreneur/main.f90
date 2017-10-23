@@ -162,7 +162,7 @@ contains
                          do iw = 1, NW
                            do ie = 1, NE
 
-                             if(ij>=JR) then
+                             if(ij>=JR-1) then
                                ! next period retiree
                                call solve_retiree(ij, iq_p, ip_p, ik, iw, ie)
                              else
