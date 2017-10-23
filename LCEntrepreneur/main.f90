@@ -162,12 +162,17 @@ contains
                          do iw = 1, NW
                            do ie = 1, NE
 
-                           ! next period worker
-                           call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
+                             if(ij>=JR) then
+                               ! next period retiree
+                               call solve_retiree(ij, ix_p, ip_p, ik, iw, ie)
+                             else
 
-                           ! next period entrepreneur
-                           if(ij<JR-1)call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
+                               ! next period worker
+                               call solve_worker(ij, ix_p, ip_p, ik, iw, ie)
 
+                               ! next period entrepreneur
+                               call solve_entrepreneur(ij, ix_p, ip_p, ik, iw, ie)
+                             endif
                           enddo
                        enddo
                      enddo

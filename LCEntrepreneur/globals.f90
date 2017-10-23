@@ -191,6 +191,36 @@ module globals
 
     end subroutine
 
+    ! solve the household's decision of how much wealth to invest into capital
+    subroutine solve_retiree(ij, ix_p, ip_p, ik, iw, ie)
+
+        implicit none
+
+        integer, intent(in) :: ij, ix_p, ip_p, ik, iw, ie
+        integer :: ial, iar
+        real*8 :: a_plus, EV_temp, S_temp, varphi_a
+
+        a_plus  = X(ix_p)
+
+       ! calculate linear interpolation for future assets
+       call linint_Grow(a_plus, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+
+       ! restrict values to grid just in case
+       ial = min(ial, NA)
+       iar = min(iar, NA)
+       varphi_a = max(min(varphi_a, 1d0),0d0)
+
+       S_temp = (1d0-psi(ij+1))*mu_b*max(a_plus, 1d-16)**egam/egam
+
+       EV_temp = varphi_a      *(egam*EV(ij+1, ial, ip_p, 0, iw, ie))**(1d0/egam) + &
+                 (1d0-varphi_a)*(egam*EV(ij+1, iar, ip_p, 0, iw, ie))**(1d0/egam)
+
+       S_temp = S_temp + psi(ij+1)*EV_temp**egam/egam
+
+       S(ij, ix_p, ip_p, ik, iw, ie, 0) = S_temp
+
+    end subroutine
+
 
   ! solve the household's consumption-savings decision
   subroutine solve_consumption(ij, ia, ip, ik, iw, ie, io_p)
