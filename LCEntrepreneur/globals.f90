@@ -421,14 +421,14 @@ module globals
         implicit none
 
         ! input variable
-        real*8, intent(in) :: x_in(:)
+        real*8, intent(in) :: x_in
 
         ! variable declarations
         real*8 :: cons_o, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
         integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
         ! calculate tomorrow's assets
-        X_plus  = x_in(1)
+        X_plus  = x_in
         lab_com = 0d0
 
         ! current occupation
