@@ -296,7 +296,7 @@ module globals
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: inv_e, a_p, x_p, k_p, EV_temp, S_temp, omega_k, varphi_a, varphi_x, a_temp
+      real*8 :: inv_w, a_p, x_p, k_p, EV_temp, S_temp, omega_k, varphi_a, varphi_x, a_temp
       integer :: ial_p, iar_p, ixl_p, ixr_p
 
       ! store real estate share
@@ -336,7 +336,7 @@ module globals
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
-      inv_e = - (S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
+      inv_w = - (S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
 
   end function
 
