@@ -449,7 +449,7 @@ contains
         enddo
 
         call check_grid(iamax, ixmax, ikmax)
-        write(*,*)maxval(iamax), maxval(ixmax), maxval(ikmax)
+        write(*,*) maxval(iamax), maxval(ixmax), maxval(ikmax)
 
     end subroutine
 
@@ -471,6 +471,7 @@ contains
         ! plot consumption for homeowner
         call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Entrepreneur')
         call plot(dble(ages), a_coh(:, 1), legend='Assets       - Entrepreneur')
+        call plot(dble(ages), x_coh(:, 1), legend='Annuities    - Entrepreneur')
         call plot(dble(ages), y_coh(:, 1), legend='Income       - Entrepreneur')
         call plot(dble(ages), l_coh(:, 1), legend='Labor        - Entrepreneur')
         call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
@@ -479,6 +480,7 @@ contains
         ! polt consumption for renter
         call plot(dble(ages), c_coh(:, 0), legend='Consumption  - Worker')
         call plot(dble(ages), a_coh(:, 0), legend='Assets       - Worker')
+        call plot(dble(ages), x_coh(:, 0), legend='Annuities    - Worker')
         call plot(dble(ages), y_coh(:, 0), legend='Labor Income - Worker')
         call plot(dble(ages), l_coh(:, 0), legend='Labor        - Worker')
         call execplot(xlabel='Age j', ylabel='Consumption/Assets')
