@@ -452,13 +452,13 @@ module globals
         if (ij_com < JJ .or. mu_b /= 0d0) then
 
           if(varphi_q <= varphi_p) then
-            tomorrow = max(varphi_q           *(egam*S(ij_com, iql_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_p-varphi_q)*(egam*S(ij_com, iqr_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_p)     *(egam*S(ij_com, iqr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_q           *(egam*S(ij_com, iql_p, ix_com, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (varphi_p-varphi_q)*(egam*S(ij_com, iqr_p, ix_com, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (1d0-varphi_p)     *(egam*S(ij_com, iqr_p, ix_com, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
           else
-            tomorrow = max(varphi_p           *(egam*S(ij_com, iql_p, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_q-varphi_p)*(egam*S(ij_com, iql_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_q)     *(egam*S(ij_com, iqr_p, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_p           *(egam*S(ij_com, iql_p, ix_com, ipl_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (varphi_q-varphi_p)*(egam*S(ij_com, iql_p, ix_com, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (1d0-varphi_q)     *(egam*S(ij_com, iqr_p, ix_com, ipr_p, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
            endif
 
         endif
