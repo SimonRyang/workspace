@@ -290,7 +290,7 @@ contains
         integer :: ial, iar, ixl, ixr, ipl, ipr, ikl, ikr
         real*8 :: varphi_a, varphi_x, varphi_p, varphi_k
 
-        m(:, :, :, :, :, :) = 0d0
+        m(:, :, :, :, :, :, :) = 0d0
 
         do iw = 1, NW
           do ie = 1, NE
