@@ -384,9 +384,9 @@ module globals
 
       ! get optimal investment strategy
       EV_temp = varphi_a*varphi_x*varphi_k                  *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*varphi_x*(1d0-varhpi_k)            *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*(1d0-varphi_x)*varhpi_k            *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*(1d0-varphi_x)*(1d0-varhpi_k)      *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*varphi_x*(1d0-varphi_k)            *(egam*EV(ij_com+1, ial_p, ixl_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*(1d0-varphi_x)*varphi_k            *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
+                varphi_a*(1d0-varphi_x)*(1d0-varphi_k)      *(egam*EV(ij_com+1, ial_p, ixr_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
                 (1d0-varphi_a)*varphi_x*varphi_k            *(egam*EV(ij_com+1, iar_p, ixl_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
                 (1d0-varphi_a)*varphi_x*(1d0-varphi_k)      *(egam*EV(ij_com+1, iar_p, ixl_p, ip_p_com, ikr_p, iw_com, ie_com))**(1d0/egam) + &
                 (1d0-varphi_a)*(1d0-varphi_x)*varphi_k      *(egam*EV(ij_com+1, iar_p, ixr_p, ip_p_com, ikl_p, iw_com, ie_com))**(1d0/egam) + &
