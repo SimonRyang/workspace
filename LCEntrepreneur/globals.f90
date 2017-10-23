@@ -109,10 +109,10 @@ module globals
     real*8 :: V_t(JJ, 0:NA, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! variables to store the portfolio choice decisions
-    real*8 :: omega_k(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: omega_k(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
 
     ! variables to store the value functions
-    real*8 :: V(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), EV(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), S(JJ+1, 0:NQ, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V(JJ, 0:NA, 0:NP, 0:NK, NW, NE), EV(JJ, 0:NA, 0:NP, 0:NK, NW, NE), S(JJ, 0:NQ, 0:NP, 0:NK, NW, NE, 0:NO)
 
     ! weights for the different gridpoints on the discretized state space
     real*8 :: m(JJ, 0:NA, 0:NP, 0:NK, NW, NE)
