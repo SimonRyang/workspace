@@ -103,10 +103,10 @@ contains
 
         ! initialize policy functions
         Q_plus = 0d0; a_plus = 0d0; x_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
-        omega_x = 0d0; omega_k = 0d0
 
         ! initialize temporary policy and value functions
         Q_plus_t = 0d0; a_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0
+        omega_x_t = 0d0; omega_k_t = 0d0
         V_t = 0d0
 
         ! open files
@@ -130,8 +130,8 @@ contains
 
             if(ij == JJ)then
 
-              omega_k(JJ, :, :, :, :, :, :) = 0d0
-              omega_x(JJ, :, :, :, :, :, :) = 0d0
+              omega_k_t(JJ, :, :, :, :, :, :) = 0d0
+              omega_x_t(JJ, :, :, :, :, :, :) = 0d0
 
               do iq_p = 0, NQ
                   S(JJ, iq_p, :, :, :, :, :, 0) = mu_b*max(Q(iq_p), 1d-10)**egam/egam
