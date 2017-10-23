@@ -242,7 +242,7 @@ module globals
       if (ij < JR) then
         call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), cons_o)
       else
-        call fminsearch(x_in, fret, X_l, X_u, cons_r)
+        call fminsearch(x_in(1), fret, X_l, X_u, cons_r)
       endif
 
       ! determine future investment
@@ -280,7 +280,7 @@ module globals
       a_plus_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p
       k_plus_t(ij, ia, ip, ik, iw, ie, io_p) = k_p
       c_t(ij, ia, ip, ik, iw, ie, io_p) = cons_com
-      l_t(ij, ia, ip, ik, iw, ie, io_p) = x_in(2)
+      l_t(ij, ia, ip, ik, iw, ie, io_p) = lab_com
       V_t(ij, ia, ip, ik, iw, ie, io_p) = -fret
 
   end subroutine
