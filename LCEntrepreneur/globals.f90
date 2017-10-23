@@ -228,7 +228,7 @@ module globals
       implicit none
 
       integer, intent(in) :: ij, ia, ip, ik, iw, ie, io_p
-      real*8 :: x_in(2), fret, varphi_x, varphi_p, k_p
+      real*8 :: x_in(2), xy, fret, varphi_x, varphi_p, k_p
       integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
       ! set up communication variables
@@ -242,7 +242,8 @@ module globals
       if (ij < JR) then
         call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), cons_o)
       else
-        call fminsearch(x_in(1), fret, X_l, X_u, cons_r)
+        xy = max(X_plus_t(ij+1, ia, ip, ik, iw, ie, io_p), 1d-4)
+        call fminsearch(xy, fret, X_l, X_u, cons_r)
       endif
 
       ! determine future investment
