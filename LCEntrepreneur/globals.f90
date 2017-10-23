@@ -103,9 +103,10 @@ module globals
     real*8 :: Q(0:NQ), a(0:NA), x(0:NX), p(0:NP), k(0:NK)
 
     ! variables to store the policy functions
-    real*8 :: Q_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), a_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
+    real*8 :: Q_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
+    real*8 :: a_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), x_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
     real*8 :: p_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), k_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
-    real*8 :: c(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE), l(JJ+1, 0:NA, 0:NP, 0:NK, NW, NE)
+    real*8 :: c(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), l(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
 
     ! variables for temporary policy and value functions
     real*8 :: Q_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)

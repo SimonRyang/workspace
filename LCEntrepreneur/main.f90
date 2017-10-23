@@ -363,7 +363,7 @@ contains
                             m(ij, iar, ixl, ipr, ikl, iw_p, ie_p) = m(ij, iar, ixl, ipr, ikl, iw_p, ie_p) + &
                                   (1d0-varphi_a)*varphi_x*(1d0-varphi_p)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
                             m(ij, iar, ixl, ipr, ikr, iw_p, ie_p) = m(ij, iar, ixl, ipr, ikr, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*varphi_x*(1d0-varphi_p)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie) + &
+                                  (1d0-varphi_a)*varphi_x*(1d0-varphi_p)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
                             m(ij, iar, ixr, ipl, ikl, iw_p, ie_p) = m(ij, iar, ixr, ipl, ikl, iw_p, ie_p) + &
                                   (1d0-varphi_a)*(1d0-varphi_x)*varphi_p*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
                             m(ij, iar, ixr, ipl, ikr, iw_p, ie_p) = m(ij, iar, ixr, ipl, ikr, iw_p, ie_p) + &
