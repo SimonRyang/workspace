@@ -209,7 +209,7 @@ module globals
       x_in(2) = max(l_t(ij+1, ia, ip, ik, iw, ie, io_p), 0.33d0)
 
       ! solve the household problem using rootfinding
-      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), value_func)
+      call fminsearch(x_in, fret, (/X_l, 0d0/), (/X_u, 0.99d0/), cons_o)
 
       ! determine future investment
       k_p = 0d0
@@ -305,7 +305,7 @@ module globals
   end function
 
     ! the first order condition regarding consumption
-    function value_func(x_in)
+    function cons_o(x_in)
 
         implicit none
 
@@ -313,7 +313,7 @@ module globals
         real*8, intent(in) :: x_in(:)
 
         ! variable declarations
-        real*8 :: value_func, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
+        real*8 :: cons_o, X_plus, ind_o, income, tomorrow, varphi_x, varphi_p
         integer :: ixl_p, ixr_p, ipl_p, ipr_p
 
         ! calculate tomorrow's assets
@@ -370,13 +370,13 @@ module globals
         endif
 
         if(cons_com <= 0d0)then
-           value_func = -1d-16**egam/egam*(1d0+abs(cons_com))
+           cons_o = -1d-16**egam/egam*(1d0+abs(cons_com))
         elseif(lab_com < 0d0) then
-          value_func = -1d-16**egam/egam*(1d0+abs(lab_com))
+          cons_o = -1d-16**egam/egam*(1d0+abs(lab_com))
         elseif(lab_com >= 1d0) then
-          value_func = -1d-16**egam/egam*lab_com
+          cons_o = -1d-16**egam/egam*lab_com
         else
-           value_func = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
+           cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
         endif
 
     end function
