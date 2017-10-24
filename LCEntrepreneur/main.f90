@@ -181,7 +181,7 @@ contains
                                  call solve_worker(ij, iq_p, ix, ip_p, ik, iw, ie)
 
                                  ! next period entrepreneur
-                                 call solve_entrepreneur(ij, iq_p, ix, ip_p, ik, iw, ie)
+                                 if(.false.)call solve_entrepreneur(ij, iq_p, ix, ip_p, ik, iw, ie)
 
                                endif
                             enddo
@@ -205,10 +205,10 @@ contains
                            call solve_consumption(ij, ia, ix, ip, ik, iw, ie, 0)
 
                            ! next period entrpreneur
-                           if(ij<JR-1)call solve_consumption(ij, ia, ix, ip, ik, iw, ie, 1)
+                           if(ij<JR-1 .and. .false.)call solve_consumption(ij, ia, ix, ip, ik, iw, ie, 1)
 
                            ! decision on whether to be homeowner or renter next period
-                            if(ij < JR-1 .and. V_t(ij, ia, ix, ip, ik, iw, ie, 1) > V_t(ij, ia, ix, ip, ik, iw, ie, 0)) then
+                            if(ij < JR-1 .and. .false. .and. V_t(ij, ia, ix, ip, ik, iw, ie, 1) > V_t(ij, ia, ix, ip, ik, iw, ie, 0)) then
                                   Q_plus(ij, ia, ix, ip, ik, iw, ie) = Q_plus_t(ij, ia, ix, ip, ik, iw, ie, 1)
                                   a_plus(ij, ia, ix, ip, ik, iw, ie) = a_plus_t(ij, ia, ix, ip, ik, iw, ie, 1)
                                   x_plus(ij, ia, ix, ip, ik, iw, ie) = x_plus_t(ij, ia, ix, ip, ik, iw, ie, 1)
@@ -242,21 +242,6 @@ contains
             call interpolate(ij)
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
-
-            ! call plot(Q(1:), S(ij, 1:, 0, 0, 0, 1, 1, 0))
-            ! call plot(Q(1:), S(ij, 1:, 1, 0, 0, 1, 1, 0))
-            ! call plot(Q(1:), S(ij, 1:, 5, 0, 0, 1, 1, 0))
-            ! call execplot
-            !
-            ! call plot(a(1:), V(ij, 1:, 0, 0, 0, 1, 1))
-            ! call plot(a(1:), V(ij, 1:, 1, 0, 0, 1, 1))
-            ! call plot(a(1:), V(ij, 1:, 5, 0, 0, 1, 1))
-            ! call execplot
-            !
-            ! call plot(a(1:), EV(ij, 1:, 0, 0, 0, 1, 1))
-            ! call plot(a(1:), EV(ij, 1:, 1, 0, 0, 1, 1))
-            ! call plot(a(1:), EV(ij, 1:, 5, 0, 0, 1, 1))
-            ! call execplot
 
         enddo
 
@@ -399,10 +384,6 @@ contains
               enddo
             enddo
           enddo
-
-                  write(*,*)ij, sum(m(ij, :, 0, :, :, :, :))
-                  write(*,*)ij, sum(m(ij, :, 1:, :, :, :, :))
-                  write(*,*)ij, sum(m(ij, :, :, :, :, :, :))
 
         enddo
 
