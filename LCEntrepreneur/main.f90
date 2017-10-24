@@ -244,9 +244,9 @@ contains
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
             write(*,*)sum(omega_x_t(ij, :, :, :, :, :, :, 0)), sum(x_plus(ij, :, :, :, :, :, :))
 
-            call plot(Q, S(ij, :, 0, 0, 0, 1, 1))
-            call plot(Q, S(ij, :, 1, 0, 0, 1, 1))
-            call plot(Q, S(ij, :, 5, 0, 0, 1, 1))
+            call plot(Q, S(ij, :, 0, 0, 0, 1, 1, 0))
+            call plot(Q, S(ij, :, 1, 0, 0, 1, 1, 0))
+            call plot(Q, S(ij, :, 5, 0, 0, 1, 1, 0))
             call execplot
 
             call plot(a, V(ij, :, 0, 0, 0, 1, 1))
