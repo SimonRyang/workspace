@@ -311,12 +311,12 @@ module globals
 
       endif
 
-      if (mx > 1d-4) write(*,*)ij, ia, ix, ip, ik, iw, ie, io_p
-      if (mx > 1d-4) write(*,*)x_p, x_in(1), mx
-      if (mx > 1d-4) write(*,*)iql, iqr, ipl, ipr
-      if (mx > 1d-4) write(*,*)omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p), omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p)
-      if (mx > 1d-4) write(*,*)omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p), omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p)
-      if (mx > 1d-4) call sleep(1)
+      ! if (mx > 1d-4) write(*,*)ij, ia, ix, ip, ik, iw, ie, io_p
+      ! if (mx > 1d-4) write(*,*)x_p, x_in(1), mx
+      ! if (mx > 1d-4) write(*,*)iql, iqr, ipl, ipr
+      ! if (mx > 1d-4) write(*,*)omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p), omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p)
+      ! if (mx > 1d-4) write(*,*)omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p), omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p)
+      ! if (mx > 1d-4) call sleep(1)
       ! copy decisions
       Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1)
       a_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p - mx
