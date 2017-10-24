@@ -147,7 +147,7 @@ module globals
       ! set up communication variables
       ij_com = ij; iq_p_com = iq_p; ix_com = ix; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
 
-      if (Q(iq_p) > 0d0 .and. .false.) then
+      if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
          x_in = max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0), 1d-4)
@@ -156,7 +156,7 @@ module globals
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
 
          ! portfolio share for capital
-         omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = x_in
+         omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 0d0 !x_in
          omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 0d0
          S(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = -fret
 
