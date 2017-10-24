@@ -158,7 +158,7 @@ module globals
          if (x_in > 1d-2) then
            write(*,*)ij, iq_p, ix, ip_p, ik, iw, ie
            write(*,*)x_in
-           call sleep(2)
+           call sleep(1)
         endif
 
          ! portfolio share for capital
