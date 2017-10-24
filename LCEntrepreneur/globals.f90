@@ -363,19 +363,16 @@ module globals
 
       S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
-
-      write(*,*)ial, iar, ixl, ixr
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
         EV_temp = varphi_a            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
                   (varphi_x-varphi_a) *(egam*EV(ij_com+1, iar, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  varphi_x            *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
+                  (1d0-varphi_x)      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
       else
         EV_temp = varphi_x            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
                   (varphi_a-varphi_x) *(egam*EV(ij_com+1, ial, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  varphi_a            *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
+                  (1d0-varphi_a)      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
       endif
-      write(*,*)varphi_a, varphi_x
 
       S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
 
