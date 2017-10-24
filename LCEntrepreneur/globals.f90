@@ -156,7 +156,7 @@ module globals
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
 
          ! portfolio share for capital
-         omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 0d0 !x_in
+         omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = x_in
          omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 0d0
          S(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = -fret
 
@@ -236,7 +236,7 @@ module globals
 
        omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, :) = 0d0
        omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, :) = 0d0
-       S(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = S_temp
+       S(ij, iq_p, ix, ip_p, ik, iw, ie, :) = S_temp
 
     end subroutine
 
