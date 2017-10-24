@@ -155,6 +155,12 @@ module globals
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
 
+         if (x_in > 1d-2) then
+           write(*,*)ij, iq_p, ix, ip_p, ik, iw, ie
+           write(*,*)x_in
+           call sleep(2)
+        endif
+
          ! portfolio share for capital
          omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = x_in
          omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 0d0
