@@ -141,8 +141,7 @@ module globals
       implicit none
 
       integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
-      integer :: ial, iar, ixl, ixr
-      real*8 :: x_in, fret, a_p, x_p, EV_temp, S_temp, varphi_a
+      real*8 :: x_in, fret
 
       ! set up communication variables
       ij_com = ij; iq_p_com = iq_p; ix_com = ix; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
@@ -317,6 +316,7 @@ module globals
       ! if (mx > 1d-4) write(*,*)omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p), omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p)
       ! if (mx > 1d-4) write(*,*)omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p), omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p)
       ! if (mx > 1d-4) call sleep(1)
+
       ! copy decisions
       Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1)
       a_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p - mx
