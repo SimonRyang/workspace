@@ -295,7 +295,7 @@ module globals
 
       endif
 
-      if (ix == 0 .and. x_p > 0d0) write(*,*)ij, ia, ix, ip, ik, iw, ie, io_p, x_p, k_p, x_in(1)
+      if (ix == 0 .and. x_p > 1d-4) write(*,*)ij, ia, ix, ip, ik, iw, ie, io_p, x_p, k_p, x_in(1), mx
 
       ! copy decisions
       Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1)
@@ -325,7 +325,7 @@ module globals
 
       ! determine future liquid wealth and future downpayment
       x_p = (1d0+r)/psi(ij_com)*x(ix_com) + omega_x*Q(iq_p_com)
-      a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com)
+      a_temp = (1d0-omega_x)*Q(iq_p_com)
       a_p = max(a_temp, 0d0)
 
       ! derive interpolation weights
