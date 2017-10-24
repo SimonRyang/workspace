@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.99d0**5d0
-    real*8, parameter :: mu_b = 0d0 !0.15d0
+    real*8, parameter :: mu_b = 0.15d0
     ! convert variables into per period values
 
     ! risk free rate and risk premium
@@ -75,7 +75,7 @@ module globals
     real*8, parameter :: p_u    = 2d0
 
     ! size of the capital grid
-    real*8, parameter :: k_l = 0d0
+    real*8, parameter :: k_l = k_min
     real*8, parameter :: k_u = 0.75d0*Q_u/(1d0-xi)
     real*8, parameter :: k_grow = Q_grow
 
@@ -543,7 +543,7 @@ module globals
 
         ! check for the maximum asset grid point used at a certain age
         do ia = NA, 0, -1
-          if (sum(m(ij, ia, :, :, :, :, :)) > 0d0) then
+          if (sum(m(ij, ia, :, :, :, :, :)) > 1d-12) then
             iamax(ij) = ia
             exit
           endif
@@ -551,7 +551,7 @@ module globals
 
         ! check for the maximum annuitie grid point used at a certain age
         do ix = NX, 0, -1
-          if (sum(m(ij, :, ix, :, :, :, :)) > 0d0) then
+          if (sum(m(ij, :, ix, :, :, :, :)) > 1d-12) then
             ixmax(ij) = ix
             exit
           endif
@@ -559,7 +559,7 @@ module globals
 
         ! check for the maximum annuitie grid point used at a certain age
         do ik = NK, 0, -1
-          if (sum(m(ij, :, :, :, ik, :, :)) > 0d0) then
+          if (sum(m(ij, :, :, :, ik, :, :)) > 1d-12) then
             ikmax(ij) = ik
             exit
           endif

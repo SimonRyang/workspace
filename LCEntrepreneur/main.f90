@@ -242,7 +242,6 @@ contains
             call interpolate(ij)
 
             write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
-            write(*,*)sum(omega_x_t(ij, :, :, :, :, :, :, 0)), sum(x_plus(ij, :, :, :, :, :, :))
 
             ! call plot(Q(1:), S(ij, 1:, 0, 0, 0, 1, 1, 0))
             ! call plot(Q(1:), S(ij, 1:, 1, 0, 0, 1, 1, 0))
