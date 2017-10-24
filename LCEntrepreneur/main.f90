@@ -254,6 +254,11 @@ contains
             call plot(a(1:), V(ij, 1:, 5, 0, 0, 1, 1))
             call execplot
 
+            call plot(a(1:), EV(ij, 1:, 0, 0, 0, 1, 1))
+            call plot(a(1:), EV(ij, 1:, 1, 0, 0, 1, 1))
+            call plot(a(1:), EV(ij, 1:, 5, 0, 0, 1, 1))
+            call execplot
+
         enddo
 
     end subroutine
