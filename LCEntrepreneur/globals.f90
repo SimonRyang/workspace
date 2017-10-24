@@ -17,16 +17,16 @@ module globals
     integer, parameter :: NE = 5
 
     ! number of points on the asset grid
-    integer, parameter :: NQ = 32
+    integer, parameter :: NQ = 24
 
     ! number of points on the liquid asset grid
-    integer, parameter :: NA = 32
+    integer, parameter :: NA = 24
 
     ! number of points on the annuity asset grid
-    integer, parameter :: NX = 32
+    integer, parameter :: NX = 24
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 32
+    integer, parameter :: NK = 24
 
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
@@ -294,6 +294,8 @@ module globals
         endif
 
       endif
+
+      if (ix == 0 .and. x_p > 0d0) write(*,*)ij, ia, ix, ip, ik, iw, ie, io_p, x_p, k_p, x_in(1)
 
       ! copy decisions
       Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1)
