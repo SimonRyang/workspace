@@ -295,8 +295,11 @@ module globals
 
       endif
 
-      if (ix == 0 .and. x_p > 1d-4) write(*,*)ij, ia, ix, ip, ik, iw, ie, io_p, x_p, k_p, x_in(1), mx
-
+      if (ix == 0 .and. x_p > 1d-4) write(*,*)ij, ia, ix, ip, ik, iw, ie, io_p
+      if (ix == 0 .and. x_p > 1d-4) write(*,*)x_p, k_p, x_in(1), mx
+      if (ix == 0 .and. x_p > 1d-4) write(*,*)omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p), omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p)
+      if (ix == 0 .and. x_p > 1d-4) write(*,*)omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p), omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p)
+      if (ix == 0 .and. x_p > 1d-4) call sleep(1)
       ! copy decisions
       Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1)
       a_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p - mx
