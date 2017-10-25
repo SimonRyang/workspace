@@ -181,7 +181,7 @@ module globals
         ij_com = ij; iq_p_com = iq_p; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
 
        ! get best guess for the root of foc_real
-        x_in(1) = max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-4)
+        x_in(1) = 0.1d0 !max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-4)
         x_in(2) = max(omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-4)
 
        ! solve the household problem using fminsearch
