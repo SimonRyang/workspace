@@ -276,6 +276,7 @@ module globals
       mx = 0d0
 
       if (ij < JR) then
+
         if (varphi_q <= varphi_p) then
           mx = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
                 (varphi_p-varphi_q) *omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
@@ -285,6 +286,7 @@ module globals
                  (varphi_q-varphi_p) *omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
                  (1d0-varphi_q)      *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
         endif
+
       endif
 
       x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix) + mx
@@ -456,7 +458,7 @@ module globals
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
-                   - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)  - Q_plus
+                   - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
 
         if (ij_com >= JR) then
           p_plus_com = p(ip_com)
