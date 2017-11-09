@@ -111,8 +111,14 @@ contains
         ! open files
         open(21, file='output.out')
 
-        p_hat = 0d0
+        p_hat = 1d0
+        do ij = JJ-1, JR, -1
+          p_hat(ij) = p_hat(ij+1)/(1d0+r)*psi(ij) + 1d0
+        enddo
+        p_hat = 1d0/p_hat
+        p_hat(1:JR-1) = 0d0
 
+        write(*,*) p_hat
 
     end subroutine
 
