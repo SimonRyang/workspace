@@ -17,16 +17,16 @@ module globals
     integer, parameter :: NE = 5
 
     ! number of points on the asset grid
-    integer, parameter :: NQ = 24
+    integer, parameter :: NQ = 16
 
     ! number of points on the liquid asset grid
-    integer, parameter :: NA = 24
+    integer, parameter :: NA = 16
 
     ! number of points on the annuity asset grid
-    integer, parameter :: NX = 24
+    integer, parameter :: NX = 16
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 24
+    integer, parameter :: NK = 16
 
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
@@ -275,15 +275,15 @@ module globals
       x_p = 0d0
       mx = 0d0
 
-        if (varphi_q <= varphi_p) then
-          mx = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
-                (varphi_p-varphi_q) *omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
-                (1d0-varphi_p)      *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
-        else
-          mx = (varphi_p             *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
-                 (varphi_q-varphi_p) *omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
-                 (1d0-varphi_q)      *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
-        endif
+      if (varphi_q <= varphi_p) then
+        mx = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
+              (varphi_p-varphi_q) *omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
+              (1d0-varphi_p)      *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
+      else
+        mx = (varphi_p             *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
+               (varphi_q-varphi_p) *omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
+               (1d0-varphi_q)      *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
+      endif
 
       x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix) + mx
 
