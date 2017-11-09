@@ -14,7 +14,7 @@ program main
     ! set government variables
     mu     = 1d0
     lambda = 0d0
-    phi    = 0d0
+    phi    = 1d0
     taup   = 0.184d0
 
     ! initialize remaining variables
