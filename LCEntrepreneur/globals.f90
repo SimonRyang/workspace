@@ -457,7 +457,7 @@ module globals
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) &
                    - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
 
         if (ij_com >= JR) then
