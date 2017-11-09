@@ -275,8 +275,6 @@ module globals
       x_p = 0d0
       mx = 0d0
 
-      if (ij < JR) then
-
         if (varphi_q <= varphi_p) then
           mx = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
                 (varphi_p-varphi_q) *omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
@@ -286,8 +284,6 @@ module globals
                  (varphi_q-varphi_p) *omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
                  (1d0-varphi_q)      *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
         endif
-
-      endif
 
       x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix) + mx
 
