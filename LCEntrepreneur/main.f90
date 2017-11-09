@@ -111,7 +111,7 @@ contains
         ! open files
         open(21, file='output.out')
 
-        p_hat = 1d0
+        p_hat = 0d0
 
 
     end subroutine
