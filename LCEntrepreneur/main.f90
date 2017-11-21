@@ -144,7 +144,7 @@ contains
               do ia = 0, NA
                 do ix = 0, NX
                   do ip = 0, NP
-                    do ik = 0, NA
+                    do ik = 0, NK
 
                       ! with bequest motive we assume future worker
                       call solve_consumption(0, ia, ik, ix, ip, 1, 1, JJ)
