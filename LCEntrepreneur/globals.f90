@@ -512,7 +512,7 @@ endif
         implicit none
 
         ! input variable
-        real*8, intent(in) :: x_in(:)
+        real*8, intent(in) :: x_in
 
         ! variable declarations
         real*8 :: cons_r, Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
@@ -520,11 +520,7 @@ endif
 
         ! calculate tomorrow's assets
         Q_plus  = x_in(1)
-        if (ij_com < JR) then
-          lab_com = max(x_in(2), 0d0)
-        else
-          lab_com = 0d0
-        endif
+        lab_com = 0d0
 
         ! current occupation
         ind_o = abs(dble(ik_com > 0))
