@@ -141,10 +141,10 @@ contains
                   S(0, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-16)**egam/egam
               enddo
 
-              do ia = 0, NA
+              do ip = 0, NP
                 do ix = 0, NX
-                  do ip = 0, NP
-                    do ik = 0, NK
+                  do ik = 0, NK
+                    do ia = 0, NA
 
                       ! with bequest motive we assume future worker
                       call solve_consumption(0, ia, ik, ix, ip, 1, 1, JJ)
@@ -168,12 +168,12 @@ contains
                ! get optimal share of wealth invested into capital
 
                   !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij) default(none)
-                   do iq_p = 0, NQ
-                     do ix = 0, NX
+                   do ie = 1, NE
+                     do iw = 1, NW
                        do ip_p = 0, NP
-                         do ik = 0, NK
-                           do iw = 1, NW
-                             do ie = 1, NE
+                         do ix = 0, NX
+                           do ik = 0, NW
+                             do iq_p = 0, NQ
 
                                if(ij >= JR) then
 
@@ -200,12 +200,12 @@ contains
 
                 !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij)
                ! solve the consumption savings problem
-               do ia = 0, NA
-                 do ix = 0, NX
+               do ie = 1, NE
+                 do iw = 1, NW
                    do ip = 0, NP
-                     do ik = 0, NK
-                      do iw = 1, NW
-                         do ie = 1, NE
+                     do ix = 0, NX
+                       do ik = 0, NW
+                         do ia = 0, NA
 
                            ! next period worker
                            call solve_consumption(0, ia, ik, ix, ip, iw, ie, ij)
@@ -262,12 +262,12 @@ contains
       integer :: ia, ik, ix, ip, iw, ie, iw_p, ie_p
 
       !$omp parallel do schedule(dynamic,1) private(ie_p, iw_p) num_threads(numthreads)
-      do ia = 0, NA
-        do ix = 0, NX
+      do ie = 1, NE
+        do iw = 1, NW
           do ip = 0, NP
-            do ik = 0, NK
-              do iw = 1, NW
-                do ie = 1, NE
+            do ix = 0, NX
+              do ik = 0, NW
+                do ia = 0, NA
 
                   EV(ia, ik, ix, ip, iw, ie, ij) = 0d0
                   do ie_p = 1, NE
@@ -307,12 +307,12 @@ contains
 
         do ij = 2, JJ
 
-          do ia = 0, NA
-            do ix = 0, NX
+          do ie = 1, NE
+            do iw = 1, NW
               do ip = 0, NP
-                do ik = 0, NK
-                  do iw = 1, NW
-                    do ie = 1, NE
+                do ix = 0, NX
+                  do ik = 0, NW
+                    do ia = 0, NA
 
                       ! skip if there is no household
                       if (m(ia, ik, ix, ip, iw, ie, ij-1) <= 0d0) cycle
@@ -411,12 +411,12 @@ contains
 
         do ij = 1, JJ
 
-            do ia = 0, NA
-              do ix = 0, NX
-                do ip = 0, NP
-                  do ik = 0, NK
-                    do iw = 1, NW
-                      do ie = 1, NE
+          do ie = 1, NE
+            do iw = 1, NW
+              do ip = 0, NP
+                do ix = 0, NX
+                  do ik = 0, NW
+                    do ia = 0, NA
 
                         ! skip if there is no household
                         if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
