@@ -31,9 +31,6 @@ module globals
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
 
-    ! number of occupation states
-    integer, parameter :: NO = 1
-
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
@@ -109,17 +106,17 @@ module globals
     real*8 :: c(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), l(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
 
     ! variables for temporary policy and value functions
-    real*8 :: Q_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: a_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO), x_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: p_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO), k_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: c_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO), l_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
-    real*8 :: V_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: Q_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
+    real*8 :: a_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1), x_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
+    real*8 :: p_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1), k_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
+    real*8 :: c_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1), l_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
+    real*8 :: V_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
 
     ! variables to store the portfolio choice decisions
-    real*8 :: omega_x_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO), omega_k_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: omega_x_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1), omega_k_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
 
     ! variables to store the value functions
-    real*8 :: V(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), EV(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), S(JJ, 0:NQ, 0:NX, 0:NP, 0:NK, NW, NE, 0:NO)
+    real*8 :: V(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), EV(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), S(JJ, 0:NQ, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
 
     ! weights for the different gridpoints on the discretized state space
     real*8 :: m(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)

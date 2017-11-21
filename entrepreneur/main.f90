@@ -116,7 +116,7 @@ program main
 
   !show_graphics = .true.
 
-    mu = 0d0
+  mu = 0d0
 
   ! calculate initial equilibrium
   call get_SteadyState()
