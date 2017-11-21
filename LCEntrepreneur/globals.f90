@@ -85,40 +85,41 @@ module globals
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
     ! wages, transfer payments (old-age), survival probabilities and discount factor for housing utilty
-    real*8 :: w, eff(JJ), pen(JJ, 0:NP), p_hat(JJ), psi(JJ+1)
+    real*8 :: w, eff(JJ), pen(0:NP, JJ), p_hat(JJ), psi(JJ+1)
 
     ! government variables
     real*8 :: lambda, phi, mu
     real*8 :: taup
 
     ! cohort aggregate variables
-    real*8 :: c_coh(JJ, 0:1), y_coh(JJ, 0:1), l_coh(JJ, 0:1), o_coh(JJ)
-    real*8 :: a_coh(JJ, 0:1), x_coh(JJ, 0:1), k_coh(JJ)
+    real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
+    real*8 :: a_coh(0:1, JJ), x_coh(0:1, JJ), k_coh(JJ)
 
     ! different grids to discretize the state space
     real*8 :: Q(0:NQ), a(0:NA), x(0:NX), p(0:NP), k(0:NK)
 
     ! variables to store the policy functions
-    real*8 :: Q_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
-    real*8 :: a_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), x_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
-    real*8 :: p_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), k_plus(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
-    real*8 :: c(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), l(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
+    real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! variables for temporary policy and value functions
-    real*8 :: Q_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
-    real*8 :: a_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1), x_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
-    real*8 :: p_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1), k_plus_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
-    real*8 :: c_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1), l_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
-    real*8 :: V_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
+    real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! variables to store the portfolio choice decisions
-    real*8 :: omega_x_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1), omega_k_t(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
+    real*8 :: omega_x_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, JJ), omega_k_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: S(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! variables to store the value functions
-    real*8 :: V(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), EV(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE), S(JJ, 0:NQ, 0:NX, 0:NP, 0:NK, NW, NE, 0:1)
+    real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! weights for the different gridpoints on the discretized state space
-    real*8 :: m(JJ, 0:NA, 0:NX, 0:NP, 0:NK, NW, NE)
+    real*8 :: m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com
@@ -132,125 +133,125 @@ module globals
   contains
 
     ! solve the household's decision of how much wealth to invest into capital
-    subroutine solve_worker(ij, iq_p, ix, ip_p, ik, iw, ie)
+    subroutine solve_worker(iq_p, ik, ix, ip_p, iw, ie, ij)
 
       implicit none
 
-      integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
+      integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, ij
       real*8 :: x_in, fret
 
       ! set up communication variables
-      ij_com = ij; iq_p_com = iq_p; ix_com = ix; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
+      iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p; iw_com = iw; ie_com = ie; ij_com = ij
 
       if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
-         x_in = max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0), 1d-2)
+         x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
 
          ! portfolio share for capital
-         omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = x_in
-         omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 0d0
-         S(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = -fret
+         omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in
+         omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+         S(0, iq_p, ik, ix, ip_p, iw, ie, ij) = -fret
 
       else
 
-        omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 0d0
-        omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 0d0
-        S(ij, iq_p, ix, ip_p, ik, iw, ie, 0) = 1d-16**egam/egam
+        omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+        omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+        S(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d-16**egam/egam
 
       endif
 
     end subroutine
 
     ! solve the household's decision of how much wealth to invest into firm capital
-    subroutine solve_entrepreneur(ij, iq_p, ix, ip_p, ik, iw, ie)
+    subroutine solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, ij)
 
         implicit none
 
-        integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
+        integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, ij
         real*8 :: x_in(2), fret
 
         ! set up communication variables
-        ij_com = ij; iq_p_com = iq_p; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
+        iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p; iw_com = iw; ie_com = ie; ij_com = ij
 
        ! get best guess for the root of foc_real
-        x_in(1) = max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-2)
-        x_in(2) = max(omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-2)
+        x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+        x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
 
        ! solve the household problem using fminsearch
        call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
 
        ! portfolio share for capital
-       omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1) = x_in(1)
-       omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1) = x_in(2)
-       S(ij, iq_p, ix, ip_p, ik, iw, ie, 1) = -fret
+       omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(1)
+       omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(2)
+       S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -fret
 
     end subroutine
 
     ! solve the household's decision of how much wealth to invest into capital
-    subroutine solve_retiree(ij, iq_p, ix, ip_p, ik, iw, ie)
+    subroutine solve_retiree(iq_p, ik, ix, ip_p, iw, ie, ij)
 
-        implicit none
+      implicit none
 
-        integer, intent(in) :: ij, iq_p, ix, ip_p, ik, iw, ie
-        integer :: ial, iar, ixl, ixr
-        real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
+      integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, ij
+      integer :: ial, iar, ixl, ixr
+      real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
-        a_p  = Q(iq_p)
-        x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix)
+      a_p  = Q(iq_p)
+      x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix)
 
-       ! calculate linear interpolation for future assets
-       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-       call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+     ! calculate linear interpolation for future assets
+     call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+     call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
 
-       ! restrict values to grid just in case
-       ial = min(ial, NA)
-       iar = min(iar, NA)
-       varphi_a = max(min(varphi_a, 1d0),0d0)
+     ! restrict values to grid just in case
+     ial = min(ial, NA)
+     iar = min(iar, NA)
+     varphi_a = max(min(varphi_a, 1d0),0d0)
 
-       ! restrict values to grid just in case
-       ixl = min(ixl, NX)
-       ixr = min(ixr, NX)
-       varphi_x = max(min(varphi_x, 1d0),0d0)
+     ! restrict values to grid just in case
+     ixl = min(ixl, NX)
+     ixr = min(ixr, NX)
+     varphi_x = max(min(varphi_x, 1d0),0d0)
 
-       ! calculate future part of the value function
-       S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
+     ! calculate future part of the value function
+     S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
 
-       if (varphi_a <= varphi_x) then
-         EV_temp = (varphi_a             *(egam*EV(ij+1, ial, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
-                    (varphi_x - varphi_a)*(egam*EV(ij+1, iar, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
-                    (1d0-varphi_x)       *(egam*EV(ij+1, iar, ixr, ip_p, 0, iw, ie))**(1d0/egam))**egam/egam
-        else
-          EV_temp = (varphi_x             *(egam*EV(ij+1, ial, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
-                     (varphi_a - varphi_x)*(egam*EV(ij+1, ial, ixr, ip_p, 0, iw, ie))**(1d0/egam) + &
-                     (1d0-varphi_a)       *(egam*EV(ij+1, iar, ixr, ip_p, 0, iw, ie))**(1d0/egam))**egam/egam
-       endif
+     if (varphi_a <= varphi_x) then
+       EV_temp = (varphi_a             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                  (varphi_x - varphi_a)*(egam*EV(iar, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                  (1d0-varphi_x)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
+     else
+       EV_temp = (varphi_x             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                  (varphi_a - varphi_x)*(egam*EV(ial, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                  (1d0-varphi_a)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
+     endif
 
-       omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, :) = 0d0
-       omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, :) = 0d0
-       S(ij, iq_p, ix, ip_p, ik, iw, ie, :) = psi(ij+1)*EV_temp + S_temp
+     omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+     omega_k_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+     S(:, iq_p, ik, ix, ip_p, iw, ie, ij) = psi(ij+1)*EV_temp + S_temp
 
     end subroutine
 
 
   ! solve the household's consumption-savings decision
-  subroutine solve_consumption(ij, ia, ix, ip, ik, iw, ie, io_p)
+  subroutine solve_consumption(io_p, ia, ik, ix, ip, iw, ie, ij)
 
       implicit none
 
-      integer, intent(in) :: ij, ia, ix, ip, ik, iw, ie, io_p
+      integer, intent(in) :: io_p, ia, ik, ix, ip, iw, ie, ij
       real*8 :: x_in(2), fret, x_p, mx, k_p, varphi_q, varphi_p
       integer :: iql, iqr, ipl, ipr
 
       ! set up communication variables
-      ij_com = ij; ia_com = ia; ix_com = ix; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
+      io_p_com = io_p; ia_com = ia; ik_com = ik; ix_com = ix; ip_com = ip; iw_com = iw; ie_com = ie; ij_com = ij
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p), 1d-2)
-      x_in(2) = max(l_t(ij, ia, ix, ip, ik, iw, ie, io_p), 0.33d0)
+      x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
+      x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 0.33d0)
 
       ! solve the household problem using fminsearch
       if (ij < JR) then
@@ -277,13 +278,13 @@ module globals
       mx = 0d0
 
       if (varphi_q <= varphi_p) then
-        mx = (varphi_q            *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
-              (varphi_p-varphi_q) *omega_x_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
-              (1d0-varphi_p)      *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
+        mx = (varphi_q            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+              (varphi_p-varphi_q) *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+              (1d0-varphi_p)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
       else
-        mx = (varphi_p             *omega_x_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
-               (varphi_q-varphi_p) *omega_x_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
-               (1d0-varphi_q)      *omega_x_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*x_in(1)
+        mx = (varphi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+              (varphi_q-varphi_p) *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+              (1d0-varphi_q)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
       endif
 
       x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix) + mx
@@ -295,25 +296,25 @@ module globals
 
         ! get next period's capital size
         if (varphi_q <= varphi_p) then
-          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
-                                   (varphi_p-varphi_q)  *omega_k_t(ij, iqr, ix, ipl, ik, iw, ie, io_p) +  &
-                                   (1d0-varphi_p)       *omega_k_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                                   (varphi_p-varphi_q)  *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+                                   (1d0-varphi_p)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         else
-          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k_t(ij, iql, ix, ipl, ik, iw, ie, io_p) +  &
-                                   (varphi_q-varphi_p)  *omega_k_t(ij, iql, ix, ipr, ik, iw, ie, io_p) +  &
-                                   (1d0-varphi_q)       *omega_k_t(ij, iqr, ix, ipr, ik, iw, ie, io_p))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                                   (varphi_q-varphi_p)  *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+                                   (1d0-varphi_q)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         endif
 
       endif
 
       ! copy decisions
-      Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1)
-      a_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_in(1) - (1d0-xi)*k_p - mx
-      x_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = x_p
-      k_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p) = k_p
-      c_t(ij, ia, ix, ip, ik, iw, ie, io_p) = cons_com
-      l_t(ij, ia, ix, ip, ik, iw, ie, io_p) = lab_com
-      V_t(ij, ia, ix, ip, ik, iw, ie, io_p) = -fret
+      Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
+      a_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1) - (1d0-xi)*k_p - mx
+      x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
+      k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = k_p
+      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) = cons_com
+      l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
+      V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
   end subroutine
 
@@ -355,13 +356,13 @@ module globals
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
-        EV_temp = (varphi_a            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                   (varphi_x-varphi_a) *(egam*EV(ij_com+1, iar, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                   (1d0-varphi_x)      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam))**egam/egam
+        EV_temp = (varphi_a            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                   (varphi_x-varphi_a) *(egam*EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                   (1d0-varphi_x)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
       else
-        EV_temp = (varphi_x            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                   (varphi_a-varphi_x) *(egam*EV(ij_com+1, ial, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                   (1d0-varphi_a)      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam))**egam/egam
+        EV_temp = (varphi_x            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                   (varphi_a-varphi_x) *(egam*EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                   (1d0-varphi_a)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
       endif
 
       inv_w = - (psi(ij_com+1)*EV_temp + S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
@@ -377,8 +378,8 @@ module globals
       real*8, intent(in) :: x_in(:)
 
       ! variable declarations
-      real*8 :: inv_e, a_p, x_p, k_p, EV_temp, S_temp, omega_x, omega_k, varphi_a, varphi_x, varphi_k, a_temp
-      integer :: ial, iar, ixl, ixr, ikl, ikr
+      real*8 :: inv_e, a_p, x_p, k_p, EV_temp, S_temp, omega_x, omega_k, varphi_a, varphi_k, varphi_x, a_temp
+      integer :: ial, iar, ikl, ikr, ixl, ixr
 
       ! store real estate share
       omega_x  = x_in(1)
@@ -413,14 +414,14 @@ module globals
       S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
-      EV_temp = (varphi_a*varphi_x*varphi_k                  *(egam*EV(ij_com+1, ial, ixl, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
-                 varphi_a*varphi_x*(1d0-varphi_k)            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
-                 varphi_a*(1d0-varphi_x)*varphi_k            *(egam*EV(ij_com+1, ial, ixr, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
-                 varphi_a*(1d0-varphi_x)*(1d0-varphi_k)      *(egam*EV(ij_com+1, ial, ixr, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
-                 (1d0-varphi_a)*varphi_x*varphi_k            *(egam*EV(ij_com+1, iar, ixl, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
-                 (1d0-varphi_a)*varphi_x*(1d0-varphi_k)      *(egam*EV(ij_com+1, iar, ixl, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
-                 (1d0-varphi_a)*(1d0-varphi_x)*varphi_k      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
-                 (1d0-varphi_a)*(1d0-varphi_x)*(1d0-varphi_k)*(egam*EV(ij_com+1, iar, ixr, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam))**egam/egam
+      EV_temp = (varphi_a*varphi_x*varphi_k                  *(egam*EV(ial, ikl, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                 varphi_a*varphi_k*(1d0-varphi_x)            *(egam*EV(ial, ikl, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                 varphi_a*(1d0-varphi_k)*varphi_x            *(egam*EV(ial, ikr, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                 varphi_a*(1d0-varphi_k)*(1d0-varphi_x)      *(egam*EV(ial, ikr, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                 (1d0-varphi_a)*varphi_k*varphi_x            *(egam*EV(iar, ikl, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                 (1d0-varphi_a)*varphi_k*(1d0-varphi_x)      *(egam*EV(iar, ikl, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                 (1d0-varphi_a)*(1d0-varphi_k)*varphi_x      *(egam*EV(iar, ikr, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                 (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(egam*EV(iar, ikr, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
 
       inv_e = - (psi(ij_com+1)*EV_temp + S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
 
@@ -452,7 +453,7 @@ module globals
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
         ! calculate consumption-savings
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income &
                    - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
 
         ! calculate future earning points
@@ -477,13 +478,13 @@ module globals
         if (ij_com < JJ .or. mu_b /= 0d0) then
 
           if(varphi_q <= varphi_p) then
-            tomorrow = max(varphi_q           *(egam*S(ij_com, iql, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_p-varphi_q)*(egam*S(ij_com, iqr, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_p)     *(egam*S(ij_com, iqr, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                           (varphi_p-varphi_q)*(egam*S(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                           (1d0-varphi_p)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam), 1d-10)**egam/egam
           else
-            tomorrow = max(varphi_p           *(egam*S(ij_com, iql, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_q-varphi_p)*(egam*S(ij_com, iql, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_q)     *(egam*S(ij_com, iqr, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_p           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                           (varphi_q-varphi_p)*(egam*S(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                           (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam), 1d-10)**egam/egam
            endif
 
         endif
@@ -538,8 +539,8 @@ module globals
         ! get next period value function
         tomorrow = 0d0
         if (ij_com < JJ .or. mu_b /= 0d0) then
-            tomorrow = max(varphi_q           *(egam*S(ij_com, iql, ix_com, ip_com, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_q)     *(egam*S(ij_com, iqr, ix_com, ip_com, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = max(varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                           (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam), 1d-10)**egam/egam
         endif
 
         ! calculate today's value function
@@ -592,27 +593,27 @@ module globals
 
         ! check for the maximum asset grid point used at a certain age
         do ia = NA, 0, -1
-          if (sum(m(ij, ia, :, :, :, :, :)) > 1d-12) then
+          if (sum(m(ia, :, :, :, :, :, ij)) > 1d-12) then
             iamax(ij) = ia
             exit
           endif
         enddo ! ia
 
         ! check for the maximum annuitie grid point used at a certain age
-        do ix = NX, 0, -1
-          if (sum(m(ij, :, ix, :, :, :, :)) > 1d-12) then
-            ixmax(ij) = ix
-            exit
-          endif
-        enddo ! ix
-
-        ! check for the maximum annuitie grid point used at a certain age
         do ik = NK, 0, -1
-          if (sum(m(ij, :, :, :, ik, :, :)) > 1d-12) then
+          if (sum(m(:, ik, :, :, :, :, ij)) > 1d-12) then
             ikmax(ij) = ik
             exit
           endif
         enddo ! ik
+
+        ! check for the maximum annuitie grid point used at a certain age
+        do ix = NX, 0, -1
+          if (sum(m(:, :, ix, :, :, :, ij)) > 1d-12) then
+            ixmax(ij) = ix
+            exit
+          endif
+        enddo ! ix
 
       enddo ! ij
 

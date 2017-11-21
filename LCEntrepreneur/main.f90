@@ -94,7 +94,7 @@ contains
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
-          pen(JR:JJ, ip) = p(ip)*kappa*w*eff(JR-1)
+          pen(ip, JR:JJ) = p(ip)*kappa*w*eff(JR-1)
         enddo
 
         ! initialize value functions
@@ -126,8 +126,7 @@ contains
 
         implicit none
 
-        integer :: ij, iq, iq_p, ia, ix, ip, ip_p, ik, iw, ie
-        real*8:: y_plot(0:1000)
+        integer :: ij, iq, ia, ik, ix, ip, ik, iw, ie, iq_p, ip_p
 
         ! solve household problem recursively
 
@@ -135,11 +134,11 @@ contains
 
             if(ij == JJ)then
 
-              omega_k_t(JJ, :, :, :, :, :, :, :) = 0d0
-              omega_x_t(JJ, :, :, :, :, :, :, :) = 0d0
+              omega_k_t(:, :, :, :, :, :, :, JJ) = 0d0
+              omega_x_t(:, :, :, :, :, :, :, JJ) = 0d0
 
               do iq_p = 0, NQ
-                  S(JJ, iq_p, :, :, :, :, :, 0) = mu_b*max(Q(iq_p), 1d-16)**egam/egam
+                  S(0, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-16)**egam/egam
               enddo
 
               do ia = 0, NA
@@ -148,16 +147,16 @@ contains
                     do ik = 0, NA
 
                       ! with bequest motive we assume future worker
-                      call solve_consumption(JJ, ia, ix, ip, ik, 1, 1, 0)
+                      call solve_consumption(0, ia, ik, ix, ip, 1, 1, JJ)
 
-                      Q_plus(JJ, ia, ix, ip, ik, :, :) = Q_plus_t(JJ, ia, ix, ip, ik, 1, 1, 0)
-                      a_plus(JJ, ia, ix, ip, ik, :, :) = a_plus_t(JJ, ia, ix, ip, ik, 1, 1, 0)
-                      x_plus(JJ, ia, ix, ip, ik, :, :) = x_plus_t(JJ, ia, ix, ip, ik, 1, 1, 0)
-                      p_plus(JJ, ia, ix, ip, ik, :, :) = p_plus_t(JJ, ia, ix, ip, ik, 1, 1, 0)
-                      k_plus(JJ, ia, ix, ip, ik, :, :) = k_plus_t(JJ, ia, ix, ip, ik, 1, 1, 0)
-                      c(JJ, ia, ix, ip, ik, :, :) = c_t(JJ, ia, ix, ip, ik, 1, 1, 0)
-                      l(JJ, ia, ix, ip, ik, :, :) = l_t(JJ, ia, ix, ip, ik, 1, 1, 0)
-                      V(JJ, ia, ix, ip, ik, :, :) = V_t(JJ, ia, ix, ip, ik, 1, 1, 0)
+                      Q_plus(ia, ik, ix, ip, :, :, JJ) = Q_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                      a_plus(ia, ik, ix, ip, :, :, JJ) = a_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                      x_plus(ia, ik, ix, ip, :, :, JJ) = x_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                      p_plus(ia, ik, ix, ip, :, :, JJ) = p_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                      k_plus(ia, ik, ix, ip, :, :, JJ) = k_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                      c(ia, ik, ix, ip, :, :, JJ) = c_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                      l(ia, ik, ix, ip, :, :, JJ) = l_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                      V(ia, ik, ix, ip, :, :, JJ) = V_t(0, ia, ik, ix, ip, 1, 1, JJ)
 
                     enddo
                   enddo
@@ -179,15 +178,15 @@ contains
                                if(ij >= JR) then
 
                                  ! next period retiree
-                                 call solve_retiree(ij, iq_p, ix, ip_p, ik, iw, ie)
+                                 call solve_retiree(iq_p, ik, ix, ip_p, iw, ie, ij)
 
                                else
 
                                  ! next period worker
-                                 call solve_worker(ij, iq_p, ix, ip_p, ik, iw, ie)
+                                 call solve_worker(iq_p, ik, ix, ip_p, iw, ie, ij)
 
                                  ! next period entrepreneur
-                                 call solve_entrepreneur(ij, iq_p, ix, ip_p, ik, iw, ie)
+                                 call solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, ij)
 
                                endif
 
@@ -209,30 +208,30 @@ contains
                          do ie = 1, NE
 
                            ! next period worker
-                           call solve_consumption(ij, ia, ix, ip, ik, iw, ie, 0)
+                           call solve_consumption(0, ia, ik, ix, ip, iw, ie, ij)
 
                            ! next period entrpreneur
-                           if(ij < JR-1) call solve_consumption(ij, ia, ix, ip, ik, iw, ie, 1)
+                           if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, ij)
 
                            ! decision on whether to be homeowner or renter next period
-                            if(ij < JR-1 .and. V_t(ij, ia, ix, ip, ik, iw, ie, 1) > V_t(ij, ia, ix, ip, ik, iw, ie, 0)) then
-                                  Q_plus(ij, ia, ix, ip, ik, iw, ie) = Q_plus_t(ij, ia, ix, ip, ik, iw, ie, 1)
-                                  a_plus(ij, ia, ix, ip, ik, iw, ie) = a_plus_t(ij, ia, ix, ip, ik, iw, ie, 1)
-                                  x_plus(ij, ia, ix, ip, ik, iw, ie) = x_plus_t(ij, ia, ix, ip, ik, iw, ie, 1)
-                                  p_plus(ij, ia, ix, ip, ik, iw, ie) = p_plus_t(ij, ia, ix, ip, ik, iw, ie, 1)
-                                  k_plus(ij, ia, ix, ip, ik, iw, ie) = k_plus_t(ij, ia, ix, ip, ik, iw, ie, 1)
-                                  c(ij, ia, ix, ip, ik, iw, ie) = c_t(ij, ia, ix, ip, ik, iw, ie, 1)
-                                  l(ij, ia, ix, ip, ik, iw, ie) = l_t(ij, ia, ix, ip, ik, iw, ie, 1)
-                                  V(ij, ia, ix, ip, ik, iw, ie) = V_t(ij, ia, ix, ip, ik, iw, ie, 1)
+                            if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, ij) > V_t(ia, ik, ix, ip, iw, ie, ij, 0)) then
+                                  Q_plus(ia, ik, ix, ip, iw, ie, ij) = Q_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
+                                  a_plus(ia, ik, ix, ip, iw, ie, ij) = a_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
+                                  x_plus(ia, ik, ix, ip, iw, ie, ij) = x_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
+                                  p_plus(ia, ik, ix, ip, iw, ie, ij) = p_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
+                                  k_plus(ia, ik, ix, ip, iw, ie, ij) = k_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
+                                  c(ia, ik, ix, ip, iw, ie, ij) = c_t(1, ia, ik, ix, ip, iw, ie, ij)
+                                  l(ia, ik, ix, ip, iw, ie, ij) = l_t(1, ia, ik, ix, ip, iw, ie, ij)
+                                  V(ia, ik, ix, ip, iw, ie, ij) = V_t(1, ia, ik, ix, ip, iw, ie, ij)
                              else
-                               Q_plus(ij, ia, ix, ip, ik, iw, ie) = Q_plus_t(ij, ia, ix, ip, ik, iw, ie, 0)
-                               a_plus(ij, ia, ix, ip, ik, iw, ie) = a_plus_t(ij, ia, ix, ip, ik, iw, ie, 0)
-                               x_plus(ij, ia, ix, ip, ik, iw, ie) = x_plus_t(ij, ia, ix, ip, ik, iw, ie, 0)
-                               p_plus(ij, ia, ix, ip, ik, iw, ie) = p_plus_t(ij, ia, ix, ip, ik, iw, ie, 0)
-                               k_plus(ij, ia, ix, ip, ik, iw, ie) = k_plus_t(ij, ia, ix, ip, ik, iw, ie, 0)
-                               c(ij, ia, ix, ip, ik, iw, ie) = c_t(ij, ia, ix, ip, ik, iw, ie, 0)
-                               l(ij, ia, ix, ip, ik, iw, ie) = l_t(ij, ia, ix, ip, ik, iw, ie, 0)
-                               V(ij, ia, ix, ip, ik, iw, ie) = V_t(ij, ia, ix, ip, ik, iw, ie, 0)
+                               Q_plus(ia, ik, ix, ip, iw, ie, ij) = Q_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
+                               a_plus(ia, ik, ix, ip, iw, ie, ij) = a_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
+                               x_plus(ia, ik, ix, ip, iw, ie, ij) = x_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
+                               p_plus(ia, ik, ix, ip, iw, ie, ij) = p_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
+                               k_plus(ia, ik, ix, ip, iw, ie, ij) = k_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
+                               c(ia, ik, ix, ip, iw, ie, ij) = c_t(0, ia, ik, ix, ip, iw, ie, ij)
+                               l(ia, ik, ix, ip, iw, ie, ij) = l_t(0, ia, ik, ix, ip, iw, ie, ij)
+                               V(ia, ik, ix, ip, iw, ie, ij) = V_t(0, ia, ik, ix, ip, iw, ie, ij)
                              endif
 
                          enddo
@@ -260,7 +259,7 @@ contains
 
       integer, intent(in) :: ij
 
-      integer :: ia, ix, ip, ik, iw, iw_p, ie, ie_p
+      integer :: ia, ik, ix, ip, iw, ie, iw_p, ie_p
 
       !$omp parallel do schedule(dynamic,1) private(ie_p, iw_p) num_threads(numthreads)
       do ia = 0, NA
@@ -270,11 +269,11 @@ contains
               do iw = 1, NW
                 do ie = 1, NE
 
-                  EV(ij, ia, ix, ip, ik, iw, ie) = 0d0
+                  EV(ia, ik, ix, ip, iw, ie, ij) = 0d0
                   do ie_p = 1, NE
                     do iw_p = 1, NW
-                      EV(ij, ia, ix, ip, ik, iw, ie) = EV(ij, ia, ix, ip, ik, iw, ie) &
-                        + pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*V(ij, ia, ix, ip, ik, iw, ie)
+                      EV(ia, ik, ix, ip, iw, ie, ij) = EV(ia, ik, ix, ip, iw, ie, ij) &
+                        + pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*V(ia, ik, ix, ip, iw, ie, ij)
                     enddo ! iw_p
                   enddo ! ie_p
 
@@ -294,15 +293,15 @@ contains
 
         implicit none
 
-        integer :: ij, ia, ix, ip, ik, iw, iw_p, ie, ie_p
-        integer :: ial, iar, ixl, ixr, ipl, ipr, ikl, ikr
-        real*8 :: varphi_a, varphi_x, varphi_p, varphi_k
+        integer :: ia, ik, ix, ip, iw, ie, ij, iw_p, ie_p
+        integer :: ial, iar, ikl, ikr, ixl, ixr, ipl, ipr
+        real*8 :: varphi_a, varphi_k, varphi_x, varphi_p
 
         m(:, :, :, :, :, :, :) = 0d0
 
         do iw = 1, NW
           do ie = 1, NE
-              m(1, 0, 0, 0, 0, iw, ie) = dist_eta(iw)*dist_theta(ie)
+              m(0, 0, 0, 0, iw, ie, 1) = dist_eta(iw)*dist_theta(ie)
           enddo
         enddo
 
@@ -316,13 +315,13 @@ contains
                     do ie = 1, NE
 
                       ! skip if there is no household
-                      if (m(ij-1, ia, ix, ip, ik, iw, ie) <= 0d0) cycle
+                      if (m(ia, ik, ix, ip, iw, ie, ij-1) <= 0d0) cycle
 
                       ! derive interpolation weights
-                      call linint_Grow(a_plus(ij-1, ia, ix, ip, ik, iw, ie), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                      call linint_Grow(x_plus(ij-1, ia, ix, ip, ik, iw, ie), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
-                      call linint_Equi(p_plus(ij-1, ia, ix, ip, ik, iw, ie), p_l, p_u, NP, ipl, ipr, varphi_p)
-                      call linint_Grow(k_plus(ij-1, ia, ix, ip, ik, iw, ie), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+                      call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+                      call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+                      call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
+                      call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
 
                       ! restrict values to grid just in case
                       ial = min(ial, NA)
@@ -340,7 +339,7 @@ contains
                       varphi_p = max(min(varphi_p, 1d0), 0d0)
 
                       ! restrict values to grid just in case
-                      if (k_plus(ij-1, ia, ix, ip, ik, iw, ie) > 0d0) then
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) then
                         ikl = min(ikl+1, NK)
                         ikr = min(ikr+1, NK)
                         varphi_k = max(min(varphi_k, 1d0), 0d0)
@@ -351,38 +350,38 @@ contains
                       do iw_p = 1, NW
                         do ie_p = 1, NE
 
-                            m(ij, ial, ixl, ipl, ikl, iw_p, ie_p) = m(ij, ial, ixl, ipl, ikl, iw_p, ie_p) + &
-                                  varphi_a*varphi_x*varphi_p*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, ial, ixl, ipl, ikr, iw_p, ie_p) = m(ij, ial, ixl, ipl, ikr, iw_p, ie_p) + &
-                                  varphi_a*varphi_x*varphi_p*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, ial, ixl, ipr, ikl, iw_p, ie_p) = m(ij, ial, ixl, ipr, ikl, iw_p, ie_p) + &
-                                  varphi_a*varphi_x*(1d0-varphi_p)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, ial, ixl, ipr, ikr, iw_p, ie_p) = m(ij, ial, ixl, ipr, ikr, iw_p, ie_p) + &
-                                  varphi_a*varphi_x*(1d0-varphi_p)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, ial, ixr, ipl, ikl, iw_p, ie_p) = m(ij, ial, ixr, ipl, ikl, iw_p, ie_p) + &
-                                  varphi_a*(1d0-varphi_x)*varphi_p*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, ial, ixr, ipl, ikr, iw_p, ie_p) = m(ij, ial, ixr, ipl, ikr, iw_p, ie_p) + &
-                                  varphi_a*(1d0-varphi_x)*varphi_p*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, ial, ixr, ipr, ikl, iw_p, ie_p) = m(ij, ial, ixr, ipr, ikl, iw_p, ie_p) + &
-                                  varphi_a*(1d0-varphi_x)*(1d0-varphi_p)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, ial, ixr, ipr, ikr, iw_p, ie_p) = m(ij, ial, ixr, ipr, ikr, iw_p, ie_p) + &
-                                  varphi_a*(1d0-varphi_x)*(1d0-varphi_p)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, iar, ixl, ipl, ikl, iw_p, ie_p) = m(ij, iar, ixl, ipl, ikl, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*varphi_x*varphi_p*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, iar, ixl, ipl, ikr, iw_p, ie_p) = m(ij, iar, ixl, ipl, ikr, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*varphi_x*varphi_p*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, iar, ixl, ipr, ikl, iw_p, ie_p) = m(ij, iar, ixl, ipr, ikl, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*varphi_x*(1d0-varphi_p)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, iar, ixl, ipr, ikr, iw_p, ie_p) = m(ij, iar, ixl, ipr, ikr, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*varphi_x*(1d0-varphi_p)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, iar, ixr, ipl, ikl, iw_p, ie_p) = m(ij, iar, ixr, ipl, ikl, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*(1d0-varphi_x)*varphi_p*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, iar, ixr, ipl, ikr, iw_p, ie_p) = m(ij, iar, ixr, ipl, ikr, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*(1d0-varphi_x)*varphi_p*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, iar, ixr, ipr, ikl, iw_p, ie_p) = m(ij, iar, ixr, ipr, ikl, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*(1d0-varphi_x)*(1d0-varphi_p)*varphi_k*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
-                            m(ij, iar, ixr, ipr, ikr, iw_p, ie_p) = m(ij, iar, ixr, ipr, ikr, iw_p, ie_p) + &
-                                  (1d0-varphi_a)*(1d0-varphi_x)*(1d0-varphi_p)*(1d0-varphi_k)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ij-1, ia, ix, ip, ik, iw, ie)
+                            m(ial, ikl, ixl, ipl, iw_p, ie_p, ij) = m(ial, ikl, ixl, ipl, iw_p, ie_p, ij) + &
+                                  varphi_a*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(ial, ikl, ixl, ipr, iw_p, ie_p, ij) = m(ial, ikl, ixl, ipr, iw_p, ie_p, ij) + &
+                                  varphi_a*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(ial, ikl, ixr, ipl, iw_p, ie_p, ij) = m(ial, ikl, ixr, ipl, iw_p, ie_p, ij) + &
+                                  varphi_a*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(ial, ikl, ixr, ipr, iw_p, ie_p, ij) = m(ial, ikl, ixr, ipr, iw_p, ie_p, ij) + &
+                                  varphi_a*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(ial, ikr, ixl, ipl, iw_p, ie_p, ij) = m(ial, ikr, ixl, ipl, iw_p, ie_p, ij) + &
+                                  varphi_a*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(ial, ikr, ixl, ipr, iw_p, ie_p, ij) = m(ial, ikr, ixl, ipr, iw_p, ie_p, ij) + &
+                                  varphi_a*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(ial, ikr, ixr, ipl, iw_p, ie_p, ij) = m(ial, ikr, ixr, ipl, iw_p, ie_p, ij) + &
+                                  varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(ial, ikr, ixr, ipr, iw_p, ie_p, ij) = m(ial, ikr, ixr, ipr, iw_p, ie_p, ij) + &
+                                  varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(iar, ikl, ixl, ipl, iw_p, ie_p, ij) = m(iar, ikl, ixl, ipl, iw_p, ie_p, ij) + &
+                                  (1d0-varphi_a)*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(iar, ikl, ixl, ipr, iw_p, ie_p, ij) = m(iar, ikl, ixl, ipr, iw_p, ie_p, ij) + &
+                                  (1d0-varphi_a)*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(iar, ikl, ixr, ipr, iw_p, ie_p, ij) = m(iar, ikl, ixr, ipl, iw_p, ie_p, ij) + &
+                                  (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(iar, ikl, ixr, ipr, iw_p, ie_p, ij) = m(iar, ikl, ixr, ipr, iw_p, ie_p, ij) + &
+                                  (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(iar, ikr, ixl, ipl, iw_p, ie_p, ij) = m(iar, ikr, ixl, ipl, iw_p, ie_p, ij) + &
+                                  (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(iar, ikr, ixl, ipr, iw_p, ie_p, ij) = m(iar, ikr, ixl, ipr, iw_p, ie_p, ij) + &
+                                  (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(iar, ikr, ixr, ipl, iw_p, ie_p, ij) = m(iar, ikr, ixr, ipl, iw_p, ie_p, ij) + &
+                                  (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
+                            m(iar, ikr, ixr, ipr, iw_p, ie_p, ij) = m(iar, ikr, ixr, ipr, iw_p, ie_p, ij) + &
+                                  (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
 
                         enddo
                       enddo
@@ -405,7 +404,7 @@ contains
 
         implicit none
 
-        integer :: ij, ia, ix, ip, ik, iw, ie
+        integer :: ia, ik, ix, ip, iw, ie, ij
 
         ! calculate cohort averages
         c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0
@@ -420,24 +419,24 @@ contains
                       do ie = 1, NE
 
                         ! skip if there is no household
-                        if (m(ij, ia, ix, ip, ik, iw, ie) <= 0d0) cycle
+                        if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
 
-                        if (k_plus(ij, ia, ix, ip, ik, iw, ie) > 0d0 .and. k_plus(ij, ia, ix, ip, ik, iw, ie) < k_min) write(*,*)k_plus(ij, ia, ix, ip, ik, iw, ie), a_plus(ij, ia, ix, ip, ik, iw, ie), Q_plus(ij, ia, ix, ip, ik, iw, ie)
+                        if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
                         if(ik == 0) then
-                          c_coh(ij, 0) = c_coh(ij, 0) + c(ij, ia, ix, ip, ik, iw, ie)*m(ij, ia, ix, ip, ik, iw, ie)
-                          a_coh(ij, 0) = a_coh(ij, 0) + a(ia)*m(ij, ia, ix, ip, ik, iw, ie)
-                          x_coh(ij, 0) = x_coh(ij, 0) + x(ix)*m(ij, ia, ix, ip, ik, iw, ie)
-                          l_coh(ij, 0) = l_coh(ij, 0) + l(ij, ia, ix, ip, ik, iw, ie)*m(ij, ia, ix, ip, ik, iw, ie)
-                          y_coh(ij, 0) = y_coh(ij, 0) + w*eff(ij)*eta(iw)*l(ij, ia, ix, ip, ik, iw, ie)*m(ij, ia, ix, ip, ik, iw, ie)
+                          c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                          a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
+                          x_coh(0, ij) = x_coh(0, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
+                          l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                          y_coh(0, ij) = y_coh(0, ij) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         else
-                          c_coh(ij, 1) = c_coh(ij, 1) + c(ij, ia, ix, ip, ik, iw, ie)*m(ij, ia, ix, ip, ik, iw, ie)
-                          a_coh(ij, 1) = a_coh(ij, 1) + a(ia)*m(ij, ia, ix, ip, ik, iw, ie)
-                          x_coh(ij, 1) = x_coh(ij, 1) + x(ix)*m(ij, ia, ix, ip, ik, iw, ie)
-                          k_coh(ij) = k_coh(ij) + k(ik)*m(ij, ia, ix, ip, ik, iw, ie)
-                          y_coh(ij, 1) = y_coh(ij, 1) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ij, ia, ix, ip, ik, iw, ie))**(1d0-alpha))**nu*m(ij, ia, ix, ip, ik, iw, ie)
-                          l_coh(ij, 1) = l_coh(ij, 1) + l(ij, ia, ix, ip, ik, iw, ie)*m(ij, ia, ix, ip, ik, iw, ie)
-                          o_coh(ij) = o_coh(ij) + m(ij, ia, ix, ip, ik, iw, ie)
+                          c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                          a_coh(1, ij) = a_coh(1, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
+                          x_coh(1, ij) = x_coh(1, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
+                          k_coh(ij) = k_coh(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
+                          y_coh(1, ij) = y_coh(1, ij) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij)
+                          l_coh(1, ij) = l_coh(1, ij) + l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                          o_coh(ij) = o_coh(ij) + m(ia, ik, ix, ip, iw, ie, ij)
                         endif
                       enddo
                     enddo
@@ -446,16 +445,16 @@ contains
               enddo
             enddo
 
-            c_coh(ij, 0) = c_coh(ij, 0)/max(sum(m(ij, :, :, :, 0, :, :)), 1d-16)
-            c_coh(ij, 1) = c_coh(ij, 1)/max(sum(m(ij, :, :, :, 1:NK, :, :)), 1d-16)
-            a_coh(ij, 0) = a_coh(ij, 0)/max(sum(m(ij, :, :, :, 0, :, :)), 1d-16)
-            a_coh(ij, 1) = a_coh(ij, 1)/max(sum(m(ij, :, :, :, 1:NK, :, :)), 1d-16)
-            y_coh(ij, 0) = y_coh(ij, 0)/max(sum(m(ij, :, :, :, 0, :, :)), 1d-16)
-            y_coh(ij, 1) = y_coh(ij, 1)/max(sum(m(ij, :, :, :, 1:NK, :, :)), 1d-16)
-            l_coh(ij, 0) = l_coh(ij, 0)/max(sum(m(ij, :, :, :, 0, :, :)), 1d-16)
-            l_coh(ij, 1) = l_coh(ij, 1)/max(sum(m(ij, :, :, :, 1:NK, :, :)), 1d-16)
+            c_coh(0, ij) = c_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, ij)), 1d-16)
+            c_coh(1, ij) = c_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-16)
+            a_coh(0, ij) = a_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, ij)), 1d-16)
+            a_coh(1, ij) = a_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-16)
+            y_coh(0, ij) = y_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, ij)), 1d-16)
+            y_coh(1, ij) = y_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-16)
+            l_coh(0, ij) = l_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, ij)), 1d-16)
+            l_coh(1, ij) = l_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-16)
             o_coh(ij) = o_coh(ij)/max(sum(m(ij, :, :, :, :, :, :)), 1d-16)
-            k_coh(ij) = k_coh(ij)/max(sum(m(ij, :, :, :, 1:NK, :, :)), 1d-16)
+            k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-16)
 
         enddo
 
@@ -480,20 +479,20 @@ contains
         call execplot(xlabel='Age j', ylabel='Entrepreneurship', ylim=(/0d0, 1d0/))
 
         ! plot consumption for homeowner
-        call plot(dble(ages), c_coh(:, 1), legend='Consumption  - Entrepreneur')
-        call plot(dble(ages), a_coh(:, 1), legend='Assets       - Entrepreneur')
-        call plot(dble(ages), x_coh(:, 1), legend='Annuities    - Entrepreneur')
-        call plot(dble(ages), y_coh(:, 1), legend='Income       - Entrepreneur')
-        call plot(dble(ages), l_coh(:, 1), legend='Labor        - Entrepreneur')
+        call plot(dble(ages), c_coh(1, :), legend='Consumption  - Entrepreneur')
+        call plot(dble(ages), a_coh(1, :), legend='Assets       - Entrepreneur')
+        call plot(dble(ages), x_coh(1, :), legend='Annuities    - Entrepreneur')
+        call plot(dble(ages), y_coh(1, :), legend='Income       - Entrepreneur')
+        call plot(dble(ages), l_coh(1, :), legend='Labor        - Entrepreneur')
         call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
         call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
         ! polt consumption for renter
-        call plot(dble(ages), c_coh(:, 0), legend='Consumption  - Worker')
-        call plot(dble(ages), a_coh(:, 0), legend='Assets       - Worker')
-        call plot(dble(ages), x_coh(:, 0), legend='Annuities    - Worker')
-        call plot(dble(ages), y_coh(:, 0), legend='Labor Income - Worker')
-        call plot(dble(ages), l_coh(:, 0), legend='Labor        - Worker')
+        call plot(dble(ages), c_coh(0, :), legend='Consumption  - Worker')
+        call plot(dble(ages), a_coh(0, :), legend='Assets       - Worker')
+        call plot(dble(ages), x_coh(0, :), legend='Annuities    - Worker')
+        call plot(dble(ages), y_coh(0, :), legend='Labor Income - Worker')
+        call plot(dble(ages), l_coh(0, :), legend='Labor        - Worker')
         call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
     end subroutine
