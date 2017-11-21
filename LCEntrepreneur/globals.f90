@@ -515,65 +515,39 @@ endif
         real*8, intent(in) :: x_in
 
         ! variable declarations
-        real*8 :: cons_r, Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
-        integer :: iql, iqr, ipl, ipr
+        real*8 :: cons_r, Q_plus, tomorrow, varphi_q
+        integer :: iql, iqr
 
-        ! calculate tomorrow's assets
+        ! define tomorrow's assets
         Q_plus  = x_in
+
+        ! define labor supply
         lab_com = 0d0
 
-        ! current occupation
-        ind_o = abs(dble(ik_com > 0))
+        ! calculate consumption
+        cons_com = (1d0+r)*a(ia_com) + pen(ij_com, ip_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
+                    - Q_plus
 
-        ! calculate current income
-        income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
-                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
-
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
-                   - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
-
-        if (ij_com >= JR) then
-          p_plus_com = p(ip_com)
-        else
-          p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
-        endif
+        ! define future earning points
+        p_plus_com = p(ip_com)
 
         ! calculate linear interpolation for future part of first order condition
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
-        call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
 
         ! restrict values to grid just in case
         iql = min(iql, NQ)
         iqr = min(iqr, NQ)
         varphi_q = max(min(varphi_q, 1d0),0d0)
 
-        ! restrict values to grid just in case
-        ipl = min(ipl, NP)
-        ipr = min(ipr, NP)
-        varphi_p = max(min(varphi_p, 1d0),0d0)
-
         ! get next period value function
         tomorrow = 0d0
         if (ij_com < JJ .or. mu_b /= 0d0) then
-
-          if(varphi_q <= varphi_p) then
-            tomorrow = max(varphi_q           *(egam*S(ij_com, iql, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_p-varphi_q)*(egam*S(ij_com, iqr, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_p)     *(egam*S(ij_com, iqr, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
-          else
-            tomorrow = max(varphi_p           *(egam*S(ij_com, iql, ix_com, ipl, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (varphi_q-varphi_p)*(egam*S(ij_com, iql, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
-                           (1d0-varphi_q)     *(egam*S(ij_com, iqr, ix_com, ipr, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
-           endif
-
+            tomorrow = max(varphi_q           *(egam*S(ij_com, iql, ix_com, ip_com, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam) +  &
+                           (1d0-varphi_q)     *(egam*S(ij_com, iqr, ix_com, ip_com, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
         endif
 
         if(cons_com <= 0d0)then
            cons_r = -1d-16**egam/egam*(1d0+abs(cons_com))
-        elseif(lab_com < 0d0) then
-          cons_r = -1d-16**egam/egam*(1d0+abs(lab_com))
-        elseif(lab_com >= 1d0) then
-          cons_r = -1d-16**egam/egam*lab_com
         else
            cons_r = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
         endif
