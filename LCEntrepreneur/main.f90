@@ -126,7 +126,7 @@ contains
 
         implicit none
 
-        integer :: ij, iq, ia, ik, ix, ip, ik, iw, ie, iq_p, ip_p
+        integer :: ij, iq, ia, ik, ix, ip, iw, ie, iq_p, ip_p
 
         ! solve household problem recursively
 
