@@ -37,7 +37,6 @@ module globals
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.99d0**5d0
     real*8, parameter :: mu_b = 0.15d0
-    ! convert variables into per period values
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.1d0
@@ -212,10 +211,12 @@ module globals
        iar = min(iar, NA)
        varphi_a = max(min(varphi_a, 1d0),0d0)
 
+       ! restrict values to grid just in case
        ixl = min(ixl, NX)
        ixr = min(ixr, NX)
        varphi_x = max(min(varphi_x, 1d0),0d0)
 
+       ! calculate future part of the value function
        S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
 
        if (varphi_a <= varphi_x) then
@@ -268,6 +269,7 @@ module globals
       iqr = min(iqr, NQ)
       varphi_q = max(min(varphi_q, 1d0),0d0)
 
+      ! restrict values to grid just in case
       ipl = min(ipl, NP)
       ipr = min(ipr, NP)
       varphi_p = max(min(varphi_p, 1d0),0d0)
@@ -439,27 +441,27 @@ module globals
         real*8 :: cons_o, Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
         integer :: iql, iqr, ipl, ipr
 
-        ! calculate tomorrow's assets
+        ! define tomorrow's assets
         Q_plus  = x_in(1)
+
+        ! defin labor supply
         lab_com = max(x_in(2), 0d0)
 
-        ! current occupation
+        ! compute current occupation
         ind_o = abs(dble(ik_com > 0))
 
         ! calculate current income
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
+        ! calculate consumption-savings
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ij_com, ip_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
                    - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
 
-        if (ij_com >= JR) then
-          p_plus_com = p(ip_com)
-        else
-          p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
-        endif
+        ! calculate future earning points
+        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
 
-        ! calculate linear interpolation for future part of first order condition
+        ! calculate linear interpolation for future part of value function
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
         call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
 
@@ -489,6 +491,7 @@ module globals
 
         endif
 
+        ! calculate today's value function
         if(cons_com <= 0d0)then
            cons_o = -1d-16**egam/egam*(1d0+abs(cons_com))
         elseif(lab_com < 0d0) then
