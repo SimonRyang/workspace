@@ -519,7 +519,7 @@ endif
         integer :: iql, iqr, ipl, ipr
 
         ! calculate tomorrow's assets
-        Q_plus  = x_in(1)
+        Q_plus  = x_in
         lab_com = 0d0
 
         ! current occupation
