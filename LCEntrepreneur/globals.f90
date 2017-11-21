@@ -356,18 +356,16 @@ module globals
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
-        EV_temp = varphi_a            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  (varphi_x-varphi_a) *(egam*EV(ij_com+1, iar, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  (1d0-varphi_x)      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
+        EV_temp = (varphi_a            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                   (varphi_x-varphi_a) *(egam*EV(ij_com+1, iar, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                   (1d0-varphi_x)      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam))**egam/egam
       else
-        EV_temp = varphi_x            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  (varphi_a-varphi_x) *(egam*EV(ij_com+1, ial, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
-                  (1d0-varphi_a)      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam)
+        EV_temp = (varphi_x            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                   (varphi_a-varphi_x) *(egam*EV(ij_com+1, ial, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam) + &
+                   (1d0-varphi_a)      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, 0, iw_com, ie_com))**(1d0/egam))**egam/egam
       endif
 
-      S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
-
-      inv_w = - (S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
+      inv_w = - (psi(ij_com+1)*EV_temp + S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
 
   end function
 
@@ -414,18 +412,16 @@ module globals
       S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
-      EV_temp = varphi_a*varphi_x*varphi_k                  *(egam*EV(ij_com+1, ial, ixl, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*varphi_x*(1d0-varphi_k)            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*(1d0-varphi_x)*varphi_k            *(egam*EV(ij_com+1, ial, ixr, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
-                varphi_a*(1d0-varphi_x)*(1d0-varphi_k)      *(egam*EV(ij_com+1, ial, ixr, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
-                (1d0-varphi_a)*varphi_x*varphi_k            *(egam*EV(ij_com+1, iar, ixl, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
-                (1d0-varphi_a)*varphi_x*(1d0-varphi_k)      *(egam*EV(ij_com+1, iar, ixl, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
-                (1d0-varphi_a)*(1d0-varphi_x)*varphi_k      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
-                (1d0-varphi_a)*(1d0-varphi_x)*(1d0-varphi_k)*(egam*EV(ij_com+1, iar, ixr, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam)
+      EV_temp = (varphi_a*varphi_x*varphi_k                  *(egam*EV(ij_com+1, ial, ixl, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
+                 varphi_a*varphi_x*(1d0-varphi_k)            *(egam*EV(ij_com+1, ial, ixl, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
+                 varphi_a*(1d0-varphi_x)*varphi_k            *(egam*EV(ij_com+1, ial, ixr, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
+                 varphi_a*(1d0-varphi_x)*(1d0-varphi_k)      *(egam*EV(ij_com+1, ial, ixr, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
+                 (1d0-varphi_a)*varphi_x*varphi_k            *(egam*EV(ij_com+1, iar, ixl, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
+                 (1d0-varphi_a)*varphi_x*(1d0-varphi_k)      *(egam*EV(ij_com+1, iar, ixl, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam) + &
+                 (1d0-varphi_a)*(1d0-varphi_x)*varphi_k      *(egam*EV(ij_com+1, iar, ixr, ip_p_com, ikl, iw_com, ie_com))**(1d0/egam) + &
+                 (1d0-varphi_a)*(1d0-varphi_x)*(1d0-varphi_k)*(egam*EV(ij_com+1, iar, ixr, ip_p_com, ikr, iw_com, ie_com))**(1d0/egam))**egam/egam
 
-      S_temp = S_temp + psi(ij_com+1)*EV_temp**egam/egam
-
-      inv_e = - (S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
+      inv_e = - (psi(ij_com+1)*EV_temp + S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
 
   end function
 
