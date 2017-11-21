@@ -17,16 +17,16 @@ module globals
     integer, parameter :: NE = 5
 
     ! number of points on the asset grid
-    integer, parameter :: NQ = 16
+    integer, parameter :: NQ = 17
 
     ! number of points on the liquid asset grid
     integer, parameter :: NA = 16
 
-    ! number of points on the annuity asset grid
-    integer, parameter :: NX = 16
-
     ! number of points on the capital grid
-    integer, parameter :: NK = 16
+    integer, parameter :: NK = 15
+
+    ! number of points on the annuity asset grid
+    integer, parameter :: NX = 14
 
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
@@ -522,7 +522,7 @@ module globals
         lab_com = 0d0
 
         ! calculate consumption
-        cons_com = (1d0+r)*a(ia_com) + pen(ij_com, ip_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
+        cons_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
                     - Q_plus
 
         ! define future earning points
