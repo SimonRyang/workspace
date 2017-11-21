@@ -177,8 +177,10 @@ contains
                              do ie = 1, NE
 
                                if(ij >= JR) then
+
                                  ! next period retiree
                                  call solve_retiree(ij, iq_p, ix, ip_p, ik, iw, ie)
+
                                else
 
                                  ! next period worker
@@ -188,6 +190,7 @@ contains
                                  call solve_entrepreneur(ij, iq_p, ix, ip_p, ik, iw, ie)
 
                                endif
+
                             enddo
                          enddo
                        enddo
@@ -209,7 +212,7 @@ contains
                            call solve_consumption(ij, ia, ix, ip, ik, iw, ie, 0)
 
                            ! next period entrpreneur
-                           if(ij < JR-1)call solve_consumption(ij, ia, ix, ip, ik, iw, ie, 1)
+                           if(ij < JR-1) call solve_consumption(ij, ia, ix, ip, ik, iw, ie, 1)
 
                            ! decision on whether to be homeowner or renter next period
                             if(ij < JR-1 .and. V_t(ij, ia, ix, ip, ik, iw, ie, 1) > V_t(ij, ia, ix, ip, ik, iw, ie, 0)) then
@@ -326,15 +329,18 @@ contains
                       iar = min(iar, NA)
                       varphi_a = max(min(varphi_a, 1d0),0d0)
 
+                      ! restrict values to grid just in case
                       ixl = min(ixl, NX)
                       ixr = min(ixr, NX)
                       varphi_x = max(min(varphi_x, 1d0),0d0)
 
+                      ! restrict values to grid just in case
                       ipl = min(ipl, NP)
                       ipr = min(ipr, NP)
                       varphi_p = max(min(varphi_p, 1d0), 0d0)
 
-                      if(k_plus(ij-1, ia, ix, ip, ik, iw, ie) > 0d0) then
+                      ! restrict values to grid just in case
+                      if (k_plus(ij-1, ia, ix, ip, ik, iw, ie) > 0d0) then
                         ikl = min(ikl+1, NK)
                         ikr = min(ikr+1, NK)
                         varphi_k = max(min(varphi_k, 1d0), 0d0)

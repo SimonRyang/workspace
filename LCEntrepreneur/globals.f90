@@ -145,7 +145,7 @@ module globals
       if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
-         x_in = max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0), 1d-4)
+         x_in = max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 0), 1d-2)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
@@ -177,8 +177,8 @@ module globals
         ij_com = ij; iq_p_com = iq_p; ip_p_com = ip_p; ik_com = ik; iw_com = iw; ie_com = ie
 
        ! get best guess for the root of foc_real
-        x_in(1) = 0.9d0 !max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-4)
-        x_in(2) = max(omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-4)
+        x_in(1) = max(omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-2)
+        x_in(2) = max(omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, 1), 1d-2)
 
        ! solve the household problem using fminsearch
        call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
@@ -220,20 +220,18 @@ module globals
        S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
 
        if (varphi_a <= varphi_x) then
-         EV_temp = varphi_a             *(egam*EV(ij+1, ial, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
-                   (varphi_x - varphi_a)*(egam*EV(ij+1, iar, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
-                   (1d0-varphi_x)       *(egam*EV(ij+1, iar, ixr, ip_p, 0, iw, ie))**(1d0/egam)
+         EV_temp = (varphi_a             *(egam*EV(ij+1, ial, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
+                    (varphi_x - varphi_a)*(egam*EV(ij+1, iar, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
+                    (1d0-varphi_x)       *(egam*EV(ij+1, iar, ixr, ip_p, 0, iw, ie))**(1d0/egam))**egam/egam
         else
-          EV_temp = varphi_x             *(egam*EV(ij+1, ial, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
-                    (varphi_a - varphi_x)*(egam*EV(ij+1, ial, ixr, ip_p, 0, iw, ie))**(1d0/egam) + &
-                    (1d0-varphi_a)       *(egam*EV(ij+1, iar, ixr, ip_p, 0, iw, ie))**(1d0/egam)
-        endif
-
-       S_temp = S_temp + psi(ij+1)*EV_temp**egam/egam
+          EV_temp = (varphi_x             *(egam*EV(ij+1, ial, ixl, ip_p, 0, iw, ie))**(1d0/egam) + &
+                     (varphi_a - varphi_x)*(egam*EV(ij+1, ial, ixr, ip_p, 0, iw, ie))**(1d0/egam) + &
+                     (1d0-varphi_a)       *(egam*EV(ij+1, iar, ixr, ip_p, 0, iw, ie))**(1d0/egam))**egam/egam
+       endif
 
        omega_x_t(ij, iq_p, ix, ip_p, ik, iw, ie, :) = 0d0
        omega_k_t(ij, iq_p, ix, ip_p, ik, iw, ie, :) = 0d0
-       S(ij, iq_p, ix, ip_p, ik, iw, ie, :) = S_temp
+       S(ij, iq_p, ix, ip_p, ik, iw, ie, :) = psi(ij+1)*EV_temp + S_temp
 
     end subroutine
 
@@ -251,7 +249,7 @@ module globals
       ij_com = ij; ia_com = ia; ix_com = ix; ip_com = ip; ik_com = ik; iw_com = iw; ie_com = ie; io_p_com = io_p
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p), 1d-4)
+      x_in(1) = max(Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p), 1d-2)
       x_in(2) = max(l_t(ij, ia, ix, ip, ik, iw, ie, io_p), 0.33d0)
 
       ! solve the household problem using fminsearch
@@ -348,6 +346,7 @@ module globals
       iar = min(iar, NA)
       varphi_a = max(min(varphi_a, 1d0),0d0)
 
+      ! restrict values to grid just in case
       ixl = min(ixl, NX)
       ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
@@ -401,10 +400,12 @@ module globals
       iar = min(iar, NA)
       varphi_a = max(min(varphi_a, 1d0),0d0)
 
+      ! restrict values to grid just in case
       ixl = min(ixl, NX)
       ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
+      ! restrict values to grid just in case
       ikl = min(ikl+1, NK)
       ikr = min(ikr+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
