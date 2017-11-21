@@ -253,12 +253,12 @@ module globals
       x_in(1) = max(Q_plus_t(ij, ia, ix, ip, ik, iw, ie, io_p), 1d-4)
       x_in(2) = max(l_t(ij, ia, ix, ip, ik, iw, ie, io_p), 0.33d0)
 
-      ! solve the household problem using rootfinding
-      if (ij<JR) then
-      call fminsearch(x_in, fret, (/Q_l, 0d0/), (/Q_u, 0.99d0/), cons_o)
-    else
-      call fminsearch(x_in(1), fret, Q_l, Q_u, cons_r)
-endif
+      ! solve the household problem using fminsearch
+      if (ij < JR) then
+        call fminsearch(x_in, fret, (/Q_l, 0d0/), (/Q_u, 0.99d0/), cons_o)
+      else
+        call fminsearch(x_in(1), fret, Q_l, Q_u, cons_r)
+      endif
 
       call linint_Grow(x_in(1), Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
       call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
@@ -441,11 +441,7 @@ endif
 
         ! calculate tomorrow's assets
         Q_plus  = x_in(1)
-        if (ij_com < JR) then
-          lab_com = max(x_in(2), 0d0)
-        else
-          lab_com = 0d0
-        endif
+        lab_com = max(x_in(2), 0d0)
 
         ! current occupation
         ind_o = abs(dble(ik_com > 0))
@@ -531,7 +527,7 @@ endif
         ! define future earning points
         p_plus_com = p(ip_com)
 
-        ! calculate linear interpolation for future part of first order condition
+        ! calculate linear interpolation for future part of value function
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
 
         ! restrict values to grid just in case
@@ -546,6 +542,7 @@ endif
                            (1d0-varphi_q)     *(egam*S(ij_com, iqr, ix_com, ip_com, ik_com, iw_com, ie_com, io_p_com))**(1d0/egam), 1d-10)**egam/egam
         endif
 
+        ! calculate today's value function
         if(cons_com <= 0d0)then
            cons_r = -1d-16**egam/egam*(1d0+abs(cons_com))
         else
