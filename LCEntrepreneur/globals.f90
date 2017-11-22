@@ -268,20 +268,6 @@ module globals
       ipr = min(ipr, NP)
       varphi_p = max(min(varphi_p, 1d0),0d0)
 
-      ! determine future annuity stock
-      x_p = 0d0
-
-      mx = (varphi_q*varphi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
-            varphi_q*(1d0-varphi_p)      *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
-            (1d0-varphi_q)*varphi_p      *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
-            (1d0-varphi_q)*(1d0-varphi_p)*omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
-
-      if (ij < JR) then
-        x_p = (1d0+r)/psi(ij)*x(ix) + mx
-      else
-        x_p = x(ix)
-      endif
-
       ! determine future investment
       k_p = 0d0
 
@@ -295,6 +281,19 @@ module globals
 
       endif
 
+      ! determine future annuity stock
+      x_p = 0d0
+
+      mx = (varphi_q*varphi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
+            varphi_q*(1d0-varphi_p)      *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
+            (1d0-varphi_q)*varphi_p      *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
+            (1d0-varphi_q)*(1d0-varphi_p)*omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
+
+      if (ij < JR) then
+        x_p = (1d0+r)/psi(ij)*x(ix) + min(mx, x_in(1) - (1d0-xi)*k_p)
+      else
+        x_p = x(ix)
+      endif
 
       ! copy decisions
       Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
