@@ -177,7 +177,7 @@ contains
                      do iw = 1, NW
                        do ip_p = 0, NP
                          do ix = 0, NX
-                           do ik = 0, NW
+                           do ik = 0, NK
                              do iq_p = 0, NQ
 
                                if(ij >= JR) then
@@ -209,7 +209,7 @@ contains
                  do iw = 1, NW
                    do ip = 0, NP
                      do ix = 0, NX
-                       do ik = 0, NW
+                       do ik = 0, NK
                          do ia = 0, NA
 
                            ! next period worker
@@ -271,7 +271,7 @@ contains
         do iw = 1, NW
           do ip = 0, NP
             do ix = 0, NX
-              do ik = 0, NW
+              do ik = 0, NK
                 do ia = 0, NA
 
                   EV(ia, ik, ix, ip, iw, ie, ij) = 0d0
@@ -320,7 +320,7 @@ contains
                     do ia = 0, NA
 
                       ! skip if there is no household
-!                      if (m(ia, ik, ix, ip, iw, ie, ij-1) <= 0d0) cycle
+                      if (m(ia, ik, ix, ip, iw, ie, ij-1) <= 0d0) cycle
 
                       ! derive interpolation weights
                       call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
@@ -419,7 +419,7 @@ contains
             do iw = 1, NW
               do ip = 0, NP
                 do ix = 0, NX
-                  do ik = 0, NW
+                  do ik = 0, NK
                     do ia = 0, NA
 
                         ! skip if there is no household
