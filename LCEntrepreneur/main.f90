@@ -361,6 +361,9 @@ contains
                         ikl = 0; ikr = 0; varphi_k = 1d0
                       endif
 
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) < k(ikl)) write(*,*)'k_plus <:', k_plus(ia, ik, ix, ip, iw, ie, ij-1), k(ikl), ikl, ikr, varphi_k
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k(ikr)) write(*,*)'k_plus >:', k_plus(ia, ik, ix, ip, iw, ie, ij-1), k(ikr), ikl, ikr, varphi_k
+
                       do iw_p = 1, NW
                         do ie_p = 1, NE
 
