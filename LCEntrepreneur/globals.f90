@@ -200,7 +200,7 @@ module globals
       integer :: ial, iar, ixl, ixr
       real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
-      a_p  = Q(iq_p)
+      a_p = Q(iq_p)
       x_p = x(ix)
 
      ! calculate linear interpolation for future assets
