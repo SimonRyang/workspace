@@ -339,7 +339,7 @@ contains
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) < k_min .and. k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij-1)
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k_u) write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
-                      restrict values to grid just in case
+                      !restrict values to grid just in case
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) >= k_min) then
                         ikl = ikl+1
                         ikr = ikr+1
