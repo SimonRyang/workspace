@@ -242,7 +242,7 @@ contains
                              endif
 
                              if (a_plus(ia, ik, ix, ip, iw, ie, ij) < -1d-4) then
-                               write(*,'(7i3,4f10.5)') ia, ik, ix, ip, iw, ie, ij, Q_plus(ia, ik, ix, ip, iw, ie, ij), k_plus(ia, ik, ix, ip, iw, ie, ij), k_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-xi), x_plus(ia, ik, ix, ip, iw, ie, ij) - (1d0+r)/psi(ij)*x(ix)
+                               write(*,'(7i3,5f10.5)') ia, ik, ix, ip, iw, ie, ij, Q_plus(ia, ik, ix, ip, iw, ie, ij), k_plus(ia, ik, ix, ip, iw, ie, ij), k_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-xi), x_plus(ia, ik, ix, ip, iw, ie, ij) - (1d0+r)/psi(ij)*x(ix), a_plus(ia, ik, ix, ip, iw, ie, ij)
                                call sleep(1)
                              endif
 
