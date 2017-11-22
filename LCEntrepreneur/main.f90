@@ -117,6 +117,7 @@ contains
         enddo
         p_hat = 1d0/p_hat
         p_hat(1:JR-1) = 0d0
+        p_hat = 0d0
 
     end subroutine
 
