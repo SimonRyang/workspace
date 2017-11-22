@@ -241,7 +241,7 @@ contains
                                V(ia, ik, ix, ip, iw, ie, ij) = V_t(0, ia, ik, ix, ip, iw, ie, ij)
                              endif
 
-                             if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) then
+                             if (a_plus(ia, ik, ix, ip, iw, ie, ij) < -1d-4) then
                                write(*,'(7i3,4f10.5)') ia, ik, ix, ip, iw, ie, ij, Q_plus(ia, ik, ix, ip, iw, ie, ij), k_plus(ia, ik, ix, ip, iw, ie, ij), k_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-xi), x_plus(ia, ik, ix, ip, iw, ie, ij) - (1d0+r)/psi(ij)*x(ix)
                                call sleep(1)
                              endif
