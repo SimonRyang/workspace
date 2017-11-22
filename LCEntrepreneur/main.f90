@@ -79,8 +79,6 @@ contains
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
 
-        theta = 0d0
-
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
 
@@ -338,6 +336,15 @@ contains
                       varphi_a = max(min(varphi_a, 1d0),0d0)
 
                       ! restrict values to grid just in case
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) then
+                        ikl = min(ikl+1, NK)
+                        ikr = min(ikr+1, NK)
+                        varphi_k = max(min(varphi_k, 1d0), 0d0)
+                      else
+                        ikl = 0; ikr = 0; varphi_k = 1d0
+                      endif
+
+                      ! restrict values to grid just in case
                       ixl = min(ixl, NX)
                       ixr = min(ixr, NX)
                       varphi_x = max(min(varphi_x, 1d0),0d0)
@@ -346,15 +353,6 @@ contains
                       ipl = min(ipl, NP)
                       ipr = min(ipr, NP)
                       varphi_p = max(min(varphi_p, 1d0), 0d0)
-
-                      ! restrict values to grid just in case
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) then
-                        ikl = min(ikl+1, NK)
-                        ikr = min(ikr+1, NK)
-                        varphi_k = max(min(varphi_k, 1d0), 0d0)
-                      else
-                        ikl = 0; ikr = 0; varphi_k = 1d0
-                      endif
 
                       do iw_p = 1, NW
                         do ie_p = 1, NE
