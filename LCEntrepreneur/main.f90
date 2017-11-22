@@ -107,8 +107,6 @@ contains
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
-        ann = 0d0
-
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
@@ -330,14 +328,9 @@ contains
 
                       ! derive interpolation weights
                       call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+                      call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
                       call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
                       call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
-                      call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
-
-                      if (a_plus(ia, ik, ix, ip, iw, ie, ij-1) > a_u) write(*,*)'a_plus:', a_plus(ia, ik, ix, ip, iw, ie, ij-1)
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k_u) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij-1)
-                      if (x_plus(ia, ik, ix, ip, iw, ie, ij-1) > x_u) write(*,*)'x_plus:', x_plus(ia, ik, ix, ip, iw, ie, ij-1)
-                      if (p_plus(ia, ik, ix, ip, iw, ie, ij-1) > p_u) write(*,*)'p_plus:', p_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
                       ! restrict values to grid just in case
                       ial = min(ial, NA)
