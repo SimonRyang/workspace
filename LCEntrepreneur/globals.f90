@@ -575,41 +575,41 @@ module globals
     !
     ! Checks for the maximum gridpoint used
     !##############################################################################
-    subroutine check_grid(iamax, ixmax, ikmax)
+    subroutine check_grid(iamax, ikmax, ixmax)
 
       implicit none
 
       !##### INPUT/OUTPUT VARIABLES #############################################
-      integer :: iamax(JJ), ixmax(JJ), ikmax(JJ)
+      integer :: iamax(JJ), ikmax(JJ), ixmax(JJ)
 
       !##### OTHER VARIABLES ####################################################
-      integer :: ij, ia, ix, ik
+      integer :: ia, ik, ix, ij
 
       iamax = 0
-      ixmax = 0
       ikmax = 0
+      ixmax = 0
 
       do ij = 1, JJ
 
         ! check for the maximum asset grid point used at a certain age
         do ia = NA, 0, -1
-          if (sum(m(ia, :, :, :, :, :, ij)) > 1d-12) then
+          if (sum(m(ia, :, :, :, :, :, ij)) > 1d-10) then
             iamax(ij) = ia
             exit
           endif
         enddo ! ia
 
-        ! check for the maximum annuitie grid point used at a certain age
+        ! check for the maximum investment grid point used at a certain age
         do ik = NK, 0, -1
-          if (sum(m(:, ik, :, :, :, :, ij)) > 1d-12) then
+          if (sum(m(:, ik, :, :, :, :, ij)) > 1d-10) then
             ikmax(ij) = ik
             exit
           endif
         enddo ! ik
 
-        ! check for the maximum annuitie grid point used at a certain age
+        ! check for the maximum annuity grid point used at a certain age
         do ix = NX, 0, -1
-          if (sum(m(:, :, ix, :, :, :, ij)) > 1d-12) then
+          if (sum(m(:, :, ix, :, :, :, ij)) > 1d-10) then
             ixmax(ij) = ix
             exit
           endif
