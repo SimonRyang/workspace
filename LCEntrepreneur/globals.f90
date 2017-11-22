@@ -275,17 +275,7 @@ module globals
 
       ! determine future annuity stock
       x_p = 0d0
-      mx = 0d0
 
-      if (varphi_q <= varphi_p) then
-        mx = (varphi_q            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-              (varphi_p-varphi_q) *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-              (1d0-varphi_p)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
-      else
-        mx = (varphi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-              (varphi_q-varphi_p) *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-              (1d0-varphi_q)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
-      endif
       mx = (varphi_q*varphi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
             varphi_q*(1d0-varphi_p)      *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
             (1d0-varphi_q)*varphi_p      *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
@@ -303,16 +293,6 @@ module globals
       if (io_p == 1) then
 
         ! get next period's capital size
-        if (varphi_q <= varphi_p) then
-          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                                   (varphi_p-varphi_q)  *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-                                   (1d0-varphi_p)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-        else
-          k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                                   (varphi_q-varphi_p)  *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-                                   (1d0-varphi_q)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-        endif
-
         k_p = (varphi_q*varphi_p            *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
                varphi_q*(1d0-varphi_p)      *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
                (1d0-varphi_q)*varphi_p      *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
