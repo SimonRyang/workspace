@@ -48,7 +48,7 @@ contains
 
         implicit none
 
-        integer :: ij, ip
+        integer :: ij, ix, ip
         real*8 :: ann_temp
 
         ! wage rate for effective labor and rental price
@@ -92,19 +92,21 @@ contains
         call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
 
-        ! old-age transfers
-        pen = 0d0
-        do ip = 0, NP
-          pen(ip, JR:JJ) = p(ip)*kappa*w*eff(JR-1)
-        enddo
-
-        ! Annuities
+        ! annuity payments
         ann = 0d0
         ann_temp = 1d0
         do ij = JJ-1, JR, -1
           ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
         enddo
-        ann(:, JR:JJ) = (1d0+r)/psi(JR)*x(:)/ann_temp        
+        do ix = 0, NX
+          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
+        enddo
+
+        ! old-age transfers
+        pen = 0d0
+        do ip = 0, NP
+          pen(ip, JR:JJ) = p(ip)*kappa*w*eff(JR-1)
+        enddo
 
         ! initialize value functions
         V = 1d-16**egam/egam; EV = 1d-16**egam/egam; S = 1d-16**egam/egam
