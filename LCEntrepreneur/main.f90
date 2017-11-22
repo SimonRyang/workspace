@@ -340,13 +340,17 @@ contains
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k_u) write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
                       ! restrict values to grid just in case
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) >= k_min) then
-                        ikl = min(ikl+1, NK)
-                        ikr = min(ikr+1, NK)
-                        varphi_k = max(min(varphi_k, 1d0), 0d0)
-                      else
-                        ikl = 0; ikr = 0; varphi_k = 1d0
-                      endif
+                      ! if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) >= k_min) then
+                      !   ikl = min(ikl+1, NK)
+                      !   ikr = min(ikr+1, NK)
+                      !   varphi_k = max(min(varphi_k, 1d0), 0d0)
+                      ! else
+                      !   ikl = 0; ikr = 0; varphi_k = 1d0
+                      ! endif
+
+                      ikl = min(ikl, NK)
+                      ikr = min(ikr, NK)
+                      varphi_k = max(min(varphi_k, 1d0),0d0)
 
                       if (ikl+1 > NK) write(*,*)'ikl', ikl
                       if (ikr+1 > NK) write(*,*)'ikr', ikr
