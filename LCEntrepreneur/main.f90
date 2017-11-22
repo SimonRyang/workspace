@@ -104,7 +104,7 @@ contains
         do ix = 0, NX
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
-        
+
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
@@ -322,7 +322,7 @@ contains
                     do ia = 0, NA
 
                       ! skip if there is no household
-                      if (m(ia, ik, ix, ip, iw, ie, ij-1) <= 0d0) cycle
+!                      if (m(ia, ik, ix, ip, iw, ie, ij-1) <= 0d0) cycle
 
                       ! derive interpolation weights
                       call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
