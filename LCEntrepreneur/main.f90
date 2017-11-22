@@ -327,7 +327,7 @@ contains
 
                       ! derive interpolation weights
                       call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                      call linint_Grow(0d0, k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+                      call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
                       call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
                       call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
 
@@ -347,6 +347,8 @@ contains
                       else
                         ikl = 0; ikr = 0; varphi_k = 1d0
                       endif
+
+                      ikl = 0; ikr = 0; varphi_k = 1d0
 
                       if (ikl+1 > NK) write(*,*)'ikl', ikl
                       if (ikr+1 > NK) write(*,*)'ikr', ikr
