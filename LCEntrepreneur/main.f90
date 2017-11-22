@@ -92,8 +92,8 @@ contains
         call grid_Cons_Equi(p, p_l, p_u)
 
         ! endogenous upper bound of housing grid
-        call grid_Cons_Grow(k(0:NK), k_l, k_u, k_grow)
-        !k(0) = 0d0
+        call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
+        k(0) = 0d0
 
         ! annuity payments
         ann = 0d0
@@ -327,7 +327,7 @@ contains
 
                       ! derive interpolation weights
                       call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                      call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK, ikl, ikr, varphi_k)
+                      call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
                       call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
                       call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
 
@@ -339,18 +339,13 @@ contains
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) < k_min .and. k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij-1)
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k_u) write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
-                      ! restrict values to grid just in case
-                      ! if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) >= k_min) then
-                      !   ikl = min(ikl+1, NK)
-                      !   ikr = min(ikr+1, NK)
-                      !   varphi_k = max(min(varphi_k, 1d0), 0d0)
-                      ! else
-                      !   ikl = 0; ikr = 0; varphi_k = 1d0
-                      ! endif
-
-                      ikl = min(ikl, NK)
-                      ikr = min(ikr, NK)
-                      varphi_k = max(min(varphi_k, 1d0),0d0)
+                      restrict values to grid just in case
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) >= k_min) then
+                        ikl = ikl+1
+                        ikr = ikr+1
+                      else
+                        ikl = 0; ikr = 0; varphi_k = 1d0
+                      endif
 
                       if (ikl+1 > NK) write(*,*)'ikl', ikl
                       if (ikr+1 > NK) write(*,*)'ikr', ikr

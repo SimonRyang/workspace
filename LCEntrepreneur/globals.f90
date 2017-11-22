@@ -71,7 +71,7 @@ module globals
     real*8, parameter :: p_u    = 2d0
 
     ! size of the capital grid
-    real*8, parameter :: k_l = 0d0
+    real*8, parameter :: k_l = k_min
     real*8, parameter :: k_u = 0.75d0*Q_u/(1d0-xi)
     real*8, parameter :: k_grow = Q_grow
 
