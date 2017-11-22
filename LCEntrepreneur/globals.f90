@@ -76,7 +76,7 @@ module globals
     real*8, parameter :: p_u    = 2d0
 
     ! pension fraction of last income
-    real*8, parameter :: kappa = 0.0d0
+    real*8, parameter :: kappa = 0.5d0
 
     ! measure time
     integer :: time
@@ -160,7 +160,7 @@ module globals
 
         omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
         omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-        S(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d-16**egam/egam
+        S(0, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_w(0d0)
 
       endif
 
