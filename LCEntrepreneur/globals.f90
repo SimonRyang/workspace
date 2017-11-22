@@ -346,7 +346,7 @@ module globals
       ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
-      S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
+      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
       EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1) + &
@@ -404,7 +404,7 @@ module globals
       ikr = min(ikr+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
+      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
       EV_temp = (varphi_a*varphi_x*varphi_k                  *(egam*EV(ial, ikl, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
