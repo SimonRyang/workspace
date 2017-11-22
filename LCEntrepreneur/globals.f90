@@ -314,8 +314,9 @@ module globals
       ! copy decisions
       Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
       a_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1) - (1d0-xi)*k_p - mx
-      x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
       k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = k_p
+      x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
+      p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
       c_t(io_p, ia, ik, ix, ip, iw, ie, ij) = cons_com
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
