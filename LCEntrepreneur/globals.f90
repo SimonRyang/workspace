@@ -220,15 +220,10 @@ module globals
      ! calculate future part of the value function
      S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
 
-     if (varphi_a <= varphi_x) then
-       EV_temp = (varphi_a             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                  (varphi_x - varphi_a)*(egam*EV(iar, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                  (1d0-varphi_x)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
-     else
-       EV_temp = (varphi_x             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                  (varphi_a - varphi_x)*(egam*EV(ial, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                  (1d0-varphi_a)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
-     endif
+     EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p, iw, ie, ij+1) + &
+               varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p, iw, ie, ij+1) + &
+               (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p, iw, ie, ij+1) + &
+               (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p, iw, ie, ij+1)
 
      omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
      omega_k_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
@@ -349,15 +344,10 @@ module globals
       S_temp = (1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
 
       ! get optimal investment strategy
-      if (varphi_a <= varphi_x) then
-        EV_temp = (varphi_a            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-                   (varphi_x-varphi_a) *(egam*EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-                   (1d0-varphi_x)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
-      else
-        EV_temp = (varphi_x            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-                   (varphi_a-varphi_x) *(egam*EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-                   (1d0-varphi_a)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
-      endif
+      EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1) + &
+                varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1) + &
+                (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1) + &
+                (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1)
 
       if (a_temp < 0d0) then
         inv_w = -1d-16**egam/egam*(1d0+abs(a_temp))
