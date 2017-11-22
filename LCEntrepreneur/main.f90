@@ -406,6 +406,8 @@ contains
 
           write(*,*)sum(m(:, :, :, :, :, :, ij))
 
+          if (minval(m(:, :, :, :, :, :, ij)) < 0d0) write(*,*)minval(m(:, :, :, :, :, :, ij))
+
         enddo
 
     end subroutine
