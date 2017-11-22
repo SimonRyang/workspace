@@ -11,4 +11,4 @@ git pull origin master
 exit
 EOF
 
-ssh -t -t -X flh71wr@$1 "/home/flh71wr/workspace/LCEntrepreneur/sshrun.sh $2"
+ssh -t -X flh71wr@$1 "/home/flh71wr/workspace/LCEntrepreneur/sshrun.sh $2"
