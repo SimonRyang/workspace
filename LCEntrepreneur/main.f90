@@ -198,7 +198,7 @@ contains
                enddo
                !$omp end parallel do
 
-               !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+               !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij) default(none)
                ! solve the consumption savings problem
                do ie = 1, NE
                  do iw = 1, NW
@@ -261,7 +261,7 @@ contains
 
       integer :: ia, ik, ix, ip, iw, ie, iw_p, ie_p
 
-      !$omp parallel do schedule(dynamic,1) private(ie_p, iw_p) num_threads(numthreads)
+      !$omp parallel do collapse(3) schedule(dynamic,1) private(ie_p, iw_p) num_threads(numthreads) shared(ij) default(none)
       do ie = 1, NE
         do iw = 1, NW
           do ip = 0, NP
