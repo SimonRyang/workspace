@@ -79,8 +79,6 @@ contains
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
 
-        theta = 0d0
-
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
 
@@ -96,6 +94,7 @@ contains
         ! endogenous upper bound of housing grid
         call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
+
         ! annuity payments
         ann = 0d0
         ann_temp = 1d0
