@@ -286,6 +286,10 @@ module globals
               (varphi_q-varphi_p) *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
               (1d0-varphi_q)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
       endif
+      mx = (varphi_q*varhpi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
+            varphi_q*(1d0-varhpi_p)      *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
+            (1d0-varphi_q)*varhpi_p      *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
+            (1d0-varphi_q)*(1d0-varhpi_p)*omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
 
       if (ij < JR) then
         x_p = (1d0+r)/psi(ij)*x(ix) + mx
@@ -308,6 +312,11 @@ module globals
                                    (varphi_q-varphi_p)  *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
                                    (1d0-varphi_q)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
         endif
+
+        k_p = (varphi_q*varhpi_p            *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
+               varphi_q*(1d0-varhpi_p)      *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
+               (1d0-varphi_q)*varhpi_p      *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
+               (1d0-varphi_q)*(1d0-varhpi_p)*omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
 
       endif
 
