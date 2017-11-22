@@ -288,10 +288,10 @@ module globals
       if (io_p == 1) then
 
         ! get next period's capital size
-        k_p = (varphi_q*varphi_p            *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
-               varphi_q*(1d0-varphi_p)      *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
-               (1d0-varphi_q)*varphi_p      *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
-               (1d0-varphi_q)*(1d0-varphi_p)*omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
+        k_p = ((1d0-xi)*k_min + (varphi_q*varphi_p            *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
+                                 varphi_q*(1d0-varphi_p)      *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
+                                 (1d0-varphi_q)*varphi_p      *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
+                                 (1d0-varphi_q)*(1d0-varphi_p)*omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
 
         if (k_p < k_min) then
           call sleep(1)
