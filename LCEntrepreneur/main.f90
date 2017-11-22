@@ -49,6 +49,7 @@ contains
         implicit none
 
         integer :: ij, ip
+        real*8 :: ann_temp
 
         ! wage rate for effective labor and rental price
         w = 1d0
@@ -59,8 +60,6 @@ contains
           read(301,'(f13.8)')psi(ij)
         enddo
         close(301)
-        psi = 1d0
-        psi(JJ+1) = 0d0
 
         ! initialize age earnings process
         eff(1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
@@ -99,6 +98,14 @@ contains
           pen(ip, JR:JJ) = p(ip)*kappa*w*eff(JR-1)
         enddo
 
+        ! Annuities
+        ann = 0d0
+        ann_temp = 1d0
+        do ij = JJ-1, JR, -1
+          ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
+        enddo
+        ann(:, JR:JJ) = (1d0+r)/psi(JR)*x(:)/ann_temp        
+
         ! initialize value functions
         V = 1d-16**egam/egam; EV = 1d-16**egam/egam; S = 1d-16**egam/egam
 
@@ -112,13 +119,6 @@ contains
 
         ! open files
         open(21, file='output.out')
-
-        p_hat = 1d0
-        do ij = JJ-1, JR, -1
-          p_hat(ij) = p_hat(ij+1)/(1d0+r)*psi(ij) + 1d0
-        enddo
-        p_hat = 1d0/p_hat
-        p_hat(1:JR-1) = 0d0
 
     end subroutine
 

@@ -85,7 +85,7 @@ module globals
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
     ! wages, transfer payments (old-age), survival probabilities and discount factor for housing utilty
-    real*8 :: w, eff(JJ), pen(0:NP, JJ), p_hat(JJ), psi(JJ+1)
+    real*8 :: w, eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1)
 
     ! government variables
     real*8 :: lambda, phi, mu
@@ -201,7 +201,7 @@ module globals
       real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
       a_p  = Q(iq_p)
-      x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix)
+      x_p = x(ix)
 
      ! calculate linear interpolation for future assets
      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
@@ -287,7 +287,7 @@ module globals
               (1d0-varphi_q)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
       endif
 
-      x_p = (1d0+r)/psi(ij)*(1d0-p_hat(ij))*x(ix) + mx
+      x_p = (1d0+r)/psi(ij)*x(ix) + mx
 
       ! determine future investment
       k_p = 0d0
@@ -522,7 +522,7 @@ module globals
         lab_com = 0d0
 
         ! calculate consumption
-        cons_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + (1d0+r)/psi(ij_com)*p_hat(ij_com)*x(ix_com) &
+        cons_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
                     - Q_plus
 
         ! define future earning points
