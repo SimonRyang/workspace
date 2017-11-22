@@ -462,7 +462,7 @@ contains
         enddo
 
         call check_grid(iamax, ikmax, ixmax)
-        write(*,*) maxval(iamax), maxval(kxmax), maxval(ixmax)
+        write(*,*) maxval(iamax), maxval(ikmax), maxval(ixmax)
 
     end subroutine
 
