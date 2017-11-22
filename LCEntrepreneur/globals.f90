@@ -375,7 +375,11 @@ module globals
                    (1d0-varphi_a)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
       endif
 
-      inv_w = - (psi(ij_com+1)*EV_temp + S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
+      if (a_temp < 0d0) then
+        inv_w = -1d-16**egam/egam*(1d0+abs(a_temp))
+      else
+        inv_w = - (psi(ij_com+1)*EV_temp + S_temp)
+      endif
 
   end function
 
@@ -397,7 +401,7 @@ module globals
 
       ! determine future liquid wealth and future downpayment
       x_p = (1d0+r)/psi(ij_com)*x(ix_com) + omega_x*Q(iq_p_com)
-      k_p =((1d0-xi)*k_min + omega_k*(Q(iq_p_com)-(1d0-xi)*k_min))/(1d0-xi)
+      k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com)-(1d0-xi)*k_min))/(1d0-xi)
       a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
       a_p = max(a_temp, 0d0)
 
@@ -433,7 +437,11 @@ module globals
                  (1d0-varphi_a)*(1d0-varphi_k)*varphi_x      *(egam*EV(iar, ikr, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
                  (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(egam*EV(iar, ikr, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
 
-      inv_e = - (psi(ij_com+1)*EV_temp + S_temp + 1d-16**egam/egam*abs(a_p-a_temp))
+      if (a_temp < 0d0) then
+        inv_e = -1d-16**egam/egam*(1d0+abs(a_temp))
+      else
+        inv_e = - (psi(ij_com+1)*EV_temp + S_temp)
+      endif
 
   end function
 
