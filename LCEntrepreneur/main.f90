@@ -95,6 +95,8 @@ contains
         call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
 
+        write(*,*) k
+
         ! annuity payments
         ann = 0d0
         ann_temp = 1d0
