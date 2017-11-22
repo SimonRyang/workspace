@@ -400,6 +400,8 @@ contains
             enddo
           enddo
 
+          write(*,*)sum(m(:, :, :, :, :, :, ij))
+
         enddo
 
     end subroutine
