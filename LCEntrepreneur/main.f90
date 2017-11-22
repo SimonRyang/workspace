@@ -337,7 +337,7 @@ contains
                       iar = min(iar, NA)
                       varphi_a = max(min(varphi_a, 1d0),0d0)
 
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) < k_min .and. k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k_u .and. k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
                       ! restrict values to grid just in case
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) then
