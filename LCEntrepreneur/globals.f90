@@ -72,8 +72,8 @@ module globals
 
     ! size of the capital grid
     real*8, parameter :: k_l = k_min
-    real*8, parameter :: k_u = 0.75d0*Q_u/(1d0-xi)
-    real*8, parameter :: k_grow = Q_grow
+    real*8, parameter :: k_u = 0.75d0*Q_u/(1d0-xi)/3d0
+    real*8, parameter :: k_grow = Q_grow + 0.02d0
 
     ! pension fraction of last income
     real*8, parameter :: kappa = 0.5d0
