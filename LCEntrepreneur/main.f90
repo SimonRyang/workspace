@@ -61,9 +61,6 @@ contains
         enddo
         close(301)
 
-        psi = 1d0
-        psi(JJ+1) = 0d0
-
         ! initialize age earnings process
         eff(1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
                         2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/) !/1.4327164d0
@@ -92,8 +89,8 @@ contains
         call grid_Cons_Equi(p, p_l, p_u)
 
         ! endogenous upper bound of housing grid
-        call grid_Cons_Grow(k(0:NK), k_l, k_u, k_grow)
-        !k(0) = 0d0
+        call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
+        k(0) = 0d0
 
         ! annuity payments
         ann = 0d0
