@@ -406,7 +406,6 @@ contains
     end subroutine
 
 
-
     ! subroutine for calculating quantities
     subroutine aggregation()
 
