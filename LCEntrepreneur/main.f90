@@ -107,6 +107,8 @@ contains
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
+        ann = 0d0
+
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
