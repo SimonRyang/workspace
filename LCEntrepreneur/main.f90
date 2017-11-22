@@ -94,12 +94,10 @@ contains
         ! endogenous upper bound of housing grid
         call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
-
-        write(*,*) k
-
         ! annuity payments
         ann = 0d0
         ann_temp = 1d0
+
         do ij = JJ-1, JR, -1
           ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
         enddo
@@ -342,7 +340,7 @@ contains
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k_u .and. k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
                       ! restrict values to grid just in case
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > 0d0) then
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) >= k_min) then
                         ikl = min(ikl+1, NK)
                         ikr = min(ikr+1, NK)
                         varphi_k = max(min(varphi_k, 1d0), 0d0)
