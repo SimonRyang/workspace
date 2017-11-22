@@ -293,7 +293,10 @@ module globals
                (1d0-varphi_q)*varphi_p      *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
                (1d0-varphi_q)*(1d0-varphi_p)*omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
 
-        if (k_p < k_min) write(*,*)x_in(1), x_in(1)/(1d0-xi)
+        if (k_p < k_min) then
+          call sleep(1)
+          write(*,*)x_in(1), x_in(1)/(1d0-xi), omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij), omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij), omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij), omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij)
+        endif
 
       endif
 
