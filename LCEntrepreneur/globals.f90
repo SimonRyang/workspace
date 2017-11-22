@@ -284,13 +284,13 @@ module globals
       ! determine future annuity stock
       x_p = 0d0
 
-      mx = (varphi_q*varphi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
-            varphi_q*(1d0-varphi_p)      *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
-            (1d0-varphi_q)*varphi_p      *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
-            (1d0-varphi_q)*(1d0-varphi_p)*omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
+      mx = min((varphi_q*varphi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
+                varphi_q*(1d0-varphi_p)      *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
+                (1d0-varphi_q)*varphi_p      *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
+                (1d0-varphi_q)*(1d0-varphi_p)*omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
 
       if (ij < JR) then
-        x_p = (1d0+r)/psi(ij)*x(ix) + min(mx, x_in(1) - (1d0-xi)*k_p)
+        x_p = (1d0+r)/psi(ij)*x(ix) + mx
       else
         x_p = x(ix)
       endif
