@@ -36,7 +36,7 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.99d0
-    real*8, parameter :: mu_b = 0.25d0
+    real*8, parameter :: mu_b = 0.0d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.1d0
@@ -143,6 +143,7 @@ module globals
       ! set up communication variables
       iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p; iw_com = iw; ie_com = ie; ij_com = ij
 
+      if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
          x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
@@ -155,6 +156,13 @@ module globals
          omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
          S(0, iq_p, ik, ix, ip_p, iw, ie, ij) = -fret
 
+      else
+
+        omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+        omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+        S(0, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d-16**egam/egam
+
+      endif
 
     end subroutine
 
