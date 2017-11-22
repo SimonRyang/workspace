@@ -11,22 +11,22 @@ module globals
     integer, parameter :: JJ = 16
 
     ! number of productivity (eta) shocks
-    integer, parameter :: NW = 3
+    integer, parameter :: NW = 9
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 3
+    integer, parameter :: NE = 9
 
     ! number of points on the asset grid
-    integer, parameter :: NQ = 16
+    integer, parameter :: NQ = 24
 
     ! number of points on the liquid asset grid
-    integer, parameter :: NA = 16
+    integer, parameter :: NA = 24
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 16
+    integer, parameter :: NK = 24
 
     ! number of points on the annuity asset grid
-    integer, parameter :: NX = 16
+    integer, parameter :: NX = 24
 
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
@@ -36,7 +36,7 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.99d0
-    real*8, parameter :: mu_b = 0.25d0
+    real*8, parameter :: mu_b = 0.20d0
 
     ! maximum investment in annuities
     real*8, parameter :: mx_max = 0.1d0
@@ -66,12 +66,12 @@ module globals
 
     ! size of the capital grid
     real*8, parameter :: k_l = k_min
-    real*8, parameter :: k_u = 0.4d0*Q_u/(1d0-xi)
+    real*8, parameter :: k_u = 0.5d0*Q_u/(1d0-xi)
     real*8, parameter :: k_grow = Q_grow
 
     ! size of the annuity grid
     real*8, parameter :: x_l    = Q_l
-    real*8, parameter :: x_u    = 0.75d0*Q_u
+    real*8, parameter :: x_u    = 0.5d0*Q_u
     real*8, parameter :: x_grow = Q_grow
 
     ! size of the pension claim grid
