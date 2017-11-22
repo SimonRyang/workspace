@@ -353,7 +353,7 @@ contains
                       if (varphi_k > 1d0) write(*,*)'varphi_k', varphi_k
                       if (varphi_k < 0d0) write(*,*)'varphi_k', varphi_k
 
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k(ikr)) write(*,*)'k(ikr)', k(ikr), k_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k(ikr)) write(*,*)'k(ikr)', k(ikr), k(ikl), varphi_k, k_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
                       ! restrict values to grid just in case
                       ixl = min(ixl, NX)
