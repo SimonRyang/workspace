@@ -167,7 +167,7 @@ contains
 
                ! get optimal share of wealth invested into capital
 
-                  !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij) default(none)
+                  !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij) default(none)
                    do ie = 1, NE
                      do iw = 1, NW
                        do ip_p = 0, NP
@@ -198,7 +198,7 @@ contains
                enddo
                !$omp end parallel do
 
-                !$omp parallel do schedule(dynamic) num_threads(numthreads) shared(ij)
+               !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
                ! solve the consumption savings problem
                do ie = 1, NE
                  do iw = 1, NW
