@@ -23,7 +23,7 @@ module globals
     integer, parameter :: NA = 16
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 24
+    integer, parameter :: NK = 16
 
     ! number of points on the annuity asset grid
     integer, parameter :: NX = 16
@@ -53,7 +53,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: Q_l    = 0d0
-    real*8, parameter :: Q_u    = 12d0
+    real*8, parameter :: Q_u    = 8d0
     real*8, parameter :: Q_grow = 0.05d0
 
     ! size of the liquid asset grid
@@ -72,7 +72,7 @@ module globals
 
     ! size of the capital grid
     real*8, parameter :: k_l = k_min
-    real*8, parameter :: k_u = 0.75d0*Q_u/(1d0-xi)
+    real*8, parameter :: k_u = 0.5d0*Q_u/(1d0-xi)
     real*8, parameter :: k_grow = Q_grow
 
     ! pension fraction of last income
