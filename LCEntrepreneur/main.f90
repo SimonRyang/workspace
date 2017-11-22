@@ -78,7 +78,7 @@ contains
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
-theta = 0d0
+
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
 
@@ -332,10 +332,10 @@ theta = 0d0
                       call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
                       call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
 
-                      if (a_plus(ia, ik, ix, ip, iw, ie, ij-1) < 0d0) write(*,*)'a_plus:', a_plus(ia, ik, ix, ip, iw, ie, ij-1)
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) < 0d0) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij-1)
-                      if (x_plus(ia, ik, ix, ip, iw, ie, ij-1) < 0d0) write(*,*)'x_plus:', x_plus(ia, ik, ix, ip, iw, ie, ij-1)
-                      if (p_plus(ia, ik, ix, ip, iw, ie, ij-1) < 0d0) write(*,*)'p_plus:', p_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (a_plus(ia, ik, ix, ip, iw, ie, ij-1) > a_u) write(*,*)'a_plus:', a_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k_u) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (x_plus(ia, ik, ix, ip, iw, ie, ij-1) > x_u) write(*,*)'x_plus:', x_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (p_plus(ia, ik, ix, ip, iw, ie, ij-1) > p_u) write(*,*)'p_plus:', p_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
                       ! restrict values to grid just in case
                       ial = min(ial, NA)
