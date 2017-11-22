@@ -241,11 +241,6 @@ contains
                                V(ia, ik, ix, ip, iw, ie, ij) = V_t(0, ia, ik, ix, ip, iw, ie, ij)
                              endif
 
-                             if (a_plus(ia, ik, ix, ip, iw, ie, ij) < -1d-4) then
-                               write(*,'(7i3,5f10.5)') ia, ik, ix, ip, iw, ie, ij, Q_plus(ia, ik, ix, ip, iw, ie, ij), k_plus(ia, ik, ix, ip, iw, ie, ij), k_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-xi), x_plus(ia, ik, ix, ip, iw, ie, ij) - (1d0+r)/psi(ij)*x(ix), a_plus(ia, ik, ix, ip, iw, ie, ij)
-                               call sleep(1)
-                             endif
-
                          enddo
                        enddo
                      enddo
@@ -334,6 +329,11 @@ contains
                       call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
                       call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
                       call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+
+                      if (a_plus(ia, ik, ix, ip, iw, ie, ij-1) < 0d0) write(*,*)'a_plus:', a_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) < 0d0) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (x_plus(ia, ik, ix, ip, iw, ie, ij-1) < 0d0) write(*,*)'x_plus:', x_plus(ia, ik, ix, ip, iw, ie, ij-1)
+                      if (p_plus(ia, ik, ix, ip, iw, ie, ij-1) < 0d0) write(*,*)'p_plus:', p_plus(ia, ik, ix, ip, iw, ie, ij-1)
 
                       ! restrict values to grid just in case
                       ial = min(ial, NA)
