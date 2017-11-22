@@ -313,7 +313,11 @@ module globals
 
       ! copy decisions
       Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
-      if (x_in(1) - (1d0-xi)*k_p - mx < 0d0) write(*,*)x_in(1), k_p, (1d0-xi)*k_p, mx
+      if (x_in(1) - (1d0-xi)*k_p - mx < 0d0) then
+        write(*,*)x_in(1), k_p, (1d0-xi)*k_p, mx
+        write(*,*)omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij), omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij), omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij), omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij)
+        call sleep(1)
+      endif
       a_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1) - (1d0-xi)*k_p - mx
       k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = k_p
       x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
