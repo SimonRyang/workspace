@@ -343,6 +343,7 @@ contains
                       if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) >= k_min) then
                         ikl = ikl+1
                         ikr = ikr+1
+                        varphi_k = max(min(varphi_k, 1d0), 0d0)
                       else
                         ikl = 0; ikr = 0; varphi_k = 1d0
                       endif
