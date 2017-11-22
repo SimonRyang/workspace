@@ -361,9 +361,6 @@ contains
                         ikl = 0; ikr = 0; varphi_k = 1d0
                       endif
 
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) < k(ikl)) write(*,*)'k_plus <:', k_plus(ia, ik, ix, ip, iw, ie, ij-1), k(ikl), ikl, ikr, varphi_k
-                      if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) > k(ikr)) write(*,*)'k_plus >:', k_plus(ia, ik, ix, ip, iw, ie, ij-1), k(ikr), ikl, ikr, varphi_k
-
                       do iw_p = 1, NW
                         do ie_p = 1, NE
 
@@ -387,7 +384,7 @@ contains
                                   (1d0-varphi_a)*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
                             m(iar, ikl, ixl, ipr, iw_p, ie_p, ij) = m(iar, ikl, ixl, ipr, iw_p, ie_p, ij) + &
                                   (1d0-varphi_a)*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
-                            m(iar, ikl, ixr, ipr, iw_p, ie_p, ij) = m(iar, ikl, ixr, ipl, iw_p, ie_p, ij) + &
+                            m(iar, ikl, ixr, ipl, iw_p, ie_p, ij) = m(iar, ikl, ixr, ipl, iw_p, ie_p, ij) + &
                                   (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
                             m(iar, ikl, ixr, ipr, iw_p, ie_p, ij) = m(iar, ikl, ixr, ipr, iw_p, ie_p, ij) + &
                                   (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p)*pi_theta(ie, ie_p)*psi(ij)*m(ia, ik, ix, ip, iw, ie, ij-1)
