@@ -92,8 +92,8 @@ contains
         call grid_Cons_Equi(p, p_l, p_u)
 
         ! endogenous upper bound of housing grid
-        call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
-        k(0) = 0d0
+        call grid_Cons_Grow(k(0:NK), k_l, k_u, k_grow)
+        !k(0) = 0d0
 
         ! annuity payments
         ann = 0d0
