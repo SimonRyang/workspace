@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: mu_b = 0.25d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0.25d0
+    real*8, parameter :: mx_max = 0.10d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.1d0
@@ -56,7 +56,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: Q_l    = 0d0
-    real*8, parameter :: Q_u    = 8d0
+    real*8, parameter :: Q_u    = 4d0
     real*8, parameter :: Q_grow = 0.05d0
 
     ! size of the liquid asset grid
