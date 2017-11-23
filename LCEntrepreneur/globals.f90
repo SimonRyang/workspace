@@ -522,13 +522,13 @@ module globals
         if (ij_com < JJ .or. mu_b /= 0d0) then
 
           if(varphi_q <= varphi_p) then
-            tomorrow = max(varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                           (varphi_p-varphi_q)*(egam*S(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                           (1d0-varphi_p)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = (varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                        (varphi_p-varphi_q)*(egam*S(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                        (1d0-varphi_p)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
           else
-            tomorrow = max(varphi_p           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                           (varphi_q-varphi_p)*(egam*S(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                           (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = (varphi_p           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                        (varphi_q-varphi_p)*(egam*S(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                        (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
            endif
 
         endif
@@ -583,8 +583,8 @@ module globals
         ! get next period value function
         tomorrow = 0d0
         if (ij_com < JJ .or. mu_b /= 0d0) then
-            tomorrow = max(varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                           (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam), 1d-10)**egam/egam
+            tomorrow = (varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                        (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
         endif
 
         ! calculate today's value function
