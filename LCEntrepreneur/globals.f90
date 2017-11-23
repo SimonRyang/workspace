@@ -223,11 +223,6 @@ module globals
      ! calculate future part of the value function
      S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
 
-     EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p, iw, ie, ij+1) + &
-               varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p, iw, ie, ij+1) + &
-               (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p, iw, ie, ij+1) + &
-               (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p, iw, ie, ij+1)
-
     if (varphi_a <= varphi_x) then
        EV_temp = (varphi_a             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
                   (varphi_x - varphi_a)*(egam*EV(iar, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
@@ -286,13 +281,6 @@ module globals
 
       if (io_p == 1) then
 
-        ! get next period's capital size
-        k_p = ((1d0-xi)*k_min + (varphi_q*varphi_p            *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
-                                 varphi_q*(1d0-varphi_p)      *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
-                                 (1d0-varphi_q)*varphi_p      *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
-                                 (1d0-varphi_q)*(1d0-varphi_p)*omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-
-
        ! get next period's capital size
        if (varphi_q <= varphi_p) then
          k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
@@ -312,21 +300,15 @@ module globals
 
       if (ij < JR) then
 
-        mx = min((varphi_q*varphi_p            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) + &
-                  varphi_q*(1d0-varphi_p)      *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) + &
-                  (1d0-varphi_q)*varphi_p      *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
-                  (1d0-varphi_q)*(1d0-varphi_p)*omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
-
-      if (varphi_q <= varphi_p) then
-        mx = min((varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                  (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-                  (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
-      else
-        mx = min((varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                  (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-                  (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
-      endif
-
+        if (varphi_q <= varphi_p) then
+          mx = min((varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                    (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+                    (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), 100d0)
+        else
+          mx = min((varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                    (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+                    (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), 100d0)
+        endif
 
         x_p = (1d0+r)/psi(ij)*x(ix) + mx
 
@@ -383,12 +365,6 @@ module globals
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
       S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
-
-      ! get optimal investment strategy
-      EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1) + &
-                varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1) + &
-                (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1) + &
-                (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1)
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
