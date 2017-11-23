@@ -229,13 +229,13 @@ module globals
                (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p, iw, ie, ij+1)
 
     if (varphi_a <= varphi_x) then
-       EV_temp = varphi_a             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                 (varphi_x - varphi_a)*(egam*EV(iar, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                 (1d0-varphi_x)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam)
+       EV_temp = (varphi_a             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                  (varphi_x - varphi_a)*(egam*EV(iar, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                  (1d0-varphi_x)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
       else
-        EV_temp = varphi_x             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                  (varphi_a - varphi_x)*(egam*EV(ial, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                  (1d0-varphi_a)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam)
+        EV_temp = (varphi_x             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                   (varphi_a - varphi_x)*(egam*EV(ial, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                   (1d0-varphi_a)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
       endif
 
      omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
@@ -318,13 +318,13 @@ module globals
                   (1d0-varphi_q)*(1d0-varphi_p)*omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
 
       if (varphi_q <= varphi_p) then
-        mx = min((varphi_q            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-              (varphi_p-varphi_q) *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-              (1d0-varphi_p)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
+        mx = min((varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                  (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+                  (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
       else
-        mx = min((varphi_p             *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-               (varphi_q-varphi_p) *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-               (1d0-varphi_q)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
+        mx = min((varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                  (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+                  (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
       endif
 
 
