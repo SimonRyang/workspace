@@ -600,8 +600,6 @@ module globals
           endif
         enddo ! iq
 
-      do ij = 1, JJ
-
         ! check for the maximum asset grid point used at a certain age
         do ia = NA, 0, -1
           if (sum(m(ia, :, :, :, :, :, ij)) > 1d-10) then
