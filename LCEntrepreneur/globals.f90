@@ -126,7 +126,7 @@ module globals
 
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com
-    integer :: iamax(JJ), ixmax(JJ), ikmax(JJ)
+    integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
     real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
@@ -575,19 +575,30 @@ module globals
     !
     ! Checks for the maximum gridpoint used
     !##############################################################################
-    subroutine check_grid(iamax, ikmax, ixmax)
+    subroutine check_grid(iqmax, iamax, ikmax, ixmax)
 
       implicit none
 
       !##### INPUT/OUTPUT VARIABLES #############################################
-      integer :: iamax(JJ), ikmax(JJ), ixmax(JJ)
+      integer :: iqmax(JJ), iamax(JJ), ikmax(JJ), ixmax(JJ)
 
       !##### OTHER VARIABLES ####################################################
-      integer :: ia, ik, ix, ij
+      integer :: iq, ia, ik, ix, ij
 
+      iqmax = 0
       iamax = 0
       ikmax = 0
       ixmax = 0
+
+      do ij = 1, JJ
+
+        ! check for the maximum asset grid point used at a certain age
+        do iq = NQ, 0, -1
+          if (sum(m_Q(iq, :, :, :, :, :, ij)) > 1d-10) then
+            iqmax(ij) = iq
+            exit
+          endif
+        enddo ! iq
 
       do ij = 1, JJ
 

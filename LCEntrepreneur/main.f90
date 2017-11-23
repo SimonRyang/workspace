@@ -485,8 +485,8 @@ contains
 
         enddo
 
-        call check_grid(iamax, ikmax, ixmax)
-        write(*,*) maxval(iamax), maxval(ikmax), maxval(ixmax)
+        call check_grid(iqmax, iamax, ikmax, ixmax)
+        write(*,*) maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax)
 
     end subroutine
 
