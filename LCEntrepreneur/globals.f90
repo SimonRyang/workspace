@@ -36,10 +36,10 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.99d0
-    real*8, parameter :: mu_b = 0.20d0
+    real*8, parameter :: mu_b = 0.15d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0.1d0
+    real*8, parameter :: mx_max = 100d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.1d0
@@ -122,7 +122,7 @@ module globals
     real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! weights for the different gridpoints on the discretized state space
-    real*8 :: m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, JJ), m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com

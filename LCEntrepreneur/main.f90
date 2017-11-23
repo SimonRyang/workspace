@@ -9,7 +9,7 @@ program main
 
     implicit none
 
-    integer, parameter :: numthreads = 8
+    integer, parameter :: numthreads = 4
 
     ! set government variables
     mu     = 1d0
@@ -303,6 +303,7 @@ contains
         real*8 :: varphi_a, varphi_k, varphi_x, varphi_p
 
         m(:, :, :, :, :, :, :) = 0d0
+        m_Q(:, :, :, :, :, :, :) = 0d0
 
         do iw = 1, NW
           do ie = 1, NE
