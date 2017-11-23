@@ -293,16 +293,16 @@ module globals
                                  (1d0-varphi_q)*(1d0-varphi_p)*omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
 
 
-       ! ! get next period's capital size
-       ! if (varphi_q <= varphi_p) then
-       !   k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-       !                            (varphi_p-varphi_q)  *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-       !                            (1d0-varphi_p)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-       ! else
-       !   k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-       !                            (varphi_q-varphi_p)  *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-       !                            (1d0-varphi_q)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-       ! endif
+       ! get next period's capital size
+       if (varphi_q <= varphi_p) then
+         k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                                  (varphi_p-varphi_q)  *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+                                  (1d0-varphi_p)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+       else
+         k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                                  (varphi_q-varphi_p)  *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+                                  (1d0-varphi_q)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+       endif
 
       endif
 
@@ -317,15 +317,15 @@ module globals
                   (1d0-varphi_q)*varphi_p      *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) + &
                   (1d0-varphi_q)*(1d0-varphi_p)*omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
 
-      ! if (varphi_q <= varphi_p) then
-      !   mx = (varphi_q            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-      !         (varphi_p-varphi_q) *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-      !         (1d0-varphi_p)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
-      ! else
-      !   mx = (varphi_p             *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-      !          (varphi_q-varphi_p) *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-      !          (1d0-varphi_q)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
-      ! endif
+      if (varphi_q <= varphi_p) then
+        mx = min((varphi_q            *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+              (varphi_p-varphi_q) *omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+              (1d0-varphi_p)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
+      else
+        mx = min((varphi_p             *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+               (varphi_q-varphi_p) *omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+               (1d0-varphi_q)      *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p)
+      endif
 
 
         x_p = (1d0+r)/psi(ij)*x(ix) + mx
@@ -391,15 +391,15 @@ module globals
                 (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1)
 
       ! get optimal investment strategy
-      ! if (varphi_a <= varphi_x) then
-      !   EV_temp = varphi_a            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-      !             (varphi_x-varphi_a) *(egam*EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-      !             (1d0-varphi_x)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam)
-      ! else
-      !   EV_temp = varphi_x            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-      !             (varphi_a-varphi_x) *(egam*EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-      !             (1d0-varphi_a)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam)
-      ! endif
+      if (varphi_a <= varphi_x) then
+        EV_temp = varphi_a            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                  (varphi_x-varphi_a) *(egam*EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                  (1d0-varphi_x)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam)
+      else
+        EV_temp = varphi_x            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                  (varphi_a-varphi_x) *(egam*EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                  (1d0-varphi_a)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam)
+      endif
 
       if (a_temp < 0d0) then
         inv_w = -1d-16**egam/egam*(1d0+abs(a_temp))
