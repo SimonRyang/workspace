@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: mu_b = 0.15d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 100d0
+    real*8, parameter :: mx_max = 1d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.1d0
@@ -56,7 +56,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: Q_l    = 0d0
-    real*8, parameter :: Q_u    = 12d0
+    real*8, parameter :: Q_u    = 8d0
     real*8, parameter :: Q_grow = 0.05d0
 
     ! size of the liquid asset grid
@@ -573,7 +573,7 @@ module globals
     !##############################################################################
     ! FUNCTION check_grid
     !
-    ! Checks for the maximum gridpoint used
+    ! Checks for the maximum gridpoints used
     !##############################################################################
     subroutine check_grid(iqmax, iamax, ikmax, ixmax)
 
@@ -592,7 +592,7 @@ module globals
 
       do ij = 1, JJ
 
-        ! check for the maximum asset grid point used at a certain age
+        ! check for the maximum total asset grid point used at a certain age
         do iq = NQ, 0, -1
           if (sum(m_Q(iq, :, :, :, :, :, ij)) > 1d-10) then
             iqmax(ij) = iq
@@ -600,7 +600,7 @@ module globals
           endif
         enddo ! iq
 
-        ! check for the maximum asset grid point used at a certain age
+        ! check for the maximum liquid asset grid point used at a certain age
         do ia = NA, 0, -1
           if (sum(m(ia, :, :, :, :, :, ij)) > 1d-10) then
             iamax(ij) = ia
