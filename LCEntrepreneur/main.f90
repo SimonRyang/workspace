@@ -416,9 +416,6 @@ contains
             enddo
           enddo
 
-          write(*,*)sum(m(:, :, :, :, :, :, ij-1))
-          write(*,*)sum(m_Q(:, :, :, :, :, :, ij-1))
-
         enddo
 
     end subroutine
