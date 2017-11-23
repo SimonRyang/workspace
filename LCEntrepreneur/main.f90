@@ -305,6 +305,7 @@ contains
         real*8 :: varphi_q, varphi_a, varphi_k, varphi_x, varphi_p
 
         m(:, :, :, :, :, :, :) = 0d0
+        m_Q(:, :, :, :, :, :, :) = 0d0
 
         do iw = 1, NW
           do ie = 1, NE
@@ -399,12 +400,24 @@ contains
                         enddo
                       enddo
 
+                      m_Q(iql, ik, ix, ipl, iw, ie, ij-1) = m_Q(iql, ik, ix, ipl, iw, ie, ij-1) + &
+                                  varphi_q*varphi_p*m(ia, ik, ix, ip, iw, ie, ij-1)
+                      m_Q(iql, ik, ix, ipr, iw, ie, ij-1) = m_Q(iql, ik, ix, ipr, iw, ie, ij-1) + &
+                                  varphi_q*varphi_p*m(ia, ik, ix, ip, iw, ie, ij-1)
+                      m_Q(iqr, ik, ix, ipl, iw, ie, ij-1) = m_Q(iqr, ik, ix, ipl, iw, ie, ij-1) + &
+                                  (1d0-varphi_q)*varphi_p*m(ia, ik, ix, ip, iw, ie, ij-1)
+                      m_Q(iqr, ik, ix, ipr, iw, ie, ij-1) = m_Q(iqr, ik, ix, ipr, iw, ie, ij-1) + &
+                                  (1d0-varphi_q)*(1d0-varphi_p)*m(ia, ik, ix, ip, iw, ie, ij-1)
+
                     enddo
                   enddo
                 enddo
               enddo
             enddo
           enddo
+
+          write(*,*)sum(m(:, :, :, :, :, :, ij-1))
+          write(*,*)sum(m_Q(:, :, :, :, :, :, ij-1))
 
         enddo
 
