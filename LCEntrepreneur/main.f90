@@ -403,7 +403,7 @@ contains
                       m_Q(iql, ik, ix, ipl, iw, ie, ij-1) = m_Q(iql, ik, ix, ipl, iw, ie, ij-1) + &
                                   varphi_q*varphi_p*m(ia, ik, ix, ip, iw, ie, ij-1)
                       m_Q(iql, ik, ix, ipr, iw, ie, ij-1) = m_Q(iql, ik, ix, ipr, iw, ie, ij-1) + &
-                                  varphi_q*varphi_p*m(ia, ik, ix, ip, iw, ie, ij-1)
+                                  varphi_q*(1d0-varphi_p)*m(ia, ik, ix, ip, iw, ie, ij-1)
                       m_Q(iqr, ik, ix, ipl, iw, ie, ij-1) = m_Q(iqr, ik, ix, ipl, iw, ie, ij-1) + &
                                   (1d0-varphi_q)*varphi_p*m(ia, ik, ix, ip, iw, ie, ij-1)
                       m_Q(iqr, ik, ix, ipr, iw, ie, ij-1) = m_Q(iqr, ik, ix, ipr, iw, ie, ij-1) + &
