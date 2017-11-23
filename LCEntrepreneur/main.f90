@@ -301,8 +301,8 @@ contains
         implicit none
 
         integer :: ia, ik, ix, ip, iw, ie, ij, iw_p, ie_p
-        integer :: ial, iar, ikl, ikr, ixl, ixr, ipl, ipr
-        real*8 :: varphi_a, varphi_k, varphi_x, varphi_p
+        integer :: iql, iqr, ial, iar, ikl, ikr, ixl, ixr, ipl, ipr
+        real*8 :: varphi_q, varphi_a, varphi_k, varphi_x, varphi_p
 
         m(:, :, :, :, :, :, :) = 0d0
 
@@ -325,10 +325,16 @@ contains
                       if (m(ia, ik, ix, ip, iw, ie, ij-1) <= 0d0) cycle
 
                       ! derive interpolation weights
+                      call linint_Grow(Q_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
                       call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
                       call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
                       call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
                       call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
+
+                      ! restrict values to grid just in case
+                      iql = min(iql, NA)
+                      iqr = min(iqr, NA)
+                      varphi_q = max(min(varphi_q, 1d0),0d0)
 
                       ! restrict values to grid just in case
                       ial = min(ial, NA)
