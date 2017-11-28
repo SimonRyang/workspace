@@ -565,7 +565,7 @@ module globals
         penc_com = 0d0
 
         ! calculate consumption
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) &
+        cons_com = (1d0+r)*a(ia_com) &
                     - Q_plus
 
         ! define future earning points
