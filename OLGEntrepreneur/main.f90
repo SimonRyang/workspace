@@ -44,7 +44,7 @@ contains
         do iter = 1, itermax
 
             ! get new prices
-            call prices()
+            call get_prices()
 
             ! solve the household problem
             call solve_household()
@@ -145,12 +145,6 @@ contains
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
-        ! old-age transfers
-        pen = 0d0
-        do ip = 0, NP
-          pen(ip, JR:JJ) = p(ip)*kappa*w*eff(JR-1)
-        enddo
-
         ! initialize tax rates
         taup  = 0.184d0
 
@@ -186,7 +180,7 @@ contains
 
 
     ! compute prices and distribution of bequests for next iteration step
-    subroutine prices()
+    subroutine get_prices()
 
         implicit none
 
@@ -199,6 +193,12 @@ contains
         ! compute bequest per capita within workforce for next iteration step
         do ij = 1, JR-1
            b(ij) = BQ/workpop
+        enddo
+
+        ! old-age transfers
+        pen = 0d0
+        do ip = 0, NP
+          pen(ip, JR:JJ) = p(ip)*kappa*ybar
         enddo
 
     end subroutine
