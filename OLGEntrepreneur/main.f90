@@ -228,7 +228,7 @@ contains
                   do ia = 0, NA
 
                     ! with bequest motive we assume future worker
-                    call solve_consumption(0, ia, ik, ix, ip, 1, 1, JJ)
+                    call solve_consumption(0, ia, 0, ix, ip, 1, 1, JJ)
 
                     Q_plus(ia, :, ix, ip, :, :, JJ) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
                     a_plus(ia, :, ix, ip, :, :, JJ) = a_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
