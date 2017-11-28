@@ -61,7 +61,7 @@ contains
             ! check maximum grid points used
             call check_grid(iqmax, iamax, ikmax, ixmax)
 
-            write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+            write(*,'(i4,4i7,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                             (/5d0*KK, CC, II/)/YY*100d0, &
                                             ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
@@ -88,6 +88,9 @@ contains
           read(301,'(f13.8)')psi(ij)
         enddo
         close(301)
+
+        psi = 1d0
+        psi(JJ+1) = 0d0
 
         ! set up population structure
         rpop(0) = 1d0+n_p
