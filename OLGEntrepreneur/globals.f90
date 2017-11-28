@@ -345,8 +345,6 @@ module globals
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
-      write(*,*)k_p, mx, x_p, penc_com, cons_com, x_in(1), x_in(1) - (1d0-xi)*k_p - mx, (1d0+r)*a(ia)
-
   end subroutine
 
   ! the first order condition with respect to next period real estate
@@ -567,7 +565,7 @@ module globals
         penc_com = 0d0
 
         ! calculate consumption
-        cons_com = (1d0+r)*a(ia_com) &
+        cons_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
                     - Q_plus
 
         ! define future earning points

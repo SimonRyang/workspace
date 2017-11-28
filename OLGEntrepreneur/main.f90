@@ -224,24 +224,22 @@ contains
 
               do ip = 0, NP
                 do ix = 0, NX
-                  do ik = 0, NK
-                    do ia = 0, NA
+                  do ia = 0, NA
 
-                      ! with bequest motive we assume future worker
-                      call solve_consumption(0, ia, ik, ix, ip, 1, 1, JJ)
+                    ! with bequest motive we assume future worker
+                    call solve_consumption(0, ia, ik, ix, ip, 1, 1, JJ)
 
-                      Q_plus(ia, ik, ix, ip, :, :, JJ) = Q_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      a_plus(ia, ik, ix, ip, :, :, JJ) = a_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      x_plus(ia, ik, ix, ip, :, :, JJ) = x_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      p_plus(ia, ik, ix, ip, :, :, JJ) = p_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      k_plus(ia, ik, ix, ip, :, :, JJ) = k_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      c(ia, ik, ix, ip, :, :, JJ) = c_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      l(ia, ik, ix, ip, :, :, JJ) = l_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      penb(ia, ik, ix, ip, :, :, JJ) = penb_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      penc(ia, ik, ix, ip, :, :, JJ) = penc_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      V(ia, ik, ix, ip, :, :, JJ) = V_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                    Q_plus(ia, :, ix, ip, :, :, JJ) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    a_plus(ia, :, ix, ip, :, :, JJ) = a_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    x_plus(ia, :, ix, ip, :, :, JJ) = x_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    p_plus(ia, :, ix, ip, :, :, JJ) = p_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    k_plus(ia, :, ix, ip, :, :, JJ) = k_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    c(ia, :, ix, ip, :, :, JJ) = c_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    l(ia, :, ix, ip, :, :, JJ) = l_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    penb(ia, :, ix, ip, :, :, JJ) = penb_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    penc(ia, :, ix, ip, :, :, JJ) = penc_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
 
-                    enddo
                   enddo
                enddo
              enddo
@@ -320,17 +318,6 @@ contains
                                penc(ia, ik, ix, ip, iw, ie, ij) = penc_t(0, ia, ik, ix, ip, iw, ie, ij)
                                V(ia, ik, ix, ip, iw, ie, ij) = V_t(0, ia, ik, ix, ip, iw, ie, ij)
                              endif
-
-                             if (ij >= JR) then
-                               write(*,*)ia, ik, ix, ip, iw, ie, ij
-                               write(*,*) (1d0+r)*(a(ia)-xi*k(ik)) + ann(ix, ij) + pen(ip, ij) - a_plus(ia, ik, ix, ip, iw, ie, ij) - c(ia, ik, ix, ip, iw, ie, ij)
-                               write(*,*) ann(ix, ij), pen(ip, ij)
-                               write(*,*) (1d0+r)*(a(ia)-xi*k(ik))
-                               write(*,*) Q_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij)
-                               write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij), x_plus(ia, ik, ix, ip, iw, ie, ij)
-                               write(*,*) c(ia, ik, ix, ip, iw, ie, ij)
-                               call sleep(1)
-                            endif
 
                          enddo
                        enddo
