@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 12
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 0d0
     phi    = 0d0
 
@@ -64,6 +64,8 @@ contains
             write(*,'(i4,4i7,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                             (/5d0*KK, CC, II/)/YY*100d0, &
                                             ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
+
+            write(*,*) taup
 
             if(abs(DIFF/YY)*100d0 < sig) return
 
