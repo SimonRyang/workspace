@@ -9,7 +9,7 @@ program main
 
     implicit none
 
-    integer, parameter :: numthreads = 4
+    integer, parameter :: numthreads = 2
 
     ! set government variables
     mu     = 1d0
@@ -561,7 +561,7 @@ contains
 
             AA = AA + a_coh(0, ij)*rpop(ij)
             CC = CC + c_coh(0, ij)*rpop(ij)
-            LL = LL + y_coh(0, ij)*rpop(ij)/w
+            LL = LL + y_coh(0, ij)/w*rpop(ij)
             PBEN = PBEN + penb_coh(ij)*rpop(ij)
             PCON = PCON + penc_coh(ij)*rpop(ij)
             BQ = BQ + (1d0-psi(ij))*(1d0+r)*a_coh(0, ij)*rpop(ij)/psi(ij)
@@ -579,7 +579,7 @@ contains
             o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-16)
             k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-16)
 
-        enddo
+        enddo ! ij
 
         ! get average income
         ybar = w*LL/workpop
