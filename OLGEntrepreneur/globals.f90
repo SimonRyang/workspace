@@ -41,9 +41,6 @@ module globals
     ! maximum investment in annuities
     real*8, parameter :: mx_max = 0.10d0
 
-    ! risk free rate and risk premium
-    real*8, parameter :: r  = 0.1d0
-
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
     real*8, parameter :: xi = 1d0/3d0
@@ -52,6 +49,7 @@ module globals
     real*8, parameter :: k_min = 0.6d0
     real*8, parameter :: phi_k = 0.4d0
     real*8, parameter :: alpha = 0.36d0
+    real*8, parameter :: Omega = 1.48d0
     real*8, parameter :: nu = 0.88d0
 
     ! size of the asset grid
@@ -81,18 +79,29 @@ module globals
     ! pension fraction of last income
     real*8, parameter :: kappa = 0.0d0
 
+    ! numerical parameters
+    integer, parameter :: itermax = 200
+    real*8, parameter :: sig = 1d-6
+    real*8, parameter :: damp = 0.3d0
+
     ! measure time
     integer :: time
 
     ! discretized shocks
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
-    ! wages, transfer payments (old-age), survival probabilities and discount factor for housing utilty
-    real*8 :: w, eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1)
+    ! wages, transfer payments (old-age), survival probabilities
+    real*8 :: eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1), workpop
 
     ! government variables
     real*8 :: lambda, phi, mu
     real*8 :: taup
+
+    ! macroeconomic variables
+    real*8 :: r, w
+    real*8 :: ybar
+    real*8 :: AA, BQ, PBEN, PCON
+    real*8 :: YY, CC, II, KK, LL
 
     ! cohort aggregate variables
     real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
@@ -125,9 +134,10 @@ module globals
     real*8 :: m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, JJ), m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! numerical variables
-    integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com
+    integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com, iter
     integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
     real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
+    real*8 :: DIFF
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
     !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com)

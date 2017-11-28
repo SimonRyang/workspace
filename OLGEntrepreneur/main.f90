@@ -14,8 +14,7 @@ program main
     ! set government variables
     mu     = 1d0
     lambda = 0d0
-    phi    = 1d0
-    taup   = 0.184d0
+    phi    = 0d0
 
     ! initialize remaining variables
     call initialize()
@@ -23,14 +22,8 @@ program main
     ! start the clock
     call tick(time)
 
-    ! solve the household problem
-    call solve_household()
-
-    ! calculate the distribution of households over state space
-    call get_distribution()
-
-    ! aggregate individual decisions
-    call aggregation()
+    ! calculate initial equilibrium
+    call get_SteadyState()
 
     ! stop the clock
     call tock(time)
@@ -42,6 +35,42 @@ program main
 
 contains
 
+    ! computes the initial steady state of the economy
+    subroutine get_SteadyState()
+
+        implicit none
+
+        ! iterate until value function converges
+        do iter = 1, itermax
+
+            ! get new prices
+            call prices()
+
+            ! solve the household problem
+            call solve_household()
+
+            ! calculate the distribution of households over state space
+            call get_distribution()
+
+            ! aggregate individual decisions
+            call aggregation()
+
+            ! determine the government parameters
+            call government()
+
+            write(*,*)KK, CC, II, r, w
+
+            write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+                                            (/5d0*KK, CC, II/)/YY*100d0, &
+                                            ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
+
+            if(abs(DIFF/YY)*100d0 < sig) return
+        enddo
+
+        write(*,*)'No Convergence'
+
+
+    end subroutine
 
     ! initializes all remaining variables
     subroutine initialize
@@ -50,9 +79,6 @@ contains
 
         integer :: ij, ix, ip
         real*8 :: ann_temp
-
-        ! wage rate for effective labor and rental price
-        w = 1d0
 
         ! set survival probabilities
         open(301, file='sp.dat')
@@ -109,6 +135,23 @@ contains
           pen(ip, JR:JJ) = p(ip)*kappa*w*eff(JR-1)
         enddo
 
+        ! initialize tax rates
+        taup  = 0.0d0
+
+        ! set starting values
+        KK = 10d0
+        LL = 10d0
+        BQ = 3d0
+
+        ! initial guess bequests
+        b = 0d0
+        do ij = 1, JR-1
+           b(ij) = BQ/workpop
+        enddo
+
+        ! initial guess average income
+        ybar = 2d0
+
         ! initialize value functions
         V = 1d-16**egam/egam; EV = 1d-16**egam/egam; S = 1d-16**egam/egam
 
@@ -122,6 +165,25 @@ contains
 
         ! open files
         open(21, file='output.out')
+
+    end subroutine
+
+
+    ! compute prices and distribution of bequests for next iteration step
+    subroutine prices()
+
+        implicit none
+
+        integer :: ij
+
+        ! calculate new prices
+        r = Omega*alpha*(KK/LL)**(alpha-1d0)-delta_k
+        w = Omega*(1d0-alpha)*(KK/LL)**alpha
+
+        ! compute bequest per capita within workforce for next iteration step
+        do ij = 1, JR-1
+           b(ij) = BQ/workpop
+        enddo
 
     end subroutine
 
