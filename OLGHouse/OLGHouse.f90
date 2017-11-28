@@ -217,7 +217,7 @@ subroutine prices()
 
     ! compute bequest per capita within workforce for next iteration step
     do ij = 1, JR-1
-       b(ij) = BQ/workpop
+       b(ij) = BQ/
     enddo
 
     !write(*,*)r,w,rn,wn,p,ph

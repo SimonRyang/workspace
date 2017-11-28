@@ -56,7 +56,7 @@ contains
             call aggregation()
 
             ! determine the government parameters
-            call government()
+            !call government()
 
             write(*,*)KK, CC, II, r, w
 
@@ -86,6 +86,18 @@ contains
           read(301,'(f13.8)')psi(ij)
         enddo
         close(301)
+
+        ! set up population structure
+        rpop(0) = 1d0+n_p
+        do ij = 1, JJ+1
+            rpop(ij) = rpop(ij-1)*psi(ij)/(1d0+n_p)
+        enddo
+
+        workpop = 0d0
+        ! initialize workforce
+        do ij = 1, JJ
+           if(ij < JR)workpop = workpop + rpop(ij)
+        enddo
 
         ! initialize age earnings process
         eff(1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &

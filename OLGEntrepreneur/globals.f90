@@ -31,6 +31,9 @@ module globals
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
 
+    ! demographic parameters
+    real*8, parameter :: n_p   = (1d0+0.005d0)**5-1d0
+
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
@@ -90,8 +93,8 @@ module globals
     ! discretized shocks
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
-    ! wages, transfer payments (old-age), survival probabilities
-    real*8 :: eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1), workpop, b(JJ)
+    ! demographic and other model parameters
+    real*8 :: eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1), rpop(0:JJ+1), workpop, b(JJ)
 
     ! government variables
     real*8 :: lambda, phi, mu
