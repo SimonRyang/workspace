@@ -345,6 +345,8 @@ module globals
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
+      write(*,*)k_p, mx, x_p, penc_om, cons_com, x_in(1)
+
   end subroutine
 
   ! the first order condition with respect to next period real estate
