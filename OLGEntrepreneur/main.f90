@@ -184,7 +184,7 @@ contains
 
         implicit none
 
-        integer :: ij
+        integer :: ij, ip
 
         ! calculate new prices
         r = Omega*alpha*(KK/LL)**(alpha-1d0)-delta_k
