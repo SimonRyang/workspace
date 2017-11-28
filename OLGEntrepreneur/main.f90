@@ -56,16 +56,16 @@ contains
             call aggregation()
 
             ! determine the government parameters
-            !call government()
+            call government()
 
             write(*,*)KK, CC, II, r, w
 
             !write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-                                            (/5d0*KK, CC, II/)/YY*100d0, &
-                                            ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
+            !                                (/5d0*KK, CC, II/)/YY*100d0, &
+            !                                ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
             !if(abs(DIFF/YY)*100d0 < sig) return
-            
+
         enddo
 
         write(*,*)'No Convergence'
@@ -557,6 +557,31 @@ contains
 
         call check_grid(iqmax, iamax, ikmax, ixmax)
         write(*,*) maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax)
+
+    end subroutine
+
+
+    ! subroutine for calculating government parameters
+    subroutine government()
+
+        implicit none
+
+        real*8 :: expend, tauc_old, tauh_old, taup_old, taur_old, tauw_old
+
+        ! copy tax rate from previous iteration for damping
+        taup_old = taup
+
+        ! calculate total government expenditure
+        expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
+
+        ! obtain aggregated contribution basis
+        PCON = max(PCON/taup,1d-10)
+
+        ! get budget balancing pension contribution rate
+        taup = PBEN/PCON
+
+        ! damping pension contribution rate
+        taup = damp*taup + (1d0-damp)*taup_old
 
     end subroutine
 
