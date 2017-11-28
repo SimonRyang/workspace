@@ -108,7 +108,7 @@ module globals
 
     ! cohort aggregate variables
     real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
-    real*8 :: a_coh(0:1, JJ), x_coh(0:1, JJ), k_coh(JJ)
+    real*8 :: a_coh(0:1, JJ), x_coh(0:1, JJ), k_coh(JJ), penb_coh(JJ), penc_coh(JJ)
 
     ! different grids to discretize the state space
     real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP)
@@ -117,12 +117,14 @@ module globals
     real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: penb(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), penc(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! variables for temporary policy and value functions
     real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: penb_t(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), penc_t(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
@@ -139,11 +141,11 @@ module globals
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com, iter
     integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
-    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
+    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, penc_com
     real*8 :: DIFF
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
-    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com)
+    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, penc_com)
 
 
   contains
@@ -337,6 +339,8 @@ module globals
       k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = k_p
       x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
+      penb_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
+      penc_t(io_p, ia, ik, ix, ip, iw, ie, ij) = penc_com
       c_t(io_p, ia, ik, ix, ip, iw, ie, ij) = cons_com
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
@@ -485,9 +489,12 @@ module globals
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
+        ! pension contribution
+        penc_com = (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)
+
         ! calculate consumption-savings
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income &
-                   - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
+                   - penc_com - Q_plus
 
         ! calculate future earning points
         p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
@@ -553,6 +560,9 @@ module globals
 
         ! define labor supply
         lab_com = 0d0
+
+        ! pension contribution
+        penc_com = 0d0
 
         ! calculate consumption
         cons_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
