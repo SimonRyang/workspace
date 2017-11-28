@@ -571,9 +571,6 @@ contains
         ! copy tax rate from previous iteration for damping
         taup_old = taup
 
-        ! calculate total government expenditure
-        expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
-
         ! obtain aggregated contribution basis
         PCON = max(PCON/taup,1d-10)
 
