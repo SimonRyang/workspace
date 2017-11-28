@@ -614,6 +614,8 @@ contains
         ! damping pension contribution rate
         taup = damp*taup + (1d0-damp)*taup_old
 
+        write(*,*) PCON, PBEN
+
     end subroutine
 
 
