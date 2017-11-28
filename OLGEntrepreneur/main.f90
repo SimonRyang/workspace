@@ -60,11 +60,12 @@ contains
 
             write(*,*)KK, CC, II, r, w
 
-            write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+            !write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                             (/5d0*KK, CC, II/)/YY*100d0, &
                                             ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
-            if(abs(DIFF/YY)*100d0 < sig) return
+            !if(abs(DIFF/YY)*100d0 < sig) return
+            
         enddo
 
         write(*,*)'No Convergence'
@@ -112,7 +113,7 @@ contains
 
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
-        theta = exp(theta)
+        !theta = exp(theta)
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
