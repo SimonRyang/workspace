@@ -153,8 +153,8 @@ contains
         taup  = 0.184d0
 
         ! set starting values
-        KK = 10d0
-        LL = 10d0
+        KK = 5d0
+        LL = 5d0
         BQ = 3d0
 
         ! initial guess bequests
