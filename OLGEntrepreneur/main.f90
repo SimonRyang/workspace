@@ -58,7 +58,7 @@ contains
             ! determine the government parameters
             call government()
 
-            write(*,*)r, w
+            !write(*,*)r, w
 
             !write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
             !                                (/5d0*KK, CC, II/)/YY*100d0, &
@@ -194,6 +194,8 @@ contains
         ! calculate new prices
         r = Omega*alpha*(KK/LL)**(alpha-1d0)-delta_k
         w = Omega*(1d0-alpha)*(KK/LL)**alpha
+
+        write(*,*) r, w
 
         ! compute bequest per capita within workforce for next iteration step
         do ij = 1, JR-1
