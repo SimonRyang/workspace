@@ -509,6 +509,10 @@ contains
         implicit none
 
         integer :: ia, ik, ix, ip, iw, ie, ij
+        real*8 :: LL_old
+
+        ! copy labor supply
+        LL_old = LL
 
         ! calculate cohort averages
         c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0
@@ -582,6 +586,7 @@ contains
 
         ! compute stock of capital
         KK = damp*AA+(1d0-damp)*KK
+        LL = damp*LL+(1d0-damp)*LL_old
         II = (n_p+delta_k)*KK
         YY = Omega*KK**alpha*LL**(1d0-alpha)
 
