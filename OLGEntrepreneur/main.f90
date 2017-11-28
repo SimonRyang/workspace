@@ -9,7 +9,7 @@ program main
 
     implicit none
 
-    integer, parameter :: numthreads = 1
+    integer, parameter :: numthreads = 12
 
     ! set government variables
     mu     = 1d0
@@ -222,6 +222,7 @@ contains
                   S(0, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-16)**egam/egam
               enddo
 
+              !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)
               do ip = 0, NP
                 do ix = 0, NX
                   do ia = 0, NA
@@ -243,11 +244,9 @@ contains
                   enddo
                enddo
              enddo
+             !$omp end parallel do
 
-             else
-
-               ! get optimal share of wealth invested into capital
-
+           else
                   !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
                    do ie = 1, NE
                      do iw = 1, NW
