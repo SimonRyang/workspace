@@ -58,7 +58,7 @@ contains
             ! determine the government parameters
             call government()
 
-            !write(*,*)r, w
+            write(*,*)r, w, KK, LL, taup
 
             !write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
             !                                (/5d0*KK, CC, II/)/YY*100d0, &
