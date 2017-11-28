@@ -143,8 +143,6 @@ contains
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
-        ann = 0d0
-
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
@@ -322,6 +320,10 @@ contains
                                penc(ia, ik, ix, ip, iw, ie, ij) = penc_t(0, ia, ik, ix, ip, iw, ie, ij)
                                V(ia, ik, ix, ip, iw, ie, ij) = V_t(0, ia, ik, ix, ip, iw, ie, ij)
                              endif
+
+                            write(*,*) (1d0+r)*a(ia) + eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij) + penb(ia, ik, ix, ip, iw, ie, ij) + b(ij) - a_plus(ia, ik, ix, ip, iw, ie, ij) - c(ia, ik, ix, ip, iw, ie, ij) - penc(ia, ik, ix, ip, iw, ie, ij)
+                            call sleep(1)
+
 
                          enddo
                        enddo
