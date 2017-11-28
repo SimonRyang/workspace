@@ -9,7 +9,7 @@ program main
 
     implicit none
 
-    integer, parameter :: numthreads = 2
+    integer, parameter :: numthreads = 4
 
     ! set government variables
     mu     = 1d0
@@ -98,15 +98,11 @@ contains
             rpop(ij) = rpop(ij-1)*psi(ij)/(1d0+n_p)
         enddo
 
-        write(*,*)rpop
-
         workpop = 0d0
         ! initialize workforce
         do ij = 1, JJ
            if(ij < JR)workpop = workpop + rpop(ij)
         enddo
-
-        write(*,*)workpop
 
         ! initialize age earnings process
         eff(1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
