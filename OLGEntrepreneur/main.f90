@@ -529,6 +529,9 @@ contains
 
                         if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
+                        penb_coh(ij) = penb_coh(ij) + penb(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                        penc_coh(ij) = penc_coh(ij) + penc(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+
                         if(ik == 0) then
                           c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -551,12 +554,12 @@ contains
               enddo
             enddo
 
-            AA = AA + a_coh(ij, 0)*rpop(ij)
-            CC = CC + c_coh(ij, 0)*rpop(ij)
-            LL = LL + y_coh(ij)*rpop(ij)/w
+            AA = AA + a_coh(0, ij)*rpop(ij)
+            CC = CC + c_coh(0, ij)*rpop(ij)
+            LL = LL + y_coh(0, ij)*rpop(ij)/w
             PBEN = PBEN + penb_coh(ij)*rpop(ij)
             PCON = PCON + penc_coh(ij)*rpop(ij)
-            BQ = BQ + (1d0-psi(ij))*(1d0+r)*a_coh(ij)*rpop(ij)/psi(ij)
+            BQ = BQ + (1d0-psi(ij))*(1d0+r)*a_coh(0, ij)*rpop(ij)/psi(ij)
 
             c_coh(0, ij) = c_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, ij)), 1d-16)
             c_coh(1, ij) = c_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-16)
