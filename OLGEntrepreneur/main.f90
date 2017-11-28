@@ -243,9 +243,9 @@ contains
 
                       if (ij >= JR) then
                         write(*,*)ia, ik, ix, ip, iw, ie, ij
-                        write(*,*) (1d0+r)*(a(ia)-xi*k(ik)) + ann(ix, ij) + pen(ip, ij) - a_plus(ia, ik, ix, ip, iw, ie, ij) - c(ia, ik, ix, ip, iw, ie, ij)
-                        write(*,*) Q_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij)
-                        write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij), x_plus(ia, ik, ix, ip, iw, ie, ij)
+                        write(*,*) (1d0+r)*(a(ia)-xi*k(ik)) + ann(ix, ij) + pen(ip, ij) - a_plus(ia, ik, ix, ip, 1, 1, ij) - c(ia, ik, ix, ip, 1, 1, ij)
+                        write(*,*) Q_plus(ia, ik, ix, ip, 1, 1, ij), a_plus(ia, ik, ix, ip, 1, 1, ij)
+                        write(*,*) k_plus(ia, ik, ix, ip, 1, 1, ij), x_plus(ia, ik, ix, ip, 1, 1, ij)
                         call sleep(1)
                      endif
 
