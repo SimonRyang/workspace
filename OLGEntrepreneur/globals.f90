@@ -42,7 +42,7 @@ module globals
     real*8, parameter :: mu_b = 0.0d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0.10d0
+    real*8, parameter :: mx_max = 0d0 !0.10d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
@@ -493,7 +493,7 @@ module globals
         penc_com = (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u*ybar)
 
         ! calculate consumption-savings
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + b(ij_com)&
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + b(ij_com) &
                    - penc_com - Q_plus
 
         ! calculate future earning points

@@ -532,7 +532,7 @@ contains
                         ! skip if there is no household
                         if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
 
-                        !write(*,*) (1d0+r)*a(ia) + eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij) + penb(ia, ik, ix, ip, iw, ie, ij) - a_plus(ia, ik, ix, ip, iw, ie, ij) - c(ia, ik, ix, ip, iw, ie, ij) - penc(ia, ik, ix, ip, iw, ie, ij)
+                        !write(*,*) (1d0+r)*a(ia) + eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij) + penb(ia, ik, ix, ip, iw, ie, ij) + b(ij) - a_plus(ia, ik, ix, ip, iw, ie, ij) - c(ia, ik, ix, ip, iw, ie, ij) - penc(ia, ik, ix, ip, iw, ie, ij)
 
                         if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
