@@ -58,7 +58,7 @@ contains
             ! determine the government parameters
             call government()
 
-            write(*,*)KK, CC, II, r, w
+            write(*,*)r, w
 
             !write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
             !                                (/5d0*KK, CC, II/)/YY*100d0, &
@@ -141,6 +141,8 @@ contains
         do ix = 0, NX
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
+
+        ann = 0d0
 
         ! old-age transfers
         pen = 0d0
