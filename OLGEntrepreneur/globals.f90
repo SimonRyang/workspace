@@ -91,7 +91,7 @@ module globals
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
     ! wages, transfer payments (old-age), survival probabilities
-    real*8 :: eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1), workpop
+    real*8 :: eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1), workpop, b(JJ)
 
     ! government variables
     real*8 :: lambda, phi, mu
