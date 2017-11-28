@@ -334,7 +334,7 @@ contains
 
             call interpolate(ij)
 
-            write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
+            !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
         enddo
 
