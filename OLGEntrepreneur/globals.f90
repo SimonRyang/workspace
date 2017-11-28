@@ -345,7 +345,7 @@ module globals
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
-      write(*,*)k_p, mx, x_p, penc_com, cons_com, x_in(1)
+      write(*,*)k_p, mx, x_p, penc_com, cons_com, x_in(1), x_in(1) - (1d0-xi)*k_p - mx, (1d0+r)*a(ia)
 
   end subroutine
 
