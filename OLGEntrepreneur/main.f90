@@ -58,6 +58,9 @@ contains
             ! determine the government parameters
             call government()
 
+            ! check maximum grid points used
+            call check_grid(iqmax, iamax, ikmax, ixmax)
+
             write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                             (/5d0*KK, CC, II/)/YY*100d0, &
                                             ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
@@ -584,9 +587,6 @@ contains
 
         ! compute gap on goods market
         DIFF = YY-CC-II
-
-        call check_grid(iqmax, iamax, ikmax, ixmax)
-        write(*,*) maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax)
 
     end subroutine
 
