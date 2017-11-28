@@ -479,7 +479,7 @@ module globals
         ! define tomorrow's assets
         Q_plus  = x_in(1)
 
-        ! defin labor supply
+        ! define labor supply
         lab_com = max(x_in(2), 0d0)
 
         ! compute current occupation

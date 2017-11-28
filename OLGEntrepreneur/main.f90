@@ -321,11 +321,13 @@ contains
                                V(ia, ik, ix, ip, iw, ie, ij) = V_t(0, ia, ik, ix, ip, iw, ie, ij)
                              endif
 
-                            write(*,*) (1d0+r)*(a(ia)-xi*k(ik_com)) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij) + penb(ia, ik, ix, ip, iw, ie, ij) + b(ij) - a_plus(ia, ik, ix, ip, iw, ie, ij) - c(ia, ik, ix, ip, iw, ie, ij) - penc(ia, ik, ix, ip, iw, ie, ij)
-                            write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij), x_plus(ia, ik, ix, ip, iw, ie, ij)
-                            call sleep(1)
-
-
+                             if (ij >= JR) then
+                               write(*,*)ia, ik, ix, ip, iw, ie, ij
+                               write(*,*) (1d0+r)*(a(ia)-xi*k(ik_com)) + pen(ip, ij) - a_plus(ia, ik, ix, ip, iw, ie, ij) - c(ia, ik, ix, ip, iw, ie, ij)
+                               write(*,*) k_plus(ia, ik, ix, ip, iw, ie, ij), x_plus(ia, ik, ix, ip, iw, ie, ij)
+                               call sleep(1)
+                            endif
+                            
                          enddo
                        enddo
                      enddo
