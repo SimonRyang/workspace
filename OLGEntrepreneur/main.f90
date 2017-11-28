@@ -58,13 +58,11 @@ contains
             ! determine the government parameters
             call government()
 
-            write(*,*)r, w, KK, LL, taup
+            write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+                                            (/5d0*KK, CC, II/)/YY*100d0, &
+                                            ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
-            !write(*,'(i4,4i7,5f8.2,f16.5)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-            !                                (/5d0*KK, CC, II/)/YY*100d0, &
-            !                                ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
-
-            !if(abs(DIFF/YY)*100d0 < sig) return
+            if(abs(DIFF/YY)*100d0 < sig) return
 
         enddo
 
@@ -586,7 +584,6 @@ contains
 
         ! compute gap on goods market
         DIFF = YY-CC-II
-        write(*,*)DIFF
 
         call check_grid(iqmax, iamax, ikmax, ixmax)
         write(*,*) maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax)
