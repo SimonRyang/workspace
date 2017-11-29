@@ -329,7 +329,7 @@ contains
 
                              write(*,*) ia, ik, ix, ip, iw, ie, ij
                              write(*,*) a(ia)*(1d0+r) + pen(ip, ij) + ann(ix, ij) - Q_plus(ia, ik, ix, ip, iw, ie, ij) - c(ia, ik, ix, ip, iw, ie, ij)
-                             write(*,*) Q_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij)
+                             write(*,*) a(ia)*(1d0+r), pen(ip, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij)
                              call sleep(1)
 
                          enddo
