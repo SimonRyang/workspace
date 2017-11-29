@@ -89,6 +89,9 @@ contains
         enddo
         close(301)
 
+        psi = 1d0
+        psi(JJ+1) = 0d0
+        
         ! set up population structure
         rpop(0) = 1d0+n_p
         do ij = 1, JJ+1
