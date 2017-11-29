@@ -498,7 +498,7 @@ contains
               enddo
             enddo
           enddo
-          
+
         enddo
 
     end subroutine
@@ -613,10 +613,10 @@ contains
         taup_old = taup
 
         ! get budget balancing pension contribution rate
-        taup = PBEN/max(PCON, 1d-10)
+        taup = PBEN/PCON
 
         ! damping pension contribution rate
-        taup = damp*taup + (1d0-damp)*taup_old
+        !taup = damp*taup + (1d0-damp)*taup_old
 
         write(*,*) taup, PBEN, PCON
 
