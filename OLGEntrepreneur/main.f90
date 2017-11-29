@@ -585,6 +585,8 @@ contains
         ! get average income
         ybar = w*LL/workpop
 
+        write(*,*) ybar
+
         ! compute stock of capital
         KK = damp*AA+(1d0-damp)*KK
         LL = damp*LL+(1d0-damp)*LL_old
@@ -614,7 +616,9 @@ contains
         taup = PBEN/PCON
 
         ! damping pension contribution rate
-        taup = damp*taup + (1d0-damp)*taup_old
+        !taup = damp*taup + (1d0-damp)*taup_old
+
+
 
     end subroutine
 

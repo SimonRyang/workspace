@@ -11,10 +11,10 @@ module globals
     integer, parameter :: JJ = 16
 
     ! number of productivity (eta) shocks
-    integer, parameter :: NW = 3
+    integer, parameter :: NW = 1
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 3
+    integer, parameter :: NE = 1
 
     ! number of points on the asset grid
     integer, parameter :: NQ = 12
@@ -497,7 +497,7 @@ module globals
                    - penc_com - Q_plus
 
         ! calculate future earning points
-        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u*ybar)))/dble(ij_com)
+        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda+(1d0-lambda)*min(income, p_u*ybar)))/dble(ij_com)
 
         ! calculate linear interpolation for future part of value function
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
