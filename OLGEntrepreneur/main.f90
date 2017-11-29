@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 8
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 0d0
     phi    = 0d0
 
@@ -597,7 +597,7 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II
 
-        write(*,*) KK, LL
+        write(*,*) KK, LL, BQ
 
     end subroutine
 
@@ -616,7 +616,7 @@ contains
         taup = PBEN/PCON
 
         ! damping pension contribution rate
-        !taup = damp*taup + (1d0-damp)*taup_old
+        taup = damp*taup + (1d0-damp)*taup_old
 
         write(*,*) taup, PBEN, PCON
 
