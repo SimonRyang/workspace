@@ -586,6 +586,11 @@ contains
 
         write(*,*) ybar
 
+        write(*,*)PBEN, PCON, w*LL
+        write(*,*)penb_coh
+        write(*,*)penc_coh
+        write(*,*)y_coh(0,:)
+
         ! compute stock of capital
         KK = damp*AA +(1d0-damp)*KK
         LL = damp*LL +(1d0-damp)*LL_old
