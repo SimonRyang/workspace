@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 8
 
     ! set government variables
-    mu     = 1d0
+    mu     = 0d0
     lambda = 0d0
     phi    = 0d0
 
@@ -91,7 +91,7 @@ contains
 
         psi = 1d0
         psi(JJ+1) = 0d0
-        
+
         ! set up population structure
         rpop(0) = 1d0+n_p
         do ij = 1, JJ+1
