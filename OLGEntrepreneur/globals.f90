@@ -52,7 +52,6 @@ module globals
     real*8, parameter :: k_min = 6d0
     real*8, parameter :: phi_k = 0.4d0
     real*8, parameter :: alpha = 0.36d0
-    real*8, parameter :: Omega = 1.48d0
     real*8, parameter :: nu = 0.88d0
 
     ! size of the asset grid
@@ -106,6 +105,9 @@ module globals
     real*8 :: AA, BQ, PBEN, PCON
     real*8 :: YY, CC, II, KK, LL
 
+    ! production variables
+    real*8 :: Omega
+    
     ! cohort aggregate variables
     real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
     real*8 :: a_coh(0:1, JJ), x_coh(0:1, JJ), k_coh(JJ), penb_coh(JJ), penc_coh(JJ)

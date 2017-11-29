@@ -162,7 +162,7 @@ contains
         enddo
 
         ! initial guess average income
-        ybar = 2d0
+        ybar = 1d0
 
         ! initialize value functions
         V = 1d-16**egam/egam; EV = 1d-16**egam/egam; S = 1d-16**egam/egam
@@ -187,6 +187,8 @@ contains
         implicit none
 
         integer :: ij, ip
+
+        Omega = 1d0/((1d0-alpha)*(KK/LL)**alpha)
 
         ! calculate new prices
         r = Omega*alpha*(KK/LL)**(alpha-1d0)-delta_k
