@@ -537,8 +537,8 @@ contains
 
                         if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
-                        AA = AA + a_plus(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
-                        !AA = AA + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
+                        !AA = AA + a_plus(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
+                        AA = AA + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
                         CC = CC + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         BQ = BQ + (1d0+r)*a_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
                         LL = LL + eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -609,16 +609,8 @@ contains
 
         implicit none
 
-        real*8 :: taup_old
-
-        ! copy tax rate from previous iteration for damping
-        taup_old = taup
-
         ! get budget balancing pension contribution rate
         taup = PBEN/PCON
-
-        ! damping pension contribution rate
-        taup = damp*taup + (1d0-damp)*taup_old
 
         write(*,*) taup, PBEN, PCON
 
