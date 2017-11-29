@@ -620,7 +620,7 @@ contains
         taup = PBEN/PCON
 
         ! damping pension contribution rate
-        taup = damp*taup + (1d0-damp)*taup_old
+        !taup = damp*taup + (1d0-damp)*taup_old
 
         write(*,*) taup
 
