@@ -89,6 +89,9 @@ contains
         enddo
         close(301)
 
+        psi = 1d0
+        psi(JJ+1) = 0d0
+        
         ! set up population structure
         rpop(0) = 1d0+n_p
         do ij = 1, JJ+1
@@ -586,13 +589,6 @@ contains
         ! get average income
         ybar = w*LL/workpop
 
-        write(*,*) ybar
-
-        write(*,*)PBEN, PCON, w*LL
-        write(*,*)penb_coh
-        write(*,*)penc_coh
-        write(*,*)y_coh(0,:)
-
         ! compute stock of capital
         KK = damp*AA +(1d0-damp)*KK
         LL = damp*LL +(1d0-damp)*LL_old
@@ -602,7 +598,6 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II
 
-        write(*,*) PBEN-taup*PCON
         write(*,*) KK, LL, BQ
 
     end subroutine
@@ -621,8 +616,6 @@ contains
         taup = PBEN/PCON
 
         taup = damp*taup + (1d0-damp)*taup_old
-
-        write(*,*) taup, PBEN, PCON
 
     end subroutine
 
