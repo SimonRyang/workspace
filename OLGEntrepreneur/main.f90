@@ -594,6 +594,7 @@ contains
         LC = damp*LC +(1d0-damp)*LC_old
         BQ = damp*BQ +(1d0-damp)*BQ_old
         II = (n_p+delta_k)*KK
+        write(*,*)KC, LC
         YC = Omega*KC**alpha*LC**(1d0-alpha)
         YY = YC + YE
 
