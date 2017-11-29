@@ -250,11 +250,6 @@ contains
                     penc(ia, :, ix, ip, :, :, JJ) = penc_t(0, ia, 0, ix, ip, 1, 1, JJ)
                     V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
 
-                    write(*,*) ia, 0, ix, ip, 1, 1, JJ
-                    write(*,*) a(ia)*(1d0+r) + pen(ip, ij) + ann(ix, ij) - Q_plus(ia, 0, ix, ip, 1, 1, JJ) - c(ia, 0, ix, ip, 1, 1, JJ)
-                    write(*,*) Q_plus(ia, 0, ix, ip, 1, 1, JJ), a_plus(ia, 0, ix, ip, 1, 1, JJ)
-                    call sleep(1)
-
                   enddo
                enddo
              enddo
@@ -331,6 +326,11 @@ contains
                                penc(ia, ik, ix, ip, iw, ie, ij) = penc_t(0, ia, ik, ix, ip, iw, ie, ij)
                                V(ia, ik, ix, ip, iw, ie, ij) = V_t(0, ia, ik, ix, ip, iw, ie, ij)
                              endif
+
+                             write(*,*) ia, ik, ix, ip, iw, ie, JJ
+                             write(*,*) a(ia)*(1d0+r) + pen(ip, ij) + ann(ix, ij) - Q_plus(ia, ik, ix, ip, iw, ie, JJ) - c(ia, ik, ix, ip, iw, ie, JJ)
+                             write(*,*) Q_plus(ia, ik, ix, ip, iw, ie, JJ), a_plus(ia, ik, ix, ip, iw, ie, JJ)
+                             call sleep(1)
 
                          enddo
                        enddo
