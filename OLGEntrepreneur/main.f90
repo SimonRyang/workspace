@@ -600,6 +600,8 @@ contains
 
         enddo ! ij
 
+        write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) + C_tmp(:))
+
         ! get average income
         ybar = w*LC/workpop
 
