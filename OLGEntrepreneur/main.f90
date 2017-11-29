@@ -178,6 +178,9 @@ contains
         ! open files
         open(21, file='output.out')
 
+        write(*,*) Q
+        write(*,*) a
+
     end subroutine
 
 
