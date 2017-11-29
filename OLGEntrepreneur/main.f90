@@ -193,6 +193,7 @@ contains
         w = Omega*(1d0-alpha)*(LC/LC)**alpha
 
         ! compute bequest per capita within workforce for next iteration step
+        b(:) = 0d0
         do ij = 1, JR-1
            b(ij) = BQ/workpop
         enddo
@@ -521,7 +522,7 @@ contains
         ! reset macroeconomic aggregates in each iteration step
         AA = 0d0; BQ = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; PBEN = 0d0; PCON = 0d0
 
-        Q_tmp = 0d0; KC_tmp = 0d0; Y_tmp = 0d0; KE_tmp = 0d0; C_tmp = 0d0
+        Q_tmp = 0d0; KC_tmp = 0d0; Y_tmp = 0d0; KE_tmp = 0d0; BQ_tmp = 0d0; C_tmp = 0d0
 
         do ij = 1, JJ
 
@@ -535,6 +536,7 @@ contains
                         Q_tmp(ij) = Q_tmp(ij) + Q_plus(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         KC_tmp(ij) = KC_tmp(ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE_tmp(ij) = KE_tmp(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
+                        BQ_tmp(ij) = BQ_tmp(ij) + b(ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         if (ik == 0) Y_tmp(ij) = Y_tmp(ij) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         if (ik > 0) Y_tmp(ij) = Y_tmp(ij) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij)
                         C_tmp(ij) = C_tmp(ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -593,8 +595,8 @@ contains
             o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
             k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
 
-            write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), C_tmp(ij)
-            write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) + C_tmp(ij)
+            write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), C_tmp(ij)
+            write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) + C_tmp(ij)
 
         enddo ! ij
 
