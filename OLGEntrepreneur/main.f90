@@ -510,7 +510,7 @@ contains
 
         integer :: ia, ik, ix, ip, iw, ie, ij
         real*8 :: LC_old, BQ_old
-        real*8 :: Q_tmp(JJ), KC_tmp(JJ), Y_tmp(JJ), KE_tmp(JJ), C_tmp(JJ)
+        real*8 :: Q_tmp(JJ), KC_tmp(JJ), Y_tmp(JJ), KE_tmp(JJ), BQ_tmp(JJ), C_tmp(JJ)
 
         ! copy labor supply
         LC_old = LC
