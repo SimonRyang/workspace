@@ -552,7 +552,7 @@ contains
                           l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           y_coh(0, ij) = y_coh(0, ij) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         else
-                          YE = YE + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij) + (1d0-delta_k)*k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
+                          YE = YE + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij)
                           c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           a_coh(1, ij) = a_coh(1, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
                           x_coh(1, ij) = x_coh(1, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
