@@ -498,11 +498,7 @@ contains
               enddo
             enddo
           enddo
-
-          write(*,*)sum(m(:, :, :, :, :, :, ij))
-          write(*,*)sum(m(:, :, :, 0, :, :, ij))
-          write(*,*)sum(m(:, :, :, 1:NP, :, :, ij))
-
+          
         enddo
 
     end subroutine
