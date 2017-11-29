@@ -495,7 +495,7 @@ module globals
         penc_com = (1d0-(1d0-phi)*ind_o)*min(income, p_u)
 
         ! calculate consumption-savings
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ip_com, ij_com) + b(ij_com) &
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + b(ij_com) &
                    - penc_com - Q_plus
 
         ! calculate future earning points
