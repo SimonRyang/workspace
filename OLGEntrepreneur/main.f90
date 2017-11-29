@@ -88,7 +88,7 @@ contains
           read(301,'(f13.8)')psi(ij)
         enddo
         close(301)
-        
+
         ! set up population structure
         rpop(0) = 1d0+n_p
         do ij = 1, JJ+1
@@ -611,7 +611,7 @@ contains
         taup_old = taup
 
         ! obtain aggregated contribution basis
-        PCON = PCON/max(taup, 1d-10)
+        PCON = max(PCON/max(taup, 1d-10), 1d-10)
 
         ! get budget balancing pension contribution rate
         taup = PBEN/PCON
