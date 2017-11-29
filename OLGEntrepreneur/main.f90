@@ -231,8 +231,6 @@ contains
                   S(0, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
               enddo
 
-              write(*,*)sum(S(0, :, :, :, :, :, :, JJ))
-
               !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)
               do ip = 0, NP
                 do ix = 0, NX
