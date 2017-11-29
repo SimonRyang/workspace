@@ -588,7 +588,7 @@ module globals
                         (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
         endif
 
-        write(*,*) ij_com, tomorrow, S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com), S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com)
+        !write(*,*) ij_com, tomorrow, S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com), S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com)
 
         ! calculate today's value function
         if(cons_com <= 0d0)then
