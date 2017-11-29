@@ -189,7 +189,7 @@ contains
 
         integer :: ij, ip
 
-        Omega = 1d0/((1d0-alpha)*(KK/LL)**alpha)
+        Omega = 1d0 !1d0/((1d0-alpha)*(KK/LL)**alpha)
 
         ! calculate new prices
         r = Omega*alpha*(KK/LL)**(alpha-1d0)-delta_k
