@@ -533,7 +533,7 @@ contains
                     do ia = 0, NA
 
                         ! skip if there is no household
-                        if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
+                        !if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
 
                         if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
