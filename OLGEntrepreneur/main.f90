@@ -598,7 +598,7 @@ contains
         YY = YC + YE
 
         ! compute gap on goods market
-        DIFF = YY-CC-II
+        DIFF = YY-CC-II-KE
 
         write(*,*) YC, YE, KC, KE, LC, BQ
 
