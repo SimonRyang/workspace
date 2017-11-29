@@ -489,13 +489,13 @@ module globals
 
         ! calculate current income
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
-                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
+                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
 
         ! pension contribution
         penc_com = (1d0-(1d0-phi)*ind_o)*min(income, p_u)
 
         ! calculate consumption-savings
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + b(ij_com) &
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
                    - taup*penc_com - Q_plus
 
         ! calculate future earning points
