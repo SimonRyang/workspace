@@ -587,8 +587,8 @@ contains
         write(*,*) ybar
 
         ! compute stock of capital
-        KK = damp*AA+(1d0-damp)*KK
-        LL = damp*LL+(1d0-damp)*LL_old
+        KK = damp*AA +(1d0-damp)*KK
+        LL = damp*LL +(1d0-damp)*LL_old
         II = (n_p+delta_k)*KK
         YY = Omega*KK**alpha*LL**(1d0-alpha)
 
