@@ -499,6 +499,8 @@ contains
             enddo
           enddo
 
+          write(*,*)sum(m(:, :, :, 0, :, :, ij)), sum(m(:, :, :, 1, :, :, ij)), sum(m(:, :, :, 2, :, :, ij)), sum(m(:, :, :, 3, :, :, ij)), sum(m(:, :, :, 4, :, :, ij))
+
         enddo
 
     end subroutine
