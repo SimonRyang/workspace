@@ -112,8 +112,6 @@ contains
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
         eta = exp(eta)
 
-        eta = eta(2)
-
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
@@ -499,8 +497,6 @@ contains
             enddo
           enddo
 
-          write(*,*)(/sum(m(:, :, :, 0, :, :, ij)), sum(m(:, :, :, 1, :, :, ij)), sum(m(:, :, :, 2, :, :, ij)), sum(m(:, :, :, 3, :, :, ij)), sum(m(:, :, :, 4, :, :, ij))/)/sum(m(:, :, :, :, :, :, ij))
-
         enddo
 
     end subroutine
@@ -599,6 +595,7 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II
 
+        write(*,*)PENB-taup*PENC
         write(*,*) KK, LL, BQ
 
     end subroutine
