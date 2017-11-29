@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 12
 
     ! set government variables
-    mu     = 1d0
+    mu     = 0d0
     lambda = 0d0
     phi    = 0d0
 
@@ -246,6 +246,9 @@ contains
                     penb(ia, :, ix, ip, :, :, JJ) = penb_t(0, ia, 0, ix, ip, 1, 1, JJ)
                     penc(ia, :, ix, ip, :, :, JJ) = penc_t(0, ia, 0, ix, ip, 1, 1, JJ)
                     V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
+
+                    write(*,*) a(ia)*(1d0+r) + pen(ip, ij) - Qplus(ia, 1, ix, ip, 1, 1, JJ) - c(ia, 1, ix, ip, 1, 1, JJ)
+                    call sleep(1)
 
                   enddo
                enddo
