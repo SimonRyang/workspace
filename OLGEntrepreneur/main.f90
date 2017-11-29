@@ -589,7 +589,7 @@ contains
         ybar = w*LC/workpop
 
         ! compute stock of capital
-        KC = damp*(AA-KE) +(1d0-damp)*KC
+        KC = damp*AA +(1d0-damp)*KC
         KK =  KC + KE
         LC = damp*LC +(1d0-damp)*LC_old
         BQ = damp*BQ +(1d0-damp)*BQ_old
