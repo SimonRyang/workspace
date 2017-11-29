@@ -238,7 +238,7 @@ module globals
      varphi_x = max(min(varphi_x, 1d0),0d0)
 
      ! calculate future part of the value function
-     S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
+     S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-13)**egam/egam
 
     if (varphi_a <= varphi_x) then
        EV_temp = (varphi_a             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
@@ -383,7 +383,7 @@ module globals
       ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
-      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
+      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-13)**egam/egam
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
@@ -397,7 +397,7 @@ module globals
       endif
 
       if (a_temp < 0d0) then
-        inv_w = -1d-16**egam/egam*(1d0+abs(a_temp))
+        inv_w = -1d-13**egam/egam*(1d0+abs(a_temp))
       else
         inv_w = - (psi(ij_com+1)*EV_temp + S_temp)
       endif
@@ -446,7 +446,7 @@ module globals
       ikr = min(ikr+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-16)**egam/egam
+      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-13)**egam/egam
 
       ! get optimal investment strategy
       EV_temp = (varphi_a*varphi_x*varphi_k                  *(egam*EV(ial, ikl, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
@@ -459,7 +459,7 @@ module globals
                  (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(egam*EV(iar, ikr, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
 
       if (a_temp < 0d0) then
-        inv_e = -1d-16**egam/egam*(1d0+abs(a_temp))
+        inv_e = -1d-13**egam/egam*(1d0+abs(a_temp))
       else
         inv_e = - (psi(ij_com+1)*EV_temp + S_temp)
       endif
@@ -533,11 +533,11 @@ module globals
 
         ! calculate today's value function
         if(cons_com <= 0d0)then
-           cons_o = -1d-16**egam/egam*(1d0+abs(cons_com))
+           cons_o = -1d-13**egam/egam*(1d0+abs(cons_com))
         elseif(lab_com < 0d0) then
-          cons_o = -1d-16**egam/egam*(1d0+abs(lab_com))
+          cons_o = -1d-13**egam/egam*(1d0+abs(lab_com))
         elseif(lab_com >= 1d0) then
-          cons_o = -1d-16**egam/egam*lab_com
+          cons_o = -1d-13**egam/egam*lab_com
         else
            cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
         endif
@@ -590,7 +590,7 @@ module globals
 
         ! calculate today's value function
         if(cons_com <= 0d0)then
-           cons_r = -1d-16**egam/egam*(1d0+abs(cons_com))
+           cons_r = -1d-13**egam/egam*(1d0+abs(cons_com))
         else
            cons_r = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
         endif
