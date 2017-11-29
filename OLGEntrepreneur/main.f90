@@ -65,8 +65,6 @@ contains
                                             (/5d0*KK, CC, II/)/YY*100d0, &
                                             ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
-            write(*,*) taup
-
             if(abs(DIFF/YY)*100d0 < sig) return
 
         enddo
@@ -613,8 +611,6 @@ contains
 
         ! damping pension contribution rate
         taup = damp*taup + (1d0-damp)*taup_old
-
-        write(*,*) PCON, PBEN
 
     end subroutine
 
