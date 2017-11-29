@@ -38,7 +38,7 @@ module globals
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
-    real*8, parameter :: beta = 0.99d0
+    real*8, parameter :: beta = 0.96d0**5
     real*8, parameter :: mu_b = 0d0
 
     ! maximum investment in annuities
@@ -79,7 +79,7 @@ module globals
     real*8, parameter :: p_u    = 2d0
 
     ! pension fraction of last income
-    real*8, parameter :: kappa = 0.45d0
+    real*8, parameter :: kappa = 0d0! 0.45d0
 
     ! numerical parameters
     integer, parameter :: itermax = 200
