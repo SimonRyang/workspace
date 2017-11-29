@@ -492,7 +492,7 @@ module globals
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
         ! pension contribution
-        penc_com = (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u)
+        penc_com = (1d0-(1d0-phi)*ind_o)*min(income, p_u)
 
         ! calculate consumption-savings
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income + pen(ip_com, ij_com) + b(ij_com) &

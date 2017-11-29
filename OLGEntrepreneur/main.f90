@@ -612,11 +612,8 @@ contains
         ! copy tax rate from previous iteration for damping
         taup_old = taup
 
-        ! obtain aggregated contribution basis
-        PCON = max(PCON/max(taup, 1d-10), 1d-10)
-
         ! get budget balancing pension contribution rate
-        taup = PBEN/PCON
+        taup = PBEN/max(PCON, 1d-10)
 
         ! damping pension contribution rate
         taup = damp*taup + (1d0-damp)*taup_old
