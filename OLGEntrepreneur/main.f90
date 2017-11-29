@@ -62,7 +62,7 @@ contains
             call check_grid(iqmax, iamax, ikmax, ixmax)
 
             write(*,'(i4,4i7,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-                                            (/5d0*KK, CC, II/)/YY*100d0, &
+                                            (/5d0*LC, CC, II/)/YY*100d0, &
                                             ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
             if(abs(DIFF/YY)*100d0 < sig) return
@@ -149,8 +149,8 @@ contains
         taup  = 0.184d0
 
         ! set starting values
-        KK = 7.00d0
-        LL = 4.60d0
+        LC = 7.00d0
+        LC = 4.60d0
         BQ = 0.60d0
 
         ! initial guess bequests
@@ -186,11 +186,11 @@ contains
 
         integer :: ij, ip
 
-        Omega = 1d0/((1d0-alpha)*(KK/LL)**alpha)
+        Omega = 1d0/((1d0-alpha)*(LC/LC)**alpha)
 
         ! calculate new prices
-        r = Omega*alpha*(KK/LL)**(alpha-1d0)-delta_k
-        w = Omega*(1d0-alpha)*(KK/LL)**alpha
+        r = Omega*alpha*(LC/LC)**(alpha-1d0)-delta_k
+        w = Omega*(1d0-alpha)*(LC/LC)**alpha
 
         ! compute bequest per capita within workforce for next iteration step
         do ij = 1, JR-1
@@ -508,17 +508,17 @@ contains
         implicit none
 
         integer :: ia, ik, ix, ip, iw, ie, ij
-        real*8 :: LL_old, BQ_old
+        real*8 :: LC_old, BQ_old
 
         ! copy labor supply
-        LL_old = LL
+        LC_old = LC
         BQ_old = BQ
 
         ! calculate cohort averages
         c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penb_coh = 0d0; penc_coh = 0d0
 
         ! reset macroeconomic aggregates in each iteration step
-        AA = 0d0; BQ = 0d0; CC = 0d0; LL = 0d0; PBEN = 0d0; PCON = 0d0
+        AA = 0d0; BQ = 0d0; CC = 0d0; YE = 0d0; LC = 0d0; LE = 0d0; PBEN = 0d0; PCON = 0d0
 
         do ij = 1, JJ
 
@@ -537,7 +537,7 @@ contains
                         AA = AA + a_plus(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
                         CC = CC + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         BQ = BQ + (1d0+r)*a_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
-                        LL = LL + eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                        KE = KE + k(ik)**m(ia, ik, ix, ip, iw, ie, ij)
                         PBEN = PBEN + penb(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         PCON = PCON + penc(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
 
@@ -545,12 +545,14 @@ contains
                         penc_coh(ij) = penc_coh(ij) + penc(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
 
                         if(ik == 0) then
+                          LC = LC + eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
                           x_coh(0, ij) = x_coh(0, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
                           l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           y_coh(0, ij) = y_coh(0, ij) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         else
+                          YE = YE + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij)
                           c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           a_coh(1, ij) = a_coh(1, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
                           x_coh(1, ij) = x_coh(1, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -584,19 +586,21 @@ contains
         enddo ! ij
 
         ! get average income
-        ybar = w*LL/workpop
+        ybar = w*LC/workpop
 
         ! compute stock of capital
-        KK = damp*AA +(1d0-damp)*KK
-        LL = damp*LL +(1d0-damp)*LL_old
+        KC = damp*(AA-KE) +(1d0-damp)*KC
+        KK =  KC + KE
+        LC = damp*LC +(1d0-damp)*LC_old
         BQ = damp*BQ +(1d0-damp)*BQ_old
         II = (n_p+delta_k)*KK
-        YY = Omega*KK**alpha*LL**(1d0-alpha)
+        YC = Omega*KC**alpha*LC**(1d0-alpha)
+        YY = YC + YE
 
         ! compute gap on goods market
         DIFF = YY-CC-II
 
-        write(*,*) KK, LL, BQ
+        write(*,*) LC, LC, BQ
 
     end subroutine
 

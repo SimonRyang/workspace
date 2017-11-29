@@ -23,7 +23,7 @@ module globals
     integer, parameter :: NA = 12
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 4
+    integer, parameter :: NK = 12
 
     ! number of points on the annuity asset grid
     integer, parameter :: NX = 4
@@ -49,7 +49,7 @@ module globals
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: k_min = 0.6d0
+    real*8, parameter :: k_min = 0.2d0
     real*8, parameter :: phi_k = 0.4d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
@@ -103,7 +103,7 @@ module globals
     real*8 :: r, w
     real*8 :: ybar
     real*8 :: AA, BQ, PBEN, PCON
-    real*8 :: YY, CC, II, KK, LL
+    real*8 :: YY, YC, YE, CC, II, KK, KC, KE, LC
 
     ! production variables
     real*8 :: Omega
