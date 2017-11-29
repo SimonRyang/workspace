@@ -76,7 +76,7 @@ module globals
 
     ! size of the pension claim grid
     real*8, parameter :: p_l    = 0d0
-    real*8, parameter :: p_u    = 2d0
+    real*8, parameter :: p_u    = 1d0 !2d0
 
     ! pension fraction of last income
     real*8, parameter :: kappa = 0.45d0
