@@ -71,7 +71,6 @@ contains
 
         write(*,*)'No Convergence'
 
-
     end subroutine
 
     ! initializes all remaining variables
@@ -118,8 +117,6 @@ contains
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
-
-        theta = 0d0
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
