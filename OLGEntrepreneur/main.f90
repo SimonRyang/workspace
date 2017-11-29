@@ -514,7 +514,7 @@ contains
         LL_old = LL
 
         ! calculate cohort averages
-        c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0
+        c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penb_coh = 0d0; penc_coh = 0d0
 
         ! reset macroeconomic aggregates in each iteration step
         AA = 0d0; BQ = 0d0; CC = 0d0; LL = 0d0; PBEN = 0d0; PCON = 0d0
@@ -587,8 +587,8 @@ contains
         write(*,*) ybar
 
         write(*,*)PBEN, PCON, w*LL
-        write(*,*)penb_coh
-        write(*,*)penc_coh
+        write(*,*)penb_coh/max(sum(m(:, 0, :, :, :, :, ij)), 1d-13)
+        write(*,*)penc_coh/max(sum(m(:, 0, :, :, :, :, ij)), 1d-13)
         write(*,*)y_coh(0,:)
 
         ! compute stock of capital
