@@ -247,7 +247,8 @@ contains
                     penc(ia, :, ix, ip, :, :, JJ) = penc_t(0, ia, 0, ix, ip, 1, 1, JJ)
                     V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
 
-                    write(*,*) a(ia)*(1d0+r) + pen(ip, ij) - Qplus(ia, 1, ix, ip, 1, 1, JJ) - c(ia, 1, ix, ip, 1, 1, JJ)
+                    write(*,*) a(ia)*(1d0+r) + pen(ip, ij) - Q_plus(ia, 0, ix, ip, 1, 1, JJ) - c(ia, 0, ix, ip, 1, 1, JJ)
+                    write(*,*) Q_plus(ia, 0, ix, ip, 1, 1, JJ), a_plus(ia, 0, ix, ip, 1, 1, JJ)
                     call sleep(1)
 
                   enddo
