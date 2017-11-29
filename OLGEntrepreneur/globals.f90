@@ -84,7 +84,7 @@ module globals
     ! numerical parameters
     integer, parameter :: itermax = 200
     real*8, parameter :: sig = 1d-6
-    real*8, parameter :: damp = 0.5d0
+    real*8, parameter :: damp = 0.25d0
 
     ! measure time
     integer :: time
