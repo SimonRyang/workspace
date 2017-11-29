@@ -521,7 +521,7 @@ contains
         ! reset macroeconomic aggregates in each iteration step
         AA = 0d0; BQ = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; PBEN = 0d0; PCON = 0d0
 
-        Q_tmp = 0d0; KC_tmp = 0d0; Y_tmp = 0d0; KE_tmp = 0d0; C_tmp
+        Q_tmp = 0d0; KC_tmp = 0d0; Y_tmp = 0d0; KE_tmp = 0d0; C_tmp = 0d0
 
         do ij = 1, JJ
 
