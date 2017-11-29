@@ -614,7 +614,7 @@ contains
         taup_old = taup
 
         ! obtain aggregated contribution basis
-        PCON = max(PCON/taup,1d-10)
+        PCON = PCON/max(taup, 1d-10)
 
         ! get budget balancing pension contribution rate
         taup = PBEN/PCON
