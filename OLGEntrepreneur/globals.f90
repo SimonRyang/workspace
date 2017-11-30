@@ -582,7 +582,7 @@ module globals
         penc_com = 0d0
 
         ! available assets
-        ass_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
+        ass_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com)
 
         ! calculate consumption
         cons_com = ass_com - Q_plus
