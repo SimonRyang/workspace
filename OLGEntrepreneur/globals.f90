@@ -335,7 +335,7 @@ module globals
 
       endif
 
-      if (mx>0d0) write(*,*) mx
+      if (mx>1d-5) write(*,*) mx, io_p, ia, ik, ix, ip, iw, ie, ij
 
       ! copy decisions
       Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
