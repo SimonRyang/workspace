@@ -189,11 +189,11 @@ contains
 
         integer :: ij, ip
 
-        Omega = 1d0/((1d0-alpha)*(LC/LC)**alpha)
+        Omega = 1d0/((1d0-alpha)*(KC/LC)**alpha)
 
         ! calculate new prices
-        r = Omega*alpha*(LC/LC)**(alpha-1d0)-delta_k
-        w = Omega*(1d0-alpha)*(LC/LC)**alpha
+        r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
+        w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
         ! compute bequest per capita within workforce for next iteration step
         b(:) = 0d0
