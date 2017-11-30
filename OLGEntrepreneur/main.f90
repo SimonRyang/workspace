@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 24
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 0d0
     phi    = 0d0
 
@@ -118,7 +118,7 @@ contains
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
 
-        !theta = 0d0
+        theta = 0d0
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
@@ -648,7 +648,7 @@ contains
         ! get budget balancing pension contribution rate
         taup = PBEN/PCON
 
-        !taup = damp*taup + (1d0-damp)*taup_old
+        taup = damp*taup + (1d0-damp)*taup_old
 
         write(*,*) PBEN, PCON, taup
 
