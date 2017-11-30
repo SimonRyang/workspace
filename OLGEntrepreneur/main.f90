@@ -513,7 +513,7 @@ contains
 
         integer :: ia, ik, ix, ip, iw, ie, ij
         real*8 :: LC_old, BQ_old
-        real*8 :: Q_tmp(JJ), KC_tmp(JJ), Y_tmp(JJ), KE_tmp(JJ), BQ_tmp(JJ), C_tmp(JJ)
+        real*8 :: Q_tmp(JJ), KC_tmp(JJ), Y_tmp(JJ), KE_tmp(JJ), BQ_tmp(JJ), TAUP_tmp(JJ), C_tmp(JJ)
 
         ! copy labor supply
         LC_old = LC
@@ -541,6 +541,7 @@ contains
                         KE_tmp(ij) = KE_tmp(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
                         BQ_tmp(ij) = BQ_tmp(ij) + b(ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         if (ik == 0) Y_tmp(ij) = Y_tmp(ij) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                        if (ik == 0) TAUP_tmp(ij) = TAUP_tmp(ij) + taup*w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         if (ik > 0) Y_tmp(ij) = Y_tmp(ij) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij)
                         C_tmp(ij) = C_tmp(ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
 
@@ -598,12 +599,12 @@ contains
             o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
             k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
 
-            write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), C_tmp(ij)
-            write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) + C_tmp(ij)
+            write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
+            write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
 
         enddo ! ij
 
-        write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) + C_tmp(:))
+        write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) + TAUP_tmp(:) + C_tmp(:))
 
         ! get average income
         ybar = w*LC/workpop
