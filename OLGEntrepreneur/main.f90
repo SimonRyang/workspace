@@ -9,10 +9,10 @@ program main
 
     implicit none
 
-    integer, parameter :: numthreads = 8
+    integer, parameter :: numthreads = 24
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 0d0
     phi    = 0d0
 
@@ -118,7 +118,7 @@ contains
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
 
-        ! theta = 0d0
+        theta = 0d0
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
@@ -536,6 +536,7 @@ contains
                   do ik = 0, NK
                     do ia = 0, NA
 
+                       if (Q_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*) Q_plus(ia, ik, ix, ip, iw, ie, ij), ia, ik, ix, ip, iw, ie, ij)
                         Q_tmp(ij) = Q_tmp(ij) + Q_plus(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         KC_tmp(ij) = KC_tmp(ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE_tmp(ij) = KE_tmp(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
