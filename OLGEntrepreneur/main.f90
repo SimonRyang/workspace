@@ -9,7 +9,7 @@ program main
 
     implicit none
 
-    integer, parameter :: numthreads = 24
+    integer, parameter :: numthreads = 1
 
     ! set government variables
     mu     = 1d0
