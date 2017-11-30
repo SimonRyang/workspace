@@ -599,12 +599,12 @@ contains
             o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
             k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
 
-            write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
-            write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
+            !write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
+            !write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
 
         enddo ! ij
 
-        write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) + TAUP_tmp(:) + C_tmp(:))
+        !write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) + TAUP_tmp(:) + C_tmp(:))
 
         ! get average income
         ybar = w*LC/workpop
@@ -621,7 +621,7 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II
 
-        write(*,*) YC, YE, KC, KE, LC, BQ
+        !write(*,*) YC, YE, KC, KE, LC, BQ
 
     end subroutine
 
@@ -640,7 +640,7 @@ contains
 
         !taup = damp*taup + (1d0-damp)*taup_old
 
-        write(*,*) PBEN, PCON, taup
+        !write(*,*) PBEN, PCON, taup
 
     end subroutine
 
