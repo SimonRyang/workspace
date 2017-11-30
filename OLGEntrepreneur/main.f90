@@ -9,7 +9,7 @@ program main
 
     implicit none
 
-    integer, parameter :: numthreads = 1
+    integer, parameter :: numthreads = 24
 
     ! set government variables
     mu     = 1d0
@@ -648,7 +648,7 @@ contains
         ! get budget balancing pension contribution rate
         taup = PBEN/PCON
 
-        taup = damp*taup + (1d0-damp)*taup_old
+        !taup = damp*taup + (1d0-damp)*taup_old
 
         write(*,*) PBEN, PCON, taup
 
