@@ -76,7 +76,7 @@ module globals
 
     ! size of the pension claim grid
     real*8, parameter :: p_l    = 0d0
-    real*8, parameter :: p_u    = 2d0
+    real*8, parameter :: p_u    = 3d0
 
     ! pension fraction of last income
     real*8, parameter :: kappa = 0.45d0
@@ -143,11 +143,11 @@ module globals
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com, iter
     integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
-    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, penc_com, ass_com
+    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, penc_com, aas_com
     real*8 :: DIFF
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
-    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, penc_com, ass_com)
+    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, penc_com, aas_com)
 
 
   contains
@@ -353,7 +353,7 @@ module globals
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
       penb_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
       penc_t(io_p, ia, ik, ix, ip, iw, ie, ij) = penc_com
-      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  ass_com - x_in(1)
+      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  aas_com - x_in(1)
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
@@ -504,17 +504,17 @@ module globals
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
 
         ! pension contribution
-        penc_com = (1d0-(1d0-phi)*ind_o)*min(income, p_u)
+        penc_com = (1d0-(1d0-phi)*ind_o)*income
 
         ! available assets
-        ass_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
+        aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
                    - taup*penc_com
 
         ! calculate consumption
-        cons_com = ass_com - Q_plus
+        cons_com = aas_com - Q_plus
 
         ! calculate future earning points
-        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda+(1d0-lambda)*min(income, p_u)))/dble(ij_com)
+        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda+(1d0-lambda)*income))/dble(ij_com)
 
         ! calculate linear interpolation for future part of value function
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
@@ -582,10 +582,10 @@ module globals
         penc_com = 0d0
 
         ! available assets
-        ass_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com)
+        aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com)
 
         ! calculate consumption
-        cons_com = ass_com - Q_plus
+        cons_com = aas_com - Q_plus
 
         ! define future earning points
         p_plus_com = p(ip_com)

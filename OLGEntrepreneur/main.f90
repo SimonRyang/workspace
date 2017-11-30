@@ -503,6 +503,12 @@ contains
 
         enddo
 
+        do ip = 0, NP
+          write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, JR))
+          write(*,*)sum(m(:, :, :, ip, :, :, JJ))/sum(m(:, :, :, :, :, :, JJ))
+       enddo
+
+
     end subroutine
 
 
