@@ -147,7 +147,7 @@ module globals
     real*8 :: DIFF
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
-    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, penc_com)
+    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, penc_com, ass_com)
 
 
   contains
@@ -345,10 +345,6 @@ module globals
 
       endif
 
-      if (mx<0d0) write(*,*) mx, x_p, io_p, ia, ik, ix, ip, iw, ie, ij
-      if (mx<0d0) write(*,*) omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij), omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij), omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij)
-      if (mx<0d0) write(*,*) omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij), omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij), omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij)
-
       ! copy decisions
       Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
       a_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1) - (1d0-xi)*k_p - mx
@@ -357,7 +353,7 @@ module globals
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
       penb_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
       penc_t(io_p, ia, ik, ix, ip, iw, ie, ij) = penc_com
-      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  cons_com
+      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  ass_com - x_in(1)
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
@@ -510,9 +506,12 @@ module globals
         ! pension contribution
         penc_com = (1d0-(1d0-phi)*ind_o)*min(income, p_u)
 
-        ! calculate consumption-savings
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
-                   - taup*penc_com - Q_plus
+        ! available assets
+        ass_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
+                   - taup*penc_com
+
+        ! calculate consumption
+        cons_com =  - Q_plus
 
         ! calculate future earning points
         p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda+(1d0-lambda)*min(income, p_u)))/dble(ij_com)
