@@ -318,13 +318,13 @@ module globals
       if (ij < JR) then
 
         if (varphi_q <= varphi_p) then
-          mx = min((varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                    (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-                    (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), 100d0)
+          mx = (varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+                (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
         else
-          mx = min((varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                    (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-                    (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), 100d0)
+          mx = (varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+                (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
         endif
 
         x_p = (1d0+r)/psi(ij)*x(ix) + mx
@@ -334,6 +334,8 @@ module globals
         x_p = x(ix)
 
       endif
+
+      if (mx>0d0) write(*,*) mx
 
       ! copy decisions
       Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
