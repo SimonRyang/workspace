@@ -143,7 +143,7 @@ module globals
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com, iter
     integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
-    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, penc_com
+    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, penc_com, ass_com
     real*8 :: DIFF
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
