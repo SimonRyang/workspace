@@ -27,7 +27,7 @@ real*8, private :: starttime_cpu
 logical, private :: tbox_seed = .true.
 
 ! Level of tolerance for all routines
-real*8,  private  :: tbox_gftol = 1d-12
+real*8,  private  :: tbox_gftol = 1d-8
 
 ! Maximum number of iterations
 integer, private  :: tbox_itermax_min = 500
