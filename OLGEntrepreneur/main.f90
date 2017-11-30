@@ -536,7 +536,7 @@ contains
                   do ik = 0, NK
                     do ia = 0, NA
 
-                       if (Q_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*) Q_plus(ia, ik, ix, ip, iw, ie, ij), ia, ik, ix, ip, iw, ie, ij)
+                       if (Q_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*) Q_plus(ia, ik, ix, ip, iw, ie, ij), ia, ik, ix, ip, iw, ie, ij
                         Q_tmp(ij) = Q_tmp(ij) + Q_plus(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         KC_tmp(ij) = KC_tmp(ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE_tmp(ij) = KE_tmp(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
