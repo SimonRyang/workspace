@@ -629,6 +629,8 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II
 
+        write(*,*)'pen', PBEN/PCON, taup
+
         write(*,*) YC, YE, KC, KE, LC, BQ
 
     end subroutine
