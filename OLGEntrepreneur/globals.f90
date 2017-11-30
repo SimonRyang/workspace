@@ -511,7 +511,7 @@ module globals
                    - taup*penc_com
 
         ! calculate consumption
-        cons_com =  - Q_plus
+        cons_com = ass_com - Q_plus
 
         ! calculate future earning points
         p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda+(1d0-lambda)*min(income, p_u)))/dble(ij_com)
@@ -581,9 +581,11 @@ module globals
         ! pension contribution
         penc_com = 0d0
 
+        ! available assets
+        ass_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
+
         ! calculate consumption
-        cons_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
-                    - Q_plus
+        cons_com = ass_com - Q_plus
 
         ! define future earning points
         p_plus_com = p(ip_com)
