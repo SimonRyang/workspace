@@ -197,17 +197,27 @@ module globals
         ! set up communication variables
         iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p; iw_com = iw; ie_com = ie; ij_com = ij
 
-       ! get best guess for the root of foc_real
-        x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
-        x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+        if (Q(iq_p) > (1d0-xi)*k_min) then
 
-       ! solve the household problem using fminsearch
-       call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
+         ! get best guess for the root of foc_real
+          x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+          x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
 
-       ! portfolio share for capital
-       omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(1)
-       omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(2)
-       S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -fret
+         ! solve the household problem using fminsearch
+         call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
+
+         ! portfolio share for capital
+         omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(1)
+         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(2)
+         S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -fret
+
+      else
+
+        omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+        omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv((/1d0, 0d0))
+
+      endif
 
     end subroutine
 
