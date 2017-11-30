@@ -361,6 +361,8 @@ module globals
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
+      if (ij>JR) write(*,*) Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) - a_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+
   end subroutine
 
   ! the first order condition with respect to next period real estate
