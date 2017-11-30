@@ -62,7 +62,7 @@ contains
             call check_grid(iqmax, iamax, ikmax, ixmax)
 
             write(*,'(i4,4i7,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-                                            (/5d0*LC, CC, II/)/YY*100d0, &
+                                            (/5d0*KK, CC, II/)/YY*100d0, &
                                             ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
             if(abs(DIFF/YY)*100d0 < sig) return
@@ -118,21 +118,24 @@ contains
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
 
+        theta = 0d0
+
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
 
         ! initialize liquid asset grid
         call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
-        ! initialize liquid annuity grid
-        call grid_Cons_Grow(x, x_l, x_u, x_grow)
-
-        ! initialize pension claim grid
-        call grid_Cons_Equi(p, p_l, p_u)
-
         ! endogenous upper bound of housing grid
         call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
+
+        ! initialize liquid annuity grid
+        call grid_Cons_Grow(x, x_l, x_u, x_grow)
+        x(0) = x_l
+
+        ! initialize pension claim grid
+        call grid_Cons_Equi(p, p_l, p_u)
 
         ! annuity payments
         ann = 0d0
