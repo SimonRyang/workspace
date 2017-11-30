@@ -361,7 +361,7 @@ module globals
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
-      if (ij>JR) write(*,*) Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) + cons_com - (1d0+r)*a(ia)
+      if (ij>JR) write(*,*) Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) + cons_com - (1d0+r)*a(ia) - pen(ip, ij) - ann(ix, ij)
 
   end subroutine
 
