@@ -33,7 +33,7 @@ real*8,  private  :: tbox_gftol = 1d-8
 integer, private  :: tbox_itermax_min = 500
 
 ! Maximum number of iterations for brent_pow
-integer, parameter, private  :: tbox_tbox_itermax_pow_b = 1000
+integer, parameter, private  :: tbox_tbox_itermax_pow_b = 500
 
 ! Level of tolerance for all routines
 real*8,  private  :: tbox_gftol_root = 1d-8

@@ -345,9 +345,9 @@ module globals
 
       endif
 
-      if (mx>1d-12) write(*,*) mx, x_p, io_p, ia, ik, ix, ip, iw, ie, ij
-      if (mx>1d-12) write(*,*) omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij), omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij), omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij)
-      if (mx>1d-12) write(*,*) omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij), omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij), omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij)
+      if (mx<0d0) write(*,*) mx, x_p, io_p, ia, ik, ix, ip, iw, ie, ij
+      if (mx<0d0) write(*,*) omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij), omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij), omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij)
+      if (mx<0d0) write(*,*) omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij), omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij), omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij)
 
       ! copy decisions
       Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
