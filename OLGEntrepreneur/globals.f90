@@ -280,7 +280,7 @@ module globals
       io_p_com = io_p; ia_com = ia; ik_com = ik; ix_com = ix; ip_com = ip; iw_com = iw; ie_com = ie; ij_com = ij
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
+      x_in(1) = 1d0 !max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
       x_in(2) = 0.33d0 ! max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
 
       ! solve the household problem using fminsearch
