@@ -632,7 +632,7 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II
 
-        write(*,*)'pen', PBEN, PCON, w*LC, PBEN/PCON, taup
+        write(*,*)'pen', PBEN, PCON, w*LC, ybar, PBEN/PCON, taup
 
         write(*,*) YC, YE, KC, KE, LC, BQ
 
