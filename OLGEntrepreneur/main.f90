@@ -512,11 +512,11 @@ contains
        !    write(*,*)sum(m(:, :, :, ip, :, :, JJ))/sum(m(:, :, :, :, :, :, JJ))
        ! enddo
 
-       write(*,*)sum(m(:, 0, :, :, :, :, 2))
-       write(*,*)sum(m(:, 1, :, :, :, :, 2))
-       write(*,*)sum(m(:, 0, :, :, :, :, 5))
-       write(*,*)sum(m(:, 1, :, :, :, :, 5))
-       write(*,*)sum(m(:, NA, :, :, :, :, :))
+       write(*,*)sum(m(0, :, :, :, :, :, 2))
+       write(*,*)sum(m(1, :, :, :, :, :, 2))
+       write(*,*)sum(m(0, :, :, :, :, :, 5))
+       write(*,*)sum(m(1, :, :, :, :, :, 5))
+       write(*,*)sum(m(NA, :, :, :, :, :, :))
 
     end subroutine
 
