@@ -13,7 +13,7 @@ program main
 
     ! set government variables
     mu     = 1d0
-    lambda = 0d0
+    lambda = 1d0
     phi    = 0d0
 
     ! initialize remaining variables
@@ -648,7 +648,7 @@ contains
         ! get budget balancing pension contribution rate
         taup = PBEN/PCON
 
-        taup = damp**2*taup + (1d0-damp**2)*taup_old
+        taup = damp*taup + (1d0-damp)*taup_old
 
         !write(*,*) PBEN, PCON, taup
 
