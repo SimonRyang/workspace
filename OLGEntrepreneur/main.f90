@@ -624,7 +624,7 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II
 
-        write(*,*)'pen', PBEN, PCON, PBEN/PCON, taup
+        write(*,*)'pen', PBEN, PCON, w*LC, PBEN/PCON, taup
 
         write(*,*) YC, YE, KC, KE, LC, BQ
 
@@ -644,8 +644,6 @@ contains
         taup = PBEN/PCON
 
         taup = damp*taup + (1d0-damp)*taup_old
-
-        write(*,*) PBEN, PCON, taup
 
     end subroutine
 
