@@ -641,7 +641,7 @@ contains
         taup_old = taup
 
         ! get budget balancing pension contribution rate
-        taup = PBEN/PCON
+        taup = PBEN/w/LC
 
         taup = damp*taup + (1d0-damp)*taup_old
 
