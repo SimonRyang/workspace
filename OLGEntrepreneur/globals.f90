@@ -80,12 +80,12 @@ module globals
     real*8, parameter :: p_u    = 2d0
 
     ! pension fraction of last income
-    real*8, parameter :: kappa = 0.45d0
+    real*8, parameter :: kappa = 0.15d0
 
     ! numerical parameters
     integer, parameter :: itermax = 200
     real*8, parameter :: sig = 1d-6
-    real*8, parameter :: damp = 0.15d0
+    real*8, parameter :: damp = 0.45d0
 
     ! measure time
     integer :: time
