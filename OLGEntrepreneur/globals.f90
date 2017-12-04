@@ -23,7 +23,7 @@ module globals
     integer, parameter :: NA = 12
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 12
+    integer, parameter :: NK = 2
 
     ! number of points on the annuity asset grid
     integer, parameter :: NX = 1
@@ -56,7 +56,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: Q_l    = 0d0
-    real*8, parameter :: Q_u    = 6d0
+    real*8, parameter :: Q_u    = 5d0
     real*8, parameter :: Q_grow = 0.05d0
 
     ! size of the liquid asset grid
@@ -84,7 +84,7 @@ module globals
     ! numerical parameters
     integer, parameter :: itermax = 200
     real*8, parameter :: sig = 1d-6
-    real*8, parameter :: damp = 0.50d0
+    real*8, parameter :: damp = 0.010d0
 
     ! measure time
     integer :: time
