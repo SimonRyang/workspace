@@ -621,7 +621,7 @@ contains
         KC = damp*AA +(1d0-damp)*KC
         KK =  KC + KE
         LC = damp*LC +(1d0-damp)*LC_old
-        !BQ = damp*BQ +(1d0-damp)*BQ_old
+        BQ = damp*BQ +(1d0-damp)*BQ_old
         II = (n_p+delta_k)*KK
         YC = Omega*KC**alpha*LC**(1d0-alpha)
         YY = YC + YE
