@@ -499,7 +499,7 @@ module globals
         income = w*eff(ij_com)*eta(iw_com)*lab_com
 
         ! pension contribution
-        penc_com = min(income, 2d0)
+        penc_com = min(income, 20d0)
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
@@ -509,7 +509,7 @@ module globals
         cons_com = aas_com - Q_plus
 
         ! calculate future earning points
-        p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda+(1d0-lambda)*min(income, 2d0)))/dble(ij_com)
+        p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda+(1d0-lambda)*min(income, 20d0)))/dble(ij_com)
 
         ! calculate linear interpolation for future part of value function
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
