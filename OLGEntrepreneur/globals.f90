@@ -23,7 +23,7 @@ module globals
     integer, parameter :: NA = 12
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 2
+    integer, parameter :: NK = 12
 
     ! number of points on the annuity asset grid
     integer, parameter :: NX = 1
@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.96d0**5
-    real*8, parameter :: mu_b = 0.5d0
+    real*8, parameter :: mu_b = 0.25d0
 
     ! maximum investment in annuities
     real*8, parameter :: mx_max = 0.10d0
