@@ -160,7 +160,7 @@ contains
         enddo
 
         ! initial guess average income
-        ybar = 1d0
+        ybar = 0.2d0
 
         ! initialize value functions
         V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
@@ -649,7 +649,7 @@ contains
         taup_old = taup
 
         ! get budget balancing pension contribution rate
-        taup = PBEN/w/LC
+        taup = PBEN/PCON
 
         taup = damp*taup + (1d0-damp)*taup_old
 
