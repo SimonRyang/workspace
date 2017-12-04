@@ -631,7 +631,7 @@ contains
 
         write(*,*)'pen', PBEN, PCON, PBEN/PCON, taup
 
-        !write(*,*) YC, YE, KC, KE, LC, BQ
+        write(*,*) YC, YE, KC, KE, LC, BQ
 
     end subroutine
 
@@ -648,7 +648,7 @@ contains
         ! get budget balancing pension contribution rate
         taup = PBEN/PCON
 
-        !taup = damp*taup + (1d0-damp)*taup_old
+        taup = damp*taup + (1d0-damp)*taup_old
 
         write(*,*) PBEN, PCON, taup
 
