@@ -279,7 +279,7 @@ module globals
 
       ! get best initial guess from future period
       x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
-      x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 0.33d0)
+      x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
 
       ! solve the household problem using fminsearch
       if (ij < JR) then
