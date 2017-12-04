@@ -160,7 +160,7 @@ contains
         enddo
 
         ! initial guess average income
-        ybar = 0.2d0
+        ybar = 0.4d0
 
         ! initialize value functions
         V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
