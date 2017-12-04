@@ -29,7 +29,7 @@ module globals
     integer, parameter :: NX = 1
 
     ! number of points on the pension claim grid
-    integer, parameter :: NP = 4
+    integer, parameter :: NP = 8
 
     ! demographic parameters
     real*8, parameter :: n_p = (1d0+0.005d0)**5-1d0
@@ -76,15 +76,15 @@ module globals
 
     ! size of the pension claim grid
     real*8, parameter :: p_l    = 0d0
-    real*8, parameter :: p_u    = 3d0
+    real*8, parameter :: p_u    = 5d0
 
     ! pension fraction of last income
     real*8, parameter :: kappa = 0.45d0
 
     ! numerical parameters
-    integer, parameter :: itermax = 20000
+    integer, parameter :: itermax = 200
     real*8, parameter :: sig = 1d-6
-    real*8, parameter :: damp = 0.010d0
+    real*8, parameter :: damp = 0.45d0
 
     ! measure time
     integer :: time
@@ -487,7 +487,7 @@ module globals
         real*8, intent(in) :: x_in(:)
 
         ! variable declarations
-        real*8 :: cons_o, Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
+        real*8 :: cons_o, Q_plus, income, tomorrow, varphi_q, varphi_p
         integer :: iql, iqr, ipl, ipr
 
         ! define tomorrow's assets
@@ -497,25 +497,20 @@ module globals
         lab_com = max(x_in(2), 0d0)
         !lab_com = 0.33d0
 
-        ! compute current occupation
-        ind_o = abs(dble(ik_com > 0))
-
         ! calculate current income
-        income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
-                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
+        income = w*eff(ij_com)*eta(iw_com)*lab_com
 
         ! pension contribution
-        penc_com = (1d0-(1d0-phi)*ind_o)*income
+        penc_com = income
 
         ! available assets
-        aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
-                   - taup*penc_com
+        aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + (1d0-taup)*income + b(ij_com)
 
         ! calculate consumption
         cons_com = aas_com - Q_plus
 
         ! calculate future earning points
-        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda+(1d0-lambda)*income))/dble(ij_com)
+        p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda+(1d0-lambda)*income))/dble(ij_com)
 
         ! calculate linear interpolation for future part of value function
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
