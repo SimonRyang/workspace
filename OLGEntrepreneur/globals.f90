@@ -29,7 +29,7 @@ module globals
     integer, parameter :: NX = 1
 
     ! number of points on the pension claim grid
-    integer, parameter :: NP = 8
+    integer, parameter :: NP = 4
 
     ! demographic parameters
     real*8, parameter :: n_p = (1d0+0.005d0)**5-1d0
@@ -499,7 +499,7 @@ module globals
         income = w*eff(ij_com)*eta(iw_com)*lab_com
 
         ! pension contribution
-        penc_com = min(income, 20d0)
+        penc_com = min(income, 2000d0)
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
