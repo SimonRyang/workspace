@@ -58,7 +58,7 @@ module globals
     ! size of the asset grid
     real*8, parameter :: Q_l    = 0d0
     real*8, parameter :: Q_u    = 3.5d0
-    real*8, parameter :: Q_grow = 0.25d0
+    real*8, parameter :: Q_grow = 0.025d0
 
     ! size of the liquid asset grid
     real*8, parameter :: a_l    = Q_l
@@ -279,7 +279,7 @@ module globals
 
       ! get best initial guess from future period
       x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
-      x_in(2) = 0.33d0 ! max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
+      x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
 
       ! solve the household problem using fminsearch
       if (ij < JR) then
