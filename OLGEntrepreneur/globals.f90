@@ -17,10 +17,10 @@ module globals
     integer, parameter :: NE = 2
 
     ! number of points on the asset grid
-    integer, parameter :: NQ = 12
+    integer, parameter :: NQ = 32
 
     ! number of points on the liquid asset grid
-    integer, parameter :: NA = 12
+    integer, parameter :: NA = 32
 
     ! number of points on the capital grid
     integer, parameter :: NK = 2
@@ -29,7 +29,7 @@ module globals
     integer, parameter :: NX = 1
 
     ! number of points on the pension claim grid
-    integer, parameter :: NP = 4
+    integer, parameter :: NP = 10
 
     ! demographic parameters
     real*8, parameter :: n_p = (1d0+0.005d0)**5-1d0
