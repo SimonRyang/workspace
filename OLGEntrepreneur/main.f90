@@ -499,6 +499,8 @@ contains
         enddo
 
         do ip = 0, NP
+          write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, 1))
+          write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, 2))
           write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, JR))
           write(*,*)sum(m(:, :, :, ip, :, :, JJ))/sum(m(:, :, :, :, :, :, JJ))
        enddo
