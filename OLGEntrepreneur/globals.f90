@@ -495,6 +495,7 @@ module globals
 
         ! define labor supply
         lab_com = max(x_in(2), 0d0)
+        lab_com = 0.33d0
 
         ! compute current occupation
         ind_o = abs(dble(ik_com > 0))
