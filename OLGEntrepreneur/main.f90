@@ -650,7 +650,7 @@ contains
 
         taup = damp*taup + (1d0-damp)*taup_old
 
-        write(*,*) PBEN, PCON, taup
+        !write(*,*) PBEN, PCON, taup
 
     end subroutine
 
