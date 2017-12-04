@@ -49,7 +49,7 @@ module globals
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: Omega = 1d0
+    !real*8, parameter :: Omega = 1d0
     real*8, parameter :: k_min = 0.2d0
     real*8, parameter :: phi_k = 0d0!0.4d0
     real*8, parameter :: alpha = 0.36d0
@@ -89,6 +89,8 @@ module globals
 
     ! measure time
     integer :: time
+
+    real*8 :: Omega
 
     ! discretized shocks
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)

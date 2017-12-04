@@ -115,6 +115,8 @@ contains
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
 
+        theta = 0d0
+
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
 
@@ -183,6 +185,8 @@ contains
         implicit none
 
         integer :: ij, ip
+
+        Omega = 1d0/((1d0-alpha)*(KC/LC)**alpha)
 
         ! calculate new prices
         r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
