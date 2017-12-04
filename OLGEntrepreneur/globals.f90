@@ -213,7 +213,7 @@ module globals
 
         omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/0d0, 1d0/))
+        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/1d0, 0d0/))
 
       endif
 
