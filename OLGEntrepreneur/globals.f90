@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.96d0**5
-    real*8, parameter :: mu_b = 0.25d0
+    real*8, parameter :: mu_b = 0.0d0
 
     ! maximum investment in annuities
     real*8, parameter :: mx_max = 0.10d0
@@ -493,8 +493,6 @@ module globals
 
         ! define labor supply
         lab_com = max(x_in(2), 0d0)
-        !lab_com = 0.33d0
-
 
         ! compute current occupation
         ind_o = abs(dble(ik_com > 0))
