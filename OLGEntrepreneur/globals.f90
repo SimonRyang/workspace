@@ -14,7 +14,7 @@ module globals
     integer, parameter :: NW = 3
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 3
+    integer, parameter :: NE = 2
 
     ! number of points on the asset grid
     integer, parameter :: NQ = 12
