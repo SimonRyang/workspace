@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 24
 
     ! set government variables
-    mu     = 1d0
+    mu     = 0d0
     lambda = 0d0
     phi    = 0d0
 
@@ -88,9 +88,6 @@ contains
         enddo
         close(301)
 
-        ! psi = 1d0
-        ! psi(JJ+1) = 0d0
-
         ! set up population structure
         rpop(0) = 1d0+n_p
         do ij = 1, JJ+1
@@ -117,8 +114,6 @@ contains
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
-
-        theta = 0d0
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
@@ -152,9 +147,9 @@ contains
         taup  = 0.164d0
 
         ! set starting values
-        KC = 10.00d0
-        LC = 3.00d0
-        BQ = 1.40d0
+        KC = 8.00d0
+        LC = 5.00d0
+        BQ = 0.70d0
 
         ! initial guess bequests
         b = 0d0
@@ -646,7 +641,7 @@ contains
         taup_old = taup
 
         ! get budget balancing pension contribution rate
-        taup = PBEN/w/LC
+        taup = PBEN/PCON
 
         taup = damp*taup + (1d0-damp)*taup_old
 
