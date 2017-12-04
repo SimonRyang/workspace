@@ -499,8 +499,15 @@ contains
         enddo
 
         do ip = 0, NP
-          write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, 1))
-          write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, 2))
+          write(*,*)sum(m(:, :, :, ip, :, :, 1))/sum(m(:, :, :, :, :, :, 1))
+          write(*,*)sum(m(:, :, :, ip, :, :, 2))/sum(m(:, :, :, :, :, :, 2))
+          write(*,*)sum(m(:, :, :, ip, :, :, 3))/sum(m(:, :, :, :, :, :, 3))
+          write(*,*)sum(m(:, :, :, ip, :, :, 4))/sum(m(:, :, :, :, :, :, 4))
+          write(*,*)sum(m(:, :, :, ip, :, :, 5))/sum(m(:, :, :, :, :, :, 5))
+          write(*,*)sum(m(:, :, :, ip, :, :, 6))/sum(m(:, :, :, :, :, :, 6))
+          write(*,*)sum(m(:, :, :, ip, :, :, 7))/sum(m(:, :, :, :, :, :, 7))
+          write(*,*)sum(m(:, :, :, ip, :, :, 8))/sum(m(:, :, :, :, :, :, 8))
+          write(*,*)sum(m(:, :, :, ip, :, :, 9))/sum(m(:, :, :, :, :, :, 9))
           write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, JR))
           write(*,*)sum(m(:, :, :, ip, :, :, JJ))/sum(m(:, :, :, :, :, :, JJ))
        enddo
