@@ -149,7 +149,7 @@ contains
         enddo
 
         ! initialize tax rates
-        taup  = 0d0 !0.184d0
+        taup  = 0.164d0
 
         ! set starting values
         KC = 4.00d0
