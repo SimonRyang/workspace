@@ -29,7 +29,7 @@ module globals
     integer, parameter :: NX = 1
 
     ! number of points on the pension claim grid
-    integer, parameter :: NP = 4
+    integer, parameter :: NP = 10
 
     ! demographic parameters
     real*8, parameter :: n_p = (1d0+0.005d0)**5-1d0
@@ -77,7 +77,7 @@ module globals
 
     ! size of the pension claim grid
     real*8, parameter :: p_l    = 0d0
-    real*8, parameter :: p_u    = 3d0
+    real*8, parameter :: p_u    = 5d0
 
     ! pension fraction of last income
     real*8, parameter :: kappa = 0.45d0
