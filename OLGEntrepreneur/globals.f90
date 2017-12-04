@@ -485,7 +485,7 @@ module globals
         real*8, intent(in) :: x_in(:)
 
         ! variable declarations
-        real*8 :: cons_o, Q_plus, income, tomorrow, varphi_q, varphi_p
+        real*8 :: cons_o, Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
         integer :: iql, iqr, ipl, ipr
 
         ! define tomorrow's assets
