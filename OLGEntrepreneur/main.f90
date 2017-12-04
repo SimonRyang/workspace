@@ -620,7 +620,7 @@ contains
         ! compute stock of capital
         KC = damp*AA +(1d0-damp)*KC
         KK =  KC + KE
-        !LC = damp*LC +(1d0-damp)*LC_old
+        LC = damp*LC +(1d0-damp)*LC_old
         BQ = damp*BQ +(1d0-damp)*BQ_old
         II = (n_p+delta_k)*KK
         YC = Omega*KC**alpha*LC**(1d0-alpha)
@@ -646,7 +646,7 @@ contains
         taup_old = taup
 
         ! get budget balancing pension contribution rate
-        taup = PBEN/PCON
+        taup = PBEN/w/LC
 
         taup = damp*taup + (1d0-damp)*taup_old
 
