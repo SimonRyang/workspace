@@ -501,7 +501,7 @@ module globals
 
         ! calculate current income
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
-                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
+                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
 
         ! pension contribution
         penc_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
