@@ -495,11 +495,16 @@ module globals
         lab_com = max(x_in(2), 0d0)
         !lab_com = 0.33d0
 
+
+        ! compute current occupation
+        ind_o = abs(dble(ik_com > 0))
+
         ! calculate current income
-        income = w*eff(ij_com)*eta(iw_com)*lab_com
+        income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
+                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
 
         ! pension contribution
-        penc_com = min(income, 2d0*ybar)
+        penc_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
@@ -509,7 +514,7 @@ module globals
         cons_com = aas_com - Q_plus
 
         ! calculate future earning points
-        p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda+(1d0-lambda)*min(income/ybar, 2d0)))/dble(ij_com)
+        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income/ybar, 2d0)))/dble(ij_com)
 
         if (p_plus_com > 2d0) write(*,*) 'p_plus_com:', p_plus_com
 
