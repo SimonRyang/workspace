@@ -152,9 +152,9 @@ contains
         taup  = 0.164d0
 
         ! set starting values
-        KC = 4.00d0
+        KC = 10.00d0
         LC = 3.00d0
-        BQ = 0.40d0
+        BQ = 1.40d0
 
         ! initial guess bequests
         b = 0d0
