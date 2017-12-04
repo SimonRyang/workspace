@@ -14,7 +14,7 @@ module globals
     integer, parameter :: NW = 3
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 2
+    integer, parameter :: NE = 3
 
     ! number of points on the asset grid
     integer, parameter :: NQ = 12
@@ -57,7 +57,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: Q_l    = 0d0
-    real*8, parameter :: Q_u    = 3.5d0
+    real*8, parameter :: Q_u    = 8d0
     real*8, parameter :: Q_grow = 0.05d0
 
     ! size of the liquid asset grid
