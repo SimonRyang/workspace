@@ -113,7 +113,7 @@ contains
 
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
-        theta = exp(theta)
+        theta = exp(theta)*0.5d0
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
@@ -545,7 +545,7 @@ contains
                   do ik = 0, NK
                     do ia = 0, NA
 
-                       if (Q_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*) Q_plus(ia, ik, ix, ip, iw, ie, ij), ia, ik, ix, ip, iw, ie, ij
+                       if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*)'a_plus::', a_plus(ia, ik, ix, ip, iw, ie, ij), ia, ik, ix, ip, iw, ie, ij
                         Q_tmp(ij) = Q_tmp(ij) + Q_plus(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         KC_tmp(ij) = KC_tmp(ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE_tmp(ij) = KE_tmp(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
