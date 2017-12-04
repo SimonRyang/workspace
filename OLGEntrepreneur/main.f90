@@ -12,8 +12,8 @@ program main
     integer, parameter :: numthreads = 24
 
     ! set government variables
-    mu     = 1d0
-    lambda = 1d0
+    mu     = 0d0
+    lambda = 0d0
     phi    = 0d0
 
     ! initialize remaining variables
@@ -620,8 +620,8 @@ contains
         ! compute stock of capital
         KC = damp*AA +(1d0-damp)*KC
         KK =  KC + KE
-        LC = damp*LC +(1d0-damp)*LC_old
-        BQ = damp*BQ +(1d0-damp)*BQ_old
+        !LC = damp*LC +(1d0-damp)*LC_old
+        !BQ = damp*BQ +(1d0-damp)*BQ_old
         II = (n_p+delta_k)*KK
         YC = Omega*KC**alpha*LC**(1d0-alpha)
         YY = YC + YE
