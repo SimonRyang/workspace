@@ -503,10 +503,10 @@ contains
 
         enddo
 
-        do ip = 0, NP
-          write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, JR))
-          write(*,*)sum(m(:, :, :, ip, :, :, JJ))/sum(m(:, :, :, :, :, :, JJ))
-       enddo
+       !  do ip = 0, NP
+       !    write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, JR))
+       !    write(*,*)sum(m(:, :, :, ip, :, :, JJ))/sum(m(:, :, :, :, :, :, JJ))
+       ! enddo
 
 
     end subroutine
@@ -612,7 +612,7 @@ contains
 
         enddo ! ij
 
-        write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) - PEN_tmp(:) + TAUP_tmp(:) + C_tmp(:))
+        !write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) - PEN_tmp(:) + TAUP_tmp(:) + C_tmp(:))
 
         ! get average income
         ybar = w*LC/workpop
@@ -629,9 +629,9 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II
 
-        write(*,*)'pen', PBEN/PCON, taup
+        !write(*,*)'pen', PBEN/PCON, taup
 
-        write(*,*) YC, YE, KC, KE, LC, BQ
+        !write(*,*) YC, YE, KC, KE, LC, BQ
 
     end subroutine
 
