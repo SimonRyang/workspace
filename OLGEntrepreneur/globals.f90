@@ -77,7 +77,7 @@ module globals
 
     ! size of the pension claim grid
     real*8, parameter :: p_l    = 0d0
-    real*8, parameter :: p_u    = 5d0
+    real*8, parameter :: p_u    = 2d0
 
     ! pension fraction of last income
     real*8, parameter :: kappa = 0.45d0
@@ -499,16 +499,17 @@ module globals
         income = w*eff(ij_com)*eta(iw_com)*lab_com
 
         ! pension contribution
-        penc_com = income
+        penc_com = min(income, 2d0)
 
         ! available assets
-        aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + (1d0-taup)*income + b(ij_com)
+        aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
+                   -taup*penc_com
 
         ! calculate consumption
         cons_com = aas_com - Q_plus
 
         ! calculate future earning points
-        p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda+(1d0-lambda)*income))/dble(ij_com)
+        p_plus_com = (p(ip_com)*dble(ij_com-1) + mu*(lambda+(1d0-lambda)*min(income, 2d0)))/dble(ij_com)
 
         ! calculate linear interpolation for future part of value function
         call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
