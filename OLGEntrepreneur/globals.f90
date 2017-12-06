@@ -353,7 +353,7 @@ module globals
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
       penb_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
       penc_t(io_p, ia, ik, ix, ip, iw, ie, ij) = penc_com
-      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  cons_com !aas_com - x_in(1)
+      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  aas_com - x_in(1)
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
