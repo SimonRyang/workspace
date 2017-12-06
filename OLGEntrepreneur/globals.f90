@@ -199,8 +199,8 @@ module globals
         if (Q(iq_p) > (1d0-xi)*k_min) then
 
          ! get best guess for the root of foc_real
-          x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
-          x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+          x_in(1) = 0.1d0 !max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+          x_in(2) = 0.1d0 !max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
