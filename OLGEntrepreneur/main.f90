@@ -102,7 +102,7 @@ contains
 
         ! initialize age earnings process
         eff(1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
-                        2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/) !/1.4327164d0
+                        2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)/1.4327164d0
 
         ! earnings process is during retirement equal to zero
         eff(JR:JJ) = 0d0
@@ -111,11 +111,13 @@ contains
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
         eta = exp(eta)
 
+        write(*,*)eta
+        write(*,*)dist_eta
+        write(*,*)sum(eta*dist_eta)
+
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
-
-        theta = 0d0
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
