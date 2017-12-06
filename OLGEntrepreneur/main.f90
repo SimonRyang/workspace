@@ -109,7 +109,7 @@ contains
 
         ! discretize eta shocks
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
-        eta = exp(eta)
+        eta = exp(eta)/sum(eta*dist_eta)
 
         write(*,*)eta
         write(*,*)dist_eta
