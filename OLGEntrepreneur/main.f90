@@ -109,7 +109,7 @@ contains
 
         ! discretize eta shocks
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
-        eta = exp(eta)/sum(eta*dist_eta)
+        eta = exp(eta/sum(eta*dist_eta))
 
         write(*,*)eta
         write(*,*)dist_eta
@@ -129,9 +129,8 @@ contains
         call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
 
-        ! initialize liquid annuity grid
+        ! initialize annuity grid
         call grid_Cons_Grow(x, x_l, x_u, x_grow)
-        x(0) = x_l
 
         ! initialize pension claim grid
         call grid_Cons_Equi(p, p_l, p_u)
