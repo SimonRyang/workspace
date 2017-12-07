@@ -42,13 +42,14 @@ module globals
     real*8, parameter :: mu_b = 0.0d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0d0
+    real*8, parameter :: mx_max = 10d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
+    real*8, parameter :: Omega = 1d0
     real*8, parameter :: k_min = 0.2d0
     real*8, parameter :: phi_k = 0.0d0
     real*8, parameter :: alpha = 0.36d0
@@ -200,8 +201,8 @@ module globals
         if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
          ! get best guess for the root of foc_real
-          x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
-          x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+          x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+          x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
