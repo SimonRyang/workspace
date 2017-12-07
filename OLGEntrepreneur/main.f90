@@ -130,7 +130,6 @@ contains
 
         ! initialize annuity grid
         call grid_Cons_Grow(x, x_l, x_u, x_grow)
-        write(*,*)x
 
         ! initialize pension claim grid
         call grid_Cons_Equi(p, p_l, p_u)
@@ -210,8 +209,6 @@ contains
         do ip = 0, NP
           pen(ip, JR:JJ) = p(ip)*kappa*ybar
         enddo
-
-        write(*,*) ann(:, JR)
 
     end subroutine
 

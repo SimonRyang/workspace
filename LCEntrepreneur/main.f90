@@ -68,8 +68,6 @@ contains
         ! earnings process is during retirement equal to zero
         eff(JR:JJ) = 0d0
 
-        eff = 1d0
-
         ! discretize eta shocks
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
         eta = exp(eta)
@@ -89,8 +87,6 @@ contains
         ! initialize liquid annuity grid
         call grid_Cons_Grow(x, x_l, x_u, x_grow)
 
-        write(*,*)x
-
         ! initialize pension claim grid
         call grid_Cons_Equi(p, p_l, p_u)
 
@@ -108,8 +104,6 @@ contains
         do ix = 0, NX
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
-
-        write(*,*) ann(:, JR)
 
         ! old-age transfers
         pen = 0d0
