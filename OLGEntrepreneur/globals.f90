@@ -261,7 +261,7 @@ module globals
 
      omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
      omega_k_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-     S(:, iq_p, ik, ix, ip_p, iw, ie, ij) = psi(ij+1)*EV_temp + S_temp
+     S(:, iq_p, ik, ix, ip_p, iw, ie, ij) = psi(ij+1)*beta*EV_temp + S_temp
 
     end subroutine
 
@@ -410,7 +410,7 @@ module globals
       if (a_temp < 0d0) then
         inv_w = -1d-13**egam/egam*(1d0+abs(a_temp))
       else
-        inv_w = - (psi(ij_com+1)*EV_temp + S_temp)
+        inv_w = - (psi(ij_com+1)*beta*EV_temp + S_temp)
       endif
 
   end function
@@ -472,7 +472,7 @@ module globals
       if (a_temp < 0d0) then
         inv_e = -1d-13**egam/egam*(1d0+abs(a_temp))
       else
-        inv_e = - (psi(ij_com+1)*EV_temp + S_temp)
+        inv_e = - (psi(ij_com+1)*beta*EV_temp + S_temp)
       endif
 
   end function
@@ -550,7 +550,7 @@ module globals
         elseif(lab_com >= 1d0) then
           cons_o = -1d-13**egam/egam*lab_com
         else
-           cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
+           cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + tomorrow)
         endif
 
     end function
@@ -605,7 +605,7 @@ module globals
         if(cons_com <= 0d0)then
            cons_r = -1d-13**egam/egam*(1d0+abs(cons_com))
         else
-           cons_r = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
+           cons_r = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + tomorrow)
         endif
 
     end function
