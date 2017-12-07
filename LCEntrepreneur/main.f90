@@ -152,22 +152,20 @@ contains
 
               do ip = 0, NP
                 do ix = 0, NX
-                  do ik = 0, NK
-                    do ia = 0, NA
+                  do ia = 0, NA
 
-                      ! with bequest motive we assume future worker
-                      call solve_consumption(0, ia, ik, ix, ip, 1, 1, JJ)
+                    ! with bequest motive we assume future worker
+                    call solve_consumption(0, ia, 0, ix, ip, 1, 1, JJ)
 
-                      Q_plus(ia, ik, ix, ip, :, :, JJ) = Q_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      a_plus(ia, ik, ix, ip, :, :, JJ) = a_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      x_plus(ia, ik, ix, ip, :, :, JJ) = x_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      p_plus(ia, ik, ix, ip, :, :, JJ) = p_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      k_plus(ia, ik, ix, ip, :, :, JJ) = k_plus_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      c(ia, ik, ix, ip, :, :, JJ) = c_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      l(ia, ik, ix, ip, :, :, JJ) = l_t(0, ia, ik, ix, ip, 1, 1, JJ)
-                      V(ia, ik, ix, ip, :, :, JJ) = V_t(0, ia, ik, ix, ip, 1, 1, JJ)
+                    Q_plus(ia, :, ix, ip, :, :, JJ) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    a_plus(ia, :, ix, ip, :, :, JJ) = a_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    x_plus(ia, :, ix, ip, :, :, JJ) = x_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    p_plus(ia, :, ix, ip, :, :, JJ) = p_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    k_plus(ia, :, ix, ip, :, :, JJ) = k_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    c(ia, :, ix, ip, :, :, JJ) = c_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    l(ia, :, ix, ip, :, :, JJ) = l_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                    V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
 
-                    enddo
                   enddo
                enddo
              enddo
@@ -418,6 +416,8 @@ contains
             enddo
           enddo
 
+          write(*,*) sum(m(:, :, :, 1:, :, :, ij))
+
         enddo
 
     end subroutine
@@ -455,7 +455,7 @@ contains
                           y_coh(0, ij) = y_coh(0, ij) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         else
                           c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
-                          a_coh(1, ij) = a_coh(1, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
+                          a_coh(1, ij) = a_coh(1, ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, ij)
                           x_coh(1, ij) = x_coh(1, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
                           k_coh(ij) = k_coh(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
                           y_coh(1, ij) = y_coh(1, ij) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij)
