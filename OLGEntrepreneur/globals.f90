@@ -215,7 +215,7 @@ module globals
 
         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
         omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/0d0, 0d0/))
+        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/0d0, 1d0/))
 
       endif
 
@@ -260,9 +260,9 @@ module globals
                    (1d0-varphi_a)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
       endif
 
-     omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-     omega_k_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-     S(:, iq_p, ik, ix, ip_p, iw, ie, ij) = psi(ij+1)*EV_temp + S_temp
+    omega_k_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+    omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+    S(:, iq_p, ik, ix, ip_p, iw, ie, ij) = psi(ij+1)*EV_temp + S_temp
 
     end subroutine
 
