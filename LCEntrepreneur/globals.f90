@@ -14,7 +14,7 @@ module globals
     integer, parameter :: NW = 3
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 3
+    integer, parameter :: NE = 2
 
     ! number of points on the asset grid
     integer, parameter :: NQ = 12
@@ -23,7 +23,7 @@ module globals
     integer, parameter :: NA = 12
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 12
+    integer, parameter :: NK = 2
 
     ! number of points on the annuity asset grid
     integer, parameter :: NX = 12
@@ -35,8 +35,8 @@ module globals
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
-    real*8, parameter :: beta = 0.99d0
-    real*8, parameter :: mu_b = 0.05d0
+    real*8, parameter :: beta = 0.99d0**5
+    real*8, parameter :: mu_b = 0.25d0
 
     ! maximum investment in annuities
     real*8, parameter :: mx_max = 0.10d0
