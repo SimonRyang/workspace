@@ -15,7 +15,7 @@ program main
     mu     = 1d0
     lambda = 0d0
     phi    = 0d0
-    taup   = 0d0 !0.164d0
+    taup   = 0.164d0
 
     ! initialize remaining variables
     call initialize()
