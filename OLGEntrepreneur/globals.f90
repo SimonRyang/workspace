@@ -165,7 +165,7 @@ module globals
       if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
-         x_in = 1d-4 !max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+         x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
@@ -199,8 +199,8 @@ module globals
         if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
          ! get best guess for the root of foc_real
-          x_in(1) = 1d-4 !max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
-          x_in(2) = 1d-4 !max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+          x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+          x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
@@ -279,8 +279,8 @@ module globals
       io_p_com = io_p; ia_com = ia; ik_com = ik; ix_com = ix; ip_com = ip; iw_com = iw; ie_com = ie; ij_com = ij
 
       ! get best initial guess from future period
-      x_in(1) = 1d-4 !max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-4)
-      x_in(2) = 1d-4 !max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-4)
+      x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-4)
+      x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-4)
 
       ! solve the household problem using fminsearch
       if (ij < JR) then
