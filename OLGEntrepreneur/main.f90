@@ -507,8 +507,6 @@ contains
             enddo
           enddo
 
-          write(*,*) sum(m(:, :, :, 1:, :, :, ij))
-
         enddo
 
        !  do ip = 0, NP
