@@ -135,7 +135,7 @@ contains
         call grid_Cons_Equi(p, p_l, p_u)
 
         ! initialize tax rates
-        taup  = 0.164d0
+        taup  = 0d0 !0.164d0
 
         ! set starting values
         KC = 7.30d0
