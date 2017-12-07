@@ -373,7 +373,7 @@ module globals
       integer :: ial, iar, ixl, ixr
 
       ! store real estate share
-      omega_x  = 0.2d0 !x_in
+      omega_x  = 0.05d0 !x_in
 
       ! determine future liquid wealth and future downpayment
       x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
