@@ -11,10 +11,10 @@ module globals
     integer, parameter :: JJ = 16
 
     ! number of productivity (eta) shocks
-    integer, parameter :: NW = 7
+    integer, parameter :: NW = 3
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 5
+    integer, parameter :: NE = 2
 
     ! number of points on the asset grid
     integer, parameter :: NQ = 12
@@ -105,7 +105,8 @@ module globals
     real*8 :: r, w
     real*8 :: ybar
     real*8 :: AA, BQ, PBEN, PCON
-    real*8 :: YY, YC, YE, CC, II, KK, KC, KE, LC
+    real*8 :: KK, KC, KE, LC
+    real*8 :: YY, YC, YE, CC, II, TC
 
     ! cohort aggregate variables
     real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
