@@ -200,22 +200,22 @@ module globals
         if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
          ! get best guess for the root of foc_real
-          x_in(1) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
-          x_in(2) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+          x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+          x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
 
          ! portfolio share for capital
-         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(1)
-         omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(2)
+         omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(1)
+         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(2)
          S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -fret
 
       else
 
+        omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-        omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d0
-        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/0d0, 1d0/))
+        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/1d0, 0d0/))
 
       endif
 
@@ -429,8 +429,8 @@ module globals
       integer :: ial, iar, ikl, ikr, ixl, ixr
 
       ! store real estate share
-      omega_k  = x_in(1)
-      omega_x  = x_in(2)
+      omega_x  = x_in(1)
+      omega_k  = x_in(2)
 
       ! determine future liquid wealth and future downpayment
       x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
