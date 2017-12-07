@@ -142,7 +142,7 @@ contains
           ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
         enddo
         do ix = 0, NX
-          ann(ix, JR:JJ) = 4d0*(1d0+r)/psi(JR)*x(ix)/ann_temp
+          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
         write(*,*) ann(:, JR)
@@ -190,6 +190,7 @@ contains
 
         ! calculate new prices
         r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
+        r = 2d0
         w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
         ! compute bequest per capita within workforce for next iteration step
