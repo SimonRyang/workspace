@@ -503,11 +503,11 @@ module globals
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
 
         ! pension contribution
-        penc_com = 0d0 !(1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
+        penc_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
-                   -taup*penc_com
+                   - 0d0 !-taup*penc_com
 
         ! calculate consumption
         cons_com = aas_com - Q_plus
