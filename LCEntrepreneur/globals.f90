@@ -49,14 +49,14 @@ module globals
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: k_min = 0.6d0
-    real*8, parameter :: phi_k = 0.4d0
+    real*8, parameter :: k_min = 0.2d0
+    real*8, parameter :: phi_k = 0.2d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
 
     ! size of the asset grid
     real*8, parameter :: Q_l    = 0d0
-    real*8, parameter :: Q_u    = 8d0
+    real*8, parameter :: Q_u    = 6d0
     real*8, parameter :: Q_grow = 0.05d0
 
     ! size of the liquid asset grid
@@ -66,7 +66,7 @@ module globals
 
     ! size of the capital grid
     real*8, parameter :: k_l = k_min
-    real*8, parameter :: k_u = Q_u/(1d0-xi)
+    real*8, parameter :: k_u = 0.25d0*Q_u/(1d0-xi)
     real*8, parameter :: k_grow = Q_grow
 
     ! size of the annuity grid
@@ -79,7 +79,7 @@ module globals
     real*8, parameter :: p_u    = 2d0
 
     ! pension fraction of last income
-    real*8, parameter :: kappa = 0.0d0
+    real*8, parameter :: kappa = 0.45d0
 
     ! measure time
     integer :: time
@@ -301,13 +301,13 @@ module globals
       if (ij < JR) then
 
         if (varphi_q <= varphi_p) then
-          mx = min((varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                    (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-                    (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), 100d0)
+          mx = (varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+                (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
         else
-          mx = min((varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                    (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-                    (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), 100d0)
+          mx = (varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+                (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
         endif
 
         x_p = (1d0+r)/psi(ij)*x(ix) + mx
@@ -320,7 +320,7 @@ module globals
 
       ! copy decisions
       Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1)
-      a_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1) - (1d0-xi)*k_p - mx
+      a_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_in(1) - (1d0-xi)*k_p - mx - tr(k(ik), k_p)
       k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = k_p
       x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
