@@ -53,6 +53,7 @@ contains
 
         ! wage rate for effective labor and rental price
         w = 1d0 ! 0.8866d0
+        ybar = 1d0
 
         ! set survival probabilities
         open(301, file='sp.dat')

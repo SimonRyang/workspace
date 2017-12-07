@@ -88,7 +88,7 @@ module globals
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
     ! wages, transfer payments (old-age), survival probabilities and discount factor for housing utilty
-    real*8 :: w, eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1)
+    real*8 :: w, ybar, eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1)
 
     ! government variables
     real*8 :: lambda, phi, mu
@@ -127,10 +127,10 @@ module globals
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com
     integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
-    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
+    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, aas_com
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
-    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com)
+    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, aas_com)
 
 
   contains
@@ -334,7 +334,7 @@ module globals
       k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = k_p
       x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
-      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) = cons_com
+      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) = aas_com - x_in(1) !cons_com
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
@@ -457,127 +457,132 @@ module globals
 
   end function
 
-    ! the first order condition regarding consumption
-    function cons_o(x_in)
+  ! the first order condition regarding consumption
+  function cons_o(x_in)
 
-        implicit none
+      implicit none
 
-        ! input variable
-        real*8, intent(in) :: x_in(:)
+      ! input variable
+      real*8, intent(in) :: x_in(:)
 
-        ! variable declarations
-        real*8 :: cons_o, Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
-        integer :: iql, iqr, ipl, ipr
+      ! variable declarations
+      real*8 :: cons_o, Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
+      integer :: iql, iqr, ipl, ipr
 
-        ! define tomorrow's assets
-        Q_plus  = x_in(1)
+      ! define tomorrow's assets
+      Q_plus  = x_in(1)
 
-        ! defin labor supply
-        lab_com = max(x_in(2), 0d0)
+      ! define labor supply
+      lab_com = max(x_in(2), 0d0)
 
-        ! compute current occupation
-        ind_o = abs(dble(ik_com > 0))
+      ! compute current occupation
+      ind_o = abs(dble(ik_com > 0))
 
-        ! calculate current income
-        income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
-                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
+      ! calculate current income
+      income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
+               ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
 
-        ! calculate consumption-savings
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income &
-                   - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
+      ! available assets
+      aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
+                 -taup*(1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
 
-        ! calculate future earning points
-        p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
+      ! calculate consumption
+      cons_com = aas_com - Q_plus
 
-        ! calculate linear interpolation for future part of value function
-        call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
-        call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
+      ! calculate future earning points
+      p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income/ybar, 2d0)))/dble(ij_com)
 
-        ! restrict values to grid just in case
-        iql = min(iql, NQ)
-        iqr = min(iqr, NQ)
-        varphi_q = max(min(varphi_q, 1d0),0d0)
+      ! calculate linear interpolation for future part of value function
+      call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
+      call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
 
-        ! restrict values to grid just in case
-        ipl = min(ipl, NP)
-        ipr = min(ipr, NP)
-        varphi_p = max(min(varphi_p, 1d0),0d0)
+      ! restrict values to grid just in case
+      iql = min(iql, NQ)
+      iqr = min(iqr, NQ)
+      varphi_q = max(min(varphi_q, 1d0),0d0)
 
-        ! get next period value function
-        tomorrow = 0d0
+      ! restrict values to grid just in case
+      ipl = min(ipl, NP)
+      ipr = min(ipr, NP)
+      varphi_p = max(min(varphi_p, 1d0),0d0)
 
-        if(varphi_q <= varphi_p) then
-          tomorrow = (varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                      (varphi_p-varphi_q)*(egam*S(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                      (1d0-varphi_p)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
-        else
-          tomorrow = (varphi_p           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                      (varphi_q-varphi_p)*(egam*S(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                      (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
-         endif
+      ! get next period value function
+      tomorrow = 0d0
 
-        ! calculate today's value function
-        if(cons_com <= 0d0)then
-           cons_o = -1d-13**egam/egam*(1d0+abs(cons_com))
-        elseif(lab_com < 0d0) then
-          cons_o = -1d-13**egam/egam*(1d0+abs(lab_com))
-        elseif(lab_com >= 1d0) then
-          cons_o = -1d-13**egam/egam*lab_com
-        else
-           cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
-        endif
+      if(varphi_q <= varphi_p) then
+        tomorrow = (varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                    (varphi_p-varphi_q)*(egam*S(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                    (1d0-varphi_p)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
+      else
+        tomorrow = (varphi_p           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                    (varphi_q-varphi_p)*(egam*S(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                    (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
+       endif
 
-    end function
+      ! calculate today's value function
+      if(cons_com <= 0d0)then
+         cons_o = -1d-13**egam/egam*(1d0+abs(cons_com))
+      elseif(lab_com < 0d0) then
+        cons_o = -1d-13**egam/egam*(1d0+abs(lab_com))
+      elseif(lab_com >= 1d0) then
+        cons_o = -1d-13**egam/egam*lab_com
+      else
+         cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
+      endif
+
+  end function
 
 
-    ! the first order condition regarding consumption
-    function cons_r(x_in)
+  ! the first order condition regarding consumption
+  function cons_r(x_in)
 
-        implicit none
+      implicit none
 
-        ! input variable
-        real*8, intent(in) :: x_in
+      ! input variable
+      real*8, intent(in) :: x_in
 
-        ! variable declarations
-        real*8 :: cons_r, Q_plus, tomorrow, varphi_q
-        integer :: iql, iqr
+      ! variable declarations
+      real*8 :: cons_r, Q_plus, tomorrow, varphi_q
+      integer :: iql, iqr
 
-        ! define tomorrow's assets
-        Q_plus  = x_in
+      ! define tomorrow's assets
+      Q_plus  = x_in
 
-        ! define labor supply
-        lab_com = 0d0
+      ! define labor supply
+      lab_com = 0d0
 
-        ! calculate consumption
-        cons_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
-                    - Q_plus
+      ! available assets
+      aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com)
 
-        ! define future earning points
-        p_plus_com = p(ip_com)
+      ! calculate consumption
+      cons_com = aas_com - Q_plus
 
-        ! calculate linear interpolation for future part of value function
-        call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
+      ! define future earning points
+      p_plus_com = p(ip_com)
 
-        ! restrict values to grid just in case
-        iql = min(iql, NQ)
-        iqr = min(iqr, NQ)
-        varphi_q = max(min(varphi_q, 1d0),0d0)
+      ! calculate linear interpolation for future part of value function
+      call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
 
-        ! get next period value function
-        tomorrow = 0d0
-        if (ij_com < JJ .or. mu_b /= 0d0) then
-            tomorrow = (varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                        (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
-        endif
+      ! restrict values to grid just in case
+      iql = min(iql, NQ)
+      iqr = min(iqr, NQ)
+      varphi_q = max(min(varphi_q, 1d0),0d0)
 
-        ! calculate today's value function
-        if(cons_com <= 0d0)then
-           cons_r = -1d-13**egam/egam*(1d0+abs(cons_com))
-        else
-           cons_r = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
-        endif
+      ! get next period value function
+      tomorrow = 0d0
+      if (ij_com < JJ .or. mu_b /= 0d0) then
+          tomorrow = (varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                      (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
+      endif
 
-    end function
+      ! calculate today's value function
+      if(cons_com <= 0d0)then
+         cons_r = -1d-13**egam/egam*(1d0+abs(cons_com))
+      else
+         cons_r = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + beta*tomorrow)
+      endif
+
+  end function
 
     ! function that defines adjustment cost
     function tr(k, k_p)
