@@ -148,8 +148,6 @@ contains
            b(ij) = BQ/workpop
         enddo
 
-        b = 0d0
-
         ! initial guess average income
         ybar = 0.4d0
 
@@ -182,16 +180,11 @@ contains
         r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
         w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
-        r = 0.10d0
-        w = 1d0
-
         ! compute bequest per capita within workforce for next iteration step
         b(:) = 0d0
         do ij = 1, JR-1
            b(ij) = BQ/workpop
         enddo
-
-                b = 0d0
 
         ! annuity payments
         ann = 0d0
