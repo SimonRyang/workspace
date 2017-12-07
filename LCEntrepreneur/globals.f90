@@ -35,7 +35,7 @@ module globals
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
-    real*8, parameter :: beta = 0.97d0**5
+    real*8, parameter :: beta = 0.98d0**5
     real*8, parameter :: mu_b = 0.0d0
 
     ! maximum investment in annuities
@@ -484,7 +484,7 @@ module globals
 
         ! calculate consumption-savings
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income &
-                   - Q_plus
+                   (1d0-(1d0-phi)*ind_o)*min(income, p_u) - Q_plus
 
         ! calculate future earning points
         p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)

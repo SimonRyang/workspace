@@ -38,7 +38,7 @@ module globals
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
-    real*8, parameter :: beta = 0.97d0**5
+    real*8, parameter :: beta = 0.98d0**5
     real*8, parameter :: mu_b = 0.0d0
 
     ! maximum investment in annuities
@@ -507,7 +507,7 @@ module globals
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
-                   - 0d0 !-taup*penc_com
+                   -taup*penc_com
 
         ! calculate consumption
         cons_com = aas_com - Q_plus
