@@ -145,6 +145,8 @@ contains
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
+        write(*,*) ann(:, JR)
+
         ! initialize tax rates
         taup  = 0.164d0
 
@@ -220,8 +222,8 @@ contains
 
             if(ij == JJ)then
 
-              omega_k_t(:, :, :, :, :, :, :, JJ) = 0d0
               omega_x_t(:, :, :, :, :, :, :, JJ) = 0d0
+              omega_k_t(:, :, :, :, :, :, :, JJ) = 0d0
 
               do iq_p = 0, NQ
                   S(:, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
