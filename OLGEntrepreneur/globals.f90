@@ -23,7 +23,7 @@ module globals
     integer, parameter :: NA = 12
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 12
+    integer, parameter :: NK = 2
 
     ! number of points on the annuity asset grid
     integer, parameter :: NX = 12
@@ -165,7 +165,7 @@ module globals
       if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
-         x_in = 0.2d0 !max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+         x_in = 0.4d0 !max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
@@ -199,7 +199,7 @@ module globals
         if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
          ! get best guess for the root of foc_real
-          x_in(1) = 0.2d0 !max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+          x_in(1) = 0.4d0 !max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
           x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
 
          ! solve the household problem using fminsearch
