@@ -186,9 +186,9 @@ contains
            b(ij) = BQ/workpop
         enddo
 
-        r = 0.1d0
-        w = 1d0
-        b = 0d0
+        ! r = 0.1d0
+        ! w = 1d0
+        ! b = 0d0
 
         ! annuity payments
         ann = 0d0
