@@ -298,10 +298,10 @@ contains
                            call solve_consumption(0, ia, ik, ix, ip, iw, ie, ij)
 
                            ! next period entrpreneur
-                           if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, ij)
+                           if(.false. .and. ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, ij)
 
                            ! decision on whether to be homeowner or renter next period
-                            if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, ij) > V_t(0, ia, ik, ix, ip, iw, ie, ij)) then
+                            if(.false. .and. ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, ij) > V_t(0, ia, ik, ix, ip, iw, ie, ij)) then
                                   Q_plus(ia, ik, ix, ip, iw, ie, ij) = Q_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
                                   a_plus(ia, ik, ix, ip, iw, ie, ij) = a_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
                                   x_plus(ia, ik, ix, ip, iw, ie, ij) = x_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
