@@ -221,7 +221,7 @@ contains
               omega_x_t(:, :, :, :, :, :, :, JJ) = 0d0
 
               do iq_p = 0, NQ
-                  S(0, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
+                  S(:, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
               enddo
 
               !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)

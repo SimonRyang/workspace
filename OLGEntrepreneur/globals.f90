@@ -49,7 +49,7 @@ module globals
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: k_min = 0.2d0
+    real*8, parameter :: k_min = 0.5d0
     real*8, parameter :: phi_k = 0.2d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
@@ -66,7 +66,7 @@ module globals
 
     ! size of the capital grid
     real*8, parameter :: k_l = k_min
-    real*8, parameter :: k_u = 0.5d0*Q_u/(1d0-xi)
+    real*8, parameter :: k_u = 0.25d0*Q_u/(1d0-xi)
     real*8, parameter :: k_grow = Q_grow
 
     ! size of the annuity grid
@@ -395,7 +395,7 @@ module globals
       ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
-      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-13)**egam/egam
+      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max(Q(iq_p_com), 1d-13)**egam/egam
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
@@ -458,7 +458,7 @@ module globals
       ikr = min(ikr+1, NK)
       varphi_k = max(min(varphi_k, 1d0), 0d0)
 
-      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max((1d0-omega_x)*Q(iq_p_com), 1d-13)**egam/egam
+      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max(Q(iq_p_com), 1d-13)**egam/egam
 
       ! get optimal investment strategy
       EV_temp = (varphi_a*varphi_x*varphi_k                  *(egam*EV(ial, ikl, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
