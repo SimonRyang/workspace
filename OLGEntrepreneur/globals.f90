@@ -507,7 +507,7 @@ module globals
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
-                   -taup*min(income, 2d0*ybar)
+                   -taup*penc_com
 
         ! calculate consumption
         cons_com = aas_com - Q_plus
