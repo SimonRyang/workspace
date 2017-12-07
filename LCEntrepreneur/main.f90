@@ -87,6 +87,8 @@ contains
         ! initialize liquid annuity grid
         call grid_Cons_Grow(x, x_l, x_u, x_grow)
 
+        write(*,*)x
+
         ! initialize pension claim grid
         call grid_Cons_Equi(p, p_l, p_u)
 

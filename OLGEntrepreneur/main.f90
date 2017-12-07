@@ -136,19 +136,6 @@ contains
         ! initialize pension claim grid
         call grid_Cons_Equi(p, p_l, p_u)
 
-        ! annuity payments
-        ann = 0d0
-        ann_temp = 1d0
-
-        do ij = JJ-1, JR, -1
-          ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
-        enddo
-        do ix = 0, NX
-          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
-        enddo
-
-        write(*,*) ann(:, JR)
-
         ! initialize tax rates
         taup  = 0d0 !0.164d0
 
@@ -207,11 +194,24 @@ contains
 
                 b = 0d0
 
+        ! annuity payments
+        ann = 0d0
+        ann_temp = 1d0
+
+        do ij = JJ-1, JR, -1
+          ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
+        enddo
+        do ix = 0, NX
+          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
+        enddo
+
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
           pen(ip, JR:JJ) = p(ip)*kappa*ybar
         enddo
+
+        write(*,*) ann(:, JR)
 
     end subroutine
 
