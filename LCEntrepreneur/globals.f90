@@ -39,7 +39,7 @@ module globals
     real*8, parameter :: mu_b = 0.15d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0.10d0
+    real*8, parameter :: mx_max = 0.00d0
 
     ! risk free rate and risk premium
     real*8, parameter :: r  = 0.1d0
