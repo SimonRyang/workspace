@@ -42,7 +42,7 @@ module globals
     real*8, parameter :: mu_b = 0.0d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 10d0
+    real*8, parameter :: mx_max = 0d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
@@ -89,8 +89,6 @@ module globals
 
     ! measure time
     integer :: time
-
-    real*8 :: Omega
 
     ! discretized shocks
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
