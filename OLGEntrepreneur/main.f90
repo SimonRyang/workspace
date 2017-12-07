@@ -163,6 +163,8 @@ contains
            b(ij) = BQ/workpop
         enddo
 
+        b = 0d0
+
         ! initial guess average income
         ybar = 0.4d0
 
@@ -199,6 +201,8 @@ contains
         do ij = 1, JR-1
            b(ij) = BQ/workpop
         enddo
+
+                b = 0d0
 
         ! old-age transfers
         pen = 0d0
@@ -636,7 +640,7 @@ contains
         YY = YC + YE
 
         ! compute gap on goods market
-        DIFF = YY-CC-II-TC
+        DIFF = YY-CC-II-TC-BQ
 
         write(*,*)'pen', PBEN, PCON, w*LC, ybar, PBEN/PCON, taup
 
