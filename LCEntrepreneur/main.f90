@@ -109,7 +109,7 @@ contains
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
-          pen(ip, JR:JJ) = p(ip)*kappa*w*eff(JR-1)
+          pen(ip, JR:JJ) = p(ip)*kappa*ybar
         enddo
 
         ! initialize value functions
