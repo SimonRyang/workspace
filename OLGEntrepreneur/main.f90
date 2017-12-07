@@ -544,7 +544,6 @@ contains
                   do ik = 0, NK
                     do ia = 0, NA
 
-                       if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*)'a_plus::', a_plus(ia, ik, ix, ip, iw, ie, ij), ia, ik, ix, ip, iw, ie, ij
                         Q_tmp(ij) = Q_tmp(ij) + Q_plus(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         KC_tmp(ij) = KC_tmp(ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE_tmp(ij) = KE_tmp(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -556,7 +555,7 @@ contains
                         C_tmp(ij) = C_tmp(ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
 
                         ! skip if there is no household
-                        !if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
+                        if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
 
                         if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
@@ -609,8 +608,8 @@ contains
             o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
             k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
 
-            ! write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), PEN_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
-            ! write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) - PEN_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
+            write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), PEN_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
+            write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) - PEN_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
 
         enddo ! ij
 
