@@ -376,7 +376,7 @@ module globals
       omega_x  = x_in
 
       ! determine future liquid wealth and future downpayment
-      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
+      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + omega_x*Q(iq_p_com)
       a_temp = (1d0-omega_x)*Q(iq_p_com)
       a_p = max(a_temp, 0d0)
 
@@ -432,7 +432,7 @@ module globals
       omega_k  = x_in(2)
 
       ! determine future liquid wealth and future downpayment
-      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
+      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + omega_x*Q(iq_p_com)
       k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com)-(1d0-xi)*k_min))/(1d0-xi)
       a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
       a_p = max(a_temp, 0d0)
