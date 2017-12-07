@@ -42,7 +42,7 @@ module globals
     real*8, parameter :: mx_max = 0.10d0
 
     ! risk free rate and risk premium
-    real*8, parameter :: r  = 0.1d0
+    real*8, parameter :: r  = 0.1417!0.1d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
