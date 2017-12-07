@@ -418,8 +418,6 @@ contains
 
         enddo
 
-        write(*,*)'siut)'
-
     end subroutine
 
 
@@ -468,7 +466,6 @@ contains
                 enddo
               enddo
             enddo
-            write(*,*)ij, 'agg'
 
             c_coh(0, ij) = c_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, ij)), 1d-13)
             c_coh(1, ij) = c_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
