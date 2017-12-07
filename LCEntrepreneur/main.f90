@@ -15,7 +15,7 @@ program main
     mu     = 0d0
     lambda = 0d0
     phi    = 0d0
-    taup   = 0.184d0
+    taup   = 0d0 !0.184d0
 
     ! initialize remaining variables
     call initialize()
@@ -52,7 +52,7 @@ contains
         real*8 :: ann_temp
 
         ! wage rate for effective labor and rental price
-        w = 0.8866d0
+        w = 1d0 ! 0.8866d0
 
         ! set survival probabilities
         open(301, file='sp.dat')
@@ -105,6 +105,8 @@ contains
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
+        write(*,*) ann(:, JR)
+
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
@@ -145,7 +147,7 @@ contains
               omega_x_t(:, :, :, :, :, :, :, JJ) = 0d0
 
               do iq_p = 0, NQ
-                  S(0, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-16)**egam/egam
+                  S(:, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-16)**egam/egam
               enddo
 
               do ip = 0, NP

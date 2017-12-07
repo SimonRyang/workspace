@@ -32,17 +32,17 @@ module globals
     integer, parameter :: NP = 4
 
     ! demographic parameters
-    real*8, parameter :: n_p = (1d0+0.005d0)**5-1d0
+    real*8, parameter :: n_p = 0d0 !(1d0+0.005d0)**5-1d0
 
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
-    real*8, parameter :: beta = 0.99d0**5
+    real*8, parameter :: beta = 0.96d0**5
     real*8, parameter :: mu_b = 0.25d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 10d0
+    real*8, parameter :: mx_max = 0.1d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
@@ -165,7 +165,7 @@ module globals
       if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
-         x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+         x_in = 1d-4 !max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
@@ -199,8 +199,8 @@ module globals
         if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
          ! get best guess for the root of foc_real
-          x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
-          x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+          x_in(1) = 1d-4 !max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
+          x_in(2) = 1d-4 !max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
@@ -279,8 +279,8 @@ module globals
       io_p_com = io_p; ia_com = ia; ik_com = ik; ix_com = ix; ip_com = ip; iw_com = iw; ie_com = ie; ij_com = ij
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-4)
-      x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-4)
+      x_in(1) = 1d-4 !max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-4)
+      x_in(2) = 1d-4 !max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-4)
 
       ! solve the household problem using fminsearch
       if (ij < JR) then

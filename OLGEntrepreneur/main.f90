@@ -150,7 +150,7 @@ contains
         write(*,*) ann(:, JR)
 
         ! initialize tax rates
-        taup  = 0.164d0
+        taup  = 0d0 !0.164d0
 
         ! set starting values
         KC = 7.30d0
@@ -195,6 +195,9 @@ contains
         ! calculate new prices
         r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
         w = Omega*(1d0-alpha)*(KC/LC)**alpha
+
+        r = 0.10d0
+        w = 1d0
 
         ! compute bequest per capita within workforce for next iteration step
         b(:) = 0d0

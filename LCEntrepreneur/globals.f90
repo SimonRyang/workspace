@@ -36,13 +36,13 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.96d0**5
-    real*8, parameter :: mu_b = 0.0d0
+    real*8, parameter :: mu_b = 0.25d0
 
     ! maximum investment in annuities
     real*8, parameter :: mx_max = 0.10d0
 
     ! risk free rate and risk premium
-    real*8, parameter :: r  = 0.1417!0.1d0
+    real*8, parameter :: r  = 0.1d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
@@ -149,7 +149,7 @@ module globals
       if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
-         x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+         x_in = 1d-4 !max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
 
          ! solve the household problem using fminsearch
          call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
@@ -180,17 +180,27 @@ module globals
         ! set up communication variables
         iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p; iw_com = iw; ie_com = ie; ij_com = ij
 
-       ! get best guess for the root of foc_real
-        x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
-        x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+        if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
-       ! solve the household problem using fminsearch
-       call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
+         ! get best guess for the root of foc_real
+          x_in(1) = 1d-4 !max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
+          x_in(2) = 1d-4 !max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-2)
 
-       ! portfolio share for capital
-       omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(1)
-       omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(2)
-       S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -fret
+         ! solve the household problem using fminsearch
+         call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
+
+         ! portfolio share for capital
+         omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(1)
+         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = x_in(2)
+         S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -fret
+
+       else
+
+         omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+         S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/0d0, 0d0/))!-1d-13**egam/egam
+
+       endif
 
     end subroutine
 
@@ -221,7 +231,7 @@ module globals
      varphi_x = max(min(varphi_x, 1d0),0d0)
 
      ! calculate future part of the value function
-     S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-16)**egam/egam
+     S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-13)**egam/egam
 
     if (varphi_a <= varphi_x) then
        EV_temp = (varphi_a             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
@@ -253,8 +263,8 @@ module globals
       io_p_com = io_p; ia_com = ia; ik_com = ik; ix_com = ix; ip_com = ip; iw_com = iw; ie_com = ie; ij_com = ij
 
       ! get best initial guess from future period
-      x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
-      x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
+      x_in(1) = 1d-4 !max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
+      x_in(2) = 1d-4 !max(l_t(io_p, ia, ik, ix, ip, iw, ie, ij), 1d-2)
 
       ! solve the household problem using fminsearch
       if (ij < JR) then
@@ -470,11 +480,11 @@ module globals
 
         ! calculate current income
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
-                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu + (1d0-delta_k)*k(ik_com)
+                 ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
 
         ! calculate consumption-savings
-        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + income &
-                   - (1d0-(1d0-phi)*ind_o)*mu*taup*min(income, p_u) - Q_plus
+        cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income &
+                   - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
 
         ! calculate future earning points
         p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
