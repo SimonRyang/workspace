@@ -12,10 +12,10 @@ program main
     integer, parameter :: numthreads = 4
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 0d0
     phi    = 0d0
-    taup   = 0d0 !0.184d0
+    taup   = 0.164d0
 
     ! initialize remaining variables
     call initialize()
@@ -60,8 +60,6 @@ contains
           read(301,'(f13.8)')psi(ij)
         enddo
         close(301)
-
-        psi(JJ-1) = 0d0
 
         ! initialize age earnings process
         eff(1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
