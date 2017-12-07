@@ -108,8 +108,6 @@ contains
         ! earnings process is during retirement equal to zero
         eff(JR:JJ) = 0d0
 
-        eff = 1d0
-
         ! discretize eta shocks
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
         eta = exp(eta) !/sum(dist_eta*exp(eta))
