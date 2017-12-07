@@ -142,7 +142,7 @@ contains
           ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
         enddo
         do ix = 0, NX
-          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
+          ann(ix, JR:JJ) = 4d0*(1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
         write(*,*) ann(:, JR)
