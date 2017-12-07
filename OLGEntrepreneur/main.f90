@@ -190,7 +190,7 @@ contains
 
         ! calculate new prices
         r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
-        r = 2d0
+        r = 0.1d0
         w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
         ! compute bequest per capita within workforce for next iteration step
