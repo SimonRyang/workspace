@@ -484,7 +484,7 @@ module globals
 
         ! calculate consumption-savings
         cons_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income &
-                   (1d0-(1d0-phi)*ind_o)*min(income, p_u) - Q_plus
+                   - (1d0-(1d0-phi)*ind_o)*taup*min(income, p_u) - Q_plus
 
         ! calculate future earning points
         p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income, p_u)))/dble(ij_com)
