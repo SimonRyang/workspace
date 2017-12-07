@@ -80,8 +80,7 @@ contains
 
         implicit none
 
-        integer :: ij, ix, ip
-        real*8 :: ann_temp
+        integer :: ip, ij
 
         ! set survival probabilities
         open(301, file='sp.dat')
@@ -177,7 +176,8 @@ contains
 
         implicit none
 
-        integer :: ij, ip
+        real*8 :: ann_tmp
+        integer :: ix, ip, ij
 
         ! calculate new prices
         r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
@@ -196,13 +196,13 @@ contains
 
         ! annuity payments
         ann = 0d0
-        ann_temp = 1d0
+        ann_tmp = 1d0
 
         do ij = JJ-1, JR, -1
-          ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
+          ann_tmp = ann_tmp/(1d0+r)*psi(ij) + 1d0
         enddo
         do ix = 0, NX
-          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
+          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_tmp
         enddo
 
         ! old-age transfers
