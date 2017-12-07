@@ -617,8 +617,8 @@ contains
             o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
             k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
 
-            !write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), PEN_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
-            !write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) - PEN_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
+            write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), PEN_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
+            write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) - PEN_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
 
         enddo ! ij
 
@@ -637,9 +637,9 @@ contains
         YY = YC + YE
 
         ! compute gap on goods market
-        DIFF = YY-CC-II-TC-BQ
+        DIFF = YY-CC-II-TC
 
-        write(*,*)'gm:', YY, CC, II, TC, BQ
+        write(*,*)'gm:', YY, CC, II, TC
         write(*,*)'pen', PBEN, PCON, w*LC, ybar, PBEN/PCON, taup
 
         write(*,*) YC, YE, KC, KE, LC, BQ, TC
