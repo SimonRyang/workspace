@@ -505,7 +505,7 @@ module globals
 
         ! get next period value function
         tomorrow = 0d0
-        if (ij_com < JJ .or. mu_b /= 0d0) then
+        if (ij_com < JJ) then
 
           if(varphi_q <= varphi_p) then
             tomorrow = (varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, ij_com))**(1d0/egam) +  &
