@@ -26,7 +26,7 @@ module globals
     integer, parameter :: NK = 12
 
     ! number of points on the annuity asset grid
-    integer, parameter :: NX = 1
+    integer, parameter :: NX = 12
 
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
@@ -42,7 +42,7 @@ module globals
     real*8, parameter :: mu_b = 0.25d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0d0
+    real*8, parameter :: mx_max = 0.5d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
@@ -82,7 +82,7 @@ module globals
     real*8, parameter :: kappa = 0.45d0
 
     ! numerical parameters
-    integer, parameter :: itermax = 200
+    integer, parameter :: itermax = 40
     real*8, parameter :: sig = 1d-6
     real*8, parameter :: damp = 0.45d0
 
