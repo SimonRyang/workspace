@@ -564,7 +564,7 @@ contains
                         CC = CC + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         BQ = BQ + Q_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
-                        TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, ij))*m(ia, ik,ix, ip, iw, ie, ij)
+                        TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik,ix, ip, iw, ie, ij)
                         PBEN = PBEN + penb(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         PCON = PCON + penc(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
 
