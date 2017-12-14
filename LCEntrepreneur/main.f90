@@ -104,8 +104,9 @@ contains
         do ix = 0, NX
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
-        do ij = JR, JJ
-          ans(:, ij) = (1d0+r)/psi(JR)*x(:)-ann(:, ij)
+        ans(:, ij) = x(ix)
+        do ij = JR+1, JJ
+          ans(:, ij) = (1d0+r)/psi(JR)*ans(:, ij-1)-ann(:, ij)
         enddo
 
         ! ! annuity payments
