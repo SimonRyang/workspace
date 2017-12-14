@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 28
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 0d0
     phi    = 0d0
 
@@ -561,9 +561,9 @@ contains
                         ! skip if there is no household
                         if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
 
-                        if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*)'a_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
-                        if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*) ia, ik, ix, ip, iw, ie, ij, m(ia, ik, ix, ip, iw, ie, ij)
-                        if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
+                        !if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*)'a_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
+                        !if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*) ia, ik, ix, ip, iw, ie, ij, m(ia, ik, ix, ip, iw, ie, ij)
+                        !if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
                         AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
                         CC = CC + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -620,7 +620,7 @@ contains
 
         enddo ! ij
 
-        write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) - PEN_tmp(:) + TAUP_tmp(:) + C_tmp(:))
+        !write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) - PEN_tmp(:) + TAUP_tmp(:) + C_tmp(:))
 
         ! get average income
         ybar = w*LC/workpop
@@ -637,8 +637,8 @@ contains
         ! compute gap on goods market
         DIFF = YY-CC-II-TC
 
-        write(*,*)'gm:', YY, CC, II, TC
-        write(*,*)'pen', PBEN, PCON, w*LC, ybar, PBEN/PCON, taup
+        !write(*,*)'gm:', YY, CC, II, TC
+        !rite(*,*)'pen', PBEN, PCON, w*LC, ybar, PBEN/PCON, taup
 
         !write(*,*) YC, YE, KC, KE, LC, BQ, TC
 

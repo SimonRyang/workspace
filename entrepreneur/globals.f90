@@ -12,7 +12,7 @@ module globals
   integer, parameter :: JR = 10
 
   ! number of years a household can be an entrepreneur (+1)
-  integer, parameter :: JE = 13
+  integer, parameter :: JE = 10
 
   ! number of transition periods
   integer, parameter :: TT = 48
@@ -21,28 +21,28 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of transitory shock process values (worker)
-  integer, parameter :: NW = 5
+  integer, parameter :: NW = 7
 
   ! number of transitory shock process values (entrepreneur)
-  integer, parameter :: NE = 5
+  integer, parameter :: NE = 7
 
   ! number of points on the asset grid (-1)
   integer, parameter :: NA = 32
 
   ! number of points on the annuitized asset grid (-1)
-  integer, parameter :: NX = 20
+  integer, parameter :: NX = 2
 
   ! number of points on the pension claim grid (-1)
-  integer, parameter :: NP = 5
+  integer, parameter :: NP = 6
 
   ! number of occupations (-1)
   integer, parameter :: NO = 1
 
   ! household parameters
-  real*8 :: gamma, sigma, mu_b, beta, l_bar, swc
+  real*8 :: gamma, sigma, mu_b, beta, l_bar
 
   ! production parameters
-  real*8 :: alpha, delta, nu
+  real*8 :: alpha, delta, nu, suc(NS), swc
 
   ! numerical parameters
   real*8 :: a_l, a_u, a_grow
@@ -58,7 +58,7 @@ module globals
   real*8:: gy, by
   real*8 :: r(0:TT), w(0:TT), inc_tax(0:TT), inc_pen(0:TT), psix(NS, JJ, 0:TT), pinv(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), AA(0:TT), AX(0:TT), XB(0:TT), LC(0:TT), HH(0:TT)
-  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), CCX(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
+  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), SC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
   real*8 :: BB(0:TT), BF(0:TT), BQ(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAy(0:TT)
 
@@ -95,10 +95,10 @@ module globals
   real*8, allocatable :: xplus(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: pplus(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: c(:, :, :, :, :, :, :, :, :)
-  real*8, allocatable :: cx(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: l(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: k(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: mx(:, :, :, :, :, :, :, :, :)
+  real*8, allocatable :: cx(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: oplus(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: pencon(:, :, :, :, :, :, :, :, :)
   real*8, allocatable :: inctax(:, :, :, :, :, :, :, :, :)
@@ -110,7 +110,7 @@ module globals
 
   ! numerical variables
   integer :: io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com
-  real*8 :: c_com, cx_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
+  real*8 :: c_com, l_com, k_com, mx_com, xplus_com, cx_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com, DIFF(0:TT)
 
   ! statistical variables
   logical :: gini_on = .false.
@@ -123,10 +123,8 @@ module globals
   logical :: labor = .true.     ! .true. = endogenous labor decision of worker
   logical :: pen_debt = .false. ! .true. = pension system can run into debts
 
-  logical :: show_graphics = .false.
-
   !$omp threadprivate(io_com, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
-  !$omp threadprivate(c_com, cx_com, l_com, k_com, mx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
+  !$omp threadprivate(c_com, l_com, k_com, mx_com, cx_com, xplus_com, pplus_com, oplus_com, pencon_com, inctax_com, captax_com)
 
 contains
 
@@ -145,7 +143,7 @@ contains
     real*8 :: valuefunc_w
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, wage, c_help, v_ind, valuefunc_help
+    real*8 :: a_plus, wage, v_ind, valuefunc_help, c_help
     integer :: itp
 
     ! tomorrow's assets
@@ -195,13 +193,13 @@ contains
     c_com = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
          - pencon_com - inctax_com - captax_com - mx_com - a_plus)*pinv(it_com)
     c_help = ((1d0+r(it_com))*a(ia_com) + wage*l_com + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + v_ind &
-         - pencon_com - inctax_com - captax_com - mx_com - a_plus - dble(ij_com)/(JR-1)*swc)*pinv(it_com)
+         - pencon_com - inctax_com - captax_com - mx_com - a_plus -suc(is_com))*pinv(it_com)
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_w = 0d0
     valuefunc_help = 0d0
-    cx_com = 0d0
     oplus_com = 0d0
+    cx_com = 0d0
 
     if (ij_com < JJ) then
 
@@ -209,15 +207,15 @@ contains
       valuefunc_w = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JR-1 .and. ent) then
+      if (ij_com < JR-1) then
 
         valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_w) then
+        if (valuefunc_help > valuefunc_w .and. ent) then
           valuefunc_w = valuefunc_help
+          cx_com = suc(is_com)
           c_com = c_help
-          cx_com = dble(ij_com)/(JR-1)*swc
           oplus_com = 1d0
         endif
 
@@ -244,7 +242,7 @@ contains
     real*8 :: valuefunc_e
 
     !##### OTHER VARIABLES ####################################################
-    real*8 :: a_plus, p_hat, profit, c_help, v_ind, valuefunc_help
+    real*8 :: a_plus, p_hat, profit, v_ind, valuefunc_help, c_help
     real*8 :: temp1, temp2
     integer :: ij, itp, iij, itj
 
@@ -294,12 +292,11 @@ contains
     v_ind = v(1, ia_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
 
     ! entrepreneur's profit
-    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*eta(iw_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r(it_com)*max(k_com-a(ia_com), 0d0)
+    profit = theta(ie_com, is_com)*(k_com**alpha*(eff(ij_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k_com - r(it_com)*max(k_com-a(ia_com), 0d0)
 
     ! calculate contribution to pension system
     if (ij_com < JR) then
-         pencon_com = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_pen(it_com))
-        !if (phi(it_com) <= 0d0) pencon_com = taup(it_com)*0.05d0*inc_pen(it_com)
+        pencon_com = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_pen(it_com))
     else
         pencon_com = 0d0
     endif
@@ -312,17 +309,14 @@ contains
 
     ! calculate consumption
     c_com =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
-           - captax_com - inctax_com - pencon_com - mx_com - a_plus - max(dble(JR-ij_com)/(JR-1), 0d0)*swc)*pinv(it_com)
-    c_help =  (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
+           - captax_com - inctax_com - pencon_com - mx_com - a_plus - swc)*pinv(it_com)
+    c_help = (a(ia_com) + r(it_com)*max(a(ia_com)-k_com, 0d0) + profit + beq(is_com, ij_com, it_com) + pen(ip_com, ij_com, it_com) + p_hat + v_ind  &
            - captax_com - inctax_com - pencon_com - mx_com - a_plus)*pinv(it_com)
-    !c_com = c_help
 
     ! calculate next periods pension claims
     if (ij_com < JR) then
       pplus_com = (p(ip_com)*dble(ij_com-1) + mu(it_com)*phi(it_com)*(lambda(it_com) &
-                   + (1d0-lambda(it_com))*min(profit/inc_pen(it_com), sscc(it_com))))/dble(ij_com)
-      !if (phi(it_com) <= 0d0) pplus_com = (p(ip_com)*dble(ij_com-1) + mu(it_com)*(lambda(it_com) &
-      !                                    + (1d0-lambda(it_com))*0.05d0))/dble(ij_com)
+             + (1d0-lambda(it_com))*min(profit/inc_pen(it_com), sscc(it_com))))/dble(ij_com)
     else
       pplus_com = p(ip_com)
     endif
@@ -330,8 +324,8 @@ contains
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_e = 0d0
     valuefunc_help = 0d0
-    cx_com = max(dble(JR-ij_com)/(JR-1), 0d0)*swc
     oplus_com = 0d0
+    cx_com = swc
 
     if (ij_com < JJ) then
 
@@ -339,16 +333,16 @@ contains
       valuefunc_e = util(c_com, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(0, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
       ! interpolate next period's value function as an entrepreneur
-      if (ij_com < JE-1 .and. ent) then
+      if (ij_com < JE-1) then
 
         valuefunc_help = util(c_help, l_com) + beta*psi(is_com, ij_com+1)*interpolate_EV(1, a_plus, xplus_com, pplus_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
         ! set next period's occupational decision
-        if (valuefunc_help > valuefunc_e) then
+        if (valuefunc_help > valuefunc_e .and. ent) then
           valuefunc_e = valuefunc_help
           c_com = c_help
-          cx_com = 0d0
           oplus_com = 1d0
+          cx_com = 0d0
         endif
 
       endif
@@ -356,10 +350,9 @@ contains
     endif
 
      if (ij_com >= JR) then
-       valuefunc_e = -(valuefunc_e + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma))
-     else
-       valuefunc_e = -valuefunc_e
+       valuefunc_e = valuefunc_e + (1d0-psi(is_com, ij_com+1))*mu_b*a_plus**(1d0-gamma)
      endif
+    valuefunc_e = -valuefunc_e
 
   end function
 
@@ -434,7 +427,6 @@ contains
 
     ! calculate tomorrow's part of the value function and occupational decision
     valuefunc_r = 0d0
-    cx_com = 0d0
     oplus_com = 0d0
 
     if (ij_com < JJ) then
@@ -450,38 +442,23 @@ contains
   end function
 
 
+
   !##############################################################################
-  ! FUNCTION incent
+  ! FUNCTION profent
   !
-  ! Computes total income of an entrepreneur
+  ! Computes profit of an entrepreneur
   !##############################################################################
-  function incent(k)
+  function profent(k, ij, ia, is, ie, it)
 
-      implicit none
+    implicit none
 
-      !##### INPUT/OUTPUT VARIABLES #############################################
-      real*8, intent(in) :: k
-      real*8 :: incent
+    !##### INPUT/OUTPUT VARIABLES #############################################
+    real*8, intent(in) :: k
+    integer, intent(in) :: ij, ia, is, ie, it
+    real*8 :: profent
 
-      !##### OTHER VARIABLES ####################################################
-      real*8 :: profit, pencon, inctax, captax
-
-      profit = theta(ie_com, is_com)*(k**alpha*(eff(ij_com, is_com)*eta(iw_com, is_com)*l_bar)**(1d0-alpha))**nu - delta*k - r(it_com)*max(k-a(ia_com), 0d0)
-
-      ! calculate contribution to pension system
-      if (ij_com < JR) then
-          pencon = phi(it_com)*taup(it_com)*min(profit, sscc(it_com)*inc_pen(it_com))
-      else
-          pencon = 0d0
-      endif
-
-      ! calculate income tax
-      inctax = tarif(max(profit - 0.08d0*profit - 0.04d0*inc_tax(0) - pencon, 0d0) + pen(ip_com, ij_com, it_com))
-      ! calcualte capital gains tax
-      captax = taur(it_com)*1.055d0*max(r(it_com)*max(a(ia_com)-k, 0d0) - 0.08d0*r(it_com)*max(a(ia_com)-k, 0d0) - 2d0*0.0267d0*inc_tax(0), 0d0)
-      ! compute income
-      incent = -(r(it_com)*max(a(ia_com)-k, 0d0) + profit + pen(ij_com, ip_com, it_com) &
-                 - pencon - inctax - captax)
+    ! compute profit
+    profent = theta(ie, is)*(k**alpha*(eff(ij, is)*l_bar)**(1d0-alpha))**nu - delta*k - r(it)*max(k-a(ia), 0d0)
 
   end function
 
@@ -821,8 +798,8 @@ contains
       do ii = 1, size(p)
 
         if (1d0-ycum(ic) >= p(ii) .and. percentiles(ii) <= 0d0) then
-          !percentiles(ii) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)*100d0
-          percentiles(ii) = xs(ic)
+          percentiles(ii) = (xcum(ICMAX)-xcum(ic-1))/xcum(ICMAX)*100d0
+          !percentiles(ii) = xs(ic)
         endif
 
       end do
