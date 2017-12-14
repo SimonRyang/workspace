@@ -88,7 +88,7 @@ module globals
     real*8 :: dist_eta(NW), pi_eta(NW, NW), eta(NW), dist_theta(NE), pi_theta(NE, NE), theta(NE)
 
     ! wages, transfer payments (old-age), survival probabilities and discount factor for housing utilty
-    real*8 :: w, ybar, eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), psi(JJ+1)
+    real*8 :: w, ybar, eff(JJ), pen(0:NP, JJ), ann(0:NX, JJ), ans(0:NX, JJ), psi(JJ+1)
 
     ! government variables
     real*8 :: lambda, phi, mu
