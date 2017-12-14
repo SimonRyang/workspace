@@ -214,7 +214,7 @@ module globals
       real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
       a_p = Q(iq_p)
-      x_p = x(ix)
+      x_p =(1d0+r)/psi(ij)*x(ix) - ann(ix, ij)
 
      ! calculate linear interpolation for future assets
      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
@@ -324,7 +324,7 @@ module globals
 
       else
 
-        x_p = x(ix)
+        x_p = (1d0+r)/psi(ij)*x(ix) - ann(ix, ij)
 
       endif
 

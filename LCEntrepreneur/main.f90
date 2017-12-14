@@ -104,6 +104,22 @@ contains
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
+        write(*,*) ann
+
+        ! annuity payments
+        ann = 0d0
+        ann_temp = 1d0
+
+        do ij = JJ, JR, -1
+          do ix = 0, NX
+            ann(ix, ij) = (1d0+r)/psi(ij)*x(ix)/ann_temp
+          enddo
+          ann_temp = ann_temp/(1d0+r)*psi(ij-1) + 1d0
+        enddo
+
+        write(*,*) ann
+
+
         ! old-age transfers
         pen = 0d0
         do ip = 0, NP
