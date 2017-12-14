@@ -104,20 +104,16 @@ contains
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
         enddo
 
-        write(*,*) ann
-
-        ! annuity payments
-        ann = 0d0
-        ann_temp = 1d0
-
-        do ij = JJ, JR, -1
-          do ix = 0, NX
-            ann(ix, ij) = (1d0+r)/psi(ij)*x(ix)/ann_temp
-          enddo
-          ann_temp = ann_temp/(1d0+r)*psi(ij-1) + 1d0
-        enddo
-
-        write(*,*) ann
+        ! ! annuity payments
+        ! ann = 0d0
+        ! ann_temp = 1d0
+        !
+        ! do ij = JJ, JR, -1
+        !   do ix = 0, NX
+        !     ann(ix, ij) = (1d0+r)/psi(ij)*x(ix)/ann_temp
+        !   enddo
+        !   ann_temp = ann_temp/(1d0+r)*psi(ij-1) + 1d0
+        ! enddo
 
 
         ! old-age transfers
@@ -461,7 +457,7 @@ contains
                         if(ik == 0) then
                           c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
-                          x_coh(0, ij) = x_coh(0, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
+                          x_coh(0, ij) = x_coh(0, ij) + (x(ix)-max(dble(ij+1-JR), 0d0)*ann(ix, ij))*m(ia, ik, ix, ip, iw, ie, ij)
                           l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           y_coh(0, ij) = y_coh(0, ij) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         else
