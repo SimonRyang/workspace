@@ -9,7 +9,7 @@ program main
 
     implicit none
 
-    integer, parameter :: numthreads = 18
+    integer, parameter :: numthreads = 28
 
     ! set government variables
     mu     = 0d0
@@ -108,6 +108,9 @@ contains
         do ij = JR+1, JJ
           ans(:, ij) = (1d0+r)/psi(ij-1)*ans(:, ij-1)-ann(:, ij-1)
         enddo
+
+        write(*,*)ans(:, ij)
+        write(*,*)ann(:, ij)
 
         ! old-age transfers
         pen = 0d0
