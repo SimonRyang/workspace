@@ -11,10 +11,10 @@ module globals
     integer, parameter :: JJ = 16
 
     ! number of productivity (eta) shocks
-    integer, parameter :: NW = 3
+    integer, parameter :: NW = 5
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 2
+    integer, parameter :: NE = 3
 
     ! number of points on the asset grid
     integer, parameter :: NQ = 12
@@ -36,7 +36,7 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.98d0**5
-    real*8, parameter :: mu_b = 0.20d0
+    real*8, parameter :: mu_b = 0.0d0
 
     ! maximum investment in annuities
     real*8, parameter :: mx_max = 0.5d0
@@ -56,7 +56,7 @@ module globals
 
     ! size of the asset grid
     real*8, parameter :: Q_l    = 0d0
-    real*8, parameter :: Q_u    = 6d0
+    real*8, parameter :: Q_u    = 5d0
     real*8, parameter :: Q_grow = 0.05d0
 
     ! size of the liquid asset grid
