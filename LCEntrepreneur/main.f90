@@ -110,8 +110,8 @@ contains
         enddo
 
         write(*,*)x
-        write(*,*)ann(:, JR)
-        write(*,*)ann(:, JJ)
+        write(*,*)ans(:, JR)
+        write(*,*)ans(:, JJ)
 
         ! ! annuity payments
         ! ann = 0d0
