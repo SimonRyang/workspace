@@ -109,8 +109,9 @@ contains
           ans(:, ij) = (1d0+r)/psi(ij-1)*ans(:, ij-1)-ann(:, ij-1)
         enddo
 
-        write(*,*)ans(:, ij)
-        write(*,*)ann(:, ij)
+        write(*,*)ans(:, JJ)
+        write(*,*)ans(:, JJ)/psi(JJ)*(1d0+r)
+        write(*,*)ann(:, JJ)
 
         ! old-age transfers
         pen = 0d0
