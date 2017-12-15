@@ -99,7 +99,7 @@ contains
         ann_temp = 1d0
 
         do ij = JJ-1, JR, -1
-          ann_temp = ann_temp/(1d0+r)*psi(ij) + 1d0
+          ann_temp = ann_temp*(1d0+r)/psi(ij) + 1d0
         enddo
         do ix = 0, NX
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_temp
