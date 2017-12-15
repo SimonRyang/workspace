@@ -106,20 +106,8 @@ contains
         enddo
         ans(:, JR) = x(:)
         do ij = JR+1, JJ
-          ans(:, ij) = (1d0+r)/psi(ij)*ans(:, ij-1)-ann(:, ij)
+          ans(:, ij) = (1d0+r)/psi(ij-1)*ans(:, ij-1)-ann(:, ij-1)
         enddo
-
-        ! ! annuity payments
-        ! ann = 0d0
-        ! ann_temp = 1d0
-        !
-        ! do ij = JJ, JR, -1
-        !   do ix = 0, NX
-        !     ann(ix, ij) = (1d0+r)/psi(ij)*x(ix)/ann_temp
-        !   enddo
-        !   ann_temp = ann_temp/(1d0+r)*psi(ij-1) + 1d0
-        ! enddo
-
 
         ! old-age transfers
         pen = 0d0
