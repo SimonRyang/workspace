@@ -106,12 +106,8 @@ contains
         enddo
         ans(:, JR) = x(:)
         do ij = JR+1, JJ
-          ans(:, ij) = (1d0+r)/psi(JR)*ans(:, ij-1)-ann(:, ij)
+          ans(:, ij) = (1d0+r)/psi(ij)*ans(:, ij-1)-ann(:, ij)
         enddo
-
-        write(*,*)x
-        write(*,*)ans(:, JR)
-        write(*,*)ans(:, JJ)
 
         ! ! annuity payments
         ! ann = 0d0
