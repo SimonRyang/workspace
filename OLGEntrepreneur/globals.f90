@@ -39,19 +39,19 @@ module globals
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.3d0
     real*8, parameter :: beta = 0.95d0**5
-    real*8, parameter :: mu_b = 0d0 ! 0.10d0
+    real*8, parameter :: mu_b = 0.10d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0.2d0
+    real*8, parameter :: mx_max = 0.05d0
 
     ! capital parameters
-    real*8, parameter :: delta_k = 0d0 !0.06d0
-    real*8, parameter :: xi = 0d0 !1d0/3d0
+    real*8, parameter :: delta_k = 0.06d0
+    real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
     real*8, parameter :: Omega = 1d0
     real*8, parameter :: k_min = 0.2d0
-    real*8, parameter :: phi_k = 0d0 !0.5d0
+    real*8, parameter :: phi_k = 0.25d0
     real*8, parameter :: alpha = 0.36d0
     real*8, parameter :: nu = 0.88d0
 
