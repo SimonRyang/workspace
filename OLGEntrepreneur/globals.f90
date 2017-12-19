@@ -42,14 +42,14 @@ module globals
     real*8, parameter :: mu_b = 0.15d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0.1d0
+    real*8, parameter :: mx_max = 0.05d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: Omega = 1d0
+    !real*8, parameter :: Omega = 1d0
     real*8, parameter :: k_min = 0.2d0
     real*8, parameter :: phi_k = 0.5d0
     real*8, parameter :: alpha = 0.36d0
@@ -101,6 +101,7 @@ module globals
     real*8 :: taup
 
     ! macroeconomic variables
+    real*8 :: Omega
     real*8 :: r, w
     real*8 :: ybar
     real*8 :: AA, BQ, PBEN, PCON
