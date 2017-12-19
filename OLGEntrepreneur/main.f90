@@ -188,16 +188,26 @@ contains
         r = 0.15d0
         w = 0.6d0
         b = 0d0
+        ybar = 0.4d0
 
         ! annuity payments
         ann = 0d0
+        ans = 0d0
         ann_tmp = 1d0
 
         do ij = JJ-1, JR, -1
           ann_tmp = ann_tmp/(1d0+r)*psi(ij+1) + 1d0
         enddo
+
         do ix = 0, NX
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_tmp
+        enddo
+
+        do ij = 1, JR
+          ans(:, ij) = x(:)
+        enddo
+        do ij = JR+1, JJ
+          ans(:, ij) = (1d0+r)/psi(ij-1)*ans(:, ij-1)-ann(:, ij-1)
         enddo
 
         ! old-age transfers
@@ -589,14 +599,14 @@ contains
                           LC = LC + eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, ij)
-                          x_coh(0, ij) = x_coh(0, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
+                          x_coh(0, ij) = x_coh(0, ij) + ans(ix, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           y_coh(0, ij) = y_coh(0, ij) + w*eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         else
                           YE = YE + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij)
                           c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           a_coh(1, ij) = a_coh(1, ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, ij)
-                          x_coh(1, ij) = x_coh(1, ij) + x(ix)*m(ia, ik, ix, ip, iw, ie, ij)
+                          x_coh(1, ij) = x_coh(1, ij) + ans(ix, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                           k_coh(ij) = k_coh(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
                           y_coh(1, ij) = y_coh(1, ij) + theta(ie)*(k(ik)**alpha*(eff(ij)*l(ia, ik, ix, ip, iw, ie, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, ij)
                           l_coh(1, ij) = l_coh(1, ij) + l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
