@@ -32,7 +32,7 @@ module globals
     integer, parameter :: NP = 4
 
     ! demographic parameters
-    real*8, parameter :: n_p = 0d0 !(1d0+0.005d0)**5-1d0
+    real*8, parameter :: n_p = (1d0+0.005d0)**5-1d0
 
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
