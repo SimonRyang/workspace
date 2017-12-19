@@ -186,7 +186,7 @@ contains
         enddo
 
         r = 0.1d0
-        w = 1d0
+        w = 0.6d0
         b = 0d0
 
         ! annuity payments
