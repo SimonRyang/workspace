@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 28
 
     ! set government variables
-    mu     = 1d0
+    mu     = 0d0
     lambda = 0d0
     phi    = 0d0
 
@@ -176,7 +176,6 @@ contains
         integer :: ix, ip, ij
 
         ! calculate new prices
-        Omega = 1d0/((1d0-alpha)*(KC/LC)**alpha)
         r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
         w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
