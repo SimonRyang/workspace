@@ -196,7 +196,7 @@ module globals
         ! set up communication variables
         iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p; iw_com = iw; ie_com = ie; ij_com = ij
 
-        if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
+        if (Q(iq_p) > 0d0) then
 
          ! get best guess for the root of foc_real
           x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij), 1d-4)
@@ -214,7 +214,7 @@ module globals
 
         omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d0
         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d0
-        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d-26**egam/egam !-inv_e((/1d0, 1d0/))
+        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d-13**egam/egam !-inv_e((/1d0, 1d0/))
 
       endif
 
