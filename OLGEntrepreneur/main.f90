@@ -585,7 +585,7 @@ contains
                         !if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
                         AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
-                        AX = AX + ans(ix, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                        AX = AX + ans(ix, ij)/psi(ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         CC = CC + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         BQ = BQ + a_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -646,7 +646,7 @@ contains
         ybar = w*LC/workpop
 
         ! compute stock of capital
-        KC = damp*AA +(1d0-damp)*KC
+        KC = damp*(AA+AX) +(1d0-damp)*KC
         KK = KC + KE
         LC = damp*LC +(1d0-damp)*LC_old
         BQ = damp*BQ +(1d0-damp)*BQ_old
