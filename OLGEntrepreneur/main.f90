@@ -127,7 +127,8 @@ contains
         k(0) = 0d0
 
         ! initialize annuity grid
-        call grid_Cons_Grow(x, x_l, x_u, x_grow)
+        if (NX > 0) call grid_Cons_Grow(x, x_l, x_u, x_grow)
+        x(0) = x_l
 
         ! initialize pension claim grid
         call grid_Cons_Equi(p, p_l, p_u)
@@ -416,7 +417,11 @@ contains
                       else
                         ikl = 0; ikr = 0; varphi_k = 1d0
                       endif
-                      call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+                      if (NX < 0) then
+                        call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+                      else
+                        ixl = 0; ixr = 0; varphi_x = 1d0
+                      endif
                       call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
 
                       ! restrict values to grid just in case

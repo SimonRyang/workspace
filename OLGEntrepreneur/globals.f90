@@ -226,38 +226,24 @@ module globals
       implicit none
 
       integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, ij
-      integer :: ial, iar, ixl, ixr
-      real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
+      integer :: ial, iar
+      real*8 :: a_p, EV_temp, S_temp, varphi_a
 
       a_p = Q(iq_p)
-      x_p = x(ix)
 
      ! calculate linear interpolation for future assets
      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-     call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
 
      ! restrict values to grid just in case
      ial = min(ial, NA)
      iar = min(iar, NA)
      varphi_a = max(min(varphi_a, 1d0),0d0)
 
-     ! restrict values to grid just in case
-     ixl = min(ixl, NX)
-     ixr = min(ixr, NX)
-     varphi_x = max(min(varphi_x, 1d0),0d0)
-
      ! calculate future part of the value function
      S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-13)**egam/egam
 
-    if (varphi_a <= varphi_x) then
-       EV_temp = (varphi_a             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                  (varphi_x - varphi_a)*(egam*EV(iar, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                  (1d0-varphi_x)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
-      else
-        EV_temp = (varphi_x             *(egam*EV(ial, 0, ixl, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                   (varphi_a - varphi_x)*(egam*EV(ial, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                   (1d0-varphi_a)       *(egam*EV(iar, 0, ixr, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
-      endif
+     EV_temp = (varphi_a             *(egam*EV(ial, 0, ix, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                (1d0-varphi_a)       *(egam*EV(iar, 0, ix, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
 
      omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
      omega_k_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
@@ -439,7 +425,11 @@ module globals
 
       ! derive interpolation weights
       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+      if (NX > 0) then
+        call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+      else
+        ixl = 0; ixr = 0; varphi_x = 1d0
+      endif
       if (NK > 0) then
         call linint_Grow(k_p, k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
         ikl = min(ikl+1, NK)
