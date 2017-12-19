@@ -587,7 +587,7 @@ contains
                         AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
                         AX = AX + ans(ix, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         CC = CC + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
-                        BQ = BQ + Q_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)
+                        BQ = BQ + (a_plus(ia, ik, ix, ip, iw, ie, ij)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, ij))*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
                         TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik,ix, ip, iw, ie, ij)
                         PBEN = PBEN + penb(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -649,7 +649,7 @@ contains
         KC = damp*(AA+AX) +(1d0-damp)*KC
         KK = KC + KE
         LC = damp*LC +(1d0-damp)*LC_old
-        BQ = damp*(BQ-AX) +(1d0-damp)*BQ_old
+        BQ = damp*BQ +(1d0-damp)*BQ_old
         II = (n_p+delta_k)*KK
         YC = Omega*KC**alpha*LC**(1d0-alpha)
         YY = YC + YE
