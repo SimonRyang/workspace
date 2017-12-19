@@ -26,7 +26,7 @@ module globals
     integer, parameter :: NK = 12
 
     ! number of points on the annuity asset grid
-    integer, parameter :: NX = 0
+    integer, parameter :: NX = 12
 
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
@@ -42,7 +42,7 @@ module globals
     real*8, parameter :: mu_b = 0.10d0
 
     ! maximum investment in annuities
-    real*8, parameter :: mx_max = 0.05d0
+    real*8, parameter :: mx_max = 0.5d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
@@ -384,7 +384,7 @@ module globals
       ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
-      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max(Q(iq_p_com), 1d-13)**egam/egam
+      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max(a_p, 1d-13)**egam/egam
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
@@ -453,7 +453,7 @@ module globals
       ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
 
-      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max(Q(iq_p_com), 1d-13)**egam/egam
+      S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max(a_p + (1d0-xi)*k_p, 1d-13)**egam/egam
 
       ! get optimal investment strategy
       EV_temp = (varphi_a*varphi_x*varphi_k                  *(egam*EV(ial, ikl, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
