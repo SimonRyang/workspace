@@ -212,9 +212,9 @@ module globals
 
       else
 
-        omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+        omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 1d0
         omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/0d0, 0d0/))!-1d-13**egam/egam
+        S(1, iq_p, ik, ix, ip_p, iw, ie, ij) = -inv_e((/1d0, 0d0/))!-1d-13**egam/egam
 
       endif
 
@@ -313,13 +313,13 @@ module globals
       if (ij < JR) then
 
         if (varphi_q <= varphi_p) then
-          mx = min((varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+          mx = (varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
                 (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-                (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
+                (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
         else
-          mx = min((varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+          mx = (varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
                 (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-                (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
+                (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1)
         endif
 
         x_p = (1d0+r)/psi(ij)*x(ix) + mx
