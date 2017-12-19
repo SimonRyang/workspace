@@ -83,7 +83,7 @@ module globals
     real*8, parameter :: kappa = 0.45d0
 
     ! numerical parameters
-    integer, parameter :: itermax = 100
+    integer, parameter :: itermax = 1
     real*8, parameter :: sig = 1d-6
     real*8, parameter :: damp = 0.45d0
 
@@ -373,7 +373,7 @@ module globals
       else
         ixl = 0; ixr = 0; varphi_x = 1d0
       endif
-      
+
       ! restrict values to grid just in case
       ial = min(ial, NA)
       iar = min(iar, NA)
