@@ -417,7 +417,7 @@ contains
                       else
                         ikl = 0; ikr = 0; varphi_k = 1d0
                       endif
-                      if (NX < 0) then
+                      if (NX > 0) then
                         call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
                       else
                         ixl = 0; ixr = 0; varphi_x = 1d0
