@@ -580,9 +580,9 @@ contains
                         ! skip if there is no household
                         if (m(ia, ik, ix, ip, iw, ie, ij) <= 0d0) cycle
 
-                        !if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*)'a_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
-                        !if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*) ia, ik, ix, ip, iw, ie, ij, m(ia, ik, ix, ip, iw, ie, ij)
-                        !if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
+                        if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*)'a_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
+                        if (a_plus(ia, ik, ix, ip, iw, ie, ij) < 0d0) write(*,*) ia, ik, ix, ip, iw, ie, ij, m(ia, ik, ix, ip, iw, ie, ij)
+                        if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
                         AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
                         AX = AX + ans(ix, ij)/psi(ij)*m(ia, ik, ix, ip, iw, ie, ij)
