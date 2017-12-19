@@ -368,8 +368,12 @@ module globals
 
       ! derive interpolation weights
       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
-
+      if (NX > 0) then
+        call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+      else
+        ixl = 0; ixr = 0; varphi_x = 1d0
+      endif
+      
       ! restrict values to grid just in case
       ial = min(ial, NA)
       iar = min(iar, NA)
