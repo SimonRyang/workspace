@@ -554,7 +554,7 @@ contains
         c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penb_coh = 0d0; penc_coh = 0d0
 
         ! reset macroeconomic aggregates in each iteration step
-        AA = 0d0; BQ = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0; PBEN = 0d0; PCON = 0d0
+        AA = 0d0; AX = 0d0; BQ = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0; PBEN = 0d0; PCON = 0d0
 
         Q_tmp = 0d0; KC_tmp = 0d0; Y_tmp = 0d0; KE_tmp = 0d0; BQ_tmp = 0d0; PEN_tmp = 0d0; C_tmp = 0d0
 
@@ -585,6 +585,7 @@ contains
                         !if (k_plus(ia, ik, ix, ip, iw, ie, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, ij) < k_min) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, ij), a_plus(ia, ik, ix, ip, iw, ie, ij), Q_plus(ia, ik, ix, ip, iw, ie, ij)
 
                         AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
+                        AX = AX + ans(ix, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         CC = CC + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         BQ = BQ + Q_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -645,7 +646,7 @@ contains
         ybar = w*LC/workpop
 
         ! compute stock of capital
-        KC = damp*AA +(1d0-damp)*KC
+        KC = damp*(AA+AX) +(1d0-damp)*KC
         KK = KC + KE
         LC = damp*LC +(1d0-damp)*LC_old
         BQ = damp*BQ +(1d0-damp)*BQ_old

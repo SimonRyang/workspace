@@ -83,7 +83,7 @@ module globals
     real*8, parameter :: kappa = 0.45d0
 
     ! numerical parameters
-    integer, parameter :: itermax = 20
+    integer, parameter :: itermax = 200
     real*8, parameter :: sig = 1d-6
     real*8, parameter :: damp = 0.45d0
 
@@ -103,7 +103,7 @@ module globals
     ! macroeconomic variables
     real*8 :: r, w
     real*8 :: ybar
-    real*8 :: AA, BQ, PBEN, PCON
+    real*8 :: AA, AX, BQ, PBEN, PCON
     real*8 :: KK, KC, KE, LC
     real*8 :: YY, YC, YE, CC, II, TC
 
