@@ -587,7 +587,7 @@ contains
                         AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik, ix, ip, iw, ie, ij)/(1d0+n_p)
                         AX = AX + ans(ix, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         CC = CC + c(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
-                        BQ = BQ + (a_plus(ia, ik, ix, ip, iw, ie, ij)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, ij))*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)
+                        BQ = BQ + a_plus(ia, ik, ix, ip, iw, ie, ij)*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
                         TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, ij))*psi(ij+1)*m(ia, ik,ix, ip, iw, ie, ij)
                         PBEN = PBEN + penb(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
