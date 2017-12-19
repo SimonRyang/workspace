@@ -185,7 +185,7 @@ contains
            b(ij) = BQ/workpop
         enddo
 
-        r = 0.1d0
+        r = 0.15d0
         w = 0.6d0
         b = 0d0
 
