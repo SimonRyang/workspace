@@ -112,7 +112,7 @@ module globals
     real*8 :: a_coh(0:1, JJ), x_coh(0:1, JJ), k_coh(JJ), penb_coh(JJ), penc_coh(JJ)
 
     ! different grids to discretize the state space
-    real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP)
+    real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP), ans(0:NX, JJ)
 
     ! variables to store the policy functions
     real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
