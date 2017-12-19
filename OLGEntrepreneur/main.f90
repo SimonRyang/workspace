@@ -116,8 +116,6 @@ contains
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
 
-        theta = 0d0
-
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
 
@@ -125,7 +123,7 @@ contains
         call grid_Cons_Grow(a, a_l, a_u, a_grow)
 
         ! endogenous upper bound of housing grid
-        call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
+        if (NK > 0) call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
         k(0) = 0d0
 
         ! initialize annuity grid
@@ -195,7 +193,7 @@ contains
         ann_tmp = 1d0
 
         do ij = JJ-1, JR, -1
-          ann_tmp = ann_tmp/(1d0+r)*psi(ij) + 1d0
+          ann_tmp = ann_tmp/(1d0+r)*psi(ij+1) + 1d0
         enddo
         do ix = 0, NX
           ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_tmp
@@ -413,7 +411,11 @@ contains
                       ! derive interpolation weights
                       call linint_Grow(Q_plus(ia, ik, ix, ip, iw, ie, ij-1), Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
                       call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                      call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+                      if (NK > 0) then
+                        call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+                      else
+                        ikl = 0; ikr = 0; varphi_k = 1d0
+                      endif
                       call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
                       call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
 

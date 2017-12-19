@@ -14,7 +14,7 @@ module globals
     integer, parameter :: NW = 3
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 3
+    integer, parameter :: NE = 2
 
     ! number of points on the asset grid
     integer, parameter :: NQ = 12
@@ -23,7 +23,7 @@ module globals
     integer, parameter :: NA = 12
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 12
+    integer, parameter :: NK = 0
 
     ! number of points on the annuity asset grid
     integer, parameter :: NX = 2
@@ -440,7 +440,14 @@ module globals
       ! derive interpolation weights
       call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
       call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
-      call linint_Grow(k_p, k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+      if (NK > 0) then
+        call linint_Grow(k_p, k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+        ikl = min(ikl+1, NK)
+        ikr = min(ikr+1, NK)
+        varphi_k = max(min(varphi_k, 1d0), 0d0)
+      else
+        ikl = 0; ikr = 0; varphi_k = 1d0
+      endif
 
       ! restrict values to grid just in case
       ial = min(ial, NA)
@@ -451,11 +458,6 @@ module globals
       ixl = min(ixl, NX)
       ixr = min(ixr, NX)
       varphi_x = max(min(varphi_x, 1d0),0d0)
-
-      ! restrict values to grid just in case
-      ikl = min(ikl+1, NK)
-      ikr = min(ikr+1, NK)
-      varphi_k = max(min(varphi_k, 1d0), 0d0)
 
       S_temp = 0d0 !(1d0-psi(ij_com+1))*mu_b*max(Q(iq_p_com), 1d-13)**egam/egam
 
