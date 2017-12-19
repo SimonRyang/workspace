@@ -63,7 +63,7 @@ contains
             ! check maximum grid points used
             call check_grid(iqmax, iamax, ikmax, ixmax)
 
-            write(*,'(i4,4i7,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+            write(*,'(i4,4i6,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                             (/5d0*KK, CC, II/)/YY*100d0, &
                                             ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
