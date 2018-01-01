@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 28
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 1d0
     phi    = 0d0
 
