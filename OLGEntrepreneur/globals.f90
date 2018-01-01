@@ -14,7 +14,7 @@ module globals
     integer, parameter :: NW = 3
 
     ! number of entrepreneurial ability (theta) shocks
-    integer, parameter :: NE = 2
+    integer, parameter :: NE = 3
 
     ! number of points on the asset grid
     integer, parameter :: NQ = 12
@@ -32,13 +32,13 @@ module globals
     integer, parameter :: NP = 4
 
     ! demographic parameters
-    real*8, parameter :: n_p = (1d0+0.005d0)**5-1d0
+    real*8, parameter :: n_p = (1d0+0.025d0)**5-1d0
 
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
-    real*8, parameter :: sigma = 0.3d0
-    real*8, parameter :: beta = 0.95d0**5
+    real*8, parameter :: sigma = 0.320d0
+    real*8, parameter :: beta = 0.94d0**5
     real*8, parameter :: mu_b = 0.10d0
 
     ! maximum investment in annuities
@@ -72,7 +72,7 @@ module globals
 
     ! size of the annuity grid
     real*8, parameter :: x_l    = Q_l
-    real*8, parameter :: x_u    = Q_u
+    real*8, parameter :: x_u    = 2d0*Q_u
     real*8, parameter :: x_grow = Q_grow
 
     ! size of the pension claim grid
@@ -147,7 +147,6 @@ module globals
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
     !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, penc_com, aas_com)
-
 
   contains
 
@@ -231,23 +230,23 @@ module globals
 
       a_p = Q(iq_p)
 
-     ! calculate linear interpolation for future assets
-     call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+      ! calculate linear interpolation for future assets
+      call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
 
-     ! restrict values to grid just in case
-     ial = min(ial, NA)
-     iar = min(iar, NA)
-     varphi_a = max(min(varphi_a, 1d0),0d0)
+      ! restrict values to grid just in case
+      ial = min(ial, NA)
+      iar = min(iar, NA)
+      varphi_a = max(min(varphi_a, 1d0),0d0)
 
-     ! calculate future part of the value function
-     S_temp = (1d0-psi(ij+1))*mu_b*max(Q(iq_p), 1d-13)**egam/egam
+      ! calculate future part of the value function
+      S_temp = (1d0-psi(ij+1))*mu_b*max(a_p, 1d-13)**egam/egam
 
-     EV_temp = (varphi_a             *(egam*EV(ial, 0, ix, ip_p, iw, ie, ij+1))**(1d0/egam) + &
-                (1d0-varphi_a)       *(egam*EV(iar, 0, ix, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
+      EV_temp = (varphi_a      *(egam*EV(ial, 0, ix, ip_p, iw, ie, ij+1))**(1d0/egam) + &
+                 (1d0-varphi_a)*(egam*EV(iar, 0, ix, ip_p, iw, ie, ij+1))**(1d0/egam))**egam/egam
 
-     omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-     omega_k_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
-     S(:, iq_p, ik, ix, ip_p, iw, ie, ij) = psi(ij+1)*beta*EV_temp + S_temp
+      omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+      omega_k_t(:, iq_p, ik, ix, ip_p, iw, ie, ij) = 0d0
+      S(:, iq_p, ik, ix, ip_p, iw, ie, ij) = psi(ij+1)*beta*EV_temp + S_temp
 
     end subroutine
 
@@ -295,13 +294,13 @@ module globals
 
        ! get next period's capital size
        if (varphi_q <= varphi_p) then
-         k_p = ((1d0-xi)*k_min + (varphi_q             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                                  (varphi_p-varphi_q)  *omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
-                                  (1d0-varphi_p)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+         k_p = ((1d0-xi)*k_min + (varphi_q           *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                                  (varphi_p-varphi_q)*omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, ij) +  &
+                                  (1d0-varphi_p)     *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
        else
-         k_p = ((1d0-xi)*k_min + (varphi_p             *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
-                                  (varphi_q-varphi_p)  *omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
-                                  (1d0-varphi_q)       *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
+         k_p = ((1d0-xi)*k_min + (varphi_p           *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, ij) +  &
+                                  (varphi_q-varphi_p)*omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, ij) +  &
+                                  (1d0-varphi_q)     *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
        endif
 
       endif
@@ -342,8 +341,6 @@ module globals
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
-      !if (ij>JR) write(*,*) Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) + c_t(io_p, ia, ik, ix, ip, iw, ie, ij) - (1d0+r)*a(ia) - pen(ip, ij) - ann(ix, ij)
-
   end subroutine
 
   ! the first order condition with respect to next period real estate
@@ -355,7 +352,7 @@ module globals
       real*8, intent(in) :: x_in
 
       ! variable declarations
-      real*8 :: inv_w, a_p, x_p, EV_temp, S_temp, omega_x, varphi_a, varphi_x, a_temp
+      real*8 :: inv_w, a_p, a_temp, x_p, EV_temp, S_temp, omega_x, varphi_a, varphi_x
       integer :: ial, iar, ixl, ixr
 
       ! store real estate share
@@ -388,13 +385,13 @@ module globals
 
       ! get optimal investment strategy
       if (varphi_a <= varphi_x) then
-        EV_temp = (varphi_a            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-                   (varphi_x-varphi_a) *(egam*EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-                   (1d0-varphi_x)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
+        EV_temp = (varphi_a           *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                   (varphi_x-varphi_a)*(egam*EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                   (1d0-varphi_x)     *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
       else
-        EV_temp = (varphi_x            *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-                   (varphi_a-varphi_x) *(egam*EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
-                   (1d0-varphi_a)      *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
+        EV_temp = (varphi_x           *(egam*EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                   (varphi_a-varphi_x)*(egam*EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam) + &
+                   (1d0-varphi_a)     *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, ij_com+1))**(1d0/egam))**egam/egam
       endif
 
       if (a_temp < 0d0) then
@@ -423,7 +420,7 @@ module globals
 
       ! determine future liquid wealth and future downpayment
       x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
-      k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com)-(1d0-xi)*k_min))/(1d0-xi)
+      k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
       a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
       a_p = max(a_temp, 0d0)
 
@@ -540,13 +537,13 @@ module globals
 
         ! calculate today's value function
         if(cons_com <= 0d0)then
-           cons_o = -1d-13**egam/egam*(1d0+abs(cons_com))
+          cons_o = -1d-13**egam/egam*(1d0+abs(cons_com))
         elseif(lab_com < 0d0) then
           cons_o = -1d-13**egam/egam*(1d0+abs(lab_com))
         elseif(lab_com >= 1d0) then
           cons_o = -1d-13**egam/egam*lab_com
         else
-           cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + tomorrow)
+          cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + tomorrow)
         endif
 
     end function
@@ -593,8 +590,8 @@ module globals
         ! get next period value function
         tomorrow = 0d0
         if (ij_com < JJ .or. mu_b /= 0d0) then
-            tomorrow = (varphi_q           *(egam*S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam) +  &
-                        (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
+            tomorrow = (varphi_q      *(egam*S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam) +  &
+                        (1d0-varphi_q)*(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, ij_com))**(1d0/egam))**egam/egam
         endif
 
         ! calculate today's value function

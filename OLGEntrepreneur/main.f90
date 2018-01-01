@@ -12,7 +12,7 @@ program main
     integer, parameter :: numthreads = 28
 
     ! set government variables
-    mu     = 0d0
+    mu     = 1d0
     lambda = 0d0
     phi    = 0d0
 
@@ -24,8 +24,6 @@ program main
 
     ! calculate initial equilibrium
     call get_SteadyState()
-
-    write(*,*)r, w, ybar
 
     ! stop the clock
     call tock(time)
@@ -224,130 +222,159 @@ contains
 
         implicit none
 
-        integer :: ij, iq, ia, ik, ix, ip, iw, ie, iq_p, ip_p
+        integer :: ij, iq, ia, ik, ix, ip, iw, ie, iq_p, ip_p, io_p
 
         ! solve household problem recursively
 
-        do ij = JJ, 1, -1
+          omega_x_t(:, :, :, :, :, :, :, JJ) = 0d0
+          omega_k_t(:, :, :, :, :, :, :, JJ) = 0d0
 
-            if(ij == JJ)then
+          do iq_p = 0, NQ
+              S(:, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
+          enddo
 
-              omega_x_t(:, :, :, :, :, :, :, JJ) = 0d0
-              omega_k_t(:, :, :, :, :, :, :, JJ) = 0d0
+          !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads)
+          do ip = 0, NP
+            do ix = 0, NX
+              do ia = 0, NA
 
-              do iq_p = 0, NQ
-                  S(:, iq_p, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
+                ! with bequest motive we assume future worker
+                call solve_consumption(0, ia, 0, ix, ip, 1, 1, JJ)
+
+                Q_plus(ia, :, ix, ip, :, :, JJ) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                a_plus(ia, :, ix, ip, :, :, JJ) = a_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                x_plus(ia, :, ix, ip, :, :, JJ) = x_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                p_plus(ia, :, ix, ip, :, :, JJ) = p_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                k_plus(ia, :, ix, ip, :, :, JJ) = k_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                c(ia, :, ix, ip, :, :, JJ) = c_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                l(ia, :, ix, ip, :, :, JJ) = l_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                penb(ia, :, ix, ip, :, :, JJ) = penb_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                penc(ia, :, ix, ip, :, :, JJ) = penc_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
+
               enddo
+           enddo
+         enddo
+         !$omp end parallel do
 
-              !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)
-              do ip = 0, NP
-                do ix = 0, NX
-                  do ia = 0, NA
+         call interpolate(JJ)
 
-                    ! with bequest motive we assume future worker
-                    call solve_consumption(0, ia, 0, ix, ip, 1, 1, JJ)
+        do ij = JJ-1, JR, -1
 
-                    Q_plus(ia, :, ix, ip, :, :, JJ) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    a_plus(ia, :, ix, ip, :, :, JJ) = a_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    x_plus(ia, :, ix, ip, :, :, JJ) = x_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    p_plus(ia, :, ix, ip, :, :, JJ) = p_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    k_plus(ia, :, ix, ip, :, :, JJ) = k_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    c(ia, :, ix, ip, :, :, JJ) = c_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    l(ia, :, ix, ip, :, :, JJ) = l_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    penb(ia, :, ix, ip, :, :, JJ) = penb_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    penc(ia, :, ix, ip, :, :, JJ) = penc_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                    V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
+          !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)
+         do ip_p = 0, NP
+           do ix = 0, NX
+               do iq_p = 0, NQ
+
+                   ! next period retiree
+                   call solve_retiree(iq_p, 0, ix, ip_p, 1, 1, ij)
+
+                   omega_x_t(:, iq_p, :, ix, ip_p, :, :, ij) = omega_x_t(0, iq_p, 0, ix, ip_p, 1, 1, ij)
+                   omega_k_t(:, iq_p, :, ix, ip_p, :, :, ij) = omega_k_t(0, iq_p, 0, ix, ip_p, 1, 1, ij)
+                   S(:, iq_p, :, ix, ip_p, :, :, ij) = S(0, iq_p, 0, ix, ip_p, 1, 1, ij)
+
+              enddo
+           enddo
+        enddo
+        !$omp end parallel do
+
+        !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)
+        ! solve the consumption savings problem
+
+           do ip = 0, NP
+             do ix = 0, NX
+               do ia = 0, NA
+
+                 ! next period worker
+                 call solve_consumption(0, ia, 0, ix, ip, 1, 1, ij)
+
+                 ! decision on whether to be homeowner or renter next period
+                 Q_plus(ia, :, ix, ip, :, :, ij) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 a_plus(ia, :, ix, ip, :, :, ij) = a_plus_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 x_plus(ia, :, ix, ip, :, :, ij) = x_plus_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 p_plus(ia, :, ix, ip, :, :, ij) = p_plus_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 k_plus(ia, :, ix, ip, :, :, ij) = k_plus_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 c(ia, :, ix, ip, :, :, ij) = c_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 l(ia, :, ix, ip, :, :, ij) = l_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 penb(ia, :, ix, ip, :, :, ij) = penb_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 penc(ia, :, ix, ip, :, :, ij) = penc_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 V(ia, :, ix, ip, :, :, ij) = V_t(0, ia, 0, ix, ip, 1, 1, ij)
+
+               enddo
+             enddo
+           enddo
+        !$omp end parallel do
+
+        call interpolate(ij)
+        !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
+
+      enddo
+
+      do ij = JR-1, 1, -1
+
+        !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+         do ie = 1, NE
+           do iw = 1, NW
+             do ip_p = 0, NP
+               do ix = 0, NX
+                 do ik = 0, NK
+                   do iq_p = 0, NQ
+
+                       ! next period worker
+                       call solve_worker(iq_p, ik, ix, ip_p, iw, ie, ij)
+
+                       ! next period entrepreneur
+                       call solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, ij)
 
                   enddo
                enddo
              enddo
-             !$omp end parallel do
+           enddo
+         enddo
+         enddo
+           !$omp end parallel do
 
-           else
-                  !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
-                   do ie = 1, NE
-                     do iw = 1, NW
-                       do ip_p = 0, NP
-                         do ix = 0, NX
-                           do ik = 0, NK
-                             do iq_p = 0, NQ
+           !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+           ! solve the consumption savings problem
+           do ie = 1, NE
+             do iw = 1, NW
+               do ip = 0, NP
+                 do ix = 0, NX
+                   do ik = 0, NK
+                     do ia = 0, NA
 
-                               if(ij >= JR) then
+                       ! next period worker
+                       call solve_consumption(0, ia, ik, ix, ip, iw, ie, ij)
 
-                                 ! next period retiree
-                                 call solve_retiree(iq_p, ik, ix, ip_p, iw, ie, ij)
+                       ! next period entrpreneur
+                       if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, ij)
 
-                               else
+                       ! decision on whether to be homeowner or renter next period
+                       io_p = 0
+                        if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, ij) > V_t(io_p, ia, ik, ix, ip, iw, ie, ij)) io_p = 1
+                           Q_plus(ia, ik, ix, ip, iw, ie, ij) = Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           a_plus(ia, ik, ix, ip, iw, ie, ij) = a_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           x_plus(ia, ik, ix, ip, iw, ie, ij) = x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           p_plus(ia, ik, ix, ip, iw, ie, ij) = p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           k_plus(ia, ik, ix, ip, iw, ie, ij) = k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           c(ia, ik, ix, ip, iw, ie, ij) = c_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           l(ia, ik, ix, ip, iw, ie, ij) = l_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           penb(ia, ik, ix, ip, iw, ie, ij) = penb_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           penc(ia, ik, ix, ip, iw, ie, ij) = penc_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           V(ia, ik, ix, ip, iw, ie, ij) = V_t(io_p, ia, ik, ix, ip, iw, ie, ij)
 
-                                 ! next period worker
-                                 call solve_worker(iq_p, ik, ix, ip_p, iw, ie, ij)
 
-                                 ! next period entrepreneur
-                                 call solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, ij)
-
-                               endif
-
-                            enddo
-                         enddo
-                       enddo
-                     enddo
-                   enddo
-               enddo
-               !$omp end parallel do
-
-               !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
-               ! solve the consumption savings problem
-               do ie = 1, NE
-                 do iw = 1, NW
-                   do ip = 0, NP
-                     do ix = 0, NX
-                       do ik = 0, NK
-                         do ia = 0, NA
-
-                           ! next period worker
-                           call solve_consumption(0, ia, ik, ix, ip, iw, ie, ij)
-
-                           ! next period entrpreneur
-                           if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, ij)
-
-                           ! decision on whether to be homeowner or renter next period
-                            if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, ij) > V_t(0, ia, ik, ix, ip, iw, ie, ij)) then
-                                  Q_plus(ia, ik, ix, ip, iw, ie, ij) = Q_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  a_plus(ia, ik, ix, ip, iw, ie, ij) = a_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  x_plus(ia, ik, ix, ip, iw, ie, ij) = x_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  p_plus(ia, ik, ix, ip, iw, ie, ij) = p_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  k_plus(ia, ik, ix, ip, iw, ie, ij) = k_plus_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  c(ia, ik, ix, ip, iw, ie, ij) = c_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  l(ia, ik, ix, ip, iw, ie, ij) = l_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  penb(ia, ik, ix, ip, iw, ie, ij) = penb_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  penc(ia, ik, ix, ip, iw, ie, ij) = penc_t(1, ia, ik, ix, ip, iw, ie, ij)
-                                  V(ia, ik, ix, ip, iw, ie, ij) = V_t(1, ia, ik, ix, ip, iw, ie, ij)
-                             else
-                               Q_plus(ia, ik, ix, ip, iw, ie, ij) = Q_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               a_plus(ia, ik, ix, ip, iw, ie, ij) = a_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               x_plus(ia, ik, ix, ip, iw, ie, ij) = x_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               p_plus(ia, ik, ix, ip, iw, ie, ij) = p_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               k_plus(ia, ik, ix, ip, iw, ie, ij) = k_plus_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               c(ia, ik, ix, ip, iw, ie, ij) = c_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               l(ia, ik, ix, ip, iw, ie, ij) = l_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               penb(ia, ik, ix, ip, iw, ie, ij) = penb_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               penc(ia, ik, ix, ip, iw, ie, ij) = penc_t(0, ia, ik, ix, ip, iw, ie, ij)
-                               V(ia, ik, ix, ip, iw, ie, ij) = V_t(0, ia, ik, ix, ip, iw, ie, ij)
-                             endif
-
-                         enddo
-                       enddo
                      enddo
                    enddo
                  enddo
                enddo
-             !$omp end parallel do
+             enddo
+           enddo
+         !$omp end parallel do
 
-             endif
 
-            call interpolate(ij)
-
-            !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
+        call interpolate(ij)
+        !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
         enddo
 
@@ -519,20 +546,6 @@ contains
           enddo
 
         enddo
-
-       !  do ip = 0, NP
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 1))/sum(m(:, :, :, :, :, :, 1))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 2))/sum(m(:, :, :, :, :, :, 2))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 3))/sum(m(:, :, :, :, :, :, 3))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 4))/sum(m(:, :, :, :, :, :, 4))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 5))/sum(m(:, :, :, :, :, :, 5))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 6))/sum(m(:, :, :, :, :, :, 6))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 7))/sum(m(:, :, :, :, :, :, 7))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 8))/sum(m(:, :, :, :, :, :, 8))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, 9))/sum(m(:, :, :, :, :, :, 9))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, JR))/sum(m(:, :, :, :, :, :, JR))
-       !    write(*,*)sum(m(:, :, :, ip, :, :, JJ))/sum(m(:, :, :, :, :, :, JJ))
-       ! enddo
 
     end subroutine
 
