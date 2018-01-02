@@ -144,7 +144,7 @@ contains
         KC = 0.80d0
         LC = 2.00d0
         BB = 0.60d0
-        BQ = 0.10d0
+        BQ = 0.15d0
 
         ! initial guess bequests
         b = 0d0
