@@ -25,6 +25,8 @@ program main
     ! calculate initial equilibrium
     call get_SteadyState()
 
+    write(*,*)YY, by*YY
+
     ! stop the clock
     call tock(time)
 
