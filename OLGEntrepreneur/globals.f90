@@ -36,7 +36,7 @@ module globals
 
     ! macroeconomic parameters
     real*8, parameter :: gy = 0.19d0
-    real*8, parameter :: by = 0.00d0
+    real*8, parameter :: by = 0.60d0
 
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
