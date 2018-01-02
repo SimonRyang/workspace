@@ -693,7 +693,7 @@ contains
         GG = gy*YY
         BB = by*YY
 
-        expend = GG + (1d0+r)*BB - (1d0-n_p)*BB
+        expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
 
         tauc = (expend-TAy)/CC
 
