@@ -141,10 +141,10 @@ contains
         taup  = 0.164d0
 
         ! set starting values
-        KC = 7.30d0
-        LC = 4.70d0
-        BB = 3.00d0
-        BQ = 0.70d0
+        KC = 0.80d0
+        LC = 2.10d0
+        BB = 0.60d0
+        BQ = 0.20d0
 
         ! initial guess bequests
         b = 0d0
