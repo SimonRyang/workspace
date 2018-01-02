@@ -34,6 +34,10 @@ module globals
     ! demographic parameters
     real*8, parameter :: n_p = (1d0+0.025d0)**5-1d0
 
+    ! macroeconomic parameters
+    real*8, parameter :: gy = 0.19d0
+    real*8, parameter :: by = 0.60d0
+
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
@@ -98,14 +102,14 @@ module globals
 
     ! government variables
     real*8 :: lambda, phi, mu
-    real*8 :: taup
+    real*8 :: tauc, taup
 
     ! macroeconomic variables
     real*8 :: r, w
-    real*8 :: ybar
+    real*8 :: pinv, ybar
     real*8 :: AA, AX, BQ, PBEN, PCON
-    real*8 :: KK, KC, KE, LC
-    real*8 :: YY, YC, YE, CC, II, TC
+    real*8 :: KK, KC, KE, LC, BB
+    real*8 :: YY, YC, YE, CC, II, TC, GG
 
     ! cohort aggregate variables
     real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
@@ -337,7 +341,7 @@ module globals
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
       penb_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
       penc_t(io_p, ia, ik, ix, ip, iw, ie, ij) = penc_com
-      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  aas_com - x_in(1)
+      c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  (aas_com - x_in(1))*pinv
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
 
@@ -503,7 +507,7 @@ module globals
                    -taup*penc_com
 
         ! calculate consumption
-        cons_com = aas_com - Q_plus
+        cons_com = (aas_com - Q_plus)*pinv
 
         ! calculate future earning points
         p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income/ybar, 2d0)))/dble(ij_com)
@@ -574,7 +578,7 @@ module globals
         aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com)
 
         ! calculate consumption
-        cons_com = aas_com - Q_plus
+        cons_com = (aas_com - Q_plus)*pinv
 
         ! define future earning points
         p_plus_com = p(ip_com)

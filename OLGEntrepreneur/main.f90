@@ -13,7 +13,7 @@ program main
 
     ! set government variables
     mu     = 1d0
-    lambda = 1d0
+    lambda = 0d0
     phi    = 0d0
 
     ! initialize remaining variables
@@ -132,6 +132,7 @@ contains
         call grid_Cons_Equi(p, p_l, p_u)
 
         ! initialize tax rates
+        tauc = 0.190d0
         taup  = 0.164d0
 
         ! set starting values
@@ -176,6 +177,8 @@ contains
         ! calculate new prices
         r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
         w = Omega*(1d0-alpha)*(KC/LC)**alpha
+
+        pinv = 1d0/(1d0+tauc)
 
         ! compute bequest per capita within workforce for next iteration step
         b(:) = 0d0
@@ -659,7 +662,7 @@ contains
         ybar = w*LC/workpop
 
         ! compute stock of capital
-        KC = damp*(AA+AX) +(1d0-damp)*KC
+        KC = damp*(AA+AX-BB) +(1d0-damp)*KC
         KK = KC + KE
         LC = damp*LC +(1d0-damp)*LC_old
         BQ = damp*BQ +(1d0-damp)*BQ_old
@@ -668,7 +671,7 @@ contains
         YY = YC + YE
 
         ! compute gap on goods market
-        DIFF = YY-CC-II-TC
+        DIFF = YY-CC-II-TC-GG
 
         !write(*,*)'gm:', YY, CC, II, TC
         !rite(*,*)'pen', PBEN, PCON, w*LC, ybar, PBEN/PCON, taup
@@ -684,6 +687,14 @@ contains
         implicit none
 
         real*8 :: taup_old
+        real*8 :: expend
+
+        GG = gy*YY
+        BB = by*YY
+
+        expend = GG + (1d0+r)*BB - (1d0-n_p)*BB
+
+        tauc = expend/CC
 
         taup_old = taup
 
