@@ -143,7 +143,7 @@ contains
         ! set starting values
         KC = 0.70d0
         LC = 2.00d0
-        BB = 0.60d0
+        BB = 1.00d0
         BQ = 0.15d0
 
         ! initial guess bequests
