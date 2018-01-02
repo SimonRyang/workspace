@@ -141,7 +141,7 @@ contains
         taup  = 0.164d0
 
         ! set starting values
-        KC = 0.80d0
+        KC = 0.70d0
         LC = 2.00d0
         BB = 0.60d0
         BQ = 0.15d0
