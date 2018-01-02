@@ -25,8 +25,6 @@ program main
     ! calculate initial equilibrium
     call get_SteadyState()
 
-    write(*,*)YY, by*YY
-
     ! stop the clock
     call tock(time)
 
@@ -62,6 +60,10 @@ contains
 
             ! check maximum grid points used
             call check_grid(iqmax, iamax, ikmax, ixmax)
+
+
+                write(*,*)YY, by*YY, KC, LC, BQ
+
 
             write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                             (/5d0*KK, CC, II/)/YY*100d0, &
