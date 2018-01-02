@@ -138,6 +138,7 @@ contains
         ! set starting values
         KC = 7.30d0
         LC = 4.70d0
+        BB = 0.50d0
         BQ = 0.70d0
 
         ! initial guess bequests
@@ -571,6 +572,7 @@ contains
 
         ! reset macroeconomic aggregates in each iteration step
         AA = 0d0; AX = 0d0; BQ = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0; PBEN = 0d0; PCON = 0d0
+        TAc = 0d0, TAr = 0d0, TAw = 0d0, TAy = 0d0
 
         Q_tmp = 0d0; KC_tmp = 0d0; Y_tmp = 0d0; KE_tmp = 0d0; BQ_tmp = 0d0; PEN_tmp = 0d0; C_tmp = 0d0
 
@@ -670,8 +672,7 @@ contains
         YC = Omega*KC**alpha*LC**(1d0-alpha)
         YY = YC + YE
 
-        ! compute gap on goods market
-        DIFF = YY-CC-II-TC-GG
+        TAy = tauy*(YC-delta_k*KC-w*LC)
 
         !write(*,*)'gm:', YY, CC, II, TC
         !rite(*,*)'pen', PBEN, PCON, w*LC, ybar, PBEN/PCON, taup
@@ -694,7 +695,7 @@ contains
 
         expend = GG + (1d0+r)*BB - (1d0-n_p)*BB
 
-        tauc = expend/CC
+        tauc = (expend-TAy)/CC
 
         taup_old = taup
 
@@ -702,6 +703,10 @@ contains
         taup = PBEN/PCON
 
         !taup = damp*taup + (1d0-damp)*taup_old
+
+
+        ! compute gap on goods market
+        DIFF = YY-CC-II-TC-GG
 
     end subroutine
 

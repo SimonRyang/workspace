@@ -36,7 +36,7 @@ module globals
 
     ! macroeconomic parameters
     real*8, parameter :: gy = 0.19d0
-    real*8, parameter :: by = 0d0 !0.60d0
+    real*8, parameter :: by = 0.60d0
 
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
@@ -102,7 +102,7 @@ module globals
 
     ! government variables
     real*8 :: lambda, phi, mu
-    real*8 :: tauc, taup
+    real*8 :: tauc, tauy, taup
 
     ! macroeconomic variables
     real*8 :: r, w
@@ -110,6 +110,7 @@ module globals
     real*8 :: AA, AX, BQ, PBEN, PCON
     real*8 :: KK, KC, KE, LC, BB
     real*8 :: YY, YC, YE, CC, II, TC, GG
+    real*8 :: TAc, TAr, TAw, TAy
 
     ! cohort aggregate variables
     real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
