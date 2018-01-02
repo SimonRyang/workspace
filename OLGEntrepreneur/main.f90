@@ -62,7 +62,7 @@ contains
             call check_grid(iqmax, iamax, ikmax, ixmax)
 
 
-                write(*,*)YY, by*YY, KC, LC, BQ
+                write(*,*)YY, KC, LC, BB, BQ
 
 
             write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
@@ -141,9 +141,9 @@ contains
         taup  = 0.164d0
 
         ! set starting values
-        KC = 0.80d0
-        LC = 2.10d0
-        BB = 0.60d0
+        KC = 0.75d0
+        LC = 2.00d0
+        BB = 0.50d0
         BQ = 0.20d0
 
         ! initial guess bequests
