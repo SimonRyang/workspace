@@ -181,7 +181,7 @@ contains
         integer :: ix, ip, ij
 
         ! calculate new prices
-        r = Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k
+        r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
         w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
         pinv = 1d0/(1d0+tauc)
