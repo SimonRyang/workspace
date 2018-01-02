@@ -137,8 +137,8 @@ contains
 
         ! initialize tax rates
         tauc = 0.190d0
-        tauy = 0d0
-        taup  = 0.164d0
+        tauy = 0.150d0
+        taup = 0.164d0
 
         ! set starting values
         KC = 1.10d0
