@@ -62,7 +62,7 @@ contains
             call check_grid(iqmax, iamax, ikmax, ixmax)
 
 
-                write(*,*)YY, KC, LC, BB, BQ
+            write(*,*)YY, KC, LC, BB, BQ
 
 
             write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
