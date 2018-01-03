@@ -450,18 +450,79 @@ contains
     enddo ! ij
 
   end subroutine
-  
 
-    ! calculates the expected valuefunction of cohort ij
-    subroutine interpolate(ij)
 
-      implicit none
+  !#############################################################################
+  ! SUBROUTINE interpolate
+  !
+  ! calculates the expected valuefunction of cohort ij
+  !#############################################################################
+  subroutine interpolate(ij)
 
-      integer, intent(in) :: ij
+    implicit none
 
-      integer :: ia, ik, ix, ip, iw, ie, is, iw_p, ie_p
+    !##### INPUT/OUTPUT VARIABLES ##############################################
+    integer, intent(in) :: ij
 
-      !$omp parallel do collapse(4) schedule(dynamic,1) private(ie_p, iw_p) num_threads(numthreads) shared(ij)
+    !##### OTHER VARIABLES #####################################################
+    integer :: ia, ik, ix, ip, iw, ie, is, iw_p, ie_p
+
+    !$omp parallel do collapse(4) schedule(dynamic,1) private(ie_p, iw_p) num_threads(numthreads) shared(ij)
+    do is = 1, NS
+      do ie = 1, NE
+        do iw = 1, NW
+          do ip = 0, NP
+            do ix = 0, NX
+              do ik = 0, NK
+                do ia = 0, NA
+
+                  EV(ia, ik, ix, ip, iw, ie, is, ij) = 0d0
+                  do ie_p = 1, NE
+                    do iw_p = 1, NW
+                      EV(ia, ik, ix, ip, iw, ie, is, ij) = EV(ia, ik, ix, ip, iw, ie, is, ij) &
+                        + pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*V(ia, ik, ix, ip, iw, ie, is, ij)
+                    enddo ! iw_p
+                  enddo ! ie_p
+
+                enddo ! ia
+              enddo ! ik
+            enddo ! ix
+          enddo ! ip
+        enddo ! iw
+      enddo ! iw
+    enddo ! is
+    !$omp end parallel do
+
+  end subroutine
+
+
+  !#############################################################################
+  ! SUBROUTINE get_distribution
+  !
+  ! determines the invariant distribution
+  !#############################################################################
+  subroutine get_distribution()
+
+    implicit none
+
+    !##### OTHER VARIABLES #####################################################
+    integer :: ia, ik, ix, ip, iw, ie, is, ij, iw_p, ie_p
+    integer :: iql, iqr, ial, iar, ikl, ikr, ixl, ixr, ipl, ipr
+    real*8 :: varphi_q, varphi_a, varphi_k, varphi_x, varphi_p
+
+    m(:, :, :, :, :, :, :, :) = 0d0
+    m_Q(:, :, :, :, :, :, :, :) = 0d0
+
+    do is = 1, NS
+      do iw = 1, NW
+        do ie = 1, NE
+            m(0, 0, 0, 0, iw, ie, is, 1) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
+        enddo
+      enddo
+    enddo
+
+    do ij = 2, JJ
+
       do is = 1, NS
         do ie = 1, NE
           do iw = 1, NW
@@ -470,309 +531,228 @@ contains
                 do ik = 0, NK
                   do ia = 0, NA
 
-                    EV(ia, ik, ix, ip, iw, ie, is, ij) = 0d0
-                    do ie_p = 1, NE
-                      do iw_p = 1, NW
-                        EV(ia, ik, ix, ip, iw, ie, is, ij) = EV(ia, ik, ix, ip, iw, ie, is, ij) &
-                          + pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*V(ia, ik, ix, ip, iw, ie, is, ij)
-                      enddo ! iw_p
-                    enddo ! ie_p
+                    ! skip if there is no household
+                    if (m(ia, ik, ix, ip, iw, ie, is, ij-1) <= 0d0) cycle
 
-                  enddo
-                enddo
-              enddo
-            enddo
-          enddo
-        enddo
-      enddo
-      !$omp end parallel do
+                    ! derive interpolation weights
+                    call linint_Grow(Q_plus(ia, ik, ix, ip, iw, ie, is, ij-1), Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
+                    call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, is, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+                    if (NK > 0) then
+                      call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, is, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
+                    else
+                      ikl = 0; ikr = 0; varphi_k = 1d0
+                    endif
+                    if (NX > 0) then
+                      call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, is, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+                    else
+                      ixl = 0; ixr = 0; varphi_x = 1d0
+                    endif
+                    call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, is, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
 
-    end subroutine
+                    ! restrict values to grid just in case
+                    iql = min(iql, NQ)
+                    iqr = min(iqr, NQ)
+                    varphi_q = max(min(varphi_q, 1d0),0d0)
+
+                    ! restrict values to grid just in case
+                    ial = min(ial, NA)
+                    iar = min(iar, NA)
+                    varphi_a = max(min(varphi_a, 1d0),0d0)
+
+                    ! restrict values to grid just in case
+                    if (k_plus(ia, ik, ix, ip, iw, ie, is, ij-1) >= k_min) then
+                      ikl = min(ikl+1, NK)
+                      ikr = min(ikr+1, NK)
+                      varphi_k = max(min(varphi_k, 1d0), 0d0)
+                    else
+                      ikl = 0; ikr = 0; varphi_k = 1d0
+                    endif
+
+                    ! restrict values to grid just in case
+                    ixl = min(ixl, NX)
+                    ixr = min(ixr, NX)
+                    varphi_x = max(min(varphi_x, 1d0),0d0)
+
+                    ! restrict values to grid just in case
+                    ipl = min(ipl, NP)
+                    ipr = min(ipr, NP)
+                    varphi_p = max(min(varphi_p, 1d0), 0d0)
+
+                    do iw_p = 1, NW
+                      do ie_p = 1, NE
+
+                        m(ial, ikl, ixl, ipl, iw_p, ie_p, is, ij) = m(ial, ikl, ixl, ipl, iw_p, ie_p, is, ij) + &
+                              varphi_a*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(ial, ikl, ixl, ipr, iw_p, ie_p, is, ij) = m(ial, ikl, ixl, ipr, iw_p, ie_p, is, ij) + &
+                              varphi_a*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(ial, ikl, ixr, ipl, iw_p, ie_p, is, ij) = m(ial, ikl, ixr, ipl, iw_p, ie_p, is, ij) + &
+                              varphi_a*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(ial, ikl, ixr, ipr, iw_p, ie_p, is, ij) = m(ial, ikl, ixr, ipr, iw_p, ie_p, is, ij) + &
+                              varphi_a*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(ial, ikr, ixl, ipl, iw_p, ie_p, is, ij) = m(ial, ikr, ixl, ipl, iw_p, ie_p, is, ij) + &
+                              varphi_a*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(ial, ikr, ixl, ipr, iw_p, ie_p, is, ij) = m(ial, ikr, ixl, ipr, iw_p, ie_p, is, ij) + &
+                              varphi_a*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(ial, ikr, ixr, ipl, iw_p, ie_p, is, ij) = m(ial, ikr, ixr, ipl, iw_p, ie_p, is, ij) + &
+                              varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(ial, ikr, ixr, ipr, iw_p, ie_p, is, ij) = m(ial, ikr, ixr, ipr, iw_p, ie_p, is, ij) + &
+                              varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(iar, ikl, ixl, ipl, iw_p, ie_p, is, ij) = m(iar, ikl, ixl, ipl, iw_p, ie_p, is, ij) + &
+                              (1d0-varphi_a)*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(iar, ikl, ixl, ipr, iw_p, ie_p, is, ij) = m(iar, ikl, ixl, ipr, iw_p, ie_p, is, ij) + &
+                              (1d0-varphi_a)*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(iar, ikl, ixr, ipl, iw_p, ie_p, is, ij) = m(iar, ikl, ixr, ipl, iw_p, ie_p, is, ij) + &
+                              (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(iar, ikl, ixr, ipr, iw_p, ie_p, is, ij) = m(iar, ikl, ixr, ipr, iw_p, ie_p, is, ij) + &
+                              (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(iar, ikr, ixl, ipl, iw_p, ie_p, is, ij) = m(iar, ikr, ixl, ipl, iw_p, ie_p, is, ij) + &
+                              (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(iar, ikr, ixl, ipr, iw_p, ie_p, is, ij) = m(iar, ikr, ixl, ipr, iw_p, ie_p, is, ij) + &
+                              (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(iar, ikr, ixr, ipl, iw_p, ie_p, is, ij) = m(iar, ikr, ixr, ipl, iw_p, ie_p, is, ij) + &
+                              (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                        m(iar, ikr, ixr, ipr, iw_p, ie_p, is, ij) = m(iar, ikr, ixr, ipr, iw_p, ie_p, is, ij) + &
+                              (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+
+                      enddo
+                    enddo
+
+                    m_Q(iql, ik, ix, ipl, iw, ie, is, ij-1) = m_Q(iql, ik, ix, ipl, iw, ie, is, ij-1) + &
+                                varphi_q*varphi_p*m(ia, ik, ix, ip, iw, ie, is, ij-1)
+                    m_Q(iql, ik, ix, ipr, iw, ie, is, ij-1) = m_Q(iql, ik, ix, ipr, iw, ie, is, ij-1) + &
+                                varphi_q*(1d0-varphi_p)*m(ia, ik, ix, ip, iw, ie, is, ij-1)
+                    m_Q(iqr, ik, ix, ipl, iw, ie, is, ij-1) = m_Q(iqr, ik, ix, ipl, iw, ie, is, ij-1) + &
+                                (1d0-varphi_q)*varphi_p*m(ia, ik, ix, ip, iw, ie, is, ij-1)
+                    m_Q(iqr, ik, ix, ipr, iw, ie, is, ij-1) = m_Q(iqr, ik, ix, ipr, iw, ie, is, ij-1) + &
+                                (1d0-varphi_q)*(1d0-varphi_p)*m(ia, ik, ix, ip, iw, ie, is, ij-1)
+
+                  enddo ! ia
+                enddo ! ik
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
+
+    enddo ! ij
+
+  end subroutine
 
 
-    ! determines the invariant distribution over cash-on-hand space
-    subroutine get_distribution()
+  !#############################################################################
+  ! SUBROUTINE aggregation
+  !
+  ! calculate aggregated quantities
+  !#############################################################################
+  subroutine aggregation()
 
-        implicit none
+    implicit none
 
-        integer :: ia, ik, ix, ip, iw, ie, is, ij, iw_p, ie_p
-        integer :: iql, iqr, ial, iar, ikl, ikr, ixl, ixr, ipl, ipr
-        real*8 :: varphi_q, varphi_a, varphi_k, varphi_x, varphi_p
+    !##### OTHER VARIABLES #####################################################
+    integer :: ia, ik, ix, ip, iw, ie, is, ij
+    real*8 :: LC_old
 
-        m(:, :, :, :, :, :, :, :) = 0d0
-        m_Q(:, :, :, :, :, :, :, :) = 0d0
+    ! copy labor supply
+    LC_old = LC
 
-        do is = 1, NS
+    ! reset macroeconomic aggregates in each iteration step
+    AA = 0d0; AX = 0d0; BQ = 0d0; bqs(:) = 0d0; PBEN = 0d0; PCON = 0d0
+    CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0
+    TAc = 0d0; TAr = 0d0; TAw = 0d0; TAy = 0d0
+
+    do ij = 1, JJ
+
+      do is = 1, NS
+        do ie = 1, NE
           do iw = 1, NW
-            do ie = 1, NE
-                m(0, 0, 0, 0, iw, ie, is, 1) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
-            enddo
-          enddo
-        enddo
+            do ip = 0, NP
+              do ix = 0, NX
+                do ik = 0, NK
+                  do ia = 0, NA
 
-        do ij = 2, JJ
+                    ! skip if there is no household
+                    if (m(ia, ik, ix, ip, iw, ie, is, ij) <= 0d0) cycle
 
-          do is = 1, NS
-            do ie = 1, NE
-              do iw = 1, NW
-                do ip = 0, NP
-                  do ix = 0, NX
-                    do ik = 0, NK
-                      do ia = 0, NA
+                    AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, is, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij)/(1d0+n_p)
+                    AX = AX + ans(ix, is, ij)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    CC = CC + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    bqs(is) = bqs(is) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij))*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    TAw = TAw + inctax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    TAr = TAr + captax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    PBEN = PBEN + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    PCON = PCON + pencon(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
 
-                        ! skip if there is no household
-                        if (m(ia, ik, ix, ip, iw, ie, is, ij-1) <= 0d0) cycle
+                    if(ik == 0) then
+                      LC = LC + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    else
+                       YE = YE + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    endif
 
-                        ! derive interpolation weights
-                        call linint_Grow(Q_plus(ia, ik, ix, ip, iw, ie, is, ij-1), Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
-                        call linint_Grow(a_plus(ia, ik, ix, ip, iw, ie, is, ij-1), a_l, a_u, a_grow, NA, ial, iar, varphi_a)
-                        if (NK > 0) then
-                          call linint_Grow(k_plus(ia, ik, ix, ip, iw, ie, is, ij-1), k_l, k_u, k_grow, NK-1, ikl, ikr, varphi_k)
-                        else
-                          ikl = 0; ikr = 0; varphi_k = 1d0
-                        endif
-                        if (NX > 0) then
-                          call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, is, ij-1), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
-                        else
-                          ixl = 0; ixr = 0; varphi_x = 1d0
-                        endif
-                        call linint_Equi(p_plus(ia, ik, ix, ip, iw, ie, is, ij-1), p_l, p_u, NP, ipl, ipr, varphi_p)
+                  enddo ! ia
+                enddo ! ik
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
 
-                        ! restrict values to grid just in case
-                        iql = min(iql, NQ)
-                        iqr = min(iqr, NQ)
-                        varphi_q = max(min(varphi_q, 1d0),0d0)
+    enddo ! ij
 
-                        ! restrict values to grid just in case
-                        ial = min(ial, NA)
-                        iar = min(iar, NA)
-                        varphi_a = max(min(varphi_a, 1d0),0d0)
+    ! get average income
+    ybar = w*LC/sum(m(:, :, :, :, :, :, :, 1:JR-1))
 
-                        ! restrict values to grid just in case
-                        if (k_plus(ia, ik, ix, ip, iw, ie, is, ij-1) >= k_min) then
-                          ikl = min(ikl+1, NK)
-                          ikr = min(ikr+1, NK)
-                          varphi_k = max(min(varphi_k, 1d0), 0d0)
-                        else
-                          ikl = 0; ikr = 0; varphi_k = 1d0
-                        endif
+    ! compute stock of capital
+    KC = damp*(AA+AX-BB) +(1d0-damp)*KC
+    KK = KC + KE
 
-                        ! restrict values to grid just in case
-                        ixl = min(ixl, NX)
-                        ixr = min(ixr, NX)
-                        varphi_x = max(min(varphi_x, 1d0),0d0)
+    ! update work supply
+    LC = damp*LC +(1d0-damp)*LC_old
 
-                        ! restrict values to grid just in case
-                        ipl = min(ipl, NP)
-                        ipr = min(ipr, NP)
-                        varphi_p = max(min(varphi_p, 1d0), 0d0)
+    ! compute total bequests
+    BQ = sum(bqs)
 
-                        do iw_p = 1, NW
-                          do ie_p = 1, NE
+    ! commpute investment
+    II = (n_p+delta_k)*KK
 
-                              m(ial, ikl, ixl, ipl, iw_p, ie_p, is, ij) = m(ial, ikl, ixl, ipl, iw_p, ie_p, is, ij) + &
-                                    varphi_a*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(ial, ikl, ixl, ipr, iw_p, ie_p, is, ij) = m(ial, ikl, ixl, ipr, iw_p, ie_p, is, ij) + &
-                                    varphi_a*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(ial, ikl, ixr, ipl, iw_p, ie_p, is, ij) = m(ial, ikl, ixr, ipl, iw_p, ie_p, is, ij) + &
-                                    varphi_a*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(ial, ikl, ixr, ipr, iw_p, ie_p, is, ij) = m(ial, ikl, ixr, ipr, iw_p, ie_p, is, ij) + &
-                                    varphi_a*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(ial, ikr, ixl, ipl, iw_p, ie_p, is, ij) = m(ial, ikr, ixl, ipl, iw_p, ie_p, is, ij) + &
-                                    varphi_a*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(ial, ikr, ixl, ipr, iw_p, ie_p, is, ij) = m(ial, ikr, ixl, ipr, iw_p, ie_p, is, ij) + &
-                                    varphi_a*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(ial, ikr, ixr, ipl, iw_p, ie_p, is, ij) = m(ial, ikr, ixr, ipl, iw_p, ie_p, is, ij) + &
-                                    varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(ial, ikr, ixr, ipr, iw_p, ie_p, is, ij) = m(ial, ikr, ixr, ipr, iw_p, ie_p, is, ij) + &
-                                    varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(iar, ikl, ixl, ipl, iw_p, ie_p, is, ij) = m(iar, ikl, ixl, ipl, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(iar, ikl, ixl, ipr, iw_p, ie_p, is, ij) = m(iar, ikl, ixl, ipr, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(iar, ikl, ixr, ipl, iw_p, ie_p, is, ij) = m(iar, ikl, ixr, ipl, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(iar, ikl, ixr, ipr, iw_p, ie_p, is, ij) = m(iar, ikl, ixr, ipr, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(iar, ikr, ixl, ipl, iw_p, ie_p, is, ij) = m(iar, ikr, ixl, ipl, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(iar, ikr, ixl, ipr, iw_p, ie_p, is, ij) = m(iar, ikr, ixl, ipr, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(iar, ikr, ixr, ipl, iw_p, ie_p, is, ij) = m(iar, ikr, ixr, ipl, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
-                              m(iar, ikr, ixr, ipr, iw_p, ie_p, is, ij) = m(iar, ikr, ixr, ipr, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+    ! compute output
+    YC = Omega*KC**alpha*LC**(1d0-alpha)
+    YY = YC + YE
 
-                          enddo
-                        enddo
+    ! compute corporate tax incom
+    TAy = tauy*(YC-delta_k*KC-w*LC)
 
-                        m_Q(iql, ik, ix, ipl, iw, ie, is, ij-1) = m_Q(iql, ik, ix, ipl, iw, ie, is, ij-1) + &
-                                    varphi_q*varphi_p*m(ia, ik, ix, ip, iw, ie, is, ij-1)
-                        m_Q(iql, ik, ix, ipr, iw, ie, is, ij-1) = m_Q(iql, ik, ix, ipr, iw, ie, is, ij-1) + &
-                                    varphi_q*(1d0-varphi_p)*m(ia, ik, ix, ip, iw, ie, is, ij-1)
-                        m_Q(iqr, ik, ix, ipl, iw, ie, is, ij-1) = m_Q(iqr, ik, ix, ipl, iw, ie, is, ij-1) + &
-                                    (1d0-varphi_q)*varphi_p*m(ia, ik, ix, ip, iw, ie, is, ij-1)
-                        m_Q(iqr, ik, ix, ipr, iw, ie, is, ij-1) = m_Q(iqr, ik, ix, ipr, iw, ie, is, ij-1) + &
-                                    (1d0-varphi_q)*(1d0-varphi_p)*m(ia, ik, ix, ip, iw, ie, is, ij-1)
-
-                      enddo
-                    enddo
-                  enddo
-                enddo
-              enddo
-            enddo
-          enddo
-
-        enddo
-
-    end subroutine
+  end subroutine
 
 
-    ! subroutine for calculating quantities
-    subroutine aggregation()
+  !#############################################################################
+  ! SUBROUTINE government
+  !
+  ! calculates government parameters
+  !#############################################################################
+  subroutine government()
 
-        implicit none
+    implicit none
 
-        integer :: ia, ik, ix, ip, iw, ie, is, ij
-        real*8 :: LC_old
+    !##### OTHER VARIABLES #####################################################
+    real*8 :: expend
 
-        ! copy labor supply
-        LC_old = LC
+    ! computes government expenditures
+    GG = gy*YY
+    BB = by*YY
+    expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
 
-        ! calculate cohort averages
-        ! c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penben_coh = 0d0; pencon_coh = 0d0
+    ! calculates consumption tax rate
+    tauc = (expend-TAy-TAw-TAr)/CC
 
-        ! reset macroeconomic aggregates in each iteration step
-        AA = 0d0; AX = 0d0; BQ = 0d0; bqs(:) = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0; PBEN = 0d0; PCON = 0d0
-        TAc = 0d0; TAr = 0d0; TAw = 0d0; TAy = 0d0
+    ! get budget balancing pension contribution rate
+    taup = PBEN/PCON
 
-        do ij = 1, JJ
+    ! compute gap on goods market
+    DIFF = YY-CC-II-TC-GG
 
-          do is = 1, NS
-            do ie = 1, NE
-              do iw = 1, NW
-                do ip = 0, NP
-                  do ix = 0, NX
-                    do ik = 0, NK
-                      do ia = 0, NA
-
-                          ! skip if there is no household
-                          if (m(ia, ik, ix, ip, iw, ie, is, ij) <= 0d0) cycle
-
-                          if (a_plus(ia, ik, ix, ip, iw, ie, is, ij) < 0d0) write(*,*)'a_plus:', k_plus(ia, ik, ix, ip, iw, ie, is, ij), a_plus(ia, ik, ix, ip, iw, ie, is, ij), Q_plus(ia, ik, ix, ip, iw, ie, is, ij)
-                          if (a_plus(ia, ik, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) ia, ik, ix, ip, iw, ie, is, ij, m(ia, ik, ix, ip, iw, ie, is, ij)
-                          if (k_plus(ia, ik, ix, ip, iw, ie, is, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, is, ij) < k_min) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, is, ij), a_plus(ia, ik, ix, ip, iw, ie, is, ij), Q_plus(ia, ik, ix, ip, iw, ie, is, ij)
-
-                          AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, is, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij)/(1d0+n_p)
-                          AX = AX + ans(ix, is, ij)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          CC = CC + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          bqs(is) = bqs(is) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij))*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          TAw = TAw + inctax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          TAr = TAr + captax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          PBEN = PBEN + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          PCON = PCON + pencon(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !
-                          ! penben_coh(ij) = penben_coh(ij) + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          ! pencon_coh(ij) = pencon_coh(ij) + pencon(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !
-                          if(ik == 0) then
-                            LC = LC + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   x_coh(0, ij) = x_coh(0, ij) + ans(ix, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   y_coh(0, ij) = y_coh(0, ij) + w*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          else
-                             YE = YE + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   a_coh(1, ij) = a_coh(1, ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   x_coh(1, ij) = x_coh(1, ij) + ans(ix, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   k_coh(ij) = k_coh(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   y_coh(1, ij) = y_coh(1, ij) + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   l_coh(1, ij) = l_coh(1, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !   o_coh(ij) = o_coh(ij) + m(ia, ik, ix, ip, iw, ie, is, ij)
-                          endif
-                        enddo
-                      enddo
-                    enddo
-                  enddo
-                enddo
-              enddo
-            enddo
-
-            ! c_coh(0, ij) = c_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            ! c_coh(1, ij) = c_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            ! a_coh(0, ij) = a_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            ! a_coh(1, ij) = a_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            ! x_coh(0, ij) = x_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            ! x_coh(1, ij) = x_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            ! y_coh(0, ij) = y_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            ! y_coh(1, ij) = y_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            ! l_coh(0, ij) = l_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            ! l_coh(1, ij) = l_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            ! penben_coh(ij) = penben_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
-            ! pencon_coh(ij) = pencon_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
-            ! o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
-            ! k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-
-            !write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), PEN_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
-            !write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) - PEN_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
-
-        enddo ! ij
-
-        !write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) - PEN_tmp(:) + TAUP_tmp(:) + C_tmp(:))
-
-        ! get average income
-        ybar = w*LC/sum(m(:, :, :, :, :, :, :, 1:JR-1))
-
-        ! compute stock of capital
-        KC = damp*(AA+AX-BB) +(1d0-damp)*KC
-        KK = KC + KE
-        LC = damp*LC +(1d0-damp)*LC_old
-        BQ = sum(bqs)
-        II = (n_p+delta_k)*KK
-        YC = Omega*KC**alpha*LC**(1d0-alpha)
-        YY = YC + YE
-
-        TAy = tauy*(YC-delta_k*KC-w*LC)
-
-        !write(*,*)'gm:', YY, CC, II, TC
-        !rite(*,*)'pen', PBEN, PCON, w*LC, ybar, PBEN/PCON, taup
-
-        !write(*,*) YC, YE, KC, KE, LC, BQ, TC
-
-    end subroutine
-
-
-    ! subroutine for calculating government parameters
-    subroutine government()
-
-        implicit none
-
-        real*8 :: taup_old
-        real*8 :: expend
-
-        GG = gy*YY
-        BB = by*YY
-
-        expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
-
-        tauc = (expend-TAy-TAw-TAr)/CC
-
-        taup_old = taup
-
-        ! get budget balancing pension contribution rate
-        taup = PBEN/PCON
-
-        !taup = damp*taup + (1d0-damp)*taup_old
-
-
-        ! compute gap on goods market
-        DIFF = YY-CC-II-TC-GG
-
-    end subroutine
+  end subroutine
 
 
     ! subroutine for writing output
