@@ -223,16 +223,16 @@ contains
       ! calculate gross price of consumption (inverse)
       pinv = 1d0/(1d0+tauc)
 
+      ! set prices in case of life-cycle model
+      r = 0.393280506035032d0
+      w = 0.877841532937879d0
+      bqs = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
+      ybar = 0.555719715351030d0
+
       ! calculate individual bequests
       beq(1, :) = Gama(:)*bqs(1)/rpop(1, :)
       beq(2, :) = Gama(:)*bqs(2)/rpop(2, :)
       beq(3, :) = Gama(:)*bqs(3)/rpop(3, :)
-
-      ! set prices in case of life-cycle model
-      r = 0.393280506035032d0
-      w = 0.877841532937879d0
-      beq = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
-      ybar = 0.555719715351030d0
 
       ! determine the income tax system
       r1 = 0.286d0*ybar*2d0
