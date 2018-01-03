@@ -198,9 +198,9 @@ contains
         ! ybar = 0.4d0
 
         ! determine the income tax system
-        r1 = 0.286d0*inc_tax(0)*2d0
-        r2 = 0.456d0*inc_tax(0)*2d0
-        r3 = 1.786d0*inc_tax(0)*2d0
+        r1 = 0.286d0*ybar*2d0
+        r2 = 0.456d0*ybar*2d0
+        r3 = 1.786d0*ybar*2d0
 
         b1 = (t2-t1)/(r2-r1)
         b2 = (t3-t2)/(r3-r2)
