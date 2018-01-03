@@ -4,11 +4,11 @@ module globals
 
     implicit none
 
-    ! number of years the household retires
-    integer, parameter :: JR = 10
-
     ! number of years the household lives
     integer, parameter :: JJ = 16
+
+    ! number of years the household retires
+    integer, parameter :: JR = 10
 
     ! number of permanent skill classes
     integer, parameter :: NS = 3
@@ -19,7 +19,7 @@ module globals
     ! number of entrepreneurial ability (theta) shocks
     integer, parameter :: NE = 2
 
-    ! number of points on the asset grid
+    ! number of points on the total asset grid
     integer, parameter :: NQ = 16
 
     ! number of points on the liquid asset grid
@@ -44,26 +44,26 @@ module globals
 
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
-    real*8, parameter :: egam = 1d0 - 1d0/gamma
+    real*8, parameter :: egam  = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.320d0
-    real*8, parameter :: beta = 0.99d0**5
-    real*8, parameter :: mu_b = 0.10d0
+    real*8, parameter :: beta  = 0.99d0**5
+    real*8, parameter :: mu_b  = 0.10d0
 
     ! maximum investment in annuities
     real*8, parameter :: mx_max = 0.10d0
 
     ! capital parameters
     real*8, parameter :: delta_k = 0.06d0
-    real*8, parameter :: xi = 1d0/3d0
+    real*8, parameter :: xi      = 1d0/3d0
 
     ! production parameters
     real*8, parameter :: Omega = 1.4d0
     real*8, parameter :: k_min = 0.2d0
     real*8, parameter :: phi_k = 0.25d0
     real*8, parameter :: alpha = 0.36d0
-    real*8, parameter :: nu = 0.88d0
+    real*8, parameter :: nu    = 0.88d0
 
-    ! size of the asset grid
+    ! size of the total asset grid
     real*8, parameter :: Q_l    = 0d0
     real*8, parameter :: Q_u    = 12d0
     real*8, parameter :: Q_grow = 0.05d0
@@ -74,11 +74,11 @@ module globals
     real*8, parameter :: a_grow = Q_grow
 
     ! size of the capital grid
-    real*8, parameter :: k_l = k_min
-    real*8, parameter :: k_u = 0.25d0*Q_u/(1d0-xi)
+    real*8, parameter :: k_l    = k_min
+    real*8, parameter :: k_u    = 0.25d0*Q_u/(1d0-xi)
     real*8, parameter :: k_grow = Q_grow
 
-    ! size of the annuity grid
+    ! size of the annuity asset grid
     real*8, parameter :: x_l    = Q_l
     real*8, parameter :: x_u    = 2d0*Q_u
     real*8, parameter :: x_grow = Q_grow
@@ -87,12 +87,12 @@ module globals
     real*8, parameter :: p_l    = 0d0
     real*8, parameter :: p_u    = 2d0
 
-    ! pension fraction of last income
+    ! pension fraction of average income
     real*8, parameter :: kappa = 0.45d0
 
     ! numerical parameters
     integer, parameter :: itermax = 200
-    real*8, parameter :: sig = 1d-6
+    real*8, parameter :: sig  = 1d-6
     real*8, parameter :: damp = 0.45d0
 
     ! measure time
@@ -102,11 +102,14 @@ module globals
     real*8 :: dist_eta(NW, NS), pi_eta(NW, NW, NS), eta(NW, NS), dist_theta(NE, NS), pi_theta(NE, NE, NS), theta(NE, NS)
 
     ! demographic and other model parameters
-    real*8 :: eff(NS, JJ), pen(0:NP, JJ), ann(0:NX, NS, JJ), psi(NS, JJ+1), rpop(NS, JJ), bqs(NS), beq(NS, JJ), Gama(JJ)
+    real*8 :: eff(NS, JJ)
+    real*8 :: pen(0:NP, JJ), ann(0:NX, NS, JJ), ans(0:NX, NS, JJ)
+    real*8 :: psi(NS, JJ+1), rpop(NS, JJ)
+    real*8 :: bqs(NS), beq(NS, JJ), Gama(JJ)
 
     ! government variables
-    real*8 :: lambda, phi, mu
-    real*8 :: tauc, tauy, taur, taup
+    real*8 :: mu, phi, lambda
+    real*8 :: tauc, taur, tauy, taup
 
     ! progressive income tax
     real*8, parameter :: t1 = 0.14d0, t2 = 0.24d0, t3 = 0.45d0
@@ -114,54 +117,55 @@ module globals
 
     ! macroeconomic variables
     real*8 :: r, w
-    real*8 :: pinv, ybar
+    real*8 :: ybar, pinv
     real*8 :: AA, AX, BQ, PBEN, PCON
     real*8 :: KK, KC, KE, LC, BB
     real*8 :: YY, YC, YE, CC, II, TC, GG
     real*8 :: TAc, TAr, TAw, TAy
 
-    ! cohort aggregate variables
-    real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
-    real*8 :: a_coh(0:1, JJ), x_coh(0:1, JJ), k_coh(JJ), penben_coh(JJ), pencon_coh(JJ)
-
     ! different grids to discretize the state space
-    real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP), ans(0:NX, NS, JJ)
+    real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP)
 
     ! variables to store the policy functions
     real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
-    real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
-    real*8 :: p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+    real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+    real*8 :: x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
     real*8 :: inctax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), captax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
     real*8 :: penben(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), pencon(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
     real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
+    ! variables to store the value function
+    real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+
     ! variables for temporary policy and value functions
     real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
-    real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
-    real*8 :: p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+    real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+    real*8 :: x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
     real*8 :: inctax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), captax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
     real*8 :: penben_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), pencon_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
     real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
     real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
-    ! variables to store the portfolio choice decisions
+    ! variables to store the savings choice decisions
     real*8 :: omega_x_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), omega_k_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
     real*8 :: S(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
-    ! variables to store the value functions
-    real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
-
     ! weights for the different gridpoints on the discretized state space
-    real*8 :: m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+    real*8 :: m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
     ! numerical variables
-    integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ia_p_com, iq_p_com, ip_p_com, io_p_com, iter
+    integer :: iter
+    integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com
+    integer :: iq_p_com, ia_p_com, ip_p_com, io_p_com
     integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
-    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, inctax_com, captax_com, pencon_com, aas_com
+    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
+    real*8 :: inctax_com, captax_com, pencon_com, aas_com
     real*8 :: DIFF
 
-    !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
-    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, inctax_com, captax_com, pencon_com, aas_com)
+    !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com)
+    !$omp threadprivate(iq_p_com, ia_p_com, ip_p_com, io_p_com)
+    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com)
+    !$omp threadprivate(inctax_com, captax_com, pencon_com, aas_com)
 
   contains
 

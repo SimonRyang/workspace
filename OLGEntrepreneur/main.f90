@@ -614,12 +614,10 @@ contains
         implicit none
 
         integer :: ia, ik, ix, ip, iw, ie, is, ij
-        real*8 :: LC_old, BQ_old
-        real*8 :: Q_tmp(JJ), KC_tmp(JJ), Y_tmp(JJ), KE_tmp(JJ), BQ_tmp(JJ), PEN_tmp(JJ), TAUP_tmp(JJ), C_tmp(JJ)
+        real*8 :: LC_old
 
         ! copy labor supply
         LC_old = LC
-        BQ_old = BQ
 
         ! calculate cohort averages
         c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penben_coh = 0d0; pencon_coh = 0d0
@@ -627,8 +625,6 @@ contains
         ! reset macroeconomic aggregates in each iteration step
         AA = 0d0; AX = 0d0; BQ = 0d0; bqs(:) = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0; PBEN = 0d0; PCON = 0d0
         TAc = 0d0; TAr = 0d0; TAw = 0d0; TAy = 0d0
-
-        Q_tmp = 0d0; KC_tmp = 0d0; Y_tmp = 0d0; KE_tmp = 0d0; BQ_tmp = 0d0; PEN_tmp = 0d0; C_tmp = 0d0
 
         do ij = 1, JJ
 
@@ -639,16 +635,6 @@ contains
                   do ix = 0, NX
                     do ik = 0, NK
                       do ia = 0, NA
-
-                          Q_tmp(ij) = Q_tmp(ij) + Q_plus(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          KC_tmp(ij) = KC_tmp(ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          KE_tmp(ij) = KE_tmp(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          BQ_tmp(ij) = BQ_tmp(ij) + beq(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          PEN_tmp(ij) = PEN_tmp(ij) + pen(ip, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          if (ik == 0) Y_tmp(ij) = Y_tmp(ij) + w*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          if (ik == 0) TAUP_tmp(ij) = TAUP_tmp(ij) + taup*w*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          if (ik > 0) Y_tmp(ij) = Y_tmp(ij) + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          C_tmp(ij) = C_tmp(ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
 
                           ! skip if there is no household
                           if (m(ia, ik, ix, ip, iw, ie, is, ij) <= 0d0) cycle
@@ -667,26 +653,26 @@ contains
                           TAr = TAr + captax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           PBEN = PBEN + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           PCON = PCON + pencon(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-
-                          penben_coh(ij) = penben_coh(ij) + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          pencon_coh(ij) = pencon_coh(ij) + pencon(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-
-                          if(ik == 0) then
-                            LC = LC + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            x_coh(0, ij) = x_coh(0, ij) + ans(ix, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            y_coh(0, ij) = y_coh(0, ij) + w*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          else
-                            YE = YE + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            a_coh(1, ij) = a_coh(1, ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            x_coh(1, ij) = x_coh(1, ij) + ans(ix, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            k_coh(ij) = k_coh(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            y_coh(1, ij) = y_coh(1, ij) + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            l_coh(1, ij) = l_coh(1, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                            o_coh(ij) = o_coh(ij) + m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !
+                          ! penben_coh(ij) = penben_coh(ij) + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          ! pencon_coh(ij) = pencon_coh(ij) + pencon(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !
+                          ! if(ik == 0) then
+                          !   LC = LC + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   x_coh(0, ij) = x_coh(0, ij) + ans(ix, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   y_coh(0, ij) = y_coh(0, ij) + w*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          ! else
+                          !   YE = YE + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   a_coh(1, ij) = a_coh(1, ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   x_coh(1, ij) = x_coh(1, ij) + ans(ix, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   k_coh(ij) = k_coh(ij) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   y_coh(1, ij) = y_coh(1, ij) + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   l_coh(1, ij) = l_coh(1, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          !   o_coh(ij) = o_coh(ij) + m(ia, ik, ix, ip, iw, ie, is, ij)
                           endif
                         enddo
                       enddo
@@ -696,20 +682,20 @@ contains
               enddo
             enddo
 
-            c_coh(0, ij) = c_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            c_coh(1, ij) = c_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            a_coh(0, ij) = a_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            a_coh(1, ij) = a_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            x_coh(0, ij) = x_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            x_coh(1, ij) = x_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            y_coh(0, ij) = y_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            y_coh(1, ij) = y_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            l_coh(0, ij) = l_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
-            l_coh(1, ij) = l_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
-            penben_coh(ij) = penben_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
-            pencon_coh(ij) = pencon_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
-            o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
-            k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
+            ! c_coh(0, ij) = c_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
+            ! c_coh(1, ij) = c_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
+            ! a_coh(0, ij) = a_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
+            ! a_coh(1, ij) = a_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
+            ! x_coh(0, ij) = x_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
+            ! x_coh(1, ij) = x_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
+            ! y_coh(0, ij) = y_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
+            ! y_coh(1, ij) = y_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
+            ! l_coh(0, ij) = l_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, :, ij)), 1d-13)
+            ! l_coh(1, ij) = l_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
+            ! penben_coh(ij) = penben_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
+            ! pencon_coh(ij) = pencon_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
+            ! o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, :, ij)), 1d-13)
+            ! k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, :, ij)), 1d-13)
 
             !write(*,*)'tmp:', Q_tmp(ij), KC_tmp(ij), KE_tmp(ij), Y_tmp(ij), BQ_tmp(ij), PEN_tmp(ij), TAUP_tmp(ij), C_tmp(ij)
             !write(*,*)Q_tmp(ij) - (1d0+r)*KC_tmp(ij) - (1d0-delta_k)*KE_tmp(ij) - Y_tmp(ij) - BQ_tmp(ij) - PEN_tmp(ij) + TAUP_tmp(ij) + C_tmp(ij)
@@ -774,30 +760,30 @@ contains
 
         implicit none
 
-        integer :: ij, ages(JJ)
-        ! set up age variable
-        ages = 20 + 5*(/(ij-1, ij=1,JJ)/)
-
-        ! polt homeownership ratio
-        call plot(dble(ages), o_coh(:), legend='Entrepreneurship')
-        call execplot(xlabel='Age j', ylabel='Entrepreneurship', ylim=(/0d0, 1d0/))
-
-        ! plot consumption for homeowner
-        call plot(dble(ages), c_coh(1, :), legend='Consumption  - Entrepreneur')
-        call plot(dble(ages), a_coh(1, :), legend='Assets       - Entrepreneur')
-        call plot(dble(ages), x_coh(1, :), legend='Annuities    - Entrepreneur')
-        call plot(dble(ages), y_coh(1, :), legend='Income       - Entrepreneur')
-        call plot(dble(ages), l_coh(1, :), legend='Labor        - Entrepreneur')
-        call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
-        call execplot(xlabel='Age j', ylabel='Consumption/Assets')
-
-        ! polt consumption for renter
-        call plot(dble(ages), c_coh(0, :), legend='Consumption  - Worker')
-        call plot(dble(ages), a_coh(0, :), legend='Assets       - Worker')
-        call plot(dble(ages), x_coh(0, :), legend='Annuities    - Worker')
-        call plot(dble(ages), y_coh(0, :), legend='Labor Income - Worker')
-        call plot(dble(ages), l_coh(0, :), legend='Labor        - Worker')
-        call execplot(xlabel='Age j', ylabel='Consumption/Assets')
+        ! integer :: ij, ages(JJ)
+        ! ! set up age variable
+        ! ages = 20 + 5*(/(ij-1, ij=1,JJ)/)
+        !
+        ! ! polt homeownership ratio
+        ! call plot(dble(ages), o_coh(:), legend='Entrepreneurship')
+        ! call execplot(xlabel='Age j', ylabel='Entrepreneurship', ylim=(/0d0, 1d0/))
+        !
+        ! ! plot consumption for homeowner
+        ! call plot(dble(ages), c_coh(1, :), legend='Consumption  - Entrepreneur')
+        ! call plot(dble(ages), a_coh(1, :), legend='Assets       - Entrepreneur')
+        ! call plot(dble(ages), x_coh(1, :), legend='Annuities    - Entrepreneur')
+        ! call plot(dble(ages), y_coh(1, :), legend='Income       - Entrepreneur')
+        ! call plot(dble(ages), l_coh(1, :), legend='Labor        - Entrepreneur')
+        ! call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
+        ! call execplot(xlabel='Age j', ylabel='Consumption/Assets')
+        !
+        ! ! polt consumption for renter
+        ! call plot(dble(ages), c_coh(0, :), legend='Consumption  - Worker')
+        ! call plot(dble(ages), a_coh(0, :), legend='Assets       - Worker')
+        ! call plot(dble(ages), x_coh(0, :), legend='Annuities    - Worker')
+        ! call plot(dble(ages), y_coh(0, :), legend='Labor Income - Worker')
+        ! call plot(dble(ages), l_coh(0, :), legend='Labor        - Worker')
+        ! call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
     end subroutine
 
