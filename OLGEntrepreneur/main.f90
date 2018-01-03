@@ -109,19 +109,20 @@ contains
         ! discretize eta shocks
         call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta, pi_eta, dist_eta)
         eta = exp(eta)/sum(dist_eta*exp(eta))
-        write(*,*)eta
-        write(*,*)dist_eta
-        write(*,*)pi_eta(1, :)
-        write(*,*)pi_eta(2, :)
-
-        eta = (/0d0, 0.5d0/)
-        dist_eta = (/0d0, 1d0/)
-        pi_eta(1, :) = (/1d0, 0d0/)
-        pi_eta(2, :) = (/0.1d0, 0.9d0/)
 
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
         theta = exp(theta)
+
+        write(*,*)theta
+        write(*,*)dist_theta
+        write(*,*)pi_theta(1, :)
+        write(*,*)pi_theta(2, :)
+
+        theta = (/0d0, 0.5d0/)
+        dist_theta = (/0d0, 1d0/)
+        pi_theta(1, :) = (/1d0, 0d0/)
+        pi_theta(2, :) = (/0.1d0, 0.9d0/)
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
