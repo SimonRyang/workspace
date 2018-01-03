@@ -135,6 +135,7 @@ module globals
     real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: inctax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: penben_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), pencon_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
