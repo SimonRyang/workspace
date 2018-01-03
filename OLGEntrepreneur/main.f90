@@ -184,7 +184,7 @@ contains
               do ix = 0, NX
 
                 do ia = 0, NA
-                  Q_plus_t(:, ia, ik, ix, ip, iw, ie, is, ij) = Q(iq)/2d0
+                  Q_plus_t(:, ia, ik, ix, ip, iw, ie, is, ij) = a(is)/2d0
                   l_t(:, ia, ik, ix, ip, iw, ie, is, ij) = 0.33d0
                 enddo ! ia
 
