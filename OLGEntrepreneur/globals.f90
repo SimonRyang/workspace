@@ -42,7 +42,7 @@ module globals
     real*8, parameter :: gamma = 0.5d0
     real*8, parameter :: egam = 1d0 - 1d0/gamma
     real*8, parameter :: sigma = 0.320d0
-    real*8, parameter :: beta = 0.98d0**5
+    real*8, parameter :: beta = 0.99d0**5
     real*8, parameter :: mu_b = 0.10d0
 
     ! maximum investment in annuities
@@ -71,7 +71,7 @@ module globals
 
     ! size of the capital grid
     real*8, parameter :: k_l = k_min
-    real*8, parameter :: k_u = 0.5d0*Q_u/(1d0-xi)
+    real*8, parameter :: k_u = 0.25d0*Q_u/(1d0-xi)
     real*8, parameter :: k_grow = Q_grow
 
     ! size of the annuity grid
@@ -332,7 +332,7 @@ module globals
                     (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
         endif
 
-        x_p = ((1d0+r)/psi(ij)*x(ix)*dble(ij) + mx)/dble(ij+1)
+        x_p = ((1d0+r)/psi(ij)*x(ix)*dble(JR)/dble(ij) + mx)/dble(JR)*dble(ij+1)
 
       else
 
@@ -372,7 +372,7 @@ module globals
       omega_x  = x_in
 
       ! determine future liquid wealth and future downpayment
-      x_p = ((1d0+r)/psi(ij_com)*x(ix_com)*dble(ij_com) + min(omega_x*Q(iq_p_com), mx_max))/dble(ij_com+1)
+      x_p = ((1d0+r)/psi(ij_com)*x(ix_com)*dble(JR)/dble(ij_com) + min(omega_x*Q(iq_p_com), mx_max))/dble(JR)*dble(ij_com+1)
       a_temp = (1d0-omega_x)*Q(iq_p_com)
       a_p = max(a_temp, 0d0)
 
@@ -432,7 +432,7 @@ module globals
       omega_k  = x_in(2)
 
       ! determine future liquid wealth and future downpayment
-      x_p = ((1d0+r)/psi(ij_com)*x(ix_com)*dble(ij_com) + min(omega_x*Q(iq_p_com), mx_max))/dble(ij_com+1)
+      x_p = ((1d0+r)/psi(ij_com)*x(ix_com)*dble(JR)/dble(ij_com) + min(omega_x*Q(iq_p_com), mx_max))/dble(JR)*dble(ij_com+1)
       k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
       a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
       a_p = max(a_temp, 0d0)
