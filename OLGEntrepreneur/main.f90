@@ -35,6 +35,8 @@ program main
   ! write output
   call output()
 
+  call get_SteadyState()
+
   close(21)
 
 
