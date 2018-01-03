@@ -76,7 +76,7 @@ module globals
 
     ! size of the annuity grid
     real*8, parameter :: x_l    = Q_l
-    real*8, parameter :: x_u    = 4d0*Q_u
+    real*8, parameter :: x_u    = 0.5d0*Q_u
     real*8, parameter :: x_grow = Q_grow
 
     ! size of the pension claim grid
