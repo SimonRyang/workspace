@@ -673,7 +673,7 @@ contains
                           !   y_coh(1, ij) = y_coh(1, ij) + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   l_coh(1, ij) = l_coh(1, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   o_coh(ij) = o_coh(ij) + m(ia, ik, ix, ip, iw, ie, is, ij)
-                          endif
+                          !endif
                         enddo
                       enddo
                     enddo
