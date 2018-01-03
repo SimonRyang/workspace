@@ -114,10 +114,10 @@ contains
         write(*,*)pi_eta(1, :)
         write(*,*)pi_eta(2, :)
 
-        eta = (/0d0, 1d0/)
+        eta = (/0d0, 0.5d0/)
         dist_eta = (/0d0, 1d0/)
         pi_eta(1, :) = (/1d0, 0d0/)
-        pi_eta(2, :) = (/0.05d0, 0.95d0/)
+        pi_eta(2, :) = (/0.1d0, 0.9d0/)
 
         ! discretize theta shocks
         call discretize_AR(0.920d0**5d0, 0.0d0, sigma5(0.920d0, 0.0375d0), theta, pi_theta, dist_theta)
