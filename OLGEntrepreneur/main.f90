@@ -212,11 +212,11 @@ contains
         enddo
 
         do ix = 0, NX
-          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)/ann_tmp
+          ann(ix, JR:JJ) = (1d0+r)/psi(JR)*x(ix)*dble(JR)/ann_tmp
         enddo
 
         do ij = 1, JR
-          ans(:, ij) = x(:)
+          ans(:, ij) = x(:)*dble(JR)
         enddo
         do ij = JR+1, JJ
           ans(:, ij) = (1d0+r)/psi(ij-1)*ans(:, ij-1)-ann(:, ij-1)

@@ -332,7 +332,7 @@ module globals
                     (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
         endif
 
-        x_p = (1d0+r)/psi(ij)*x(ix) + mx
+        x_p = ((1d0+r)/psi(ij)*x(ix)*dble(ij) + mx)/dble(ij+1)
 
       else
 
@@ -372,7 +372,7 @@ module globals
       omega_x  = x_in
 
       ! determine future liquid wealth and future downpayment
-      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
+      x_p = ((1d0+r)/psi(ij_com)*x(ix_com)*dble(ij_com) + min(omega_x*Q(iq_p_com), mx_max))/dble(ij_com+1)
       a_temp = (1d0-omega_x)*Q(iq_p_com)
       a_p = max(a_temp, 0d0)
 
@@ -432,7 +432,7 @@ module globals
       omega_k  = x_in(2)
 
       ! determine future liquid wealth and future downpayment
-      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
+      x_p = ((1d0+r)/psi(ij_com)*x(ix_com)*dble(ij_com) + min(omega_x*Q(iq_p_com), mx_max))/dble(ij_com+1)
       k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
       a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
       a_p = max(a_temp, 0d0)
@@ -512,7 +512,7 @@ module globals
         inctax_com = tarif(income)
 
         ! calculate capital tax
-        captax_com = taur*r*max((a(ia_com)-xi*k(ik_com), 0d0)
+        captax_com = taur*r*max(a(ia_com)-xi*k(ik_com), 0d0)
 
         ! pension contribution
         pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
