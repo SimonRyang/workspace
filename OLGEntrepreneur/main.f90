@@ -202,10 +202,14 @@ contains
 
         pinv = 1d0/(1d0+tauc)
 
+        write(*,*)'1'
+
         ! calculate individual bequests
         beq(1, :) = Gama(:)*bqs(1)/rpop(1, :)
         beq(2, :) = Gama(:)*bqs(2)/rpop(2, :)
         beq(3, :) = Gama(:)*bqs(3)/rpop(3, :)
+
+        write(*,*)'2'
 
         ! r = 0.15d0
         ! w = 0.6d0
@@ -225,6 +229,7 @@ contains
         ans = 0d0
         ann_tmp = 1d0
 
+        write(*,*)'3'
         do ij = JJ-1, JR, -1
           ann_tmp(:) = ann_tmp(:)/(1d0+r)*psi(:, ij+1) + 1d0
         enddo
@@ -241,6 +246,8 @@ contains
             ans(:, is, ij) = (1d0+r)/psi(is, ij-1)*ans(:, is, ij-1)-ann(:, is, ij-1)
           enddo
         enddo
+
+        write(*,*)'4'
 
         ! old-age transfers
         pen = 0d0
