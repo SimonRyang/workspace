@@ -102,7 +102,7 @@ module globals
 
     ! government variables
     real*8 :: lambda, phi, mu
-    real*8 :: tauc, tauy, taup
+    real*8 :: tauc, tauy, taur, taup
 
     ! progressive income tax
     real*8, parameter :: t1 = 0.14d0, t2 = 0.24d0, t3 = 0.45d0
@@ -127,7 +127,7 @@ module globals
     real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
-    real*8 :: inctax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: inctax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), captax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: penben(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), pencon(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
@@ -135,7 +135,7 @@ module globals
     real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
-    real*8 :: inctax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: inctax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), captax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: penben_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), pencon_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
@@ -153,11 +153,11 @@ module globals
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com, iter
     integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
-    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, inctax_com, pencon_com, aas_com
+    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, inctax_com, captax_com, pencon_com, aas_com
     real*8 :: DIFF
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
-    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, inctax_com, pencon_com, aas_com)
+    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, inctax_com, captax_com, pencon_com, aas_com)
 
   contains
 
@@ -347,6 +347,7 @@ module globals
       x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
       inctax_t(io_p, ia, ik, ix, ip, iw, ie, ij) = inctax_com
+      captax_t(io_p, ia, ik, ix, ip, iw, ie, ij) = captax_com
       penben_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
       pencon_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pencon_com
       c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  (aas_com - x_in(1))*pinv
@@ -510,6 +511,9 @@ module globals
         ! calculate income tax
         inctax_com = tarif(income)
 
+        ! calculate capital tax
+        captax_com = taur*r*(a(ia_com)-xi*k(ik_com))
+
         ! pension contribution
         pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
 
@@ -517,7 +521,7 @@ module globals
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
-                   - inctax_com - taup*pencon_com
+                   - inctax_com - captax_com - taup*pencon_com
 
         ! calculate consumption
         cons_com = (aas_com - Q_plus)*pinv
@@ -587,13 +591,15 @@ module globals
         ! pension contribution
         pencon_com = 0d0
 
-
         ! calculate income tax
         inctax_com = tarif(pen(ip_com, ij_com) + ann(ix_com, ij_com))
 
+        ! calculate capital tax
+        captax_com = taur*r*a(ia_com)
+
         ! available assets
         aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
-                  - inctax_com
+                  - inctax_com - captax_com
 
         ! calculate consumption
         cons_com = (aas_com - Q_plus)*pinv

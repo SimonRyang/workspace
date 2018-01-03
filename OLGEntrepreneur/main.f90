@@ -134,6 +134,7 @@ contains
         ! initialize tax rates
         tauc = 0.190d0
         tauy = 0.150d0
+        taur = 0.250d0
         taup = 0.164d0
 
         ! set starting values
@@ -262,6 +263,7 @@ contains
                 c(ia, :, ix, ip, :, :, JJ) = c_t(0, ia, 0, ix, ip, 1, 1, JJ)
                 l(ia, :, ix, ip, :, :, JJ) = l_t(0, ia, 0, ix, ip, 1, 1, JJ)
                 inctax(ia, :, ix, ip, :, :, JJ) = inctax_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                captax(ia, :, ix, ip, :, :, JJ) = captax_t(0, ia, 0, ix, ip, 1, 1, JJ)
                 penben(ia, :, ix, ip, :, :, JJ) = penben_t(0, ia, 0, ix, ip, 1, 1, JJ)
                 pencon(ia, :, ix, ip, :, :, JJ) = pencon_t(0, ia, 0, ix, ip, 1, 1, JJ)
                 V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
@@ -311,6 +313,7 @@ contains
                  c(ia, :, ix, ip, :, :, ij) = c_t(0, ia, 0, ix, ip, 1, 1, ij)
                  l(ia, :, ix, ip, :, :, ij) = l_t(0, ia, 0, ix, ip, 1, 1, ij)
                  inctax(ia, :, ix, ip, :, :, ij) = inctax_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 captax(ia, :, ix, ip, :, :, ij) = captaxtax_t(0, ia, 0, ix, ip, 1, 1, ij)
                  penben(ia, :, ix, ip, :, :, ij) = penben_t(0, ia, 0, ix, ip, 1, 1, ij)
                  pencon(ia, :, ix, ip, :, :, ij) = pencon_t(0, ia, 0, ix, ip, 1, 1, ij)
                  V(ia, :, ix, ip, :, :, ij) = V_t(0, ia, 0, ix, ip, 1, 1, ij)
@@ -375,6 +378,7 @@ contains
                            c(ia, ik, ix, ip, iw, ie, ij) = c_t(io_p, ia, ik, ix, ip, iw, ie, ij)
                            l(ia, ik, ix, ip, iw, ie, ij) = l_t(io_p, ia, ik, ix, ip, iw, ie, ij)
                            inctax(ia, ik, ix, ip, iw, ie, ij) = inctax_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           captax(ia, ik, ix, ip, iw, ie, ij) = captax_t(io_p, ia, ik, ix, ip, iw, ie, ij)
                            penben(ia, ik, ix, ip, iw, ie, ij) = penben_t(io_p, ia, ik, ix, ip, iw, ie, ij)
                            pencon(ia, ik, ix, ip, iw, ie, ij) = pencon_t(io_p, ia, ik, ix, ip, iw, ie, ij)
                            V(ia, ik, ix, ip, iw, ie, ij) = V_t(io_p, ia, ik, ix, ip, iw, ie, ij)
@@ -621,6 +625,7 @@ contains
                         KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
                         TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, ij))*m(ia, ik,ix, ip, iw, ie, ij)
                         TAw = TAw + inctax(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik,ix, ip, iw, ie, ij)
+                        TAr = TAr + captax(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik,ix, ip, iw, ie, ij)
                         PBEN = PBEN + penben(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
                         PCON = PCON + pencon(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
 
@@ -708,7 +713,7 @@ contains
 
         expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
 
-        tauc = (expend-TAy-TAw)/CC
+        tauc = (expend-TAy-TAw-TAr)/CC
 
         taup_old = taup
 
