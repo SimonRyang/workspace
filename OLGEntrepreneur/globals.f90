@@ -101,7 +101,7 @@ module globals
     real*8 :: dist_eta(NW, NS), pi_eta(NW, NW, NS), eta(NW, NS), dist_theta(NE, NS), pi_theta(NE, NE, NS), theta(NE, NS)
 
     ! demographic and other model parameters
-    real*8 :: dist_skill(NS), eff(NS, JJ), pen(0:NP, JJ), ann(0:NX, NS, JJ), psi(NS, JJ+1), rpop(NS, JJ), bqs(NS), beq(NS, JJ)
+    real*8 :: dist_skill(NS), eff(NS, JJ), pen(0:NP, JJ), ann(0:NX, NS, JJ), psi(NS, JJ+1), rpop(NS, JJ), bqs(NS), beq(NS, JJ), Gama(JJ)
 
     ! government variables
     real*8 :: lambda, phi, mu

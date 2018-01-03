@@ -609,7 +609,7 @@ contains
 
         implicit none
 
-        integer :: ia, ik, ix, ip, iw, ie, ij
+        integer :: ia, ik, ix, ip, iw, ie, is, ij
         real*8 :: LC_old, BQ_old
         real*8 :: Q_tmp(JJ), KC_tmp(JJ), Y_tmp(JJ), KE_tmp(JJ), BQ_tmp(JJ), PEN_tmp(JJ), TAUP_tmp(JJ), C_tmp(JJ)
 
