@@ -435,23 +435,22 @@ contains
                     pencon(ia, ik, ix, ip, iw, ie, is, ij) = pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
                     V(ia, ik, ix, ip, iw, ie, is, ij) = V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
 
-                   enddo
-                 enddo
-               enddo
-             enddo
-           enddo
-         enddo
+                  enddo ! ia
+                enddo ! ik
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
+      !$omp end parallel do
 
-       enddo
-     !$omp end parallel do
+      call interpolate(ij)
+      !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
-
-    call interpolate(ij)
-    !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
-
-    enddo
+    enddo ! ij
 
   end subroutine
+  
 
     ! calculates the expected valuefunction of cohort ij
     subroutine interpolate(ij)
