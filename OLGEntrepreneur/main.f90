@@ -313,7 +313,7 @@ contains
                  c(ia, :, ix, ip, :, :, ij) = c_t(0, ia, 0, ix, ip, 1, 1, ij)
                  l(ia, :, ix, ip, :, :, ij) = l_t(0, ia, 0, ix, ip, 1, 1, ij)
                  inctax(ia, :, ix, ip, :, :, ij) = inctax_t(0, ia, 0, ix, ip, 1, 1, ij)
-                 captax(ia, :, ix, ip, :, :, ij) = captaxtax_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 captax(ia, :, ix, ip, :, :, ij) = captax_t(0, ia, 0, ix, ip, 1, 1, ij)
                  penben(ia, :, ix, ip, :, :, ij) = penben_t(0, ia, 0, ix, ip, 1, 1, ij)
                  pencon(ia, :, ix, ip, :, :, ij) = pencon_t(0, ia, 0, ix, ip, 1, 1, ij)
                  V(ia, :, ix, ip, :, :, ij) = V_t(0, ia, 0, ix, ip, 1, 1, ij)
