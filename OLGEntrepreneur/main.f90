@@ -657,15 +657,15 @@ contains
                           ! penben_coh(ij) = penben_coh(ij) + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           ! pencon_coh(ij) = pencon_coh(ij) + pencon(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !
-                          ! if(ik == 0) then
-                          !   LC = LC + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          if(ik == 0) then
+                            LC = LC + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   c_coh(0, ij) = c_coh(0, ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   a_coh(0, ij) = a_coh(0, ij) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   x_coh(0, ij) = x_coh(0, ij) + ans(ix, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   l_coh(0, ij) = l_coh(0, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   y_coh(0, ij) = y_coh(0, ij) + w*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          ! else
-                          !   YE = YE + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          else
+                             YE = YE + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   c_coh(1, ij) = c_coh(1, ij) + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   a_coh(1, ij) = a_coh(1, ij) + (a(ia)-xi*k(ik))*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   x_coh(1, ij) = x_coh(1, ij) + ans(ix, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
@@ -673,7 +673,7 @@ contains
                           !   y_coh(1, ij) = y_coh(1, ij) + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   l_coh(1, ij) = l_coh(1, ij) + l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           !   o_coh(ij) = o_coh(ij) + m(ia, ik, ix, ip, iw, ie, is, ij)
-                          !endif
+                          endif
                         enddo
                       enddo
                     enddo
