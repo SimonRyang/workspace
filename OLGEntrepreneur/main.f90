@@ -551,37 +551,37 @@ contains
                           do ie_p = 1, NE
 
                               m(ial, ikl, ixl, ipl, iw_p, ie_p, is, ij) = m(ial, ikl, ixl, ipl, iw_p, ie_p, is, ij) + &
-                                    varphi_a*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    varphi_a*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(ial, ikl, ixl, ipr, iw_p, ie_p, is, ij) = m(ial, ikl, ixl, ipr, iw_p, ie_p, is, ij) + &
-                                    varphi_a*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    varphi_a*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(ial, ikl, ixr, ipl, iw_p, ie_p, is, ij) = m(ial, ikl, ixr, ipl, iw_p, ie_p, is, ij) + &
-                                    varphi_a*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    varphi_a*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(ial, ikl, ixr, ipr, iw_p, ie_p, is, ij) = m(ial, ikl, ixr, ipr, iw_p, ie_p, is, ij) + &
-                                    varphi_a*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    varphi_a*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(ial, ikr, ixl, ipl, iw_p, ie_p, is, ij) = m(ial, ikr, ixl, ipl, iw_p, ie_p, is, ij) + &
-                                    varphi_a*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    varphi_a*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(ial, ikr, ixl, ipr, iw_p, ie_p, is, ij) = m(ial, ikr, ixl, ipr, iw_p, ie_p, is, ij) + &
-                                    varphi_a*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    varphi_a*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(ial, ikr, ixr, ipl, iw_p, ie_p, is, ij) = m(ial, ikr, ixr, ipl, iw_p, ie_p, is, ij) + &
-                                    varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(ial, ikr, ixr, ipr, iw_p, ie_p, is, ij) = m(ial, ikr, ixr, ipr, iw_p, ie_p, is, ij) + &
-                                    varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(iar, ikl, ixl, ipl, iw_p, ie_p, is, ij) = m(iar, ikl, ixl, ipl, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    (1d0-varphi_a)*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(iar, ikl, ixl, ipr, iw_p, ie_p, is, ij) = m(iar, ikl, ixl, ipr, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    (1d0-varphi_a)*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(iar, ikl, ixr, ipl, iw_p, ie_p, is, ij) = m(iar, ikl, ixr, ipl, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(iar, ikl, ixr, ipr, iw_p, ie_p, is, ij) = m(iar, ikl, ixr, ipr, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(iar, ikr, ixl, ipl, iw_p, ie_p, is, ij) = m(iar, ikr, ixl, ipl, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(iar, ikr, ixl, ipr, iw_p, ie_p, is, ij) = m(iar, ikr, ixl, ipr, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(iar, ikr, ixr, ipl, iw_p, ie_p, is, ij) = m(iar, ikr, ixr, ipl, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
                               m(iar, ikr, ixr, ipr, iw_p, ie_p, is, ij) = m(iar, ikr, ixr, ipr, iw_p, ie_p, is, ij) + &
-                                    (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(ij, is)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
+                                    (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij-1)/(1d0+n_p)
 
                           enddo
                         enddo
