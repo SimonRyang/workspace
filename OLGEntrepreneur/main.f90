@@ -482,9 +482,11 @@ contains
         m(:, :, :, :, :, :, :, :) = 0d0
         m_Q(:, :, :, :, :, :, :, :) = 0d0
 
-        do iw = 1, NW
-          do ie = 1, NE
-              m(0, 0, 0, 0, iw, ie, is, 1) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
+        do is = 1, NS
+          do iw = 1, NW
+            do ie = 1, NE
+                m(0, 0, 0, 0, iw, ie, is, 1) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
+            enddo
           enddo
         enddo
 
