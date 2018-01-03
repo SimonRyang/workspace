@@ -29,7 +29,7 @@ program main
   call tock(time)
 
   write(*,*) KC, LC, BB
-  write(*,*) ybar
+  write(*,*) r, w, ybar
   write(*,*) bqs
 
   ! write output
