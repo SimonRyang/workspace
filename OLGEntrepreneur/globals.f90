@@ -76,8 +76,8 @@ module globals
 
     ! size of the annuity grid
     real*8, parameter :: x_l    = Q_l
-    real*8, parameter :: x_u    = 0.25d0*Q_u
-    real*8, parameter :: x_grow = 0.4d0*Q_grow
+    real*8, parameter :: x_u    = Q_u
+    real*8, parameter :: x_grow = Q_grow
 
     ! size of the pension claim grid
     real*8, parameter :: p_l    = 0d0
@@ -332,7 +332,7 @@ module globals
                     (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
         endif
 
-        x_p = ((1d0+r)/psi(ij)*x(ix)*dble(ij) + mx)/dble(ij+1)
+        x_p = (1d0+r)/psi(ij)*x(ix)+ mx
 
       else
 
@@ -372,7 +372,7 @@ module globals
       omega_x  = x_in
 
       ! determine future liquid wealth and future downpayment
-      x_p = ((1d0+r)/psi(ij_com)*x(ix_com)*dble(ij_com) + min(omega_x*Q(iq_p_com), mx_max))/dble(ij_com+1)
+      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
       a_temp = (1d0-omega_x)*Q(iq_p_com)
       a_p = max(a_temp, 0d0)
 
@@ -432,7 +432,7 @@ module globals
       omega_k  = x_in(2)
 
       ! determine future liquid wealth and future downpayment
-      x_p = ((1d0+r)/psi(ij_com)*x(ix_com)*dble(ij_com) + min(omega_x*Q(iq_p_com), mx_max))/dble(ij_com+1)
+      x_p = (1d0+r)/psi(ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
       k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
       a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
       a_p = max(a_temp, 0d0)
