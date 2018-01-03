@@ -28,6 +28,9 @@ program main
   ! stop the clock
   call tock(time)
 
+  write(*,*)KC, LC, BB
+  write(*,*)bqs
+
   ! write output
   call output()
 
@@ -49,29 +52,29 @@ contains
     ! iterate until value function converges
     do iter = 1, itermax
 
-        ! get new prices
-        call get_prices()
+      ! get new prices
+      call get_prices()
 
-        ! solve the household problem
-        call solve_household()
+      ! solve the household problem
+      call solve_household()
 
-        ! calculate the distribution of households over state space
-        call get_distribution()
+      ! calculate the distribution of households over state space
+      call get_distribution()
 
-        ! aggregate individual decisions
-        call aggregation()
+      ! aggregate individual decisions
+      call aggregation()
 
-        ! determine the government parameters
-        call government()
+      ! determine the government parameters
+      call government()
 
-        ! check maximum grid points used
-        call check_grid(iqmax, iamax, ikmax, ixmax)
+      ! check maximum grid points used
+      call check_grid(iqmax, iamax, ikmax, ixmax)
 
-        write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-                                        (/5d0*KK, CC, II/)/YY*100d0, &
-                                        ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
+      write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+                                      (/5d0*KK, CC, II/)/YY*100d0, &
+                                      ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
-        if(abs(DIFF/YY)*100d0 < sig) return
+      if(abs(DIFF/YY)*100d0 < sig) return
 
     enddo
 
