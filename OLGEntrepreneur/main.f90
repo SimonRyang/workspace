@@ -527,7 +527,7 @@ contains
                         varphi_a = max(min(varphi_a, 1d0),0d0)
 
                         ! restrict values to grid just in case
-                        if (k_plus(ia, ik, ix, ip, iw, ie, ij-1) >= k_min) then
+                        if (k_plus(ia, ik, ix, ip, iw, ie, is, ij-1) >= k_min) then
                           ikl = min(ikl+1, NK)
                           ikr = min(ikr+1, NK)
                           varphi_k = max(min(varphi_k, 1d0), 0d0)
@@ -652,7 +652,7 @@ contains
                           if (m(ia, ik, ix, ip, iw, ie, is, ij) <= 0d0) cycle
 
                           if (a_plus(ia, ik, ix, ip, iw, ie, is, ij) < 0d0) write(*,*)'a_plus:', k_plus(ia, ik, ix, ip, iw, ie, is, ij), a_plus(ia, ik, ix, ip, iw, ie, is, ij), Q_plus(ia, ik, ix, ip, iw, ie, is, ij)
-                          if (a_plus(ia, ik, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) ia, ik, ix, ip, iw, ie, ij, m(ia, ik, ix, ip, iw, ie, is, ij)
+                          if (a_plus(ia, ik, ix, ip, iw, ie, is, ij) < 0d0) write(*,*) ia, ik, ix, ip, iw, ie, is, ij, m(ia, ik, ix, ip, iw, ie, is, ij)
                           if (k_plus(ia, ik, ix, ip, iw, ie, is, ij) > 0d0 .and. k_plus(ia, ik, ix, ip, iw, ie, is, ij) < k_min) write(*,*)'k_plus:', k_plus(ia, ik, ix, ip, iw, ie, is, ij), a_plus(ia, ik, ix, ip, iw, ie, is, ij), Q_plus(ia, ik, ix, ip, iw, ie, is, ij)
 
                           AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, is, ij)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij))*psi(ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij)/(1d0+n_p)
@@ -660,9 +660,9 @@ contains
                           CC = CC + c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           bqs(is) = bqs(is) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij))*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij)
                           KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij)
-                          TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij))*m(ia, ik,ix, ip, iw, ie, ij)
-                          TAw = TAw + inctax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik,ix, ip, iw, ie, ij)
-                          TAr = TAr + captax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik,ix, ip, iw, ie, ij)
+                          TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij))*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          TAw = TAw + inctax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
+                          TAr = TAr + captax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           PBEN = PBEN + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                           PCON = PCON + pencon(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
 
