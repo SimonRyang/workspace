@@ -20,16 +20,16 @@ module globals
     integer, parameter :: NE = 2
 
     ! number of points on the total asset grid
-    integer, parameter :: NQ = 16
+    integer, parameter :: NQ = 12
 
     ! number of points on the liquid asset grid
-    integer, parameter :: NA = 16
+    integer, parameter :: NA = 12
 
     ! number of points on the capital grid
-    integer, parameter :: NK = 16
+    integer, parameter :: NK = 12
 
     ! number of points on the annuity asset grid
-    integer, parameter :: NX = 0
+    integer, parameter :: NX = 12
 
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
@@ -698,23 +698,26 @@ module globals
     end function
 
 
-    ! function that defines adjustment cost
+    !##############################################################################
+    ! FUNCTION tr
+    !
+    ! calculates the transaction costs
+    !##############################################################################
     function tr(k, k_p)
 
-       implicit none
+     implicit none
 
-       ! input variable
-       real*8, intent(in) :: k, k_p
-       real*8 :: tr
+     !##### INPUT/OUTPUT VARIABLES ################################################
+     real*8, intent(in) :: k, k_p
+     real*8 :: tr
 
-       tr = 0d0
-       if (k <= 0d0) then
-
-          tr = phi_k*(k_p - k)
-
-       endif
+     tr = 0d0
+     if (k <= 0d0) then
+        tr = phi_k*(k_p - k)
+     endif
 
     end function
+
 
     !##############################################################################
     ! FUNCTION tarif
@@ -725,15 +728,15 @@ module globals
 
       implicit none
 
-      !##### INPUT/OUTPUT VARIABLES #############################################
+      !##### INPUT/OUTPUT VARIABLES ###############################################
       real*8, intent(in) :: zn
       real*8 :: tarif
 
-      !##### OTHER VARIABLES ####################################################
+      !##### OTHER VARIABLES ######################################################
       real*8 :: tr2, tr3, znr
 
       ! determine parameters of tarif
-      tr2 =     (r2-r1)*t1 + (r2-r1)**2d0*b1*0.5d0
+      tr2 =       (r2-r1)*t1 + (r2-r1)**2d0*b1*0.5d0
       tr3 = tr2 + (r3-r2)*t2 + (r3-r2)**2d0*b2*0.5d0
 
       ! apply german income tax tarif
@@ -752,6 +755,7 @@ module globals
 
     end function
 
+
     !##############################################################################
     ! FUNCTION check_grid
     !
@@ -761,10 +765,10 @@ module globals
 
       implicit none
 
-      !##### INPUT/OUTPUT VARIABLES #############################################
+      !##### INPUT/OUTPUT VARIABLES ###############################################
       integer :: iqmax(JJ), iamax(JJ), ikmax(JJ), ixmax(JJ)
 
-      !##### OTHER VARIABLES ####################################################
+      !##### OTHER VARIABLES ######################################################
       integer :: iq, ia, ik, ix, ij
 
       iqmax = 0
@@ -811,20 +815,21 @@ module globals
 
     end subroutine
 
+
     !##############################################################################
     ! FUNCTION sigma5
     !
-    ! Converts sigma of an one-year process into sigma of an five-year process
+    ! converts sigma of an one-year process into sigma of an five-year process
     !##############################################################################
     function sigma5(rho, sigma)
 
       implicit none
 
-      !##### INPUT/OUTPUT VARIABLES #############################################
+      !##### INPUT/OUTPUT VARIABLES ###############################################
       real*8, intent(in) :: rho, sigma
       real*8 :: sigma5
 
-      !##### OTHER VARIABLES ####################################################
+      !##### OTHER VARIABLES ######################################################
       real*8 :: Gamma5
       integer :: i, j
 
@@ -840,25 +845,44 @@ module globals
 
     end function
 
+
+    !##############################################################################
+    ! SUBROUTINE tick
+    !
+    ! sets the starting time
+    !##############################################################################
     subroutine tick(t)
 
+      !##### INPUT/OUTPUT VARIABLES ###############################################
       integer, intent(OUT) :: t
 
+      ! save time
       call system_clock(t)
 
-    end subroutine tick
+    end subroutine
 
+
+    !##############################################################################
+    ! SUBROUTINE tick
+    !
     ! returns time in seconds from now to time described by t
+    !##############################################################################
     subroutine tock(t)
 
+      !##### INPUT/OUTPUT VARIABLES ###############################################
       integer, intent(in) :: t
       real*8 :: calctime
+
+      !##### OTHER VARIABLES ######################################################
       integer :: now, clock_rate
 
+      ! get time
       call system_clock(now, clock_rate)
 
+      ! calculate time in seconds from now to time described by t
       calctime = real(now - t)/real(clock_rate)
 
+      ! transform into hours and minutes
       if (calctime < 60) then
           write(*,'(/a,f7.3,a)')'Time elapsed: ', calctime, ' s'
       elseif (calctime < 3600) then
@@ -869,5 +893,6 @@ module globals
       endif
 
     end subroutine tock
+
 
 end module
