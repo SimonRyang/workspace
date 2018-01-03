@@ -229,10 +229,10 @@ contains
       beq(3, :) = Gama(:)*bqs(3)/rpop(3, :)
 
       ! set prices in case of life-cycle model
-      ! r = 0.15d0
-      ! w = 0.6d0
-      ! b = 0d0
-      ! ybar = 0.4d0
+      r = 0.393280506035032d0
+      w = 0.877841532937879d0
+      beq = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
+      ybar = 0.555719715351030d0
 
       ! determine the income tax system
       r1 = 0.286d0*ybar*2d0
