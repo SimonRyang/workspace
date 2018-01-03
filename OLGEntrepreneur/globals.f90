@@ -14,7 +14,7 @@ module globals
     integer, parameter :: NS = 3
 
     ! number of productivity (eta) shocks
-    integer, parameter :: NW = 3
+    integer, parameter :: NW = 2
 
     ! number of entrepreneurial ability (theta) shocks
     integer, parameter :: NE = 2
@@ -510,7 +510,7 @@ module globals
 
         ! calculate current income
         income = (1d0-ind_o)*w*eff(is_com, ij_com)*eta(is_com, iw_com)*lab_com + &
-                 ind_o*theta(is_com, ie_com)*(k(ik_com)**alpha*(eff(is_com, ij_com)*lab_com)**(1d0-alpha))**nu
+                 ind_o*theta(ie_com, is_com)*(k(ik_com)**alpha*(eff(is_com, ij_com)*lab_com)**(1d0-alpha))**nu
 
         ! calculate income tax
         inctax_com = tarif(income)
