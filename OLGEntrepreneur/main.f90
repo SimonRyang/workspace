@@ -122,7 +122,7 @@ contains
         theta = (/0d0, 0.95d0/)
         dist_theta = (/0d0, 1d0/)
         pi_theta(1, :) = (/1d0, 0d0/)
-        pi_theta(2, :) = (/0.1d0, 0.9d0/)
+        pi_theta(2, :) = (/0.2d0, 0.8d0/)
 
         ! initialize asset grid
         call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
