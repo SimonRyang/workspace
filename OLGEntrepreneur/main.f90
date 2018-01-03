@@ -221,9 +221,6 @@ contains
       r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
       w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
-      ! calculate gross price of consumption (inverse)
-      pinv = 1d0/(1d0+tauc)
-
       ! set prices in case of life-cycle model
       r = 0.393280506035032d0
       w = 0.877841532937879d0
@@ -231,6 +228,9 @@ contains
       ybar = 0.555719715351030d0
       tauc = 0.128579256047982d0
       taup = 7.867802841513299d-2
+
+      ! calculate gross price of consumption (inverse)
+      pinv = 1d0/(1d0+tauc)
 
       ! calculate individual bequests
       beq(1, :) = Gama(:)*bqs(1)/rpop(1, :)
