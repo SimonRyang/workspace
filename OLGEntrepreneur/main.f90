@@ -178,6 +178,7 @@ contains
         integer :: ix, ip, ij
 
         ! calculate new prices
+        Omega = 1d0/((1d0-alpha)*(KC/LC)**alpha)
         r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
         w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
