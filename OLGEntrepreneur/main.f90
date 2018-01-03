@@ -176,30 +176,13 @@ contains
     call grid_Cons_Equi(p, p_l, p_u)
 
     ! get initial guess for household decisions
-    do ij = 1, JJ
-      do is = 1, NS
-        do ie = 1, NE
-          do iw = 1, NW
-            do ip = 0, NP
-              do ix = 0, NX
-
-                do ia = 0, NA
-                  Q_plus_t(:, ia, ik, ix, ip, iw, ie, is, ij) = a(is)/2d0
-                  l_t(:, ia, ik, ix, ip, iw, ie, is, ij) = 0.33d0
-                enddo ! ia
-
-                do iq = 0, NQ
-                  omega_x_t(:, iq, ik, ix, ip, iw, ie, is, ij) = 0.05d0
-                  omega_k_t(:, iq, ik, ix, ip, iw, ie, is, ij) = 0.05d0
-                enddo ! iq
-
-              enddo ! ix
-            enddo ! ip
-          enddo ! iw
-        enddo ! ie
-      enddo ! is
-    enddo ! ij
-
+    omega_x_t = 0.05d0
+    omega_k_t = 0.05d0
+    l_t = 0.33d0
+    do ia = 0, NA
+      Q_plus_t(:, ia, :, :, :, :, :, :, :) = a(ia)/2d0
+    enddo ! ia
+    
     ! initialize tax rates
     tauc = 0.190d0
     tauy = 0.150d0
