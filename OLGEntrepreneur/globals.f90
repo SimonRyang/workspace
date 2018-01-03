@@ -512,7 +512,7 @@ module globals
         inctax_com = tarif(income)
 
         ! calculate capital tax
-        captax_com = taur*r*(a(ia_com)-xi*k(ik_com))
+        captax_com = taur*r*max((a(ia_com)-xi*k(ik_com), 0d0)
 
         ! pension contribution
         pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
