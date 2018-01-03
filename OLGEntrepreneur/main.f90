@@ -194,7 +194,7 @@ contains
         implicit none
 
         real*8 :: ann_tmp(NS)
-        integer :: ix, ip, ij
+        integer :: ix, ip, is, ij
 
         ! calculate new prices
         r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
@@ -484,7 +484,7 @@ contains
 
         do iw = 1, NW
           do ie = 1, NE
-              m(0, 0, 0, 0, iw, ie, is, 1) = dist_eta(iw)*dist_theta(ie, is)*dist_skill(:)
+              m(0, 0, 0, 0, iw, ie, is, 1) = dist_eta(iw, is)*dist_theta(ie, is)*dist_skill(is)
           enddo
         enddo
 
