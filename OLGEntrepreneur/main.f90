@@ -3,434 +3,455 @@ include "globals.f90"
 
 program main
 
-    ! load modules
-    use globals
-    use omp_lib
+  ! load modules
+  use globals
+  use omp_lib
 
-    implicit none
+  implicit none
 
-    integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 28
 
-    ! set government variables
-    mu     = 1d0
-    lambda = 0d0
-    phi    = 0d0
+  ! set government variables
+  mu     = 1d0
+  lambda = 0d0
+  phi    = 0d0
 
-    ! initialize remaining variables
-    call initialize()
+  ! initialize remaining variables
+  call initialize()
 
-    ! start the clock
-    call tick(time)
+  ! start the clock
+  call tick(time)
 
-    ! calculate initial equilibrium
-    call get_SteadyState()
+  ! calculate initial equilibrium
+  call get_SteadyState()
 
-    ! stop the clock
-    call tock(time)
+  ! stop the clock
+  call tock(time)
 
-    call output()
+  ! write output
+  call output()
 
-    close(21)
+  close(21)
 
 
 contains
 
-    ! computes the initial steady state of the economy
-    subroutine get_SteadyState()
 
-        implicit none
+  !#############################################################################
+  ! FUNCTION get_SteadyState
+  !
+  ! computes the initial steady state of the economy
+  !#############################################################################
+  subroutine get_SteadyState()
 
-        ! iterate until value function converges
-        do iter = 1, itermax
+    implicit none
 
-            ! get new prices
-            call get_prices()
+    ! iterate until value function converges
+    do iter = 1, itermax
 
-            ! solve the household problem
-            call solve_household()
+        ! get new prices
+        call get_prices()
 
-            ! calculate the distribution of households over state space
-            call get_distribution()
+        ! solve the household problem
+        call solve_household()
 
-            ! aggregate individual decisions
-            call aggregation()
+        ! calculate the distribution of households over state space
+        call get_distribution()
 
-            ! determine the government parameters
-            call government()
+        ! aggregate individual decisions
+        call aggregation()
 
-            ! check maximum grid points used
-            call check_grid(iqmax, iamax, ikmax, ixmax)
+        ! determine the government parameters
+        call government()
 
-            write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-                                            (/5d0*KK, CC, II/)/YY*100d0, &
-                                            ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
+        ! check maximum grid points used
+        call check_grid(iqmax, iamax, ikmax, ixmax)
 
-            if(abs(DIFF/YY)*100d0 < sig) return
+        write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+                                        (/5d0*KK, CC, II/)/YY*100d0, &
+                                        ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
 
-        enddo
+        if(abs(DIFF/YY)*100d0 < sig) return
 
-        write(*,*)'No Convergence'
+    enddo
 
-    end subroutine
+    write(*,*)'No Convergence'
 
-    ! initializes all remaining variables
-    subroutine initialize
+  end subroutine
+
+
+  !#############################################################################
+  ! SUBROUTINE initialize
+  !
+  ! initializes all remaining variables
+  !#############################################################################
+  subroutine initialize()
+
+    implicit none
 
-        implicit none
+    !##### OTHER VARIABLES #####################################################
+    integer :: ip, ij
+
+    ! set survival probabilities
+    open(301, file='sp.dat')
+    do ij = 1, JJ+1
+      read(301,'(f13.8)')psi(2, ij)
+    enddo
+    close(301)
 
-        integer :: ip, ij
+    ! compute survival probabilities for high/low skilled
+    psi(:, 1) = psi(2, 1)
+    psi(:, JJ+1) = 0d0
+    do ij = 2, JJ
+      psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-22d0))
+      psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-22d0))
+    enddo
 
-        ! set survival probabilities
-        open(301, file='sp.dat')
-        do ij = 1, JJ+1
-          read(301,'(f13.8)')psi(2, ij)
-        enddo
-        close(301)
+    ! set up population structure
+    rpop(:, 1) = dist_skill(:)
+    do ij = 2, JJ
+      rpop(:, ij) = psi(:, ij)*rpop(:, ij-1)/(1d0+n_p)
+    enddo
 
-        ! compute survival probabilities for high/low skilled
-        psi(:, 1) = psi(2, 1)
-        psi(:, JJ+1) = 0d0
-        do ij = 2, JJ
-          psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-22d0))
-          psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-22d0))
-        enddo
+    ! set distribution of bequests
+    Gama(1:JR-1) = 1d0
+    Gama(JR:JJ) = 0d0
+    Gama = Gama/sum(Gama)
 
-        ! set up population structure
-        rpop(:, 1) = dist_skill(:)
-        do ij = 2, JJ
-          rpop(:, ij) = psi(:, ij)*rpop(:, ij-1)/(1d0+n_p)
-        enddo
+    ! initialize age earnings process
+    eff(1, 1:JR-1) = (/1.2987778d0, 1.5794954d0, 1.6404434d0, 1.6908550d0, 1.7507724d0, &
+                       1.7586790d0, 1.7611338d0, 1.8054554d0, 1.7423268d0/)
+    eff(2, 1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
+                      2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)
+    eff(3, 1:JR-1) = (/1.3882564d0, 2.1841104d0, 2.9655702d0, 3.3290738d0, 3.4171474d0, &
+                       3.4497238d0, 3.4046532d0, 3.3062074d0, 3.1235630d0/)
 
-        ! set distribution of bequests
-        Gama(1:JR-1) = 1d0
-        Gama(JR:JJ) = 0d0
-        Gama = Gama/sum(Gama)
+    ! earnings process during retirement is equal to zero
+    eff(:, JR:JJ) = 0d0
 
-        ! initialize age earnings process
-        eff(1, 1:JR-1) = (/1.2987778d0, 1.5794954d0, 1.6404434d0, 1.6908550d0, 1.7507724d0, &
-                           1.7586790d0, 1.7611338d0, 1.8054554d0, 1.7423268d0/)
-        eff(2, 1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
-                          2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)
-        eff(3, 1:JR-1) = (/1.3882564d0, 2.1841104d0, 2.9655702d0, 3.3290738d0, 3.4171474d0, &
-                           3.4497238d0, 3.4046532d0, 3.3062074d0, 3.1235630d0/)
+    ! initialize productivity process
+    call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
+    eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*exp(eta(:, 1)))
 
-        ! earnings process during retirement is equal to zero
-        eff(:, JR:JJ) = 0d0
+    call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta(:, 2), pi_eta(:, :, 2), dist_eta(:, 2))
+    eta(:, 2) = exp(eta(:, 2))/sum(dist_eta(:, 2)*exp(eta(:, 2)))
 
-        ! initialize productivity process
-        call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
-        eta(:, 1) = exp(eta(:, 1))/sum(dist_eta(:, 1)*exp(eta(:, 1)))
-
-        call discretize_AR(0.95687d0**5d0, 0.0d0, sigma5(0.95687d0, 0.02812d0), eta(:, 2), pi_eta(:, :, 2), dist_eta(:, 2))
-        eta(:, 2) = exp(eta(:, 2))/sum(dist_eta(:, 2)*exp(eta(:, 2)))
-
-        call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.03538d0), eta(:, 3), pi_eta(:, :, 3), dist_eta(:, 3))
-        eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
-
-        ! initialize entrepreneurial ability process
-
-        theta(:, 1) = (/0d0, 0.95d0/)
-        theta(:, 2) = (/0d0, 0.95d0/)
-        theta(:, 3) = (/0d0, 0.95d0/)
-        dist_theta(:, 1) = (/0d0, 1d0/)
-        dist_theta(:, 2) = (/0d0, 1d0/)
-        dist_theta(:, 3) = (/0d0, 1d0/)
-        pi_theta(1, 1, :) = 1d0
-        pi_theta(1, 2, :) = 0d0
-        pi_theta(2, 1, :) = 0.2d0
-        pi_theta(2, 2, :) = 0.8d0
-
-        ! initialize asset grid
-        call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
-
-        ! initialize liquid asset grid
-        call grid_Cons_Grow(a, a_l, a_u, a_grow)
-
-        ! endogenous upper bound of housing grid
-        if (NK > 0) call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
-        k(0) = 0d0
-
-        ! initialize annuity grid
-        if (NX > 0) call grid_Cons_Grow(x, x_l, x_u, x_grow)
-        x(0) = x_l
-
-        ! initialize pension claim grid
-        call grid_Cons_Equi(p, p_l, p_u)
-
-        ! initialize tax rates
-        tauc = 0.190d0
-        tauy = 0.150d0
-        taur = 0.250d0
-        taup = 0.164d0
-
-        ! initial guesses for macro variables
-        KC = 1.10d0
-        LC = 2.10d0
-        bqs(:) = (/0.019d0, 0.124d0, 0.322d0/)
-        BQ = 0.20d0
-        BB = 1.00d0
-        ybar = 0.4d0
-
-        ! initialize value functions
-        V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
-
-        ! initialize policy functions
-        Q_plus = 0d0; a_plus = 0d0; x_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
-
-        ! initialize temporary policy and value functions
-        Q_plus_t = 0d0; a_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0
-        omega_x_t = 0d0; omega_k_t = 0d0
-        V_t = 0d0
-
-        ! open files
-        open(21, file='output.out')
-
-    end subroutine
-
-
-    ! compute prices and distribution of bequests for next iteration step
-    subroutine get_prices()
-
-        implicit none
-
-        real*8 :: ann_tmp(NS)
-        integer :: ix, ip, is, ij
-
-        ! calculate new prices
-        r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
-        w = Omega*(1d0-alpha)*(KC/LC)**alpha
-
-        pinv = 1d0/(1d0+tauc)
-
-        ! calculate individual bequests
-        beq(1, :) = Gama(:)*bqs(1)/rpop(1, :)
-        beq(2, :) = Gama(:)*bqs(2)/rpop(2, :)
-        beq(3, :) = Gama(:)*bqs(3)/rpop(3, :)
-
-        ! r = 0.15d0
-        ! w = 0.6d0
-        ! b = 0d0
-        ! ybar = 0.4d0
-
-        ! determine the income tax system
-        r1 = 0.286d0*ybar*2d0
-        r2 = 0.456d0*ybar*2d0
-        r3 = 1.786d0*ybar*2d0
-
-        b1 = (t2-t1)/(r2-r1)
-        b2 = (t3-t2)/(r3-r2)
-
-        ! annuity payments
-        ann = 0d0
-        ans = 0d0
-        ann_tmp = 1d0
-
-        do ij = JJ-1, JR, -1
-          ann_tmp(:) = ann_tmp(:)/(1d0+r)*psi(:, ij+1) + 1d0
-        enddo
-
-        do is = 1, NS
-          do ix = 0, NX
-            ann(ix, is, JR:JJ) = (1d0+r)/psi(is, JR)*x(ix)/ann_tmp(is)
-          enddo
-
-          do ij = 1, JR
-            ans(:, is, ij) = x(:)
-          enddo
-          do ij = JR+1, JJ
-            ans(:, is, ij) = (1d0+r)/psi(is, ij-1)*ans(:, is, ij-1)-ann(:, is, ij-1)
-          enddo
-        enddo
-
-        ! old-age transfers
-        pen = 0d0
-        do ip = 0, NP
-          pen(ip, JR:JJ) = p(ip)*kappa*ybar
-        enddo
-
-    end subroutine
-
-
-    ! determines the solution to the household optimization problem
-    subroutine solve_household()
-
-        implicit none
-
-        integer :: ij, iq, ia, ik, ix, ip, iw, ie, is, iq_p, ip_p, io_p
-
-        ! solve household problem recursively
-
-          omega_x_t(:, :, :, :, :, :, :, :, JJ) = 0d0
-          omega_k_t(:, :, :, :, :, :, :, :, JJ) = 0d0
-
-          do iq_p = 0, NQ
-              S(:, iq_p, :, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
-          enddo
-
-          !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads)
-          do is = 1, NS
-            do ip = 0, NP
-              do ix = 0, NX
-                do ia = 0, NA
-
-                  ! with bequest motive we assume future worker
-                  call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, JJ)
-
-                  Q_plus(ia, :, ix, ip, :, :, is, JJ) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  a_plus(ia, :, ix, ip, :, :, is, JJ) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  x_plus(ia, :, ix, ip, :, :, is, JJ) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  p_plus(ia, :, ix, ip, :, :, is, JJ) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  k_plus(ia, :, ix, ip, :, :, is, JJ) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  c(ia, :, ix, ip, :, :, is, JJ) = c_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  l(ia, :, ix, ip, :, :, is, JJ) = l_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  inctax(ia, :, ix, ip, :, :, is, JJ) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  captax(ia, :, ix, ip, :, :, is, JJ) = captax_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  penben(ia, :, ix, ip, :, :, is, JJ) = penben_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  pencon(ia, :, ix, ip, :, :, is, JJ) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-                  V(ia, :, ix, ip, :, :, is, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
-
-                enddo
-             enddo
-           enddo
-         enddo
-         !$omp end parallel do
-
-         call interpolate(JJ)
-
-        do ij = JJ-1, JR, -1
-
-          !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
-          do is = 1, NS
-             do ip_p = 0, NP
-               do ix = 0, NX
-                   do iq_p = 0, NQ
-
-                       ! next period retiree
-                       call solve_retiree(iq_p, 0, ix, ip_p, 1, 1, is, ij)
-
-                       omega_x_t(:, iq_p, :, ix, ip_p, :, :, is, ij) = omega_x_t(0, iq_p, 0, ix, ip_p, 1, 1, is, ij)
-                       omega_k_t(:, iq_p, :, ix, ip_p, :, :, is, ij) = omega_k_t(0, iq_p, 0, ix, ip_p, 1, 1, is, ij)
-                       S(:, iq_p, :, ix, ip_p, :, :, is, ij) = S(0, iq_p, 0, ix, ip_p, 1, 1, is, ij)
-
-                  enddo
-               enddo
-             enddo
-           enddo
-           !$omp end parallel do
-
-          !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)
-          ! solve the consumption savings problem
-
-          do is = 1, NS
-           do ip = 0, NP
-             do ix = 0, NX
-               do ia = 0, NA
-
-                 ! next period worker
-                 call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, ij)
-
-                 ! decision on whether to be homeowner or renter next period
-                 Q_plus(ia, :, ix, ip, :, :, is, ij) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 a_plus(ia, :, ix, ip, :, :, is, ij) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 x_plus(ia, :, ix, ip, :, :, is, ij) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 p_plus(ia, :, ix, ip, :, :, is, ij) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 k_plus(ia, :, ix, ip, :, :, is, ij) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 c(ia, :, ix, ip, :, :, is, ij) = c_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 l(ia, :, ix, ip, :, :, is, ij) = l_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 inctax(ia, :, ix, ip, :, :, is, ij) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 captax(ia, :, ix, ip, :, :, is, ij) = captax_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 penben(ia, :, ix, ip, :, :, is, ij) = penben_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 pencon(ia, :, ix, ip, :, :, is, ij) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-                 V(ia, :, ix, ip, :, :, is, ij) = V_t(0, ia, 0, ix, ip, 1, 1, is, ij)
-
-               enddo
-             enddo
-           enddo
-         enddo
-        !$omp end parallel do
-
-        call interpolate(ij)
-        !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
-
+    call discretize_AR(0.95828d0**5d0, 0.0d0, sigma5(0.95828d0, 0.03538d0), eta(:, 3), pi_eta(:, :, 3), dist_eta(:, 3))
+    eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
+
+    ! initialize entrepreneurial ability process
+    theta(:, 1) = (/0d0, 0.95d0/)
+    theta(:, 2) = (/0d0, 0.95d0/)
+    theta(:, 3) = (/0d0, 0.95d0/)
+    dist_theta(:, 1) = (/0d0, 1d0/)
+    dist_theta(:, 2) = (/0d0, 1d0/)
+    dist_theta(:, 3) = (/0d0, 1d0/)
+    pi_theta(1, 1, :) = 1d0
+    pi_theta(1, 2, :) = 0d0
+    pi_theta(2, 1, :) = 0.2d0
+    pi_theta(2, 2, :) = 0.8d0
+
+    ! initialize asset grid
+    call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
+
+    ! initialize liquid asset grid
+    call grid_Cons_Grow(a, a_l, a_u, a_grow)
+
+    ! endogenous upper bound of housing grid
+    if (NK > 0) call grid_Cons_Grow(k(1:NK), k_l, k_u, k_grow)
+    k(0) = 0d0
+
+    ! initialize annuity grid
+    if (NX > 0) call grid_Cons_Grow(x, x_l, x_u, x_grow)
+    x(0) = x_l
+
+    ! initialize pension claim grid
+    call grid_Cons_Equi(p, p_l, p_u)
+
+    ! initialize tax rates
+    tauc = 0.190d0
+    tauy = 0.150d0
+    taur = 0.250d0
+    taup = 0.164d0
+
+    ! initial guesses for macro variables
+    KC = 1.10d0
+    LC = 2.10d0
+    bqs(:) = (/0.019d0, 0.124d0, 0.322d0/)
+    BQ = 0.20d0
+    BB = 1.00d0
+    ybar = 0.4d0
+
+    ! initialize value functions
+    V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
+
+    ! initialize policy functions
+    Q_plus = 0d0; a_plus = 0d0; x_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
+
+    ! initialize temporary policy and value functions
+    Q_plus_t = 0d0; a_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0
+    omega_x_t = 0d0; omega_k_t = 0d0
+    V_t = 0d0
+
+    ! open files
+    open(21, file='output.out')
+
+  end subroutine
+
+
+  !#############################################################################
+  ! SUBROUTINE get_prices
+  !
+  ! computes prices and distribution of bequests for next iteration step
+  !#############################################################################
+  subroutine get_prices()
+
+      implicit none
+
+      real*8 :: ann_tmp(NS)
+      integer :: ix, ip, is, ij
+
+      ! calculate new prices
+      r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
+      w = Omega*(1d0-alpha)*(KC/LC)**alpha
+
+      ! calculate gross price of consumption (inverse)
+      pinv = 1d0/(1d0+tauc)
+
+      ! calculate individual bequests
+      beq(1, :) = Gama(:)*bqs(1)/rpop(1, :)
+      beq(2, :) = Gama(:)*bqs(2)/rpop(2, :)
+      beq(3, :) = Gama(:)*bqs(3)/rpop(3, :)
+
+      ! set prices in case of life-cycle model
+      ! r = 0.15d0
+      ! w = 0.6d0
+      ! b = 0d0
+      ! ybar = 0.4d0
+
+      ! determine the income tax system
+      r1 = 0.286d0*ybar*2d0
+      r2 = 0.456d0*ybar*2d0
+      r3 = 1.786d0*ybar*2d0
+
+      b1 = (t2-t1)/(r2-r1)
+      b2 = (t3-t2)/(r3-r2)
+
+      ! calculate annuity payments
+      ann = 0d0
+      ans = 0d0
+      ann_tmp = 1d0
+
+      do ij = JJ-1, JR, -1
+        ann_tmp(:) = ann_tmp(:)/(1d0+r)*psi(:, ij+1) + 1d0
       enddo
 
-      do ij = JR-1, 1, -1
+      do is = 1, NS
+        do ix = 0, NX
+          ann(ix, is, JR:JJ) = (1d0+r)/psi(is, JR)*x(ix)/ann_tmp(is)
+        enddo
 
-        !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
-        do is = 1, NS
-           do ie = 1, NE
-             do iw = 1, NW
-               do ip_p = 0, NP
-                 do ix = 0, NX
-                   do ik = 0, NK
-                     do iq_p = 0, NQ
+        do ij = 1, JR
+          ans(:, is, ij) = x(:)
+        enddo
+        do ij = JR+1, JJ
+          ans(:, is, ij) = (1d0+r)/psi(is, ij-1)*ans(:, is, ij-1)-ann(:, is, ij-1)
+        enddo
+      enddo
 
-                         ! next period worker
-                         call solve_worker(iq_p, ik, ix, ip_p, iw, ie, is, ij)
+      ! calculate old-age transfers
+      pen = 0d0
+      do ip = 0, NP
+        pen(ip, JR:JJ) = p(ip)*kappa*ybar
+      enddo
 
-                         ! next period entrepreneur
-                         call solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, is, ij)
+  end subroutine
 
-                    enddo
+
+  !#############################################################################
+  ! FUNCTION solve_household
+  !
+  ! determines the solution to the household optimization problem
+  !#############################################################################
+  subroutine solve_household()
+
+    implicit none
+
+    !##### OTHER VARIABLES #####################################################
+    integer :: ij, iq, ia, ik, ix, ip, iw, ie, is, iq_p, ip_p, io_p
+
+    ! solve household problem recursively
+
+    omega_x_t(:, :, :, :, :, :, :, :, JJ) = 0d0
+    omega_k_t(:, :, :, :, :, :, :, :, JJ) = 0d0
+
+    do iq_p = 0, NQ
+        S(:, iq_p, :, :, :, :, :, :, JJ) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
+    enddo ! iq_p
+
+    !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads)
+    do is = 1, NS
+      do ip = 0, NP
+        do ix = 0, NX
+          do ia = 0, NA
+
+            call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, JJ)
+
+            ! copy decisions
+            Q_plus(ia, :, ix, ip, :, :, is, JJ) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            a_plus(ia, :, ix, ip, :, :, is, JJ) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            x_plus(ia, :, ix, ip, :, :, is, JJ) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            p_plus(ia, :, ix, ip, :, :, is, JJ) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            k_plus(ia, :, ix, ip, :, :, is, JJ) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            c(ia, :, ix, ip, :, :, is, JJ) = c_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            l(ia, :, ix, ip, :, :, is, JJ) = l_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            inctax(ia, :, ix, ip, :, :, is, JJ) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            captax(ia, :, ix, ip, :, :, is, JJ) = captax_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            penben(ia, :, ix, ip, :, :, is, JJ) = penben_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            pencon(ia, :, ix, ip, :, :, is, JJ) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+            V(ia, :, ix, ip, :, :, is, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, is, JJ)
+
+          enddo ! ia
+        enddo ! ix
+      enddo ! ip
+    enddo ! is
+    !$omp end parallel do
+
+    call interpolate(JJ)
+
+    ! solve for retirement age
+    do ij = JJ-1, JR, -1
+
+      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+      do is = 1, NS
+        do ip_p = 0, NP
+          do ix = 0, NX
+            do iq_p = 0, NQ
+
+              ! next period retiree
+              call solve_retiree(iq_p, 0, ix, ip_p, 1, 1, is, ij)
+
+              omega_x_t(:, iq_p, :, ix, ip_p, :, :, is, ij) = omega_x_t(0, iq_p, 0, ix, ip_p, 1, 1, is, ij)
+              omega_k_t(:, iq_p, :, ix, ip_p, :, :, is, ij) = omega_k_t(0, iq_p, 0, ix, ip_p, 1, 1, is, ij)
+              S(:, iq_p, :, ix, ip_p, :, :, is, ij) = S(0, iq_p, 0, ix, ip_p, 1, 1, is, ij)
+
+            enddo ! iq_p
+          enddo ! ix
+        enddo ! ip_p
+      enddo ! is
+      !$omp end parallel do
+
+      !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)
+      do is = 1, NS
+        do ip = 0, NP
+          do ix = 0, NX
+            do ia = 0, NA
+
+              ! next period worker
+              call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, ij)
+
+              ! copy decisions
+              Q_plus(ia, :, ix, ip, :, :, is, ij) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              a_plus(ia, :, ix, ip, :, :, is, ij) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              x_plus(ia, :, ix, ip, :, :, is, ij) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              p_plus(ia, :, ix, ip, :, :, is, ij) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              k_plus(ia, :, ix, ip, :, :, is, ij) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              c(ia, :, ix, ip, :, :, is, ij) = c_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              l(ia, :, ix, ip, :, :, is, ij) = l_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              inctax(ia, :, ix, ip, :, :, is, ij) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              captax(ia, :, ix, ip, :, :, is, ij) = captax_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              penben(ia, :, ix, ip, :, :, is, ij) = penben_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              pencon(ia, :, ix, ip, :, :, is, ij) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+              V(ia, :, ix, ip, :, :, is, ij) = V_t(0, ia, 0, ix, ip, 1, 1, is, ij)
+
+            enddo ! ia
+          enddo ! ix
+        enddo ! ip
+      enddo ! is
+      !$omp end parallel do
+
+      call interpolate(ij)
+      !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
+
+    enddo ! ij
+
+    do ij = JR-1, 1, -1
+
+      !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip_p = 0, NP
+              do ix = 0, NX
+                do ik = 0, NK
+                  do iq_p = 0, NQ
+
+                    ! next period worker
+                    call solve_worker(iq_p, ik, ix, ip_p, iw, ie, is, ij)
+
+                    ! next period entrepreneur
+                    call solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, is, ij)
+
+                  enddo ! iq_p
+                enddo ! ik
+              enddo ! ix
+            enddo ! ip_p
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
+      !$omp end parallel do
+
+      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+      ! solve the consumption savings problem
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ik = 0, NK
+                  do ia = 0, NA
+
+                    ! next period worker
+                    call solve_consumption(0, ia, ik, ix, ip, iw, ie, is, ij)
+
+                    ! next period entrpreneur
+                    if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, is, ij)
+
+                    ! decision on whether to be homeowner or renter next period
+                    io_p = 0
+                    if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, is, ij) > V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)) io_p = 1
+
+                    ! copy decisions
+                    Q_plus(ia, ik, ix, ip, iw, ie, is, ij) = Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    a_plus(ia, ik, ix, ip, iw, ie, is, ij) = a_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    x_plus(ia, ik, ix, ip, iw, ie, is, ij) = x_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    p_plus(ia, ik, ix, ip, iw, ie, is, ij) = p_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    k_plus(ia, ik, ix, ip, iw, ie, is, ij) = k_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    c(ia, ik, ix, ip, iw, ie, is, ij) = c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    l(ia, ik, ix, ip, iw, ie, is, ij) = l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    inctax(ia, ik, ix, ip, iw, ie, is, ij) = inctax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    captax(ia, ik, ix, ip, iw, ie, is, ij) = captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    penben(ia, ik, ix, ip, iw, ie, is, ij) = penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    pencon(ia, ik, ix, ip, iw, ie, is, ij) = pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+                    V(ia, ik, ix, ip, iw, ie, is, ij) = V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+
                    enddo
                  enddo
                enddo
              enddo
            enddo
          enddo
-           !$omp end parallel do
 
-           !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
-           ! solve the consumption savings problem
-           do is = 1, NS
-             do ie = 1, NE
-               do iw = 1, NW
-                 do ip = 0, NP
-                   do ix = 0, NX
-                     do ik = 0, NK
-                       do ia = 0, NA
-
-                         ! next period worker
-                         call solve_consumption(0, ia, ik, ix, ip, iw, ie, is, ij)
-
-                         ! next period entrpreneur
-                         if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, is, ij)
-
-                         ! decision on whether to be homeowner or renter next period
-                         io_p = 0
-                          if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, is, ij) > V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)) io_p = 1
-
-                           Q_plus(ia, ik, ix, ip, iw, ie, is, ij) = Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           a_plus(ia, ik, ix, ip, iw, ie, is, ij) = a_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           x_plus(ia, ik, ix, ip, iw, ie, is, ij) = x_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           p_plus(ia, ik, ix, ip, iw, ie, is, ij) = p_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           k_plus(ia, ik, ix, ip, iw, ie, is, ij) = k_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           c(ia, ik, ix, ip, iw, ie, is, ij) = c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           l(ia, ik, ix, ip, iw, ie, is, ij) = l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           inctax(ia, ik, ix, ip, iw, ie, is, ij) = inctax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           captax(ia, ik, ix, ip, iw, ie, is, ij) = captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           penben(ia, ik, ix, ip, iw, ie, is, ij) = penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           pencon(ia, ik, ix, ip, iw, ie, is, ij) = pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
-                           V(ia, ik, ix, ip, iw, ie, is, ij) = V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij)
+       enddo
+     !$omp end parallel do
 
 
-                       enddo
-                     enddo
-                   enddo
-                 enddo
-               enddo
-             enddo
+    call interpolate(ij)
+    !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
-           enddo
-         !$omp end parallel do
+    enddo
 
-
-        call interpolate(ij)
-        !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
-
-        enddo
-
-    end subroutine
+  end subroutine
 
     ! calculates the expected valuefunction of cohort ij
     subroutine interpolate(ij)
