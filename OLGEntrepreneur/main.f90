@@ -97,7 +97,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES #####################################################
-    integer :: io_p, iq_p, ik, ix, ip_p, iw, ie, is, ij
+    integer :: iq, ia, ik, ix, ip, iw, ie, is, ij
 
     ! set survival probabilities
     open(301, file='sp.dat')
@@ -182,16 +182,17 @@ contains
           do iw = 1, NW
             do ip = 0, NP
               do ix = 0, NX
+
                 do ia = 0, NA
-                  do io_p = 0, 1
-
-                    Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = Q(iq)/2d0
-                    l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = 0.33d0
-                    omega_x_t(io_p, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0.05d0
-                    omega_k_t(io_p, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0.05d0
-
-                  enddo ! io_p
+                  Q_plus_t(:, ia, ik, ix, ip, iw, ie, is, ij) = Q(iq)/2d0
+                  l_t(:, ia, ik, ix, ip, iw, ie, is, ij) = 0.33d0
                 enddo ! ia
+
+                do iq = 0, NQ
+                  omega_x_t(:, iq, ik, ix, ip, iw, ie, is, ij) = 0.05d0
+                  omega_k_t(:, iq, ik, ix, ip, iw, ie, is, ij) = 0.05d0
+                enddo ! iq
+
               enddo ! ix
             enddo ! ip
           enddo ! iw
