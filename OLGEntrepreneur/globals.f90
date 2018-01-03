@@ -118,7 +118,7 @@ module globals
 
     ! cohort aggregate variables
     real*8 :: c_coh(0:1, JJ), y_coh(0:1, JJ), l_coh(0:1, JJ), o_coh(JJ)
-    real*8 :: a_coh(0:1, JJ), x_coh(0:1, JJ), k_coh(JJ), penb_coh(JJ), penc_coh(JJ)
+    real*8 :: a_coh(0:1, JJ), x_coh(0:1, JJ), k_coh(JJ), penben_coh(JJ), pencon_coh(JJ)
 
     ! different grids to discretize the state space
     real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP), ans(0:NX, JJ)
@@ -127,14 +127,15 @@ module globals
     real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
-    real*8 :: penb(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), penc(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: inctax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: penben(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), pencon(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
     ! variables for temporary policy and value functions
     real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
-    real*8 :: penb_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), penc_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: penben_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), pencon_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
     real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
 
@@ -151,11 +152,11 @@ module globals
     ! numerical variables
     integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, iq_p_com, ip_p_com, io_p_com, iter
     integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
-    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, penc_com, aas_com
+    real*8 :: cons_com, lab_com, x_plus_com, p_plus_com, inctax_com, pencon_com, aas_com
     real*8 :: DIFF
 
     !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, ia_p_com, ip_p_com, iq_p_com, io_p_com)
-    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, penc_com, aas_com)
+    !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com, inctax_com, pencon_com, aas_com)
 
   contains
 
@@ -344,8 +345,9 @@ module globals
       k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = k_p
       x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
-      penb_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
-      penc_t(io_p, ia, ik, ix, ip, iw, ie, ij) = penc_com
+      inxtax_t(io_p, ia, ik, ix, ip, iw, ie, ij) = inctax_com
+      penben_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
+      pencon_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pencon_com
       c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  (aas_com - x_in(1))*pinv
       l_t(io_p, ia, ik, ix, ip, iw, ie, ij) = lab_com
       V_t(io_p, ia, ik, ix, ip, iw, ie, ij) = -fret
@@ -504,14 +506,17 @@ module globals
         income = (1d0-ind_o)*w*eff(ij_com)*eta(iw_com)*lab_com + &
                  ind_o*theta(ie_com)*(k(ik_com)**alpha*(eff(ij_com)*lab_com)**(1d0-alpha))**nu
 
+        ! calculate income tax
+        inctax_com = tarif(income)
+
         ! pension contribution
-        penc_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
+        pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
 
         ! calculate income tax
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
-                   -taup*penc_com
+                   - inctax_com - taup*pencon_com
 
         ! calculate consumption
         cons_com = (aas_com - Q_plus)*pinv
@@ -579,10 +584,15 @@ module globals
         lab_com = 0d0
 
         ! pension contribution
-        penc_com = 0d0
+        pencon_com = 0d0
+
+
+        ! calculate income tax
+        inctax_com = tarif(pen(ip_com, ij_com) + ann(ix_com, ij_com))
 
         ! available assets
-        aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com)
+        aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, ij_com) &
+                  - inctax_com
 
         ! calculate consumption
         cons_com = (aas_com - Q_plus)*pinv

@@ -265,8 +265,9 @@ contains
                 k_plus(ia, :, ix, ip, :, :, JJ) = k_plus_t(0, ia, 0, ix, ip, 1, 1, JJ)
                 c(ia, :, ix, ip, :, :, JJ) = c_t(0, ia, 0, ix, ip, 1, 1, JJ)
                 l(ia, :, ix, ip, :, :, JJ) = l_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                penb(ia, :, ix, ip, :, :, JJ) = penb_t(0, ia, 0, ix, ip, 1, 1, JJ)
-                penc(ia, :, ix, ip, :, :, JJ) = penc_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                inctax(ia, :, ix, ip, :, :, JJ) = inctax_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                penben(ia, :, ix, ip, :, :, JJ) = penben_t(0, ia, 0, ix, ip, 1, 1, JJ)
+                pencon(ia, :, ix, ip, :, :, JJ) = pencon_t(0, ia, 0, ix, ip, 1, 1, JJ)
                 V(ia, :, ix, ip, :, :, JJ) = V_t(0, ia, 0, ix, ip, 1, 1, JJ)
 
               enddo
@@ -313,8 +314,9 @@ contains
                  k_plus(ia, :, ix, ip, :, :, ij) = k_plus_t(0, ia, 0, ix, ip, 1, 1, ij)
                  c(ia, :, ix, ip, :, :, ij) = c_t(0, ia, 0, ix, ip, 1, 1, ij)
                  l(ia, :, ix, ip, :, :, ij) = l_t(0, ia, 0, ix, ip, 1, 1, ij)
-                 penb(ia, :, ix, ip, :, :, ij) = penb_t(0, ia, 0, ix, ip, 1, 1, ij)
-                 penc(ia, :, ix, ip, :, :, ij) = penc_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 inctax(ia, :, ix, ip, :, :, ij) = inctax_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 penben(ia, :, ix, ip, :, :, ij) = penben_t(0, ia, 0, ix, ip, 1, 1, ij)
+                 pencon(ia, :, ix, ip, :, :, ij) = pencon_t(0, ia, 0, ix, ip, 1, 1, ij)
                  V(ia, :, ix, ip, :, :, ij) = V_t(0, ia, 0, ix, ip, 1, 1, ij)
 
                enddo
@@ -376,8 +378,9 @@ contains
                            k_plus(ia, ik, ix, ip, iw, ie, ij) = k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij)
                            c(ia, ik, ix, ip, iw, ie, ij) = c_t(io_p, ia, ik, ix, ip, iw, ie, ij)
                            l(ia, ik, ix, ip, iw, ie, ij) = l_t(io_p, ia, ik, ix, ip, iw, ie, ij)
-                           penb(ia, ik, ix, ip, iw, ie, ij) = penb_t(io_p, ia, ik, ix, ip, iw, ie, ij)
-                           penc(ia, ik, ix, ip, iw, ie, ij) = penc_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           inctax(ia, ik, ix, ip, iw, ie, ij) = inctax_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           penben(ia, ik, ix, ip, iw, ie, ij) = penben_t(io_p, ia, ik, ix, ip, iw, ie, ij)
+                           pencon(ia, ik, ix, ip, iw, ie, ij) = pencon_t(io_p, ia, ik, ix, ip, iw, ie, ij)
                            V(ia, ik, ix, ip, iw, ie, ij) = V_t(io_p, ia, ik, ix, ip, iw, ie, ij)
 
 
@@ -581,7 +584,7 @@ contains
         BQ_old = BQ
 
         ! calculate cohort averages
-        c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penb_coh = 0d0; penc_coh = 0d0
+        c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penben_coh = 0d0; pencon_coh = 0d0
 
         ! reset macroeconomic aggregates in each iteration step
         AA = 0d0; AX = 0d0; BQ = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0; PBEN = 0d0; PCON = 0d0
@@ -621,11 +624,12 @@ contains
                         BQ = BQ + (a_plus(ia, ik, ix, ip, iw, ie, ij)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, ij))*(1d0-psi(ij+1))*m(ia, ik, ix, ip, iw, ie, ij)
                         KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, ij)
                         TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, ij))*m(ia, ik,ix, ip, iw, ie, ij)
-                        PBEN = PBEN + penb(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
-                        PCON = PCON + penc(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                        TAw = TAw + inctax(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik,ix, ip, iw, ie, ij)
+                        PBEN = PBEN + penben(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                        PCON = PCON + pencon(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
 
-                        penb_coh(ij) = penb_coh(ij) + penb(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
-                        penc_coh(ij) = penc_coh(ij) + penc(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                        penben_coh(ij) = penben_coh(ij) + penben(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
+                        pencon_coh(ij) = pencon_coh(ij) + pencon(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
 
                         if(ik == 0) then
                           LC = LC + eff(ij)*eta(iw)*l(ia, ik, ix, ip, iw, ie, ij)*m(ia, ik, ix, ip, iw, ie, ij)
@@ -661,8 +665,8 @@ contains
             y_coh(1, ij) = y_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
             l_coh(0, ij) = l_coh(0, ij)/max(sum(m(:, 0, :, :, :, :, ij)), 1d-13)
             l_coh(1, ij) = l_coh(1, ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
-            penb_coh(ij) = penb_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
-            penc_coh(ij) = penc_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
+            penben_coh(ij) = penben_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
+            pencon_coh(ij) = pencon_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
             o_coh(ij) = o_coh(ij)/max(sum(m(:, :, :, :, :, :, ij)), 1d-13)
             k_coh(ij) = k_coh(ij)/max(sum(m(:, 1:NK, :, :, :, :, ij)), 1d-13)
 
@@ -708,7 +712,7 @@ contains
 
         expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
 
-        tauc = (expend-TAy)/CC
+        tauc = (expend-TAy-TAw)/CC
 
         taup_old = taup
 
