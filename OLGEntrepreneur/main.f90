@@ -168,7 +168,7 @@ contains
         LC = 2.10d0
         bqs(:) = (/0.019d0, 0.124d0, 0.322d0/)
         BQ = 0.20d0
-        BB = 0d0
+        BB = 1.00d0
         ybar = 0.4d0
 
         ! initialize value functions
