@@ -509,7 +509,7 @@ module globals
         ind_o = abs(dble(ik_com > 0))
 
         ! calculate current income
-        income = (1d0-ind_o)*w*eff(is_com, ij_com)*eta(is_com, iw_com)*lab_com + &
+        income = (1d0-ind_o)*w*eff(is_com, ij_com)*eta(iw_com, is_com)*lab_com + &
                  ind_o*theta(ie_com, is_com)*(k(ik_com)**alpha*(eff(is_com, ij_com)*lab_com)**(1d0-alpha))**nu
 
         ! calculate income tax
