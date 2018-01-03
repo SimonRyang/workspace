@@ -717,7 +717,7 @@ contains
         !write(*,*)'sum:', sum(Q_tmp(:) - (1d0+r)*KC_tmp(:) - (1d0-delta_k)*KE_tmp(:) - Y_tmp(:) - BQ_tmp(:) - PEN_tmp(:) + TAUP_tmp(:) + C_tmp(:))
 
         ! get average income
-        ybar = w*LC/workpop
+        ybar = w*LC/sum(m(:, :, :, :, :, :, :, 1:JR-1))
 
         ! compute stock of capital
         KC = damp*(AA+AX-BB) +(1d0-damp)*KC
