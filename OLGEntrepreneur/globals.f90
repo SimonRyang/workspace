@@ -53,7 +53,7 @@ module globals
     real*8, parameter :: xi = 1d0/3d0
 
     ! production parameters
-    real*8, parameter :: Omega = 1d0
+    real*8, parameter :: Omega = 1.6d0
     real*8, parameter :: k_min = 0.2d0
     real*8, parameter :: phi_k = 0.25d0
     real*8, parameter :: alpha = 0.36d0
