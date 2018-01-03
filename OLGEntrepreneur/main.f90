@@ -183,7 +183,7 @@ contains
     LC = 3.60412541130205d0
     bqs(:) = (/4.610598301031485d-2, 0.180604852513253d0, 0.106915885588813d0/)
     BB = 2.96488156582217d0
-    ybar = 0.4d0
+    ybar = 0.555719716619606d0
 
     ! initialize value functions
     V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
