@@ -36,7 +36,7 @@ module globals
 
     ! macroeconomic parameters
     real*8, parameter :: gy = 0.19d0
-    real*8, parameter :: by = 0.80d0
+    real*8, parameter :: by = 0.60d0
 
     ! household preference parameters
     real*8, parameter :: gamma = 0.5d0
@@ -103,6 +103,10 @@ module globals
     ! government variables
     real*8 :: lambda, phi, mu
     real*8 :: tauc, tauy, taup
+
+    ! progressive income tax
+    real*8, parameter :: t1 = 0.14d0, t2 = 0.24d0, t3 = 0.45d0
+    real*8 :: r1, r2, r3, b1, b2
 
     ! macroeconomic variables
     real*8 :: r, w
@@ -623,6 +627,42 @@ module globals
           tr = phi_k*(k_p - k)
 
        endif
+
+    end function
+
+    !##############################################################################
+    ! FUNCTION tarif
+    !
+    ! Calculates income tax
+    !##############################################################################
+    function tarif(zn)
+
+      implicit none
+
+      !##### INPUT/OUTPUT VARIABLES #############################################
+      real*8, intent(in) :: zn
+      real*8 :: tarif
+
+      !##### OTHER VARIABLES ####################################################
+      real*8 :: tr2, tr3, znr
+
+      ! determine parameters of tarif
+      tr2 =     (r2-r1)*t1 + (r2-r1)**2d0*b1*0.5d0
+      tr3 = tr2 + (r3-r2)*t2 + (r3-r2)**2d0*b2*0.5d0
+
+      ! apply german income tax tarif
+      if (zn <= r1) then
+        tarif= 0.0d0
+      elseif (zn <= r2) then
+        znr = zn - r1
+        tarif = znr*t1 + znr**2d0*b1*0.5d0
+      elseif (zn <= r3) then
+        znr = zn - r2
+        tarif = tr2 + znr*t2 + znr**2d0*b2*0.5d0
+      else
+        znr = zn - r3
+        tarif = tr3 + znr*t3
+      endif
 
     end function
 
