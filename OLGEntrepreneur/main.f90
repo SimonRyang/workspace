@@ -620,7 +620,7 @@ contains
         LC_old = LC
 
         ! calculate cohort averages
-        c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penben_coh = 0d0; pencon_coh = 0d0
+        ! c_coh = 0d0; y_coh = 0d0; l_coh = 0d0; o_coh = 0d0; a_coh = 0d0; x_coh = 0d0; k_coh = 0d0; penben_coh = 0d0; pencon_coh = 0d0
 
         ! reset macroeconomic aggregates in each iteration step
         AA = 0d0; AX = 0d0; BQ = 0d0; bqs(:) = 0d0; CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0; PBEN = 0d0; PCON = 0d0
