@@ -36,6 +36,7 @@ module globals
 
     ! demographic parameters
     real*8, parameter :: n_p = (1d0+0.025d0)**5-1d0
+    real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/)
 
     ! macroeconomic parameters
     real*8, parameter :: gy = 0.19d0
@@ -101,7 +102,7 @@ module globals
     real*8 :: dist_eta(NW, NS), pi_eta(NW, NW, NS), eta(NW, NS), dist_theta(NE, NS), pi_theta(NE, NE, NS), theta(NE, NS)
 
     ! demographic and other model parameters
-    real*8 :: dist_skill(NS), eff(NS, JJ), pen(0:NP, JJ), ann(0:NX, NS, JJ), psi(NS, JJ+1), rpop(NS, JJ), bqs(NS), beq(NS, JJ), Gama(JJ)
+    real*8 :: eff(NS, JJ), pen(0:NP, JJ), ann(0:NX, NS, JJ), psi(NS, JJ+1), rpop(NS, JJ), bqs(NS), beq(NS, JJ), Gama(JJ)
 
     ! government variables
     real*8 :: lambda, phi, mu
