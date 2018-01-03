@@ -28,8 +28,9 @@ program main
   ! stop the clock
   call tock(time)
 
-  write(*,*)KC, LC, BB
-  write(*,*)bqs
+  write(*,*) KC, LC, BB
+  write(*,*) ybar
+  write(*,*) bqs
 
   ! write output
   call output()
@@ -178,11 +179,10 @@ contains
     taup = 0.164d0
 
     ! initial guesses for macro variables
-    KC = 1.10d0
-    LC = 2.10d0
-    bqs(:) = (/0.019d0, 0.124d0, 0.322d0/)
-    BQ = 0.20d0
-    BB = 1.00d0
+    KC = 3.40095092115318d0
+    LC = 3.60412541130205d0
+    bqs(:) = (/4.610598301031485d-2, 0.180604852513253d0, 0.106915885588813d0/)
+    BB = 2.96488156582217d0
     ybar = 0.4d0
 
     ! initialize value functions
