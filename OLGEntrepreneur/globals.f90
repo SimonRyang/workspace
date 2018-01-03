@@ -346,7 +346,7 @@ module globals
       k_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = k_p
       x_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = x_p
       p_plus_t(io_p, ia, ik, ix, ip, iw, ie, ij) = p_plus_com
-      inxtax_t(io_p, ia, ik, ix, ip, iw, ie, ij) = inctax_com
+      inctax_t(io_p, ia, ik, ix, ip, iw, ie, ij) = inctax_com
       penben_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pen(ip, ij)
       pencon_t(io_p, ia, ik, ix, ip, iw, ie, ij) = pencon_com
       c_t(io_p, ia, ik, ix, ip, iw, ie, ij) =  (aas_com - x_in(1))*pinv
