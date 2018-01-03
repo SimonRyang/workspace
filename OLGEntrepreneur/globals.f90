@@ -29,13 +29,13 @@ module globals
   integer, parameter :: NK = 0
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 0
+  integer, parameter :: NX = 16
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
 
   ! demographic parameters
-  real*8, parameter :: n_p = (1d0+0.025d0)**5-1d0
+  real*8, parameter :: n_p = (1d0+0.007d0)**5-1d0
   real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/)
 
   ! macroeconomic parameters
@@ -88,7 +88,7 @@ module globals
   real*8, parameter :: p_u    = 2d0
 
   ! pension fraction of average income
-  real*8, parameter :: kappa = 0.45d0
+  real*8, parameter :: kappa = 0.55d0
 
   ! numerical parameters
   integer, parameter :: itermax = 200
