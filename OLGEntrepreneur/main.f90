@@ -132,7 +132,9 @@ contains
         theta(:, 1) = (/0d0, 0.95d0/)
         theta(:, 2) = (/0d0, 0.95d0/)
         theta(:, 3) = (/0d0, 0.95d0/)
-        dist_theta(:) = (/0d0, 1d0/)
+        dist_theta(:, 1) = (/0d0, 1d0/)
+        dist_theta(:, 2) = (/0d0, 1d0/)
+        dist_theta(:, 3) = (/0d0, 1d0/)
         pi_theta(1, 1, :) = 1d0
         pi_theta(1, 2, :) = 0d0
         pi_theta(2, 1, :) = 0.2d0
