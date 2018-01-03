@@ -11,7 +11,7 @@ module globals
     integer, parameter :: JJ = 16
 
     ! number of productivity (eta) shocks
-    integer, parameter :: NW = 2
+    integer, parameter :: NW = 3
 
     ! number of entrepreneurial ability (theta) shocks
     integer, parameter :: NE = 2
