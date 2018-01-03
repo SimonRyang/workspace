@@ -26,7 +26,7 @@ module globals
     integer, parameter :: NK = 12
 
     ! number of points on the annuity asset grid
-    integer, parameter :: NX = 12
+    integer, parameter :: NX = 0
 
     ! number of points on the pension claim grid
     integer, parameter :: NP = 4
@@ -506,6 +506,8 @@ module globals
 
         ! pension contribution
         penc_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
+
+        ! calculate income tax
 
         ! available assets
         aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + b(ij_com) &
