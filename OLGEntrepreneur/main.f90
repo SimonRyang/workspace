@@ -216,7 +216,7 @@ contains
         enddo
 
         do ij = 1, JR
-          ans(:, ij) = x(:)*dble(JR)
+          ans(:, ij) = x(:)*dble(ij)
         enddo
         do ij = JR+1, JJ
           ans(:, ij) = (1d0+r)/psi(ij-1)*ans(:, ij-1)-ann(:, ij-1)
