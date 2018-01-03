@@ -97,7 +97,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES #####################################################
-    integer :: ip, ij
+    integer :: io_p, iq_p, ik, ix, ip_p, iw, ie, is, ij
 
     ! set survival probabilities
     open(301, file='sp.dat')
@@ -175,6 +175,30 @@ contains
     ! initialize pension claim grid
     call grid_Cons_Equi(p, p_l, p_u)
 
+    ! get initial guess for household decisions
+    do ij = 1, JJ
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ia = 0, NA
+                  do io_p = 0, 1
+
+                    Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = Q(iq)/2d0
+                    l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = 0.33d0
+                    omega_x_t(io_p, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0.05d0
+                    omega_k_t(io_p, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0.05d0
+
+                  enddo ! io_p
+                enddo ! ia
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
+    enddo ! ij
+
     ! initialize tax rates
     tauc = 0.190d0
     tauy = 0.150d0
@@ -198,8 +222,7 @@ contains
     Q_plus = 0d0; a_plus = 0d0; x_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
 
     ! initialize temporary policy and value functions
-    Q_plus_t = 0d0; a_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0
-    omega_x_t = 0d0; omega_k_t = 0d0
+    a_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0
     V_t = 0d0
 
     ! open files
