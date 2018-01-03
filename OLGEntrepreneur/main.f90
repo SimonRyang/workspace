@@ -181,6 +181,9 @@ contains
     taur = 0.250d0
     taup = 0.164d0
 
+    tauc = 0.128579256047982d0
+    taup = 7.867802841513299d-2
+
     ! initial guesses for macro variables
     KC = 3.40095092115318d0
     LC = 3.60412541130205d0
@@ -222,12 +225,12 @@ contains
       w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
       ! set prices in case of life-cycle model
-      r = 0.393280506035032d0
-      w = 0.877841532937879d0
-      bqs = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
-      ybar = 0.555719715351030d0
-      tauc = 0.128579256047982d0
-      taup = 7.867802841513299d-2
+      ! r = 0.393280506035032d0
+      ! w = 0.877841532937879d0
+      ! bqs = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
+      ! ybar = 0.555719715351030d0
+      ! tauc = 0.128579256047982d0
+      ! taup = 7.867802841513299d-2
 
       ! calculate gross price of consumption (inverse)
       pinv = 1d0/(1d0+tauc)
