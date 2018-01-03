@@ -101,7 +101,7 @@ module globals
     real*8 :: dist_eta(NW, NS), pi_eta(NW, NW, NS), eta(NW, NS), dist_theta(NE, NS), pi_theta(NE, NE, NS), theta(NE, NS)
 
     ! demographic and other model parameters
-    real*8 :: dist_skill(:), eff(NS, JJ), pen(0:NP, JJ), ann(0:NX, NS, JJ), psi(NS, JJ+1), rpop(NS, JJ), bqs(NS), beq(NS, JJ)
+    real*8 :: dist_skill(NS), eff(NS, JJ), pen(0:NP, JJ), ann(0:NX, NS, JJ), psi(NS, JJ+1), rpop(NS, JJ), bqs(NS), beq(NS, JJ)
 
     ! government variables
     real*8 :: lambda, phi, mu
@@ -144,8 +144,8 @@ module globals
     real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
     ! variables to store the portfolio choice decisions
-    real*8 :: omega_x_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, JJ), omega_k_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
-    real*8 :: S(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, JJ)
+    real*8 :: omega_x_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), omega_k_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+    real*8 :: S(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
     ! variables to store the value functions
     real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
