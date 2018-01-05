@@ -238,9 +238,9 @@ contains
       beq(3, :) = Gama(:)*bqs(3)/rpop(3, :)
 
       ! determine the income tax system
-      r1 = 0.286d0*ybar*2d0
-      r2 = 0.456d0*ybar*2d0
-      r3 = 1.786d0*ybar*2d0
+      r1 = 0.278d0*ybar*2d0 !  8,354.00 Euro
+      r2 = 0.449d0*ybar*2d0 ! 13,469.00 Euro
+      r3 = 1.763d0*ybar*2d0 ! 52,881.00 Euro
 
       ! calculate annuity payments
       ann = 0d0
@@ -693,7 +693,7 @@ contains
                     if(ik == 0) then
                       LC = LC + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                     else
-                       YE = YE + theta(ie, is)*(k(ik)**alpha*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**(1d0-alpha))**nu*m(ia, ik, ix, ip, iw, ie, is, ij)
+                       YE = YE + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij)
                     endif
 
                   enddo ! ia
@@ -828,8 +828,6 @@ contains
         write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r)**0.2d0-1d0)*100d0
         write(*,'(a, f10.4)')    '- bequests (%):        ', BQ/YY*100d0
         write(*,*)
-
-        write(*,*)sum(dist_skill*(/6.45d0, 7.88d0, 16.04d0/))
 
         ! write(*,'(a, f10.4)')'KK:', KK
         ! write(*,'(a, f10.4)')'AA:', AA

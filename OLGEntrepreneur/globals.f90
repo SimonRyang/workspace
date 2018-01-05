@@ -54,18 +54,19 @@ module globals
   real*8, parameter :: mu_b  = 0.005d0
 
   ! maximum investment in annuities
-  real*8, parameter :: mx_max = 0.10d0
+  real*8, parameter :: mx_max = 0.07d0 ! 2,100.00 Euro
 
   ! capital parameters
   real*8, parameter :: delta_k = 1d0 - (1d0-0.06d0)**5d0 !
-  real*8, parameter :: xi      = 1d0/3d0
+  real*8, parameter :: xi      = 1d0/3d0 !
 
   ! production parameters
   real*8, parameter :: Omega = 1.0d0
   real*8, parameter :: k_min = 0.2d0
   real*8, parameter :: phi_k = 0.25d0
   real*8, parameter :: alpha = 0.36d0 !
-  real*8, parameter :: nu    = 0.88d0
+  real*8, parameter :: nu1   = 0.41d0
+  real*8, parameter :: nu2   = 0.68d0
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
@@ -118,7 +119,7 @@ module globals
   ! progressive income tax
   real*8, parameter :: t1 = 0.14d0, t2 = 0.24d0, t3 = 0.45d0
   real*8 :: r1, r2, r3
-  
+
   ! macroeconomic variables
   real*8 :: r, w
   real*8 :: ybar, pinv
@@ -573,7 +574,7 @@ contains
 
     ! calculate current income
     income = (1d0-ind_o)*w*eff(is_com, ij_com)*eta(iw_com, is_com)*lab_com + &
-             ind_o*theta(ie_com, is_com)*(k(ik_com)**alpha*(eff(is_com, ij_com)*lab_com)**(1d0-alpha))**nu
+             ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*lab_com)**nu2
 
     ! calculate income tax
     inctax_com = tarif(income)
