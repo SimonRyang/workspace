@@ -153,9 +153,9 @@ contains
     pi_theta(2, 1, 1) = 0.005d0
     pi_theta(2, 2, 1) = 1d0-pi_theta(2, 1, 1)
     pi_theta(2, 1, 2) = 0.012d0
-    pi_theta(2, 2, 2) = 1d0-pi_theta(2, 2, 2)
+    pi_theta(2, 2, 2) = 1d0-pi_theta(2, 1, 2)
     pi_theta(2, 1, 3) = 0.017d0
-    pi_theta(2, 2, 3) = 1d0-pi_theta(2, 2, 3)
+    pi_theta(2, 2, 3) = 1d0-pi_theta(2, 1, 3)
     ! initialize asset grid
     call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
 

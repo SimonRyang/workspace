@@ -62,7 +62,7 @@ module globals
 
   ! production parameters
   real*8, parameter :: Omega = 1.0d0
-  real*8, parameter :: k_min = 0.2d0
+  real*8, parameter :: k_min = 0.1d0
   real*8, parameter :: phi_k = 0.25d0
   real*8, parameter :: alpha = 0.36d0 !
   real*8, parameter :: nu1   = 0.41d0
