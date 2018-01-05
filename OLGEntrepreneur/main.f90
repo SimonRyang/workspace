@@ -809,8 +809,10 @@ contains
 
         write(*,'(/, a, /)')     '******* CALIBRATION *******'
         write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
-        write(*,'(a, f10.4)')    '- life_exp(avg):       ', sum(life_exp*dist_skill)
+        write(*,'(a, f10.4)')    '  + (total):           ', sum(life_exp*dist_skill)
         write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
+        write(*,'(a, f10.4)')    '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1))/sum(m(:, :, :, :, :, :, 1, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1))/sum(m(:, :, :, :, :, :, 2, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1))/sum(m(:, :, :, :, :, :, 3, 1:JR-1))*100d0
+        write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
         write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1)*m(:, :, :, :, :, :, :, 1:JR-1))/sum(m(:, :, :, :, :, :, :, 1:JR-1))
         write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1)*m(:, 0, :, :, :, :, :, 1:JR-1))/sum(m(:, 0, :, :, :, :, :, 1:JR-1))
         write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1)*m(:, 1:NK, :, :, :, :, :, 1:JR-1))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1)), 1d-4)
@@ -830,7 +832,7 @@ contains
         write(*,'(a, f10.4)')    '- bequests (%):        ', BQ/YY*100d0
         write(*,*)
 
-        write(*,*)sum(dist_skill*(/6.45d0, 7.75d0, 13.69d0/))
+        write(*,*)sum(dist_skill*(/6.45d0, 7.88d0, 16.04d0/))
 
         ! write(*,'(a, f10.4)')'KK:', KK
         ! write(*,'(a, f10.4)')'AA:', AA
