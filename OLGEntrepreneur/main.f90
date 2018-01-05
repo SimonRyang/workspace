@@ -819,10 +819,10 @@ contains
         write(*,'(a, f10.4)')    '- pen. ben. (%):     ', PBEN/YY*100d0
         write(*,'(a, f10.4)')    '- pen. con. rate (%):', taup*100d0
         write(*,'(a, f10.4)')    '- tax rev. (%):      ', (TAc+TAw+TAr+TAc)/YY*100d0
-        write(*,'(a, f10.4)')    '  + cons. tax (%):   ', TAc*(TAc+TAw+TAr+TAc)*100d0
-        write(*,'(a, f10.4)')    '  + inc. tax (%):    ', TAw*(TAc+TAw+TAr+TAc)*100d0
-        write(*,'(a, f10.4)')    '  + cap. tax (%):    ', TAr*(TAc+TAw+TAr+TAc)*100d0
-        write(*,'(a, f10.4)')    '  + corp. tax (%):   ', TAy*(TAc+TAw+TAr+TAc)*100d0
+        write(*,'(a, f10.4)')    '  + cons. tax (%):   ', TAc/(TAc+TAw+TAr+TAc)*100d0
+        write(*,'(a, f10.4)')    '  + inc. tax (%):    ', TAw/(TAc+TAw+TAr+TAc)*100d0
+        write(*,'(a, f10.4)')    '  + cap. tax (%):    ', TAr/(TAc+TAw+TAr+TAc)*100d0
+        write(*,'(a, f10.4)')    '  + corp. tax (%):   ', TAy/(TAc+TAw+TAr+TAc)*100d0
         write(*,'(a, f10.4)')    '- cap.-output ratio  ', KK/YY*100d0
 
     end subroutine
