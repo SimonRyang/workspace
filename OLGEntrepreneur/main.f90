@@ -158,9 +158,9 @@ contains
     pi_theta(2, 2, 3) = 1d0-pi_theta(2, 1, 3)
 
     write(*,*)sum(pi_theta, 1)
-    write(*,*'***************'
+    write(*,*)'***************'
     write(*,*)sum(pi_theta, 2)
-    write(*,*'***************'
+    write(*,*)'***************'
     write(*,*)sum(pi_theta, 3)
 
     ! initialize asset grid
