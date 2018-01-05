@@ -157,11 +157,11 @@ contains
     pi_theta(2, 1, 3) = 0.017d0
     pi_theta(2, 2, 3) = 1d0-pi_theta(2, 1, 3)
 
-    write(*,*)sum(pi_theta, 1)
+    write(*,*)dist_theta
+        write(*,*)'***************'
+    write(*,*)reshape(pi_theta, (/3, 4/), (/3, 1, 2/))
     write(*,*)'***************'
-    write(*,*)sum(pi_theta, 2)
-    write(*,*)'***************'
-    write(*,*)sum(pi_theta, 3)
+    write(*,*)sum(pi_theta*dist_skill(:))
 
     ! initialize asset grid
     call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
