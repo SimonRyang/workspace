@@ -811,7 +811,9 @@ contains
         write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
         write(*,'(a, f10.4)')    '- life_exp(avg):       ', sum(life_exp*dist_skill)
         write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
-        write(*,'(a, f10.4, /)') '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1)*m(:, :, :, :, :, :, :, 1:JR-1))
+        write(*,'(a, f10.4, /)') '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1)*m(:, :, :, :, :, :, :, 1:JR-1))/sum(m(:, :, :, :, :, :, :, 1:JR-1))
+        write(*,'(a, f10.4, /)') '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1)*m(:, 0, :, :, :, :, :, 1:JR-1))/sum(m(:, 0, :, :, :, :, :, 1:JR-1))
+        write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1)*m(:, 1:NK:, :, :, :, :, :, 1:JR-1))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1))
         write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN/YY*100d0
         write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
         write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc+TAw+TAr+TAy)/YY*100d0
