@@ -28,13 +28,10 @@ program main
   ! stop the clock
   call tock(time)
 
-  write(*,*) KC, LC, BB
-  write(*,*) r, w, ybar
-  write(*,*) bqs
-  write(*,*) tauc, taup
-
   ! write output
   call output()
+
+  phi = 1d0
 
   call get_SteadyState()
 
@@ -778,6 +775,8 @@ contains
 
         implicit none
 
+        real*8 :: life_exp(NS), punb(NS, JJ)
+
         ! integer :: ij, ages(JJ)
         ! ! set up age variable
         ! ages = 20 + 5*(/(ij-1, ij=1,JJ)/)
@@ -802,6 +801,20 @@ contains
         ! call plot(dble(ages), y_coh(0, :), legend='Labor Income - Worker')
         ! call plot(dble(ages), l_coh(0, :), legend='Labor        - Worker')
         ! call execplot(xlabel='Age j', ylabel='Consumption/Assets')
+
+        life_exp = 0d0
+        do is = 1, NS
+          punb(is, 1) = psi(is, 1)
+          life_exp(is) = life_exp(is) + 22d0*punb(is, 1)*(1d0-psi(is, 2))
+          do ij = 2, JJ
+            punb(is, ij) = punb(is, ij-1)*psi(is, ij)
+            life_exp(is) = life_exp(is) + (22d0 + 5d0*dble(ij-1))*punb(is, ij)*(1d0-psi(is, ij+1))
+          enddo ! ij
+        enddo ! is
+
+
+        write(*,('a, 3f8.4'))'life_exp:    ', life_exp
+        write(*,('a, f8.4'))'life_exp(avg):', life_exp*dist_skill
 
     end subroutine
 
