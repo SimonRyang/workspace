@@ -178,7 +178,7 @@ contains
     ! get initial guess for household decisions
     omega_x_t = 0.05d0
     omega_k_t = 0.05d0
-    l_t = 0.22d0
+    l_t = 0.33d0
     do ia = 0, NA
       Q_plus_t(:, ia, :, :, :, :, :, :, :) = a(ia)/2d0
     enddo ! ia
@@ -189,15 +189,15 @@ contains
     taur = 0.250d0
     taup = 0.164d0
 
-    tauc = 0.128579256047982d0
-    taup = 7.867802841513299d-2
+    tauc = 0.128d0
+    taup = 7.867d-2
 
     ! initial guesses for macro variables
-    KC = 3.40095092115318d0
-    LC = 3.60412541130205d0
-    bqs(:) = (/4.610598301031485d-2, 0.180604852513253d0, 0.106915885588813d0/)
-    BB = 2.96488156582217d0
-    ybar = 0.555719716619606d0
+    KC = 3.400d0
+    LC = 3.604d0
+    bqs(:) = (/4.610d-2, 0.180d0, 0.106d0/)
+    BB = 2.964d0
+    ybar = 0.555d0
 
     ! initialize value functions
     V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
