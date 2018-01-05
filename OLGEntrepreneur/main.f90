@@ -142,9 +142,9 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability process
-    theta(:, 1) = (/0d0, 0.75d0/)
+    theta(:, 1) = (/0d0, 0.82d0/)
     theta(:, 2) = (/0d0, 0.85d0/)
-    theta(:, 3) = (/0d0, 1.05d0/)
+    theta(:, 3) = (/0d0, 0.98d0/)
     dist_theta(:, 1) = (/0d0, 1d0/)
     dist_theta(:, 2) = (/0d0, 1d0/)
     dist_theta(:, 3) = (/0d0, 1d0/)
@@ -156,6 +156,12 @@ contains
     pi_theta(2, 2, 2) = 1d0-pi_theta(2, 1, 2)
     pi_theta(2, 1, 3) = 0.017d0
     pi_theta(2, 2, 3) = 1d0-pi_theta(2, 1, 3)
+
+    write(*,*)sum(pi_theta, 1)
+    write(*,*'***************'
+    write(*,*)sum(pi_theta, 2)
+    write(*,*'***************'
+    write(*,*)sum(pi_theta, 3)
 
     ! initialize asset grid
     call grid_Cons_Grow(Q, Q_l, Q_u, Q_grow)
