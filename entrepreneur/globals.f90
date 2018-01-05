@@ -58,7 +58,7 @@ module globals
   real*8:: gy, by
   real*8 :: r(0:TT), w(0:TT), inc_tax(0:TT), inc_pen(0:TT), psix(NS, JJ, 0:TT), pinv(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), AA(0:TT), AX(0:TT), XB(0:TT), LC(0:TT), HH(0:TT)
-  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), CCCX(0:TT), SC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
+  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), CCX(0:TT), SC(0:TT), II(0:TT), GG(0:TT), NEX(0:TT)
   real*8 :: BB(0:TT), BF(0:TT), BQ(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAy(0:TT)
 
