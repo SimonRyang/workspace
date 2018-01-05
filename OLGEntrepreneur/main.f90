@@ -808,22 +808,23 @@ contains
         enddo ! is
 
         write(*,'(/, a, /)')     '******* CALIBRATION *******'
-        write(*,'(a, 3f10.4)')   '- life_exp:          ', life_exp
-        write(*,'(a, f10.4)')    '- life_exp(avg):     ', sum(life_exp*dist_skill)
-        write(*,'(a, f10.4, /)') '- dep. ratio:        ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
-        write(*,'(a, f10.4)')    '- pen. ben. (%):     ', PBEN/YY*100d0
-        write(*,'(a, f10.4)')    '- pen. con. rate (%):', taup*100d0
-        write(*,'(a, f10.4)')    '- tax rev. (%):      ', (TAc+TAw+TAr+TAy)/YY*100d0
-        write(*,'(a, f10.4)')    '  + cons. tax (%):   ', TAc/(TAc+TAw+TAr+TAy)*100d0
-        write(*,'(a, f10.4)')    '  + inc. tax (%):    ', TAw/(TAc+TAw+TAr+TAy)*100d0
-        write(*,'(a, f10.4)')    '  + cap. tax (%):    ', TAr/(TAc+TAw+TAr+TAy)*100d0
-        write(*,'(a, f10.4)')    '  + corp. tax (%):   ', TAy/(TAc+TAw+TAr+TAy)*100d0
-        write(*,'(a, f10.4)')    '- cons. tax rate (%):', tauc*100d0
-        write(*,'(a, f10.4)')    '- cap.-output ratio: ', 5*KK/YY
-        write(*,'(a, f10.4)')    '  + corp. sector:    ', 5*KC/YC
-        write(*,'(a, f10.4, /)') '  + non-corp. sector:', 5*KE/max(YE, 1d-4)
-        write(*,'(a, f10.4)')    '- int. rate p.a. (%):', ((1d0+r)**0.2d0-1d0)*100d0
-        write(*,'(a, f10.4)')    '- bequests (%):      ', BQ/YY*100d0
+        write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
+        write(*,'(a, f10.4)')    '- life_exp(avg):       ', sum(life_exp*dist_skill)
+        write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
+        write(*,'(a, f10.4, /)') '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1)*m(:, :, :, :, :, :, :, 1:JR-1))
+        write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN/YY*100d0
+        write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
+        write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc+TAw+TAr+TAy)/YY*100d0
+        write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc/(TAc+TAw+TAr+TAy)*100d0
+        write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw/(TAc+TAw+TAr+TAy)*100d0
+        write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr/(TAc+TAw+TAr+TAy)*100d0
+        write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAy/(TAc+TAw+TAr+TAy)*100d0
+        write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc*100d0
+        write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5*KK/YY
+        write(*,'(a, f10.4)')    '  + corp. sector:      ', 5*KC/YC
+        write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5*KE/max(YE, 1d-4)
+        write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r)**0.2d0-1d0)*100d0
+        write(*,'(a, f10.4)')    '- bequests (%):        ', BQ/YY*100d0
         write(*,*)
 
     end subroutine
