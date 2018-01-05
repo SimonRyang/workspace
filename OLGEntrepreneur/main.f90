@@ -242,9 +242,6 @@ contains
       r2 = 0.456d0*ybar*2d0
       r3 = 1.786d0*ybar*2d0
 
-      b1 = (t2-t1)/(r2-r1)
-      b2 = (t3-t2)/(r3-r2)
-
       ! calculate annuity payments
       ann = 0d0
       ans = 0d0
@@ -811,7 +808,7 @@ contains
         write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
         write(*,'(a, f10.4)')    '  + (total):           ', sum(life_exp*dist_skill)
         write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
-        write(*,'(a, f10.4)')    '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1))/sum(m(:, :, :, :, :, :, 1, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1))/sum(m(:, :, :, :, :, :, 2, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1))/sum(m(:, :, :, :, :, :, 3, 1:JR-1))*100d0
+        write(*,'(a, 3f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1))/sum(m(:, :, :, :, :, :, 1, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1))/sum(m(:, :, :, :, :, :, 2, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1))/sum(m(:, :, :, :, :, :, 3, 1:JR-1))*100d0
         write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
         write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1)*m(:, :, :, :, :, :, :, 1:JR-1))/sum(m(:, :, :, :, :, :, :, 1:JR-1))
         write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1)*m(:, 0, :, :, :, :, :, 1:JR-1))/sum(m(:, 0, :, :, :, :, :, 1:JR-1))

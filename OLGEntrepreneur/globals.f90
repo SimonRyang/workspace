@@ -117,8 +117,8 @@ module globals
 
   ! progressive income tax
   real*8, parameter :: t1 = 0.14d0, t2 = 0.24d0, t3 = 0.45d0
-  real*8 :: r1, r2, r3, b1, b2
-
+  real*8 :: r1, r2, r3
+  
   ! macroeconomic variables
   real*8 :: r, w
   real*8 :: ybar, pinv
@@ -737,9 +737,12 @@ contains
     real*8 :: tarif
 
     !##### OTHER VARIABLES ######################################################
-    real*8 :: tr2, tr3, znr
+    real*8 :: b1, b2, tr2, tr3, znr
 
     ! determine parameters of tarif
+    b1 = (t2-t1)/(r2-r1)
+    b2 = (t3-t2)/(r3-r2)
+
     tr2 =       (r2-r1)*t1 + (r2-r1)**2d0*b1*0.5d0
     tr3 = tr2 + (r3-r2)*t2 + (r3-r2)**2d0*b2*0.5d0
 
