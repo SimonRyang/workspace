@@ -142,8 +142,8 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability process
-    theta(:, 1) = (/0d0, 0.78d0/)
-    theta(:, 2) = (/0d0, 0.80d0/)
+    theta(:, 1) = (/0d0, 0.79d0/)
+    theta(:, 2) = (/0d0, 0.79d0/)
     theta(:, 3) = (/0d0, 0.98d0/)
     dist_theta(:, 1) = (/0d0, 1d0/)
     dist_theta(:, 2) = (/0d0, 1d0/)
