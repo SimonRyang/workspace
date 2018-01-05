@@ -57,7 +57,7 @@ module globals
   real*8, parameter :: mx_max = 0.10d0
 
   ! capital parameters
-  real*8, parameter :: delta_k = 0.06d0 !
+  real*8, parameter :: delta_k = 1d0 - (1d0-0.06d0)**5d0 !
   real*8, parameter :: xi      = 1d0/3d0
 
   ! production parameters
