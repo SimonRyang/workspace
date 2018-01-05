@@ -811,12 +811,12 @@ contains
           enddo ! ij
         enddo ! is
 
-        write(*,'(a)')'calibration targets:'
-        write(*,'(a, 3f8.4)')'- life_exp:     ', life_exp
-        write(*,'(a, f8.4)') '- life_exp(avg):', sum(life_exp*dist_skill)
-        write(*,'(a, f8.4)') '- dep. ratio:   ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))
-        write(*,*)
-        write(*,*)'test'
+        write(*,'(a), /')'calibration targets:'
+        write(*,'(a, 3f8.4)')   '- life_exp:          ', life_exp
+        write(*,'(a, f8.4)')    '- life_exp(avg):     ', sum(life_exp*dist_skill)
+        write(*,'(a, f8.4, /)') '- dep. ratio:        ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))
+        write(*,'(a, f8.4)')    '- pen. ben. (%):     ', PBEN/YY*100d0
+        write(*,'(a, f8.4)')    '- pen. con. rate (%):', taup*100d0
 
     end subroutine
 
