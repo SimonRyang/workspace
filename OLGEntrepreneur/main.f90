@@ -812,7 +812,7 @@ contains
           enddo ! ij
         enddo ! is
 
-        write(*,'(/, a, /)')     'CALIBRATION TARGETS:'
+        write(*,'(/, a, /)')     '******* CALIBRATION *******'
         write(*,'(a, 3f10.4)')   '- life_exp:          ', life_exp
         write(*,'(a, f10.4)')    '- life_exp(avg):     ', sum(life_exp*dist_skill)
         write(*,'(a, f10.4, /)') '- dep. ratio:        ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
