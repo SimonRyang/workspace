@@ -830,16 +830,16 @@ contains
         write(*,'(a, f10.4)')    '- bequests (%):        ', BQ/YY*100d0
         write(*,*)
 
-        write(*,'(a, f10.4)')'KK:', KK
-        write(*,'(a, f10.4)')'AA:', AA
-        write(*,'(a, f10.4)')'LC:', LC
-        write(*,'(a, f10.4)')'YY:', YY
-        write(*,'(a, f10.4)')'CC:', CC
-        write(*,'(a, f10.4)')'II:', II
-        write(*,'(a, f10.4)')'GG:', GG
-        write(*,'(a, f10.4)')'BB:', BB
-        write(*,'(a, f10.4)')'r: ', r
-        write(*,'(a, f10.4)')'w: ', w
+        ! write(*,'(a, f10.4)')'KK:', KK
+        ! write(*,'(a, f10.4)')'AA:', AA
+        ! write(*,'(a, f10.4)')'LC:', LC
+        ! write(*,'(a, f10.4)')'YY:', YY
+        ! write(*,'(a, f10.4)')'CC:', CC
+        ! write(*,'(a, f10.4)')'II:', II
+        ! write(*,'(a, f10.4)')'GG:', GG
+        ! write(*,'(a, f10.4)')'BB:', BB
+        ! write(*,'(a, f10.4)')'r: ', r
+        ! write(*,'(a, f10.4)')'w: ', w
 
     end subroutine
 
