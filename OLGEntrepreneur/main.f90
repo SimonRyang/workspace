@@ -31,8 +31,6 @@ program main
   ! write output
   call output()
 
-  phi = 1d0
-
   call get_SteadyState()
 
   close(21)
@@ -775,6 +773,7 @@ contains
 
         implicit none
 
+        integer :: is, ij
         real*8 :: life_exp(NS), punb(NS, JJ)
 
         ! integer :: ij, ages(JJ)
@@ -812,7 +811,7 @@ contains
           enddo ! ij
         enddo ! is
 
-
+        write(*,('a'))'calibration targets:'
         write(*,('a, 3f8.4'))'life_exp:    ', life_exp
         write(*,('a, f8.4'))'life_exp(avg):', life_exp*dist_skill
 
