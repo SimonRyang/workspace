@@ -816,6 +816,7 @@ contains
         write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1)*m(:, 1:NK, :, :, :, :, :, 1:JR-1))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1)), 1d-4)
         write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN/YY*100d0
         write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
+        write(*,'(a, f10.4)')    '- gov. expend. (%):    ', (GG+(1d0+r)*BB-(1d0+n_p)*BB)/YY*100d0
         write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc+TAw+TAr+TAy)/YY*100d0
         write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc/(TAc+TAw+TAr+TAy)*100d0
         write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw/(TAc+TAw+TAr+TAy)*100d0
