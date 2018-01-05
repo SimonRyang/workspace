@@ -552,7 +552,7 @@ contains
     ! calculate factor prices
     if (.not. smopec) then
       r(it) = (1d0-tauy(it))*(alpha*(KC(it)/LC(it))**(alpha-1d0)-delta)
-      write(*,*)KC/LC, r
+      write(*,*)KC(0)/LC(0), r(0)
       w(it) = (1d0-alpha)*(KC(it)/LC(it))**alpha
     endif
 
