@@ -815,7 +815,7 @@ contains
         write(*,'(a, 3f8.4)')'- life_exp:     ', life_exp
         write(*,'(a, f8.4)') '- life_exp(avg):', sum(life_exp*dist_skill)
         write(*,'(a, f8.4)') '- dep. ratio:   ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))
-        write(*,'(/n)')
+        write(*,*)'/n'
         write(*,*)'test'
 
     end subroutine
