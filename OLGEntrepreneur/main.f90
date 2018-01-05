@@ -692,6 +692,7 @@ contains
                     bqs(is) = bqs(is) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij)
                     KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij)
                     TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij))*m(ia, ik, ix, ip, iw, ie, is, ij)
+                    TAc = TAc + tauc*c(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                     TAw = TAw + inctax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                     TAr = TAr + captax(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
                     PBEN = PBEN + penben(ia, ik, ix, ip, iw, ie, is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij)
@@ -811,13 +812,13 @@ contains
           enddo ! ij
         enddo ! is
 
-        write(*,'(a, /)')'calibration targets:'
-        write(*,'(a, 3f8.4)')   '- life_exp:          ', life_exp
-        write(*,'(a, f8.4)')    '- life_exp(avg):     ', sum(life_exp*dist_skill)
-        write(*,'(a, f8.4, /)') '- dep. ratio:        ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))
-        write(*,'(a, f8.4)')    '- pen. ben. (%):     ', PBEN/YY*100d0
-        write(*,'(a, f8.4)')    '- pen. con. rate (%):', taup*100d0
-
+        write(*,'(/, a, /)')     'CALIBRATION TARGETS:'
+        write(*,'(a, 3f10.4)')   '- life_exp:          ', life_exp
+        write(*,'(a, f10.4)')    '- life_exp(avg):     ', sum(life_exp*dist_skill)
+        write(*,'(a, f10.4, /)') '- dep. ratio:        ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
+        write(*,'(a, f10.4)')    '- pen. ben. (%):     ', PBEN/YY*100d0
+        write(*,'(a, f10.4)')    '- pen. con. rate (%):', taup*100d0
+        write(*,'(a, f10.4)')    '- tax rev. (%):      ', (TAc+TAw+TAr*TAc)/YY*100d0
     end subroutine
 
 end program
