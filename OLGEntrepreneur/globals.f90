@@ -49,7 +49,7 @@ module globals
   ! household preference parameters
   real*8, parameter :: gamma = 0.5d0 !
   real*8, parameter :: egam  = 1d0 - 1d0/gamma !
-  real*8, parameter :: sigma = 0.320d0
+  real*8, parameter :: sigma = 0.330d0
   real*8, parameter :: beta  = 0.99d0**5
   real*8, parameter :: mu_b  = 0.0d0
 
