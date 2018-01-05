@@ -180,12 +180,7 @@ contains
 
     ! initialize tax rates
     tauc = 0.190d0
-    tauy = 0.150d0
-    taur = 0.250d0
-    taup = 0.164d0
-
-    tauc = 0.128d0
-    taup = 7.867d-2
+    taup = 0.189d0
 
     ! initial guesses for macro variables
     KC = 3.400d0
@@ -223,7 +218,7 @@ contains
       integer :: ix, ip, is, ij
 
       ! calculate new prices
-      r = (Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
+      r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
       w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
       ! set prices in case of life-cycle model

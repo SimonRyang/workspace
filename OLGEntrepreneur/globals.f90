@@ -26,7 +26,7 @@ module globals
   integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 16
+  integer, parameter :: NK = 0
 
   ! number of points on the annuity asset grid
   integer, parameter :: NX = 0
@@ -35,16 +35,20 @@ module globals
   integer, parameter :: NP = 4
 
   ! demographic parameters
-  real*8, parameter :: n_p = (1d0+0.007d0)**5-1d0
-  real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/)
+  real*8, parameter :: n_p = (1d0+0.007d0)**5-1d0 !
+  real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/) !
 
   ! macroeconomic parameters
-  real*8, parameter :: gy = 0.19d0
+  real*8, parameter :: gy = 0.19d0 !
   real*8, parameter :: by = 0.60d0
 
+  ! government parameters
+  real*8, parameter :: tauy = 0.150d0 !
+  real*8, parameter :: taur = 0.250d0 !
+
   ! household preference parameters
-  real*8, parameter :: gamma = 0.5d0
-  real*8, parameter :: egam  = 1d0 - 1d0/gamma
+  real*8, parameter :: gamma = 0.5d0 !
+  real*8, parameter :: egam  = 1d0 - 1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.99d0**5
   real*8, parameter :: mu_b  = 0.15d0
@@ -53,14 +57,14 @@ module globals
   real*8, parameter :: mx_max = 0.10d0
 
   ! capital parameters
-  real*8, parameter :: delta_k = 0.06d0
+  real*8, parameter :: delta_k = 0.06d0 !
   real*8, parameter :: xi      = 1d0/3d0
 
   ! production parameters
   real*8, parameter :: Omega = 1.4d0
   real*8, parameter :: k_min = 0.2d0
   real*8, parameter :: phi_k = 0.25d0
-  real*8, parameter :: alpha = 0.36d0
+  real*8, parameter :: alpha = 0.36d0 !
   real*8, parameter :: nu    = 0.88d0
 
   ! size of the total asset grid
@@ -109,7 +113,7 @@ module globals
 
   ! government variables
   real*8 :: mu, phi, lambda
-  real*8 :: tauc, taur, tauy, taup
+  real*8 :: tauc, taup
 
   ! progressive income tax
   real*8, parameter :: t1 = 0.14d0, t2 = 0.24d0, t3 = 0.45d0
