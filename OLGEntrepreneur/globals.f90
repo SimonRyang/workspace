@@ -51,7 +51,7 @@ module globals
   real*8, parameter :: egam  = 1d0 - 1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.999d0**5
-  real*8, parameter :: mu_b  = 0.0d0
+  real*8, parameter :: mu_b  = 0.15d0
 
   ! maximum investment in annuities
   real*8, parameter :: mx_max = 0.10d0
