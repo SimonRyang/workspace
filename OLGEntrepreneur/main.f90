@@ -823,6 +823,7 @@ contains
         write(*,'(a, f10.4)')    '  + inc. tax (%):    ', TAw/(TAc+TAw+TAr+TAy)*100d0
         write(*,'(a, f10.4)')    '  + cap. tax (%):    ', TAr/(TAc+TAw+TAr+TAy)*100d0
         write(*,'(a, f10.4)')    '  + corp. tax (%):   ', TAy/(TAc+TAw+TAr+TAy)*100d0
+        write(*,'(a, f10.4)')    '- cons. tax rate (%):', tauc*100d0
         write(*,'(a, f10.4)')    '- cap.-output ratio  ', 5*KK/YY
 
     end subroutine
