@@ -223,7 +223,7 @@ contains
       integer :: ix, ip, is, ij
 
       ! calculate new prices
-      r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
+      r = (Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
       w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
       ! set prices in case of life-cycle model
