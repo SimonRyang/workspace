@@ -830,6 +830,8 @@ contains
         write(*,'(a, f10.4)')    '- bequests (%):        ', BQ/YY*100d0
         write(*,*)
 
+        write(*,*)sum(dist_skill*(/6.45d0, 7.75d0, 13.69d0/))
+
         ! write(*,'(a, f10.4)')'KK:', KK
         ! write(*,'(a, f10.4)')'AA:', AA
         ! write(*,'(a, f10.4)')'LC:', LC
