@@ -40,7 +40,7 @@ module globals
 
   ! macroeconomic parameters
   real*8, parameter :: gy = 0.19d0 !
-  real*8, parameter :: by = 0.60d0
+  real*8, parameter :: by = 0.60d0/5d0 !
 
   ! government parameters
   real*8, parameter :: tauy = 0.150d0 !
