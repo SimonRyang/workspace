@@ -582,10 +582,10 @@ contains
     pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
 
     ! calculate income tax
-    inctax_com = 5d0*tarif(max(income - d_w*ybar - pencon_com, 0d0)/5d0)
+    inctax_com = 5d0*tarif(max(income - d_w*ybar, 0d0)/5d0)
 
     ! calculate capital tax
-    captax_com = taur*r*max(a(ia_com)-xi*k(ik_com), 0d0)
+    captax_com = taur*1.055d0*max(r*(a(ia_com)-xi*k(ik_com)) - d_s, 0d0)
 
     ! available assets
     aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com) &
@@ -665,10 +665,10 @@ contains
     pencon_com = 0d0
 
     ! calculate income tax
-    inctax_com = tarif(pen(ip_com, ij_com) + ann(ix_com, is_com, ij_com))
+    inctax_com = 5d0*tarif(pen(ip_com, ij_com)/5d0)
 
     ! calculate capital tax
-    captax_com = taur*r*a(ia_com)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - d_s, 0d0)
 
     ! available assets
     aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, is_com, ij_com) &
