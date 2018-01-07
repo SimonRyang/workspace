@@ -665,7 +665,7 @@ contains
     pencon_com = 0d0
 
     ! calculate income tax
-    inctax_com = 5d0*tarif(pen(ip_com, ij_com)/5d0)
+    inctax_com = tarif(pen(ip_com, ij_com))
 
     ! calculate capital tax
     captax_com = taur*1.055d0*max(r*a(ia_com) - d_s*ybar, 0d0)
@@ -762,6 +762,8 @@ contains
       znr = zn - r3
       tarif = tr3 + znr*t3
     endif
+
+    tarif = tarif*1.055d0
 
   end function
 
