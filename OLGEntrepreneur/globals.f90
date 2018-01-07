@@ -45,6 +45,8 @@ module globals
   ! government parameters
   real*8, parameter :: tauy = 0.150d0 !
   real*8, parameter :: taur = 0.250d0 !
+  real*8, parameter :: d_w  = 0.033d0*5d0 ! 1,000.00 Euro
+  real*8, parameter :: d_s  = 0.053d0*5d0 ! 1,600.00 Euro
 
   ! household preference parameters
   real*8, parameter :: gamma = 0.5d0 !
@@ -62,7 +64,7 @@ module globals
 
   ! production parameters
   real*8, parameter :: Omega = 1.0d0
-  real*8, parameter :: k_min = 0.1d0
+  real*8, parameter :: k_min = 0.16d0 ! 25,000.00 Euro
   real*8, parameter :: phi_k = 0.0d0
   real*8, parameter :: alpha = 0.36d0 !
   real*8, parameter :: nu1   = 0.65d0
@@ -576,14 +578,14 @@ contains
     income = (1d0-ind_o)*w*eff(is_com, ij_com)*eta(iw_com, is_com)*lab_com + &
              ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*lab_com)**nu2
 
-    ! calculate income tax
-    inctax_com = tarif(income)
-
-    ! calculate capital tax
-    captax_com = taur*r*max(a(ia_com)-xi*k(ik_com), 0d0)
-
     ! calculate pension contribution
     pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
+
+    ! calculate income tax
+    inctax_com = 5d0*tarif(max(income - d_w - pencon_com, 0d0)/5d0)
+
+    ! calculate capital tax
+    captax_com = taur*1.055d0*max(r*(a(ia_com)-xi*k(ik_com)) - d_s, 0d0)
 
     ! available assets
     aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com) &
