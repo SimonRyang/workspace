@@ -547,7 +547,7 @@ contains
 
     ! determine future investment
     k_plus_com = 0d0
-    if (io_p == 1) then
+    if (io_p_com == 1) then
      if (varphi_q <= varphi_p) then
        k_plus_com = ((1d0-xi)*k_min + (varphi_q           *omega_k_t(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
                                        (varphi_p-varphi_q)*omega_k_t(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
@@ -564,14 +564,14 @@ contains
     mx_com = 0d0
     if (varphi_q <= varphi_p) then
       mx_com = (varphi_q           *omega_x_t(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
-            (varphi_p-varphi_q)*omega_x_t(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
-            (1d0-varphi_p)     *omega_x_t(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com))*Q_plus
+                (varphi_p-varphi_q)*omega_x_t(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
+                (1d0-varphi_p)     *omega_x_t(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com))*Q_plus
     else
       mx_com = (varphi_p           *omega_x_t(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
-            (varphi_q-varphi_p)*omega_x_t(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com) +  &
-            (1d0-varphi_q)     *omega_x_t(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com))*Q_plus
+                (varphi_q-varphi_p)*omega_x_t(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com) +  &
+                (1d0-varphi_q)     *omega_x_t(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com))*Q_plus
     endif
-    x_plus_com = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + mx
+    x_plus_com = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + mx_com
 
     ! calculate income tax
     inctax_com = tarif(income)
