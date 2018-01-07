@@ -9,8 +9,6 @@ program main
 
   implicit none
 
-  integer, parameter :: numthreads = 28
-
   ! set government variables
   mu     = 1d0
   lambda = 0d0
@@ -222,7 +220,7 @@ contains
       integer :: ix, ip, is, ij
 
       ! calculate new prices
-      r = (1d0-tauy)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
+      r = (1d0-tauk)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
       w = Omega*(1d0-alpha)*(KC/LC)**alpha
 
       ! set prices in case of life-cycle model
@@ -667,7 +665,7 @@ contains
     ! reset macroeconomic aggregates in each iteration step
     AA = 0d0; AX = 0d0; BQ = 0d0; bqs(:) = 0d0; PBEN = 0d0; PCON = 0d0
     CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0
-    TAc = 0d0; TAr = 0d0; TAw = 0d0; TAy = 0d0
+    TAc = 0d0; TAr = 0d0; TAw = 0d0; TAk = 0d0
 
     do ij = 1, JJ
 
@@ -731,7 +729,7 @@ contains
     YY = YC + YE
 
     ! compute corporate tax incom
-    TAy = tauy*(YC-delta_k*KC-w*LC)
+    TAk = tauk*(YC-delta_k*KC-w*LC)
 
   end subroutine
 
@@ -754,7 +752,7 @@ contains
     expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
 
     ! calculates consumption tax rate
-    tauc = (expend-TAy-TAw-TAr)/CC
+    tauc = (expend-TAk-TAw-TAr)/CC
 
     ! get budget balancing pension contribution rate
     taup = PBEN/PCON
@@ -820,11 +818,11 @@ contains
         write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN/YY*100d0
         write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
         write(*,'(a, f10.4)')    '- gov. expend. (%):    ', (GG+(1d0+r)*BB-(1d0+n_p)*BB)/YY*100d0
-        write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc+TAw+TAr+TAy)/YY*100d0
-        write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc/(TAc+TAw+TAr+TAy)*100d0
-        write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw/(TAc+TAw+TAr+TAy)*100d0
-        write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr/(TAc+TAw+TAr+TAy)*100d0
-        write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAy/(TAc+TAw+TAr+TAy)*100d0
+        write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc+TAw+TAr+TAk)/YY*100d0
+        write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc/(TAc+TAw+TAr+TAk)*100d0
+        write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw/(TAc+TAw+TAr+TAk)*100d0
+        write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr/(TAc+TAw+TAr+TAk)*100d0
+        write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk/(TAc+TAw+TAr+TAk)*100d0
         write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc*100d0
         write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5*KK/YY
         write(*,'(a, f10.4)')    '  + corp. sector:      ', 5*KC/YC

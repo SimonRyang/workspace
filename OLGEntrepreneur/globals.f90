@@ -4,6 +4,9 @@ module globals
 
   implicit none
 
+  ! number of parallel used cores
+  integer, parameter :: numthreads = 14
+
   ! number of years the household lives
   integer, parameter :: JJ = 16
 
@@ -20,16 +23,16 @@ module globals
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 16
+  integer, parameter :: NQ = 12
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 16
+  integer, parameter :: NA = 12
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 0
+  integer, parameter :: NK = 12
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 16
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -43,7 +46,7 @@ module globals
   real*8, parameter :: by = 0.60d0/5d0 !
 
   ! government parameters
-  real*8, parameter :: tauy = 0.150d0 !
+  real*8, parameter :: tauk = 0.150d0 !
   real*8, parameter :: taur = 0.250d0 !
   real*8, parameter :: d_w  = 0.033d0 ! 1,000.00 Euro
   real*8, parameter :: d_s  = 0.053d0 ! 1,600.00 Euro
@@ -128,7 +131,7 @@ module globals
   real*8 :: AA, AX, BQ, PBEN, PCON
   real*8 :: KK, KC, KE, LC, BB
   real*8 :: YY, YC, YE, CC, II, TC, GG
-  real*8 :: TAc, TAr, TAw, TAy
+  real*8 :: TAc, TAr, TAw, TAk
 
   ! different grids to discretize the state space
   real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP)
