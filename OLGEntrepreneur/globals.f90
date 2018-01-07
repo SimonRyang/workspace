@@ -54,7 +54,7 @@ module globals
   real*8, parameter :: mu_b  = 0.005d0
 
   ! maximum investment in annuities
-  real*8, parameter :: mx_max = 0.07d0 ! 2,100.00 Euro
+  real*8, parameter :: mx_max = 0.07d0*5d0 ! 2,100.00 Euro
 
   ! capital parameters
   real*8, parameter :: delta_k = 1d0-(1d0-0.06d0)**5d0 !
@@ -63,9 +63,9 @@ module globals
   ! production parameters
   real*8, parameter :: Omega = 1.0d0
   real*8, parameter :: k_min = 0.1d0
-  real*8, parameter :: phi_k = 0.25d0
+  real*8, parameter :: phi_k = 0.0d0
   real*8, parameter :: alpha = 0.36d0 !
-  real*8, parameter :: nu1   = 0.65d0
+  real*8, parameter :: nu1   = 0.12d0
   real*8, parameter :: nu2   = 0.88d0
 
   ! size of the total asset grid
