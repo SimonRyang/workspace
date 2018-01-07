@@ -426,7 +426,7 @@ contains
     omega_x  = x_in
 
     ! determine future liquid wealth and future annuity asset stock
-    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
+    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar)
     a_temp = (1d0-omega_x)*Q(iq_p_com)
     a_p = max(a_temp, 0d0)
 
@@ -494,7 +494,7 @@ contains
     omega_k  = x_in(2)
 
     ! determine future liquid wealth, future firm capital and future annuity asset stock
-    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max)
+    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar)
     k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
     a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
     a_p = max(a_temp, 0d0)
@@ -585,7 +585,7 @@ contains
     inctax_com = tarif(max(income - d_w*ybar, 0d0))
 
     ! calculate capital tax
-    captax_com = taur*1.055d0*max(r*(a(ia_com)-xi*k(ik_com)) - d_s, 0d0)
+    captax_com = taur*1.055d0*max(r*(a(ia_com)-xi*k(ik_com)) - d_s*ybar, 0d0)
 
     ! available assets
     aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com) &
@@ -668,7 +668,7 @@ contains
     inctax_com = 5d0*tarif(pen(ip_com, ij_com)/5d0)
 
     ! calculate capital tax
-    captax_com = taur*1.055d0*max(r*a(ia_com) - d_s, 0d0)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - d_s*ybar, 0d0)
 
     ! available assets
     aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, is_com, ij_com) &
