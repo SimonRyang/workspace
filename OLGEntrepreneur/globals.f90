@@ -26,7 +26,7 @@ module globals
   integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 16
+  integer, parameter :: NK = 0
 
   ! number of points on the annuity asset grid
   integer, parameter :: NX = 0
@@ -582,7 +582,7 @@ contains
     pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
 
     ! calculate income tax
-    inctax_com = tarif(income - d_w - pencon_com)
+    inctax_com = 5d0*tarif(max(income - d_w - pencon_com, 0d0)/5d0)
 
     ! calculate capital tax
     captax_com = taur*r*max(a(ia_com)-xi*k(ik_com), 0d0)
