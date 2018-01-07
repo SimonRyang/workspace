@@ -23,16 +23,16 @@ module globals
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 16
+  integer, parameter :: NQ = 12
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 16
+  integer, parameter :: NA = 12
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 16
+  integer, parameter :: NK = 12
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 16
+  integer, parameter :: NX = 12
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4

@@ -94,7 +94,7 @@ contains
 
     ! write screen output
     write(*,'(/a/)')'INITIAL EQUILIBRIUM'
-    write(*,'(a)')'ITER   IQ   IA   IK   IX     K/Y     C/Y     I/Y       r       w          DIFF'
+    write(*,'(a)')'ITER   IQ   IA   IK   IX     K/Y     C/Y     I/Y       r       w            DIFF'
 
     ! set survival probabilities
     open(301, file='sp.dat')
