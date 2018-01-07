@@ -163,13 +163,13 @@ module globals
   integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com
   integer :: iq_p_com, ia_p_com, ip_p_com, io_p_com
   integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
-  real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
+  real*8 :: cons_com, lab_com, mx_com, k_plus_com, x_plus_com, p_plus_com
   real*8 :: inctax_com, captax_com, pencon_com, aas_com
   real*8 :: DIFF
 
   !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com)
   !$omp threadprivate(iq_p_com, ia_p_com, ip_p_com, io_p_com)
-  !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com)
+  !$omp threadprivate(cons_com, lab_com, mx_com, k_plus_com, x_plus_com, p_plus_com)
   !$omp threadprivate(inctax_com, captax_com, pencon_com, aas_com)
 
 contains
@@ -320,7 +320,7 @@ contains
     integer, intent(in) :: io_p, ia, ik, ix, ip, iw, ie, is, ij
 
     !##### OTHER VARIABLES #####################################################
-    real*8 :: x_in(2), fret, x_p, mx, k_p, varphi_q, varphi_p
+    real*8 :: x_in(2), fret, varphi_q, varphi_p
     integer :: iql, iqr, ipl, ipr
 
     ! set up communication variables
@@ -338,59 +338,11 @@ contains
       call fminsearch(x_in(1), fret, Q_l, Q_u, cons_r)
     endif
 
-    ! derive interpolation weights
-    call linint_Grow(x_in(1), Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
-    call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
-
-    ! restrict values to grid just in case
-    iql = min(iql, NQ)
-    iqr = min(iqr, NQ)
-    varphi_q = max(min(varphi_q, 1d0),0d0)
-
-    ! restrict values to grid just in case
-    ipl = min(ipl, NP)
-    ipr = min(ipr, NP)
-    varphi_p = max(min(varphi_p, 1d0),0d0)
-
-    ! determine future investment
-    k_p = 0d0
-
-    if (io_p == 1) then
-     if (varphi_q <= varphi_p) then
-       k_p = ((1d0-xi)*k_min + (varphi_q           *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, is, ij) +  &
-                                (varphi_p-varphi_q)*omega_k_t(io_p, iqr, ik, ix, ipl, iw, ie, is, ij) +  &
-                                (1d0-varphi_p)     *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-     else
-       k_p = ((1d0-xi)*k_min + (varphi_p           *omega_k_t(io_p, iql, ik, ix, ipl, iw, ie, is, ij) +  &
-                                (varphi_q-varphi_p)*omega_k_t(io_p, iql, ik, ix, ipr, iw, ie, is, ij) +  &
-                                (1d0-varphi_q)     *omega_k_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij))*(x_in(1)-(1d0-xi)*k_min))/(1d0-xi)
-     endif
-    endif
-
-    ! determine future annuity stock
-    x_p = 0d0
-    mx = 0d0
-
-    if (ij < JR) then
-      if (varphi_q <= varphi_p) then
-        mx = min((varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, is, ij) +  &
-                  (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, is, ij) +  &
-                  (1d0-varphi_p)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
-      else
-        mx = min((varphi_p           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, is, ij) +  &
-                  (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, is, ij) +  &
-                  (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
-      endif
-      x_p = (1d0+r)/psi(is, ij)*x(ix)+ mx
-    else
-      x_p = x(ix)
-    endif
-
     ! copy decisions
     Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = x_in(1)
-    a_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = x_in(1) - (1d0-xi)*k_p - mx - tr(k(ik), k_p)
-    k_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = k_p
-    x_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = x_p
+    a_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = x_in(1) - (1d0-xi)*k_plus_com - mx_com - tr(k(ik), k_plus_com)
+    k_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = k_plus_com
+    x_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = x_plus_com
     p_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = p_plus_com
     inctax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = inctax_com
     captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij) = captax_com
@@ -534,7 +486,7 @@ contains
                (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(egam*EV(iar, ikr, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1))**(1d0/egam))**egam/egam
 
      ! calculate bequest part of the value function
-    S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p + (1d0-xi)*k_p, 1d-13)**egam/egam
+    S_temp = 0d0 !(1d0-psi(is_com, ij_ctarifom+1))*mu_b*max(a_p + (1d0-xi)*k_p, 1d-13)**egam/egam
 
     ! calculate future part of the value function
     if (a_temp < 0d0) then
@@ -576,22 +528,6 @@ contains
     income = (1d0-ind_o)*w*eff(is_com, ij_com)*eta(iw_com, is_com)*lab_com + &
              ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*lab_com)**nu2
 
-    ! calculate income tax
-    inctax_com = tarif(income)
-
-    ! calculate capital tax
-    captax_com = taur*r*max(a(ia_com)-xi*k(ik_com), 0d0)
-
-    ! calculate pension contribution
-    pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
-
-    ! available assets
-    aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com) &
-               - inctax_com - captax_com - taup*pencon_com
-
-    ! calculate consumption
-    cons_com = (aas_com - Q_plus)*pinv
-
     ! calculate future earning points
     p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income/ybar, 2d0)))/dble(ij_com)
 
@@ -608,6 +544,50 @@ contains
     ipl = min(ipl, NP)
     ipr = min(ipr, NP)
     varphi_p = max(min(varphi_p, 1d0),0d0)
+
+    ! determine future investment
+    k_plus_com = 0d0
+    if (io_p == 1) then
+     if (varphi_q <= varphi_p) then
+       k_plus_com = ((1d0-xi)*k_min + (varphi_q           *omega_k_t(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
+                                       (varphi_p-varphi_q)*omega_k_t(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
+                                       (1d0-varphi_p)     *omega_k_t(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com))*(Q_plus-(1d0-xi)*k_min))/(1d0-xi)
+     else
+       k_plus_com = ((1d0-xi)*k_min + (varphi_p           *omega_k_t(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
+                                       (varphi_q-varphi_p)*omega_k_t(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com) +  &
+                                       (1d0-varphi_q)     *omega_k_t(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com))*(Q_plus-(1d0-xi)*k_min))/(1d0-xi)
+     endif
+    endif
+
+    ! determine future annuity stock
+    x_plus_com = 0d0
+    mx_com = 0d0
+    if (varphi_q <= varphi_p) then
+      mx_com = (varphi_q           *omega_x_t(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
+            (varphi_p-varphi_q)*omega_x_t(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
+            (1d0-varphi_p)     *omega_x_t(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com))*Q_plus
+    else
+      mx_com = (varphi_p           *omega_x_t(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com) +  &
+            (varphi_q-varphi_p)*omega_x_t(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com) +  &
+            (1d0-varphi_q)     *omega_x_t(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com))*Q_plus
+    endif
+    x_plus_com = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + mx
+
+    ! calculate income tax
+    inctax_com = tarif(income)
+
+    ! calculate capital tax
+    captax_com = taur*r*max(a(ia_com)-xi*k(ik_com), 0d0)
+
+    ! calculate pension contribution
+    pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
+
+    ! available assets
+    aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com) &
+               - inctax_com - captax_com - taup*pencon_com
+
+    ! calculate consumption
+    cons_com = (aas_com - Q_plus)*pinv
 
     ! get next period value function
     tomorrow = 0d0
@@ -659,8 +639,14 @@ contains
     ! define labor supply
     lab_com = 0d0
 
-    ! pension contribution
-    pencon_com = 0d0
+    ! define future earning points
+    p_plus_com = p(ip_com)
+
+    ! determine future investment
+    k_plus_com = 0d0
+
+    ! determine future annuity stock
+    x_plus_com = x(ix_com)
 
     ! calculate income tax
     inctax_com = tarif(pen(ip_com, ij_com) + ann(ix_com, is_com, ij_com))
@@ -668,15 +654,15 @@ contains
     ! calculate capital tax
     captax_com = taur*r*a(ia_com)
 
+    ! pension contribution
+    pencon_com = 0d0
+
     ! available assets
     aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, is_com, ij_com) &
               - inctax_com - captax_com
 
     ! calculate consumption
     cons_com = (aas_com - Q_plus)*pinv
-
-    ! define future earning points
-    p_plus_com = p(ip_com)
 
     ! derive interpolation weights
     call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
