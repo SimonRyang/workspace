@@ -582,7 +582,7 @@ contains
     pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
 
     ! calculate income tax
-    inctax_com = 5d0*tarif(max(income - d_w - pencon_com, 0d0)/5d0)
+    inctax_com = 5d0*tarif(max(income - d_w*ybar - pencon_com, 0d0)/5d0)
 
     ! calculate capital tax
     captax_com = taur*r*max(a(ia_com)-xi*k(ik_com), 0d0)
