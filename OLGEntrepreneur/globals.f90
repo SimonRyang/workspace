@@ -26,10 +26,10 @@ module globals
   integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 0
+  integer, parameter :: NK = 16
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 16
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -64,7 +64,7 @@ module globals
 
   ! production parameters
   real*8, parameter :: Omega = 1.0d0
-  real*8, parameter :: k_min = 0.16d0 ! 25,000.00 Euro
+  real*8, parameter :: k_min = 0.10d0 ! ~ 25,000.00 Euro
   real*8, parameter :: phi_k = 0.0d0
   real*8, parameter :: alpha = 0.36d0 !
   real*8, parameter :: nu1   = 0.65d0
@@ -479,15 +479,15 @@ contains
   !#############################################################################
   function inv_e(x_in)
 
-  implicit none
+    implicit none
 
-  !##### INPUT/OUTPUT VARIABLES ##############################################
-  real*8, intent(in) :: x_in(:)
-  real*8 :: inv_e
+    !##### INPUT/OUTPUT VARIABLES ##############################################
+    real*8, intent(in) :: x_in(:)
+    real*8 :: inv_e
 
-  !##### OTHER VARIABLES ######################################################
-  real*8 :: a_p, x_p, k_p, EV_temp, S_temp, omega_x, omega_k, varphi_a, varphi_k, varphi_x, a_temp
-  integer :: ial, iar, ikl, ikr, ixl, ixr
+    !##### OTHER VARIABLES ######################################################
+    real*8 :: a_p, x_p, k_p, EV_temp, S_temp, omega_x, omega_k, varphi_a, varphi_k, varphi_x, a_temp
+    integer :: ial, iar, ikl, ikr, ixl, ixr
 
     ! store annuity and firm capital share
     omega_x  = x_in(1)
