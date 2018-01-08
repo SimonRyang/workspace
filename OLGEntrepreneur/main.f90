@@ -718,7 +718,7 @@ contains
                     if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0) cycle
 
                     AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    AX(it) = AX(it) + ans(ix, is, ij, it)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    AX(it) = AX(it) + ans(ix, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
