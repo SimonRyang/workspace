@@ -137,42 +137,42 @@ module globals
   real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP)
 
   ! variables to store the policy functions
-  real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: inctax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), captax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: penben(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), pencon(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: inctax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), captax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: penben(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), pencon(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
   ! variables to store the value function
-  real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
   ! variables for temporary policy and value functions
-  real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: inctax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), captax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: penben_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), pencon_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: inctax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), captax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: penben_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), pencon_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: V_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
   ! variables to store the savings choice decisions
-  real*8 :: omega_x_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), omega_k_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
-  real*8 :: S(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: omega_x_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), omega_k_t(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: S(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
   ! weights for the different gridpoints on the discretized state space
-  real*8 :: m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ), m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
 
   ! numerical variables
   integer :: iter
-  integer :: iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ij_com, it_com
+  integer :: ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com
   integer :: iq_p_com, ia_p_com, ip_p_com, io_p_com
   integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
   real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
   real*8 :: inctax_com, captax_com, pencon_com, aas_com
   real*8 :: DIFF
 
-  !$omp threadprivate(iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ij_com, it_com)
+  !$omp threadprivate(ij_com, iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com)
   !$omp threadprivate(iq_p_com, ia_p_com, ip_p_com, io_p_com)
   !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com)
   !$omp threadprivate(inctax_com, captax_com, pencon_com, aas_com)
@@ -186,39 +186,39 @@ contains
   ! solves the future worker's decision of
   ! how much wealth to invest into annuities
   !#############################################################################
-  subroutine solve_worker(iq_p, ik, ix, ip_p, iw, ie, is, ij, it)
+  subroutine solve_worker(iq_p, ik, ix, ip_p, iw, ie, is, ij)
 
     implicit none
 
     !##### INPUT/OUTPUT VARIABLES ##############################################
-    integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij, it
+    integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij
 
     !##### OTHER VARIABLES #####################################################
     real*8 :: x_in, fret
 
     ! set up communication variables
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
-    iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
+    iw_com = iw; ie_com = ie; is_com = is; ij_com = ij
 
     if (Q(iq_p) > 0d0) then
 
       ! get best initial guess from future period
-      x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-4)
+      x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij), 1d-4)
 
       ! solve the household problem using fminsearch
       call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
 
       ! wealth share for annuities and firm capital
-      omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = x_in
-      omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 0d0
-      S(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = -fret
+      omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij) = x_in
+      omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0d0
+      S(0, iq_p, ik, ix, ip_p, iw, ie, is, ij) = -fret
 
     else
 
       ! wealth share for annuities and firm capital
-      omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 0d0
-      omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 0d0
-      S(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = -inv_w(0d0)
+      omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0d0
+      omega_k_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0d0
+      S(0, iq_p, ik, ix, ip_p, iw, ie, is, ij) = -inv_w(0d0)
 
     endif
 
@@ -231,40 +231,40 @@ contains
   ! solve the future entrepreneur's decision
   ! of how much wealth to invest into annuities and into firm capital
   !#############################################################################
-  subroutine solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, is, ij, it)
+  subroutine solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, is, ij)
 
     implicit none
 
     !##### INPUT/OUTPUT VARIABLES ##############################################
-    integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij, it
+    integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij
 
     !##### OTHER VARIABLES #####################################################
     real*8 :: x_in(2), fret
 
     ! set up communication variables
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
-    iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
+    iw_com = iw; ie_com = ie; is_com = is; ij_com = ij
 
     if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
       ! get best initial guess from future period
-      x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-4)
-      x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-4)
+      x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij), 1d-4)
+      x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij), 1d-4)
 
       ! solve the household problem using fminsearch
       call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
 
       ! wealth share for annuities and firm capital
-      omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = x_in(1)
-      omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = x_in(2)
-      S(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = -fret
+      omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij) = x_in(1)
+      omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij) = x_in(2)
+      S(1, iq_p, ik, ix, ip_p, iw, ie, is, ij) = -fret
 
     else
 
       ! wealth share for annuities and firm capital
-      omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 0d0
-      omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 0d0
-      S(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 1d-13**egam/egam !-inv_e((/1d0, 1d0/))
+      omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0d0
+      omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 0d0
+      S(1, iq_p, ik, ix, ip_p, iw, ie, is, ij) = 1d-13**egam/egam !-inv_e((/1d0, 1d0/))
 
     endif
 
@@ -276,19 +276,16 @@ contains
   !
   ! solve the future retiree's decision
   !#############################################################################
-  subroutine solve_retiree(iq_p, ik, ix, ip_p, iw, ie, is, ij, it)
+  subroutine solve_retiree(iq_p, ik, ix, ip_p, iw, ie, is, ij)
 
     implicit none
 
     !##### INPUT/OUTPUT VARIABLES ##############################################
-    integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij, it
+    integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij
 
     !##### OTHER VARIABLES #####################################################
-    integer :: ial, iar, itp
+    integer :: ial, iar
     real*8 :: a_p, EV_temp, S_temp, varphi_a
-
-    ! get next year
-    itp = year(it, ij, ij+1)
 
     a_p = Q(iq_p)
 
@@ -301,8 +298,8 @@ contains
     varphi_a = max(min(varphi_a, 1d0),0d0)
 
     ! calculate future part of the value function
-    EV_temp = (varphi_a      *(egam*EV(ial, 0, ix, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam) + &
-               (1d0-varphi_a)*(egam*EV(iar, 0, ix, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam))**egam/egam
+    EV_temp = (varphi_a      *(egam*EV(ial, 0, ix, ip_p, iw, ie, is, ij+1))**(1d0/egam) + &
+               (1d0-varphi_a)*(egam*EV(iar, 0, ix, ip_p, iw, ie, is, ij+1))**(1d0/egam))**egam/egam
 
     ! calculate bequest part of the value function
     S_temp = (1d0-psi(is, ij+1))*mu_b*max(a_p, 1d-13)**egam/egam
