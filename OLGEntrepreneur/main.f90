@@ -60,7 +60,7 @@ contains
       call check_grid(iqmax, iamax, ikmax, ixmax, 0)
 
       write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-                                      (/5d0*KK(0), CC(it)(0), II(0)/)/YY(0)*100d0, &
+                                      (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
                                       ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < sig) exit
@@ -188,7 +188,7 @@ contains
 
     ! initial guesses for macro variables
     KC(0) = 3.400d0
-    LC(it)(0) = 3.604d0
+    LC(0) = 3.604d0
     bqs(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
     BB(0) = 2.964d0
     ybar = 0.555d0
@@ -736,8 +736,8 @@ contains
     ybar = w*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
-    KC = damp*(AA(it)+AX(it)-BB) +(1d0-damp)*KC
-    KK = KC + KE(it)
+    KC(it) = damp*(AA(it)+AX(it)-BB) +(1d0-damp)*KC(it)
+    KK(it) = KC + KE(it)
 
     ! update work supply
     LC(it) = damp*LC(it) +(1d0-damp)*LC_old
@@ -746,11 +746,11 @@ contains
     BQ(it) = sum(bqs)
 
     ! commpute investment
-    II = (n_p+delta_k)*KK
+    II = (n_p+delta_k)*KK(it)
 
     ! compute output
-    YC = Omega*KC**alpha*LC(it)**(1d0-alpha)
-    YY = YC + YE(it)
+    YC(it) = Omega*KC(it)**alpha*LC(it)**(1d0-alpha)
+    YY(it) = YC(it) + YE(it)
 
     ! compute corporate tax incom
     TAk(it) = tauk*(YC-delta_k*KC-w*LC(it))
@@ -771,12 +771,16 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES #####################################################
+    integer :: itp
     real*8 :: expend
 
+    ! get next year
+    itp = year(it, 1, 2)
+
     ! computes government expenditures
-    GG = gy*YY
-    BB = by*YY
-    expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
+    GG(it) = gy*YY(0)
+    BB(it) = by*YY(0)
+    expend = GG(it) + (1d0+r)*BB(it) - (1d0+n_p)*BB(itp)
 
     ! calculates consumption tax rate
     tauc = (expend-TAk(it)-TAw(it)-TAr(it))/CC(it)
@@ -785,7 +789,7 @@ contains
     taup = PBEN(it)/PCON(it)
 
     ! compute gap on goods market
-    DIFF = YY-CC(it)-II-TC(it)-GG
+    DIFF(it) = YY(it)-CC(it)-II-TC(it)-GG(it)
 
   end subroutine
 
