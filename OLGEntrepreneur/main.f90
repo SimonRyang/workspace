@@ -814,7 +814,7 @@ contains
 
       integer :: it
       integer :: is, ij
-      real*8 :: life_exp(NS), punb(NS, JJ, it)
+      real*8 :: life_exp(NS), punb(NS, JJ)
 
       ! integer :: ij, ages(JJ, it)
       ! ! set up age variable
