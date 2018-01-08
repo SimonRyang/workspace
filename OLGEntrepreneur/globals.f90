@@ -165,7 +165,7 @@ module globals
   real*8 :: S(0:1, 0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
 
   ! weights for the different gridpoints on the discretized state space
-  real*8 :: m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ)
+  real*8 :: m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
 
   ! numerical variables
   integer :: iter
@@ -595,7 +595,7 @@ contains
              ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*lab_com)**nu2
 
     ! calculate pension contribution
-    pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar(it_com))
+    pencon_com = (1d0-(1d0-phi(it_com))*ind_o)*min(income, 2d0*ybar(it_com))
 
     ! calculate income tax
     inctax_com = tarif(max(income - taup(it_com)*pencon_com - d_w*ybar(0), 0d0))
@@ -611,7 +611,7 @@ contains
     cons_com = (aas_com - Q_plus)*pinv(it_com)
 
     ! calculate future earning points
-    p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income/ybar(it_com), 2d0)))/dble(ij_com)
+    p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi(it_com))*ind_o)*mu(it_com)*(lambda(it_com) + (1d0-lambda(it_com))*min(income/ybar(it_com), 2d0)))/dble(ij_com)
 
     ! derive interpolation weights
     call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
