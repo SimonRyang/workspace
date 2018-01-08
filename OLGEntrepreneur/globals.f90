@@ -202,7 +202,7 @@ contains
 
     ! set up communication variables
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
-    iw_com = iw; ie_com = ie; is_com = is; ij_com = ij, it_com = it
+    iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
     if (Q(iq_p) > 0d0) then
 
@@ -247,7 +247,7 @@ contains
 
     ! set up communication variables
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
-    iw_com = iw; ie_com = ie; is_com = is; ij_com = ij, it_com = it
+    iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
     if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
