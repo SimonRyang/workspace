@@ -680,8 +680,12 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES #####################################################
-    integer :: ia, ik, ix, ip, iw, ie, is, ij
+    integer :: ia, ik, ix, ip, iw, ie, is, ij, itm, itp
     real*8 :: LC_old
+
+    ! get last and next year
+    itm = year(it, 2, 1)
+    itp = year(it, 1, 2)
 
     ! copy labor supply
     LC_old = LC(it)
@@ -702,12 +706,12 @@ contains
                   do ia = 0, NA
 
                     ! skip if there is no household
-                    if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0) cycle
+                    if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
-                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/(1d0+n_p)
+                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     AX(it) = AX(it) + ans(ix, is, ij)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TAc(it) = TAc(it) + tauc*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -746,7 +750,7 @@ contains
     BQ(it) = sum(bqs(:, it))
 
     ! commpute investment
-    II = (n_p+delta_k)*KK(it)
+    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
     ! compute output
     YC(it) = Omega*KC(it)**alpha*LC(it)**(1d0-alpha)
