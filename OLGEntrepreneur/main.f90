@@ -274,7 +274,7 @@ contains
 
         do ij = JR+1, JJ
           itm = year(it, ij, ij-1)
-          ans(:, is, ij, it) = (1d0+r(it))/psi(is, ij)*ans(:, is, ij-1, itm) - ann(:, is, ij-1, itm)
+          ans(:, is, ij, it) = (1d0+r(itm))/psi(is, ij)*ans(:, is, ij-1, itm) - ann(:, is, ij-1, itm)
         enddo
 
       enddo
