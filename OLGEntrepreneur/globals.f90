@@ -116,7 +116,7 @@ module globals
 
   ! demographic and other model parameters
   real*8 :: eff(NS, JJ)
-  real*8 :: pen(0:NP, JJ, 0:TT), ann(0:NX, NS, JJ, 0:TT), ans(0:NX, NS, JJ, 0:TT)
+  real*8 :: pen(0:NP, JJ, 0:TT), ann(0:NX, NS, JJ), ans(0:NX, NS, JJ)
   real*8 :: psi(NS, JJ+1), rpop(NS, JJ, 0:TT)
   real*8 :: beq(NS, JJ, 0:TT), Gama(JJ)
 
@@ -393,7 +393,7 @@ contains
                   (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, is, ij, it) +  &
                   (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij, it))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
       endif
-      x_p = (1d0+r(it))/psi(is, ij)*x(ix)+ mx
+      x_p = (1d0+r(it))/psi(is, ij)*x(ix) + mx
     else
       x_p = x(ix)
     endif
@@ -687,7 +687,7 @@ contains
     captax_com = taur*1.055d0*max(r(it_com)*a(ia_com) - d_s*ybar(0), 0d0)
 
     ! available assets
-    aas_com = (1d0+r(it_com))*a(ia_com) + pen(ip_com, ij_com, it_com) + ann(ix_com, is_com, ij_com, it_com) &
+    aas_com = (1d0+r(it_com))*a(ia_com) + pen(ip_com, ij_com, it_com) + ann(ix_com, is_com, ij_com) &
               - inctax_com - captax_com
 
     ! calculate consumption

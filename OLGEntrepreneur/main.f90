@@ -250,33 +250,21 @@ contains
       r2 = 0.449d0*ybar(0)*2d0 ! 13,469.00 Euro
       r3 = 1.763d0*ybar(0)*2d0 ! 52,881.00 Euro
 
-      ! calculate annuity payments
-      ann(:, :, :, it) = 0d0
-      ans(:, :, :, it) = 0d0
-      ann_tmp = 1d0
-
       do ij = JJ-1, JR, -1
-        itp = year(it, JR, ij+1)
-        ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psi(:, ij+1) + 1d0
+        ann_tmp(:) = ann_tmp(:)/(1d0+r(0))*psi(:, ij+1) + 1d0
       enddo
 
       do is = 1, NS
-
-        ! calculate annuities
         do ix = 0, NX
-          ann(ix, is, JR:JJ, it) = (1d0+r(it))/psi(is, JR)*x(ix)/ann_tmp(is)
+          ann(ix, is, JR:JJ) = (1d0+r(0))/psi(is, JR)*x(ix)/ann_tmp(is)
         enddo
 
-        ! calculate annuity stock at beginning of time it
         do ij = 1, JR
-          ans(:, is, ij, it) = x(:)
+          ans(:, is, ij) = x(:)
         enddo
-
         do ij = JR+1, JJ
-          itm = year(it, ij, ij-1)
-          ans(:, is, ij, it) = (1d0+r(itm))/psi(is, ij)*ans(:, is, ij-1, itm) - ann(:, is, ij-1, itm)
+          ans(:, is, ij) = (1d0+r(0))/psi(is, ij-1)*ans(:, is, ij-1)-ann(:, is, ij-1)
         enddo
-
       enddo
 
       ! calculate old-age transfers
@@ -718,7 +706,7 @@ contains
                     ! if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0) cycle
 
                     AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/(1d0+n_p)
-                    AX(it) = AX(it) + ans(ix, is, ij, it)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    AX(it) = AX(it) + ans(ix, is, ij)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
