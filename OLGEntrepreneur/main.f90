@@ -226,8 +226,8 @@ contains
     integer :: ix, ip, is, ij
 
     ! calculate new prices
-    r = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it)(it))**(alpha-1d0)-delta_k)
-    w = Omega*(1d0-alpha)*(KC(it)/LC(it)(it))**alpha
+    r = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
+    w = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
 
     ! set prices in case of life-cycle model
     ! r = 0.393280506035032d0
@@ -736,14 +736,14 @@ contains
     ybar = w*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
-    KC(it) = damp*(AA(it)+AX(it)-BB) +(1d0-damp)*KC(it)
-    KK(it) = KC + KE(it)
+    KC(it) = damp*(AA(it)+AX(it)-BB(it)) +(1d0-damp)*KC(it)
+    KK(it) = KC(it) + KE(it)
 
     ! update work supply
     LC(it) = damp*LC(it) +(1d0-damp)*LC_old
 
     ! compute total bequests
-    BQ(it) = sum(bqs)
+    BQ(it) = sum(bqs(:, it))
 
     ! commpute investment
     II = (n_p+delta_k)*KK(it)
@@ -753,7 +753,7 @@ contains
     YY(it) = YC(it) + YE(it)
 
     ! compute corporate tax incom
-    TAk(it) = tauk*(YC-delta_k*KC-w*LC(it))
+    TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w*LC(it))
 
   end subroutine
 
@@ -789,7 +789,7 @@ contains
     taup = PBEN(it)/PCON(it)
 
     ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-II-TC(it)-GG(it)
+    DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
 
   end subroutine
 
