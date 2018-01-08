@@ -10,7 +10,7 @@ program main
   implicit none
 
   ! set government variables
-  mu     = 0d0
+  mu     = 1d0
   lambda = 0d0
   phi    = 0d0
 
