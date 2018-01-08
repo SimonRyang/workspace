@@ -71,7 +71,7 @@ contains
     call tock(time)
 
     ! write output
-    call output()
+    call output(0)
 
     if (iter > itermax) write(*,*)'No Convergence'
 
