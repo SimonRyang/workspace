@@ -192,7 +192,7 @@ contains
     inctax = 0d0; captax = 0d0; penben = 0d0; pencon = 0d0; c = 0d0; l = 0d0
 
     ! initialize temporary policy and value functions
-    Q_plus_t; a_plus_t = 0d0; k_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0
+    Q_plus_t = 0d0; a_plus_t = 0d0; k_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0
     inctax_t = 0d0; captax_t = 0d0; penben_t = 0d0; pencon_t = 0d0; c_t = 0d0; l_t = 0d0
     omega_x_t = 0d0; omega_k_t = 0d0
     V_t = 0d0
