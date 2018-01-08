@@ -116,7 +116,7 @@ module globals
 
   ! demographic and other model parameters
   real*8 :: eff(NS, JJ)
-  real*8 :: pen(0:NP, JJ, 0:TT)), ann(0:NX, NS, JJ), ans(0:NX, NS, JJ)
+  real*8 :: pen(0:NP, JJ, 0:TT), ann(0:NX, NS, JJ), ans(0:NX, NS, JJ)
   real*8 :: psi(NS, JJ+1), rpop(NS, JJ)
   real*8 :: beq(NS, JJ, 0:TT), Gama(JJ)
 
