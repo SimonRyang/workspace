@@ -63,7 +63,7 @@ contains
                                       (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
                                       ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), DIFF(0)/YY*100d0
 
-      if (abs(DIFF(it)/YY(it))*100d0 < sig) exit
+      if (abs(DIFF(0)/YY(0))*100d0 < sig) exit
 
     enddo
 
@@ -730,9 +730,9 @@ contains
                     PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
 
                     if(ik == 0) then
-                      LC(it) = LC(it) + eff(is, ij, it)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     else
-                      YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij, it)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
 
                   enddo ! ia
@@ -846,8 +846,8 @@ contains
         punb(is, 1) = psi(is, 1)
         life_exp(is) = life_exp(is) + 22d0*punb(is, 1)*(1d0-psi(is, 2))
         do ij = 2, JJ
-          punb(is, ij, it) = punb(is, it-1, itm)*psi(is, ij)
-          life_exp(is) = life_exp(is) + (22d0 + 5d0*dble(it-1, itm))*punb(is, ij, it)*(1d0-psi(is, ij+1))
+          punb(is, ij) = punb(is, ij-1)*psi(is, ij)
+          life_exp(is) = life_exp(is) + (22d0 + 5d0*dble(ij-1))*punb(is, ij)*(1d0-psi(is, ij+1))
         enddo ! ij
       enddo ! is
 
