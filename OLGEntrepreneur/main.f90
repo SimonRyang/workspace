@@ -10,7 +10,7 @@ program main
   implicit none
 
   ! set government variables
-  mu     = 1d0
+  mu     = 0d0
   lambda = 0d0
   phi    = 0d0
 
@@ -18,7 +18,6 @@ program main
   call get_SteadyState()
 
   close(21)
-
 
 contains
 
@@ -849,29 +848,33 @@ contains
       enddo ! ij
     enddo ! is
 
-    write(*,'(/, a, /)')     '******* CALIBRATION *******'
-    write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
-    write(*,'(a, f10.4)')    '  + (total):           ', sum(life_exp*dist_skill)
-    write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
-    write(*,'(a, 3f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
-    write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
-    write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1, it)*m(:, :, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
-    write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
-    write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
-    write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN(it)/YY*100d0
-    write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup(it)*100d0
-    write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc(it)+TAw(it)+TAr(it)+TAk(it))/YY*100d0
-    write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
-    write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
-    write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
-    write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
-    write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc(it)*100d0
-    write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5*KK/YY
-    write(*,'(a, f10.4)')    '  + corp. sector:      ', 5*KC/YC
-    write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5*KE(it)/max(YE(it), 1d-4)
-    write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r(it))**0.2d0-1d0)*100d0
-    write(*,'(a, f10.4)')    '- bequests (%):        ', BQ(it)/YY*100d0
-    write(*,*)
+    if (it == 0) then
+
+      write(*,'(/, a, /)')     '******* CALIBRATION *******'
+      write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
+      write(*,'(a, f10.4)')    '  + (total):           ', sum(life_exp*dist_skill)
+      write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+      write(*,'(a, 3f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
+      write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+      write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1, it)*m(:, :, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
+      write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN(it)/YY(it)*100d0
+      write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup(it)*100d0
+      write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc(it)+TAw(it)+TAr(it)+TAk(it))/YY(it)*100d0
+      write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
+      write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
+      write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
+      write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
+      write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc(it)*100d0
+      write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5d0*KK(it)/YY(it)
+      write(*,'(a, f10.4)')    '  + corp. sector:      ', 5d0*KC(it)/YC(it)
+      write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5d0*KE(it)/max(YE(it), 1d-4)
+      write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r(it))**0.2d0-1d0)*100d0
+      write(*,'(a, f10.4)')    '- bequests (%):        ', BQ(it)/YY(it)*100d0
+      write(*,*)
+
+    endif
 
   end subroutine
 
