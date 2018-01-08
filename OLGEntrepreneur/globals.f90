@@ -122,7 +122,7 @@ module globals
 
   ! government variables
   real*8 :: mu, phi, lambda
-  real*8 :: tauc, taup
+  real*8 :: tauc(0:TT), taup(0:TT)
 
   ! progressive income tax
   real*8, parameter :: t1 = 0.14d0, t2 = 0.24d0, t3 = 0.45d0
@@ -130,7 +130,7 @@ module globals
 
   ! macroeconomic variables
   real*8 :: r, w
-  real*8 :: ybar, pinv
+  real*8 :: ybar(0:TT), pinv(0:TT)
   real*8 :: AA(0:TT), AX(0:TT), BQ(0:TT), PBEN(0:TT), PCON(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), BB(0:TT)
   real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT)
@@ -408,7 +408,7 @@ contains
     captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = captax_com
     penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pen(ip, ij)
     pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pencon_com
-    c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) =  (aas_com - x_in(1))*pinv
+    c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) =  (aas_com - x_in(1))*pinv(it)
     l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = lab_com
     V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = -fret
 
@@ -436,7 +436,7 @@ contains
     omega_x  = x_in
 
     ! determine future liquid wealth and future annuity asset stock
-    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar)
+    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
     a_temp = (1d0-omega_x)*Q(iq_p_com)
     a_p = max(a_temp, 0d0)
 
@@ -507,7 +507,7 @@ contains
     omega_k  = x_in(2)
 
     ! determine future liquid wealth, future firm capital and future annuity asset stock
-    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar)
+    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
     k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
     a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
     a_p = max(a_temp, 0d0)
@@ -595,23 +595,23 @@ contains
              ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*lab_com)**nu2
 
     ! calculate pension contribution
-    pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar)
+    pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar(it_com))
 
     ! calculate income tax
-    inctax_com = tarif(max(income - taup*pencon_com - d_w*ybar, 0d0))
+    inctax_com = tarif(max(income - taup(it_com)*pencon_com - d_w*ybar(0), 0d0))
 
     ! calculate capital tax
-    captax_com = taur*1.055d0*max(r*(a(ia_com)-xi*k(ik_com)) - d_s*ybar, 0d0)
+    captax_com = taur*1.055d0*max(r*(a(ia_com)-xi*k(ik_com)) - d_s*ybar(0), 0d0)
 
     ! available assets
     aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com) &
-               - inctax_com - captax_com - taup*pencon_com
+               - inctax_com - captax_com - taup(it_com)*pencon_com
 
     ! calculate consumption
-    cons_com = (aas_com - Q_plus)*pinv
+    cons_com = (aas_com - Q_plus)*pinv(it_com)
 
     ! calculate future earning points
-    p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income/ybar, 2d0)))/dble(ij_com)
+    p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income/ybar(it_com), 2d0)))/dble(ij_com)
 
     ! derive interpolation weights
     call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
@@ -684,14 +684,14 @@ contains
     inctax_com = tarif(pen(ip_com, ij_com))
 
     ! calculate capital tax
-    captax_com = taur*1.055d0*max(r*a(ia_com) - d_s*ybar, 0d0)
+    captax_com = taur*1.055d0*max(r*a(ia_com) - d_s*ybar(0), 0d0)
 
     ! available assets
     aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, is_com, ij_com) &
               - inctax_com - captax_com
 
     ! calculate consumption
-    cons_com = (aas_com - Q_plus)*pinv
+    cons_com = (aas_com - Q_plus)*pinv(it_com)
 
     ! define future earning points
     p_plus_com = p(ip_com)

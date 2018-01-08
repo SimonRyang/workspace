@@ -175,16 +175,16 @@ contains
     call grid_Cons_Equi(p, p_l, p_u)
 
     ! get initial guess for household decisions
-    omega_x_t = 0.05d0
-    omega_k_t = 0.05d0
-    l_t = 0.33d0
+    omega_x_t(:, :, :, :, :, :, :, :, :, 0) = 0.05d0
+    omega_k_t(:, :, :, :, :, :, :, :, :, 0) = 0.05d0
+    l_t(:, :, :, :, :, :, :, :, :, 0) = 0.33d0
     do ia = 0, NA
       Q_plus_t(:, ia, :, :, :, :, :, :, :, 0) = a(ia)/2d0
     enddo ! ia
 
     ! initialize tax rates
-    tauc = 0.190d0
-    taup = 0.189d0
+    tauc(0) = 0.190d0
+    taup(0) = 0.189d0
 
     ! initial guesses for macro variables
     KC(0) = 3.400d0
@@ -238,7 +238,7 @@ contains
     ! taup = 7.867802841513299d-2
 
     ! calculate gross price of consumption (inverse)
-    pinv = 1d0/(1d0+tauc)
+    pinv(it) = 1d0/(1d0+tauc(it))
 
     ! calculate individual bequests
     beq(1, :) = Gama(:)*bqs(1, it)/rpop(1, :)
@@ -714,7 +714,7 @@ contains
                     bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAc(it) = TAc(it) + tauc*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAc(it) = TAc(it) + tauc(it)*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TAw(it) = TAw(it) + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -787,10 +787,10 @@ contains
     expend = GG(it) + (1d0+r)*BB(it) - (1d0+n_p)*BB(itp)
 
     ! calculates consumption tax rate
-    tauc = (expend-TAk(it)-TAw(it)-TAr(it))/CC(it)
+    tauc(it) = (expend-TAk(it)-TAw(it)-TAr(it))/CC(it)
 
     ! get budget balancing pension contribution rate
-    taup = PBEN(it)/PCON(it)
+    taup(it) = PBEN(it)/PCON(it)
 
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
@@ -854,14 +854,13 @@ contains
     write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
     write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
     write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN(it)/YY*100d0
-    write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
-    write(*,'(a, f10.4)')    '- gov. expend. (%):    ', (GG+(1d0+r)*BB-(1d0+n_p)*BB)/YY*100d0
+    write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup(it)*100d0
     write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc(it)+TAw(it)+TAr(it)+TAk(it))/YY*100d0
     write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
     write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
     write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
     write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
-    write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc*100d0
+    write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc(it)*100d0
     write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5*KK/YY
     write(*,'(a, f10.4)')    '  + corp. sector:      ', 5*KC/YC
     write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5*KE(it)/max(YE(it), 1d-4)
