@@ -191,7 +191,7 @@ contains
     LC(0) = 3.604d0
     bqs(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
     BB(0) = 2.964d0
-    ybar = 0.555d0
+    ybar(0) = 0.555d0
 
     ! initialize value functions
     V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
@@ -246,9 +246,9 @@ contains
     beq(3, :) = Gama(:)*bqs(3, it)/rpop(3, :)
 
     ! determine the income tax system
-    r1 = 0.278d0*ybar*2d0 !  8,354.00 Euro
-    r2 = 0.449d0*ybar*2d0 ! 13,469.00 Euro
-    r3 = 1.763d0*ybar*2d0 ! 52,881.00 Euro
+    r1 = 0.278d0*ybar(0)*2d0 !  8,354.00 Euro
+    r2 = 0.449d0*ybar(0)*2d0 ! 13,469.00 Euro
+    r3 = 1.763d0*ybar(0)*2d0 ! 52,881.00 Euro
 
     ! calculate annuity payments
     ann = 0d0
@@ -275,7 +275,7 @@ contains
     ! calculate old-age transfers
     pen = 0d0
     do ip = 0, NP
-      pen(ip, JR:JJ) = p(ip)*kappa*ybar
+      pen(ip, JR:JJ) = p(ip)*kappa*ybar(it)
     enddo
 
   end subroutine
@@ -737,7 +737,7 @@ contains
     enddo ! ij
 
     ! get average income
-    ybar = w*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    ybar(it) = w*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
     KC(it) = damp*(AA(it)+AX(it)-BB(it)) +(1d0-damp)*KC(it)
