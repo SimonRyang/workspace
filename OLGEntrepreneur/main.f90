@@ -763,9 +763,12 @@ contains
   !
   ! calculates government parameters
   !#############################################################################
-  subroutine government()
+  subroutine government(it)
 
     implicit none
+
+    !##### INPUT/OUTPUT VARIABLES ##############################################
+    integer, intent(in) :: it
 
     !##### OTHER VARIABLES #####################################################
     real*8 :: expend
@@ -833,12 +836,12 @@ contains
         write(*,'(/, a, /)')     '******* CALIBRATION *******'
         write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
         write(*,'(a, f10.4)')    '  + (total):           ', sum(life_exp*dist_skill)
-        write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
-        write(*,'(a, 3f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1))/sum(m(:, :, :, :, :, :, 1, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1))/sum(m(:, :, :, :, :, :, 2, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1))/sum(m(:, :, :, :, :, :, 3, 1:JR-1))*100d0
-        write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1))/sum(m(:, :, :, :, :, :, :, 1:JR-1))*100d0
-        write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1)*m(:, :, :, :, :, :, :, 1:JR-1))/sum(m(:, :, :, :, :, :, :, 1:JR-1))
-        write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1)*m(:, 0, :, :, :, :, :, 1:JR-1))/sum(m(:, 0, :, :, :, :, :, 1:JR-1))
-        write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1)*m(:, 1:NK, :, :, :, :, :, 1:JR-1))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1)), 1d-4)
+        write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+        write(*,'(a, 3f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
+        write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+        write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1, it)*m(:, :, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+        write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
+        write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
         write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN/YY*100d0
         write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
         write(*,'(a, f10.4)')    '- gov. expend. (%):    ', (GG+(1d0+r)*BB-(1d0+n_p)*BB)/YY*100d0
