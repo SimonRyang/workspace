@@ -408,7 +408,7 @@ contains
     captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = captax_com
     penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pen(ip, ij, it)
     pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pencon_com
-    c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) =  (aas_com - x_in(1))*pinv
+    c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) =  (aas_com - x_in(1))*pinv(it)
     l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = lab_com
     V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = -fret
 
@@ -436,7 +436,7 @@ contains
     omega_x  = x_in
 
     ! determine future liquid wealth and future annuity asset stock
-    x_p = (1d0+r(it_com))/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar)
+    x_p = (1d0+r(it_com))/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
     a_temp = (1d0-omega_x)*Q(iq_p_com)
     a_p = max(a_temp, 0d0)
 
@@ -507,7 +507,7 @@ contains
     omega_k  = x_in(2)
 
     ! determine future liquid wealth, future firm capital and future annuity asset stock
-    x_p = (1d0+r(it_com))/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar)
+    x_p = (1d0+r(it_com))/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
     k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
     a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
     a_p = max(a_temp, 0d0)
@@ -591,7 +591,7 @@ contains
     ind_o = abs(dble(ik_com > 0))
 
     ! calculate current income
-    income = (1d0-ind_o)*w*eff(is_com, ij_com)*eta(iw_com, is_com)*lab_com + &
+    income = (1d0-ind_o)*w(it_com)*eff(is_com, ij_com)*eta(iw_com, is_com)*lab_com + &
              ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*lab_com)**nu2
 
     ! calculate pension contribution
@@ -691,7 +691,7 @@ contains
               - inctax_com - captax_com
 
     ! calculate consumption
-    cons_com = (aas_com - Q_plus)*pinv
+    cons_com = (aas_com - Q_plus)*pinv(it_com)
 
     ! define future earning points
     p_plus_com = p(ip_com)
