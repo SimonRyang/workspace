@@ -129,7 +129,7 @@ module globals
   real*8 :: r1, r2, r3
 
   ! macroeconomic variables
-  real*8 :: r, w
+  real*8 :: r(0:TT), w(0:TT)
   real*8 :: ybar(0:TT), pinv(0:TT)
   real*8 :: AA(0:TT), AX(0:TT), BQ(0:TT), PBEN(0:TT), PCON(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), BB(0:TT)
@@ -393,7 +393,7 @@ contains
                   (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, is, ij, it) +  &
                   (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij, it))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
       endif
-      x_p = (1d0+r)/psi(is, ij)*x(ix)+ mx
+      x_p = (1d0+r(it))/psi(is, ij)*x(ix)+ mx
     else
       x_p = x(ix)
     endif
@@ -436,7 +436,7 @@ contains
     omega_x  = x_in
 
     ! determine future liquid wealth and future annuity asset stock
-    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
+    x_p = (1d0+r(it_com))/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
     a_temp = (1d0-omega_x)*Q(iq_p_com)
     a_p = max(a_temp, 0d0)
 
@@ -507,7 +507,7 @@ contains
     omega_k  = x_in(2)
 
     ! determine future liquid wealth, future firm capital and future annuity asset stock
-    x_p = (1d0+r)/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
+    x_p = (1d0+r(it_com))/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
     k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
     a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
     a_p = max(a_temp, 0d0)
@@ -591,7 +591,7 @@ contains
     ind_o = abs(dble(ik_com > 0))
 
     ! calculate current income
-    income = (1d0-ind_o)*w*eff(is_com, ij_com)*eta(iw_com, is_com)*lab_com + &
+    income = (1d0-ind_o)*w(it_com)*eff(is_com, ij_com)*eta(iw_com, is_com)*lab_com + &
              ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*lab_com)**nu2
 
     ! calculate pension contribution
@@ -601,10 +601,10 @@ contains
     inctax_com = tarif(max(income - taup(it_com)*pencon_com - d_w*ybar(0), 0d0))
 
     ! calculate capital tax
-    captax_com = taur*1.055d0*max(r*(a(ia_com)-xi*k(ik_com)) - d_s*ybar(0), 0d0)
+    captax_com = taur*1.055d0*max(r(it_com)*(a(ia_com)-xi*k(ik_com)) - d_s*ybar(0), 0d0)
 
     ! available assets
-    aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com, it_com) &
+    aas_com = (1d0+r(it_com))*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com, it_com) &
                - inctax_com - captax_com - taup(it_com)*pencon_com
 
     ! calculate consumption
@@ -684,10 +684,10 @@ contains
     inctax_com = tarif(pen(ip_com, ij_com, it_com))
 
     ! calculate capital tax
-    captax_com = taur*1.055d0*max(r*a(ia_com) - d_s*ybar(0), 0d0)
+    captax_com = taur*1.055d0*max(r(it_com)*a(ia_com) - d_s*ybar(0), 0d0)
 
     ! available assets
-    aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com, it_com) + ann(ix_com, is_com, ij_com) &
+    aas_com = (1d0+r(it_com))*a(ia_com) + pen(ip_com, ij_com, it_com) + ann(ix_com, is_com, ij_com) &
               - inctax_com - captax_com
 
     ! calculate consumption

@@ -61,7 +61,7 @@ contains
 
       write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                       (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
-                                      ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF(0)/YY(0)*100d0
+                                      ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), DIFF(0)/YY(0)*100d0
 
       if(abs(DIFF(0)/YY(0))*100d0 < sig) exit
 
@@ -226,8 +226,8 @@ contains
     integer :: ix, ip, is, ij
 
     ! calculate new prices
-    r = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
-    w = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
+    r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
+    w(it) = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
 
     ! set prices in case of life-cycle model
     ! r = 0.393280506035032d0
@@ -256,19 +256,19 @@ contains
     ann_tmp = 1d0
 
     do ij = JJ-1, JR, -1
-      ann_tmp(:) = ann_tmp(:)/(1d0+r)*psi(:, ij+1) + 1d0
+      ann_tmp(:) = ann_tmp(:)/(1d0+r(it))*psi(:, ij+1) + 1d0
     enddo
 
     do is = 1, NS
       do ix = 0, NX
-        ann(ix, is, JR:JJ) = (1d0+r)/psi(is, JR)*x(ix)/ann_tmp(is)
+        ann(ix, is, JR:JJ) = (1d0+r(it))/psi(is, JR)*x(ix)/ann_tmp(is)
       enddo
 
       do ij = 1, JR
         ans(:, is, ij) = x(:)
       enddo
       do ij = JR+1, JJ
-        ans(:, is, ij) = (1d0+r)/psi(is, ij-1)*ans(:, is, ij-1)-ann(:, is, ij-1)
+        ans(:, is, ij) = (1d0+r(it))/psi(is, ij-1)*ans(:, is, ij-1)-ann(:, is, ij-1)
       enddo
     enddo
 
@@ -737,7 +737,7 @@ contains
     enddo ! ij
 
     ! get average income
-    ybar(it) = w*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    ybar(it) = w(it)*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
     KC(it) = damp*(AA(it)+AX(it)-BB(it)) +(1d0-damp)*KC(it)
@@ -757,7 +757,7 @@ contains
     YY(it) = YC(it) + YE(it)
 
     ! compute corporate tax incom
-    TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w*LC(it))
+    TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
 
   end subroutine
 
@@ -784,7 +784,7 @@ contains
     ! computes government expenditures
     GG(it) = gy*YY(0)
     BB(it) = by*YY(0)
-    expend = GG(it) + (1d0+r)*BB(it) - (1d0+n_p)*BB(itp)
+    expend = GG(it) + (1d0+r(it))*BB(it) - (1d0+n_p)*BB(itp)
 
     ! calculates consumption tax rate
     tauc(it) = (expend-TAk(it)-TAw(it)-TAr(it))/CC(it)
@@ -864,20 +864,9 @@ contains
     write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5*KK/YY
     write(*,'(a, f10.4)')    '  + corp. sector:      ', 5*KC/YC
     write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5*KE(it)/max(YE(it), 1d-4)
-    write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r)**0.2d0-1d0)*100d0
+    write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r(it))**0.2d0-1d0)*100d0
     write(*,'(a, f10.4)')    '- bequests (%):        ', BQ(it)/YY*100d0
     write(*,*)
-
-    ! write(*,'(a, f10.4)')'KK:', KK
-    ! write(*,'(a, f10.4)')'AA(it):', AA(it)
-    ! write(*,'(a, f10.4)')'LC(it):', LC(it)
-    ! write(*,'(a, f10.4)')'YY:', YY
-    ! write(*,'(a, f10.4)')'CC(it):', CC(it)
-    ! write(*,'(a, f10.4)')'II:', II
-    ! write(*,'(a, f10.4)')'GG:', GG
-    ! write(*,'(a, f10.4)')'BB:', BB
-    ! write(*,'(a, f10.4)')'r: ', r
-    ! write(*,'(a, f10.4)')'w: ', w
 
   end subroutine
 
