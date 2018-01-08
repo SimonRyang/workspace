@@ -70,8 +70,8 @@ contains
     !stop the clock
     call tock(time)
 
-    ! ! write output
-    ! call outout(0)
+    ! write output
+    call output(0)
 
     write(*,*)'No Convergence'
 
