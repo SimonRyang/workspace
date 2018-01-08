@@ -118,7 +118,7 @@ module globals
   real*8 :: eff(NS, JJ)
   real*8 :: pen(0:NP, JJ), ann(0:NX, NS, JJ), ans(0:NX, NS, JJ)
   real*8 :: psi(NS, JJ+1), rpop(NS, JJ)
-  real*8 :: bqs(NS), beq(NS, JJ), Gama(JJ)
+  real*8 :: beq(NS, JJ), Gama(JJ)
 
   ! government variables
   real*8 :: mu, phi, lambda
@@ -131,10 +131,11 @@ module globals
   ! macroeconomic variables
   real*8 :: r, w
   real*8 :: ybar, pinv
-  real*8 :: AA, AX, BQ, PBEN, PCON
-  real*8 :: KK, KC, KE, LC, BB
-  real*8 :: YY, YC, YE, CC, II, TC, GG
-  real*8 :: TAc, TAr, TAw, TAk
+  real*8 :: AA(0:TT), AX(0:TT), BQ(0:TT), PBEN(0:TT), PCON(0:TT)
+  real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), BB(0:TT)
+  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT)
+  real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAk(0:TT)
+  real*8 :: bqs(NS, 0:TT)
 
   ! different grids to discretize the state space
   real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP)
@@ -173,7 +174,7 @@ module globals
   integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
   real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
   real*8 :: inctax_com, captax_com, pencon_com, aas_com
-  real*8 :: DIFF
+  real*8 :: DIFF(0:TT)
 
   !$omp threadprivate(iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ij_com, it_com)
   !$omp threadprivate(iq_p_com, ia_p_com, ip_p_com, io_p_com)

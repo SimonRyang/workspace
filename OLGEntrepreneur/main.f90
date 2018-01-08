@@ -60,10 +60,10 @@ contains
       call check_grid(iqmax, iamax, ikmax, ixmax, 0)
 
       write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-                                      (/5d0*KK, CC, II/)/YY*100d0, &
-                                      ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF/YY*100d0
+                                      (/5d0*KK(0), CC(it)(0), II(0)/)/YY(0)*100d0, &
+                                      ((1d0+r)**0.2d0-1d0)*100d0, w, DIFF(0)/YY(0)*100d0
 
-      if(abs(DIFF/YY)*100d0 < sig) exit
+      if(abs(DIFF(0)/YY(0))*100d0 < sig) exit
 
     enddo
 
@@ -187,10 +187,10 @@ contains
     taup = 0.189d0
 
     ! initial guesses for macro variables
-    KC = 3.400d0
-    LC = 3.604d0
-    bqs(:) = (/4.610d-2, 0.180d0, 0.106d0/)
-    BB = 2.964d0
+    KC(0) = 3.400d0
+    LC(it)(0) = 3.604d0
+    bqs(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
+    BB(0) = 2.964d0
     ybar = 0.555d0
 
     ! initialize value functions
@@ -226,8 +226,8 @@ contains
     integer :: ix, ip, is, ij
 
     ! calculate new prices
-    r = (1d0-tauk)*(Omega*alpha*(KC/LC)**(alpha-1d0)-delta_k)
-    w = Omega*(1d0-alpha)*(KC/LC)**alpha
+    r = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it)(it))**(alpha-1d0)-delta_k)
+    w = Omega*(1d0-alpha)*(KC(it)/LC(it)(it))**alpha
 
     ! set prices in case of life-cycle model
     ! r = 0.393280506035032d0
@@ -241,9 +241,9 @@ contains
     pinv = 1d0/(1d0+tauc)
 
     ! calculate individual bequests
-    beq(1, :) = Gama(:)*bqs(1)/rpop(1, :)
-    beq(2, :) = Gama(:)*bqs(2)/rpop(2, :)
-    beq(3, :) = Gama(:)*bqs(3)/rpop(3, :)
+    beq(1, :) = Gama(:)*bqs(1, it)/rpop(1, :)
+    beq(2, :) = Gama(:)*bqs(2, it)/rpop(2, :)
+    beq(3, :) = Gama(:)*bqs(3, it)/rpop(3, :)
 
     ! determine the income tax system
     r1 = 0.278d0*ybar*2d0 !  8,354.00 Euro
@@ -684,12 +684,12 @@ contains
     real*8 :: LC_old
 
     ! copy labor supply
-    LC_old = LC
+    LC_old = LC(it)
 
     ! reset macroeconomic aggregates in each iteration step
-    AA = 0d0; AX = 0d0; BQ = 0d0; bqs(:) = 0d0; PBEN = 0d0; PCON = 0d0
-    CC = 0d0; LC = 0d0; YE = 0d0; KE = 0d0; TC = 0d0
-    TAc = 0d0; TAr = 0d0; TAw = 0d0; TAk = 0d0
+    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; bqs(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
+    CC(it) = 0d0; LC(it) = 0d0; YE(it) = 0d0; KE(it) = 0d0; TC(it) = 0d0
+    TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
 
     do ij = 1, JJ
 
@@ -704,22 +704,22 @@ contains
                     ! skip if there is no household
                     if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0) cycle
 
-                    AA = AA + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/(1d0+n_p)
-                    AX = AX + ans(ix, is, ij)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    CC = CC + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    bqs(is) = bqs(is) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    KE = KE + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TC = TC + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAc = TAc + tauc*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAw = TAw + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAr = TAr + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    PBEN = PBEN + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    PCON = PCON + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/(1d0+n_p)
+                    AX(it) = AX(it) + ans(ix, is, ij)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAc(it) = TAc(it) + tauc*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAw(it) = TAw(it) + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
 
                     if(ik == 0) then
-                      LC = LC + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     else
-                       YE = YE + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
 
                   enddo ! ia
@@ -733,27 +733,27 @@ contains
     enddo ! ij
 
     ! get average income
-    ybar = w*LC/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    ybar = w*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
-    KC = damp*(AA+AX-BB) +(1d0-damp)*KC
-    KK = KC + KE
+    KC = damp*(AA(it)+AX(it)-BB) +(1d0-damp)*KC
+    KK = KC + KE(it)
 
     ! update work supply
-    LC = damp*LC +(1d0-damp)*LC_old
+    LC(it) = damp*LC(it) +(1d0-damp)*LC_old
 
     ! compute total bequests
-    BQ = sum(bqs)
+    BQ(it) = sum(bqs)
 
     ! commpute investment
     II = (n_p+delta_k)*KK
 
     ! compute output
-    YC = Omega*KC**alpha*LC**(1d0-alpha)
-    YY = YC + YE
+    YC = Omega*KC**alpha*LC(it)**(1d0-alpha)
+    YY = YC + YE(it)
 
     ! compute corporate tax incom
-    TAk = tauk*(YC-delta_k*KC-w*LC)
+    TAk(it) = tauk*(YC-delta_k*KC-w*LC(it))
 
   end subroutine
 
@@ -779,13 +779,13 @@ contains
     expend = GG + (1d0+r)*BB - (1d0+n_p)*BB
 
     ! calculates consumption tax rate
-    tauc = (expend-TAk-TAw-TAr)/CC
+    tauc = (expend-TAk(it)-TAw(it)-TAr(it))/CC(it)
 
     ! get budget balancing pension contribution rate
-    taup = PBEN/PCON
+    taup = PBEN(it)/PCON(it)
 
     ! compute gap on goods market
-    DIFF = YY-CC-II-TC-GG
+    DIFF = YY-CC(it)-II-TC(it)-GG
 
   end subroutine
 
@@ -845,27 +845,27 @@ contains
     write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1, it)*m(:, :, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
     write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
     write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
-    write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN/YY*100d0
+    write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN(it)/YY*100d0
     write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
     write(*,'(a, f10.4)')    '- gov. expend. (%):    ', (GG+(1d0+r)*BB-(1d0+n_p)*BB)/YY*100d0
-    write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc+TAw+TAr+TAk)/YY*100d0
-    write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc/(TAc+TAw+TAr+TAk)*100d0
-    write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw/(TAc+TAw+TAr+TAk)*100d0
-    write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr/(TAc+TAw+TAr+TAk)*100d0
-    write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk/(TAc+TAw+TAr+TAk)*100d0
+    write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc(it)+TAw(it)+TAr(it)+TAk(it))/YY*100d0
+    write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
+    write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
+    write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
+    write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk(it)/(TAc(it)+TAw(it)+TAr(it)+TAk(it))*100d0
     write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc*100d0
     write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5*KK/YY
     write(*,'(a, f10.4)')    '  + corp. sector:      ', 5*KC/YC
-    write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5*KE/max(YE, 1d-4)
+    write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5*KE(it)/max(YE(it), 1d-4)
     write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r)**0.2d0-1d0)*100d0
-    write(*,'(a, f10.4)')    '- bequests (%):        ', BQ/YY*100d0
+    write(*,'(a, f10.4)')    '- bequests (%):        ', BQ(it)/YY*100d0
     write(*,*)
 
     ! write(*,'(a, f10.4)')'KK:', KK
-    ! write(*,'(a, f10.4)')'AA:', AA
-    ! write(*,'(a, f10.4)')'LC:', LC
+    ! write(*,'(a, f10.4)')'AA(it):', AA(it)
+    ! write(*,'(a, f10.4)')'LC(it):', LC(it)
     ! write(*,'(a, f10.4)')'YY:', YY
-    ! write(*,'(a, f10.4)')'CC:', CC
+    ! write(*,'(a, f10.4)')'CC(it):', CC(it)
     ! write(*,'(a, f10.4)')'II:', II
     ! write(*,'(a, f10.4)')'GG:', GG
     ! write(*,'(a, f10.4)')'BB:', BB
