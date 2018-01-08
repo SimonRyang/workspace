@@ -63,12 +63,12 @@ contains
                                       (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
                                       ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), DIFF(0)/YY*100d0
 
-      if (abs(DIFF/YY)*100d0 < sig) exit
+      if (abs(DIFF(it)/YY(it))*100d0 < sig) exit
 
     enddo
 
     !stop the clock
-    call tock(tim)
+    call tock(time)
 
     ! write output
     call outout(0)
@@ -97,7 +97,7 @@ contains
     ! set survival probabilities
     open(301, file='sp.dat')
     do ij = 1, JJ+1
-      read(301,'(f13.8)')psi(2, ij, it)
+      read(301,'(f13.8)')psi(2, ij)
     enddo
     close(301)
 
@@ -105,31 +105,31 @@ contains
     psi(:, 1) = psi(2, 1)
     psi(:, JJ+1) = 0d0
     do ij = 2, JJ
-      psi(1, ij, it) = psi(2, ij, it) - exp(0.33d0*(dble(it-1, itm)-22d0))
-      psi(3, ij, it) = psi(2, ij, it) + exp(0.33d0*(dble(it-1, itm)-22d0))
+      psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-22d0))
+      psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-22d0))
     enddo
 
     ! set up population structure
     rpop(:, 1, 0) = dist_skill(:)
     do ij = 2, JJ
-      rpop(:, ij, 0) = psi(:, ij, it)*rpop(:, ij-1, 0)/(1d0+n_p)
+      rpop(:, ij, 0) = psi(:, ij)*rpop(:, ij-1, 0)/(1d0+n_p)
     enddo
 
     ! set distribution of bequests
-    Gama(1:JR-1, it) = 1d0
-    Gama(JR:JJ, it) = 0d0
+    Gama(1:JR-1) = 1d0
+    Gama(JR:JJ) = 0d0
     Gama = Gama/sum(Gama)
 
     ! initialize age earnings process
-    eff(1, 1:JR-1, it) = (/1.2987778d0, 1.5794954d0, 1.6404434d0, 1.6908550d0, 1.7507724d0, &
+    eff(1, 1:JR-1) = (/1.2987778d0, 1.5794954d0, 1.6404434d0, 1.6908550d0, 1.7507724d0, &
                        1.7586790d0, 1.7611338d0, 1.8054554d0, 1.7423268d0/)
-    eff(2, 1:JR-1, it) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
+    eff(2, 1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
                       2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)
-    eff(3, 1:JR-1, it) = (/1.3882564d0, 2.1841104d0, 2.9655702d0, 3.3290738d0, 3.4171474d0, &
+    eff(3, 1:JR-1) = (/1.3882564d0, 2.1841104d0, 2.9655702d0, 3.3290738d0, 3.4171474d0, &
                        3.4497238d0, 3.4046532d0, 3.3062074d0, 3.1235630d0/)
 
     ! earnings process during retirement is equal to zero
-    eff(:, JR:JJ, it) = 0d0
+    eff(:, JR:JJ) = 0d0
 
     ! initialize productivity process
     call discretize_AR(0.95666d0**5d0, 0.0d0, sigma5(0.95666d0, 0.02321d0), eta(:, 1), pi_eta(:, :, 1), dist_eta(:, 1))
@@ -175,9 +175,9 @@ contains
     call grid_Cons_Equi(p, p_l, p_u)
 
     ! get initial guess for household decisions
-    omega_x_t(:, :, :, :, :, :, :, :, 0) = 0.05d0
-    omega_k_t(:, :, :, :, :, :, :, :, 0) = 0.05d0
-    l_t(:, :, :, :, :, :, :, :, 0) = 0.33d0
+    omega_x_t(:, :, :, :, :, :, :, :, :, 0) = 0.05d0
+    omega_k_t(:, :, :, :, :, :, :, :, :, 0) = 0.05d0
+    l_t(:, :, :, :, :, :, :, :, :, 0) = 0.33d0
     do ia = 0, NA
       Q_plus_t(:, ia, :, :, :, :, :, :, :, 0) = a(ia)/2d0
     enddo ! ia
@@ -273,8 +273,8 @@ contains
         enddo
 
         do ij = JR+1, JJ
-          itm = year(it, ij, it-1, itm)
-          ans(:, is, ij, it) = (1d0+r(it))/psi(is, it-1, itm)*ans(:, is, ij-1, itm) - ann(:, is, ij-1, itm)
+          itm = year(it, ij, ij-1)
+          ans(:, is, ij, it) = (1d0+r(it))/psi(is, ij)*ans(:, is, ij-1, itm) - ann(:, is, ij-1, itm)
         enddo
 
       enddo
@@ -305,7 +305,7 @@ contains
 
     ! solve household problem recursively
 
-    it = year(it_in, ij_in, JJ, it)
+    it = year(it_in, ij_in, JJ)
 
     omega_x_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
     omega_k_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
@@ -347,7 +347,7 @@ contains
     ! solve for retirement age
     do ij = JJ-1, JR, -1
 
-      it = year(it_in, ij_in, ij, it)
+      it = year(it_in, ij_in, ij)
 
       !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij, it)
       do is = 1, NS
@@ -619,37 +619,37 @@ contains
                       do ie_p = 1, NE
 
                         m(ial, ikl, ixl, ipl, iw_p, ie_p, is, ij, it) = m(ial, ikl, ixl, ipl, iw_p, ie_p, is, ij, it) + &
-                              varphi_a*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              varphi_a*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(ial, ikl, ixl, ipr, iw_p, ie_p, is, ij, it) = m(ial, ikl, ixl, ipr, iw_p, ie_p, is, ij, it) + &
-                              varphi_a*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              varphi_a*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(ial, ikl, ixr, ipl, iw_p, ie_p, is, ij, it) = m(ial, ikl, ixr, ipl, iw_p, ie_p, is, ij, it) + &
-                              varphi_a*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              varphi_a*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(ial, ikl, ixr, ipr, iw_p, ie_p, is, ij, it) = m(ial, ikl, ixr, ipr, iw_p, ie_p, is, ij, it) + &
-                              varphi_a*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              varphi_a*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(ial, ikr, ixl, ipl, iw_p, ie_p, is, ij, it) = m(ial, ikr, ixl, ipl, iw_p, ie_p, is, ij, it) + &
-                              varphi_a*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              varphi_a*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(ial, ikr, ixl, ipr, iw_p, ie_p, is, ij, it) = m(ial, ikr, ixl, ipr, iw_p, ie_p, is, ij, it) + &
-                              varphi_a*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              varphi_a*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(ial, ikr, ixr, ipl, iw_p, ie_p, is, ij, it) = m(ial, ikr, ixr, ipl, iw_p, ie_p, is, ij, it) + &
-                              varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(ial, ikr, ixr, ipr, iw_p, ie_p, is, ij, it) = m(ial, ikr, ixr, ipr, iw_p, ie_p, is, ij, it) + &
-                              varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              varphi_a*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(iar, ikl, ixl, ipl, iw_p, ie_p, is, ij, it) = m(iar, ikl, ixl, ipl, iw_p, ie_p, is, ij, it) + &
-                              (1d0-varphi_a)*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              (1d0-varphi_a)*varphi_k*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(iar, ikl, ixl, ipr, iw_p, ie_p, is, ij, it) = m(iar, ikl, ixl, ipr, iw_p, ie_p, is, ij, it) + &
-                              (1d0-varphi_a)*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              (1d0-varphi_a)*varphi_k*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(iar, ikl, ixr, ipl, iw_p, ie_p, is, ij, it) = m(iar, ikl, ixr, ipl, iw_p, ie_p, is, ij, it) + &
-                              (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(iar, ikl, ixr, ipr, iw_p, ie_p, is, ij, it) = m(iar, ikl, ixr, ipr, iw_p, ie_p, is, ij, it) + &
-                              (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              (1d0-varphi_a)*varphi_k*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(iar, ikr, ixl, ipl, iw_p, ie_p, is, ij, it) = m(iar, ikr, ixl, ipl, iw_p, ie_p, is, ij, it) + &
-                              (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(iar, ikr, ixl, ipr, iw_p, ie_p, is, ij, it) = m(iar, ikr, ixl, ipr, iw_p, ie_p, is, ij, it) + &
-                              (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              (1d0-varphi_a)*(1d0-varphi_k)*varphi_x*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(iar, ikr, ixr, ipl, iw_p, ie_p, is, ij, it) = m(iar, ikr, ixr, ipl, iw_p, ie_p, is, ij, it) + &
-                              (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*varphi_p*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
                         m(iar, ikr, ixr, ipr, iw_p, ie_p, is, ij, it) = m(iar, ikr, ixr, ipr, iw_p, ie_p, is, ij, it) + &
-                              (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
+                              (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(1d0-varphi_p)*pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, it-1, itm)/(1d0+n_p)
 
                       enddo
                     enddo
@@ -846,7 +846,7 @@ contains
         punb(is, 1) = psi(is, 1)
         life_exp(is) = life_exp(is) + 22d0*punb(is, 1)*(1d0-psi(is, 2))
         do ij = 2, JJ
-          punb(is, ij, it) = punb(is, it-1, itm)*psi(is, ij, it)
+          punb(is, ij, it) = punb(is, it-1, itm)*psi(is, ij)
           life_exp(is) = life_exp(is) + (22d0 + 5d0*dble(it-1, itm))*punb(is, ij, it)*(1d0-psi(is, ij+1))
         enddo ! ij
       enddo ! is
