@@ -717,22 +717,22 @@ contains
                     ! skip if there is no household
                     ! if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0) cycle
 
-                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
-                    AX(it) = AX(it) + ans(ix, is, ij, it)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/(1d0+n_p)
+                    AX(it) = AX(it) + ans(ix, is, ij)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
+                    bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAc(it) = TAc(it) + tauc(it)*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAw(it) = TAw(it) + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAc(it) = TAc(it) + tauc*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAw(it) = TAw(it) + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
 
                     if(ik == 0) then
                       LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     else
-                      YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
 
                   enddo ! ia
