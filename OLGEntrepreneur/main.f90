@@ -173,14 +173,6 @@ contains
     ! initialize pension claim grid
     call grid_Cons_Equi(p, p_l, p_u)
 
-    ! get initial guess for household decisions
-    omega_x_t(:, :, :, :, :, :, :, :, :, 0) = 0.05d0
-    omega_k_t(:, :, :, :, :, :, :, :, :, 0) = 0.05d0
-    l_t(:, :, :, :, :, :, :, :, :, 0) = 0.33d0
-    do ia = 0, NA
-      Q_plus_t(:, ia, :, :, :, :, :, :, :, 0) = a(ia)/2d0
-    enddo ! ia
-
     ! initialize tax rates
     tauc(0) = 0.190d0
     taup(0) = 0.189d0
@@ -196,11 +188,22 @@ contains
     V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
 
     ! initialize policy functions
-    Q_plus = 0d0; a_plus = 0d0; x_plus = 0d0; p_plus = 0d0; k_plus = 0d0; c = 0d0; l = 0d0
+    Q_plus = 0d0; a_plus = 0d0; k_plus = 0d0; x_plus = 0d0; p_plus = 0d0
+    inctax = 0d0; captax = 0d0; penben = 0d0; pencon = 0d0; c = 0d0; l = 0d0
 
     ! initialize temporary policy and value functions
-    a_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0; k_plus_t = 0d0; c_t = 0d0
+    Q_plus_t; a_plus_t = 0d0; k_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0
+    inctax_t = 0d0; captax_t = 0d0; penben_t = 0d0; pencon_t = 0d0; c_t = 0d0; l_t = 0d0
+    omega_x_t = 0d0; omega_k_t = 0d0
     V_t = 0d0
+
+    ! get initial guess for household decisions
+    omega_x_t(:, :, :, :, :, :, :, :, 1:JR-1, 0) = 0.05d0
+    omega_k_t(:, :, :, :, :, :, :, :, 1:JR-2, 0) = 0.05d0
+    l_t(:, :, :, :, :, :, :, :, 1:JR-1, 0) = 0.33d0
+    do ia = 0, NA
+      Q_plus_t(:, ia, :, :, :, :, :, :, :, 0) = a(ia)/2d0
+    enddo ! ia
 
     ! open files
     open(21, file='output.out')

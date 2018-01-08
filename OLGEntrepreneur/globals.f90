@@ -26,13 +26,13 @@ module globals
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 12
+  integer, parameter :: NQ = 16
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 12
+  integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 12
+  integer, parameter :: NK = 16
 
   ! number of points on the annuity asset grid
   integer, parameter :: NX = 0
@@ -78,7 +78,7 @@ module globals
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 6d0
+  real*8, parameter :: Q_u    = 8d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
