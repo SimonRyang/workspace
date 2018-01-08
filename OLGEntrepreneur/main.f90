@@ -223,7 +223,7 @@ contains
 
     !##### OTHER VARIABLES #####################################################
     real*8 :: ann_tmp(NS)
-    integer :: ix, ip, is, ij, itp
+    integer :: ix, ip, is, ij, itm, itp
 
     ! calculate new prices
     r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
