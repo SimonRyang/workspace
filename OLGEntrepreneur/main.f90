@@ -790,85 +790,88 @@ contains
   end subroutine
 
 
-    ! subroutine for writing output
-    subroutine output()
+  ! subroutine for writing output
+  subroutine output(it)
 
-        implicit none
+    implicit none
 
-        integer :: is, ij
-        real*8 :: life_exp(NS), punb(NS, JJ)
+    !##### INPUT/OUTPUT VARIABLES #############################################
+    integer, intent(in) :: it
 
-        ! integer :: ij, ages(JJ)
-        ! ! set up age variable
-        ! ages = 20 + 5*(/(ij-1, ij=1,JJ)/)
-        !
-        ! ! polt homeownership ratio
-        ! call plot(dble(ages), o_coh(:), legend='Entrepreneurship')
-        ! call execplot(xlabel='Age j', ylabel='Entrepreneurship', ylim=(/0d0, 1d0/))
-        !
-        ! ! plot consumption for homeowner
-        ! call plot(dble(ages), c_coh(1, :), legend='Consumption  - Entrepreneur')
-        ! call plot(dble(ages), a_coh(1, :), legend='Assets       - Entrepreneur')
-        ! call plot(dble(ages), x_coh(1, :), legend='Annuities    - Entrepreneur')
-        ! call plot(dble(ages), y_coh(1, :), legend='Income       - Entrepreneur')
-        ! call plot(dble(ages), l_coh(1, :), legend='Labor        - Entrepreneur')
-        ! call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
-        ! call execplot(xlabel='Age j', ylabel='Consumption/Assets')
-        !
-        ! ! polt consumption for renter
-        ! call plot(dble(ages), c_coh(0, :), legend='Consumption  - Worker')
-        ! call plot(dble(ages), a_coh(0, :), legend='Assets       - Worker')
-        ! call plot(dble(ages), x_coh(0, :), legend='Annuities    - Worker')
-        ! call plot(dble(ages), y_coh(0, :), legend='Labor Income - Worker')
-        ! call plot(dble(ages), l_coh(0, :), legend='Labor        - Worker')
-        ! call execplot(xlabel='Age j', ylabel='Consumption/Assets')
+    integer :: is, ij
+    real*8 :: life_exp(NS), punb(NS, JJ)
 
-        life_exp = 0d0
-        do is = 1, NS
-          punb(is, 1) = psi(is, 1)
-          life_exp(is) = life_exp(is) + 22d0*punb(is, 1)*(1d0-psi(is, 2))
-          do ij = 2, JJ
-            punb(is, ij) = punb(is, ij-1)*psi(is, ij)
-            life_exp(is) = life_exp(is) + (22d0 + 5d0*dble(ij-1))*punb(is, ij)*(1d0-psi(is, ij+1))
-          enddo ! ij
-        enddo ! is
+    ! integer :: ij, ages(JJ)
+    ! ! set up age variable
+    ! ages = 20 + 5*(/(ij-1, ij=1,JJ)/)
+    !
+    ! ! polt homeownership ratio
+    ! call plot(dble(ages), o_coh(:), legend='Entrepreneurship')
+    ! call execplot(xlabel='Age j', ylabel='Entrepreneurship', ylim=(/0d0, 1d0/))
+    !
+    ! ! plot consumption for homeowner
+    ! call plot(dble(ages), c_coh(1, :), legend='Consumption  - Entrepreneur')
+    ! call plot(dble(ages), a_coh(1, :), legend='Assets       - Entrepreneur')
+    ! call plot(dble(ages), x_coh(1, :), legend='Annuities    - Entrepreneur')
+    ! call plot(dble(ages), y_coh(1, :), legend='Income       - Entrepreneur')
+    ! call plot(dble(ages), l_coh(1, :), legend='Labor        - Entrepreneur')
+    ! call plot(dble(ages), k_coh(:),    legend='Investment   - Entrepreneur')
+    ! call execplot(xlabel='Age j', ylabel='Consumption/Assets')
+    !
+    ! ! polt consumption for renter
+    ! call plot(dble(ages), c_coh(0, :), legend='Consumption  - Worker')
+    ! call plot(dble(ages), a_coh(0, :), legend='Assets       - Worker')
+    ! call plot(dble(ages), x_coh(0, :), legend='Annuities    - Worker')
+    ! call plot(dble(ages), y_coh(0, :), legend='Labor Income - Worker')
+    ! call plot(dble(ages), l_coh(0, :), legend='Labor        - Worker')
+    ! call execplot(xlabel='Age j', ylabel='Consumption/Assets')
 
-        write(*,'(/, a, /)')     '******* CALIBRATION *******'
-        write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
-        write(*,'(a, f10.4)')    '  + (total):           ', sum(life_exp*dist_skill)
-        write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
-        write(*,'(a, 3f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
-        write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
-        write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1, it)*m(:, :, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
-        write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
-        write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
-        write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN/YY*100d0
-        write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
-        write(*,'(a, f10.4)')    '- gov. expend. (%):    ', (GG+(1d0+r)*BB-(1d0+n_p)*BB)/YY*100d0
-        write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc+TAw+TAr+TAk)/YY*100d0
-        write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc/(TAc+TAw+TAr+TAk)*100d0
-        write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw/(TAc+TAw+TAr+TAk)*100d0
-        write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr/(TAc+TAw+TAr+TAk)*100d0
-        write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk/(TAc+TAw+TAr+TAk)*100d0
-        write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc*100d0
-        write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5*KK/YY
-        write(*,'(a, f10.4)')    '  + corp. sector:      ', 5*KC/YC
-        write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5*KE/max(YE, 1d-4)
-        write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r)**0.2d0-1d0)*100d0
-        write(*,'(a, f10.4)')    '- bequests (%):        ', BQ/YY*100d0
-        write(*,*)
+    life_exp = 0d0
+    do is = 1, NS
+      punb(is, 1) = psi(is, 1)
+      life_exp(is) = life_exp(is) + 22d0*punb(is, 1)*(1d0-psi(is, 2))
+      do ij = 2, JJ
+        punb(is, ij) = punb(is, ij-1)*psi(is, ij)
+        life_exp(is) = life_exp(is) + (22d0 + 5d0*dble(ij-1))*punb(is, ij)*(1d0-psi(is, ij+1))
+      enddo ! ij
+    enddo ! is
 
-        ! write(*,'(a, f10.4)')'KK:', KK
-        ! write(*,'(a, f10.4)')'AA:', AA
-        ! write(*,'(a, f10.4)')'LC:', LC
-        ! write(*,'(a, f10.4)')'YY:', YY
-        ! write(*,'(a, f10.4)')'CC:', CC
-        ! write(*,'(a, f10.4)')'II:', II
-        ! write(*,'(a, f10.4)')'GG:', GG
-        ! write(*,'(a, f10.4)')'BB:', BB
-        ! write(*,'(a, f10.4)')'r: ', r
-        ! write(*,'(a, f10.4)')'w: ', w
+    write(*,'(/, a, /)')     '******* CALIBRATION *******'
+    write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
+    write(*,'(a, f10.4)')    '  + (total):           ', sum(life_exp*dist_skill)
+    write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+    write(*,'(a, 3f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
+    write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+    write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1, it)*m(:, :, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
+    write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
+    write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN/YY*100d0
+    write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup*100d0
+    write(*,'(a, f10.4)')    '- gov. expend. (%):    ', (GG+(1d0+r)*BB-(1d0+n_p)*BB)/YY*100d0
+    write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc+TAw+TAr+TAk)/YY*100d0
+    write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc/(TAc+TAw+TAr+TAk)*100d0
+    write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw/(TAc+TAw+TAr+TAk)*100d0
+    write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr/(TAc+TAw+TAr+TAk)*100d0
+    write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk/(TAc+TAw+TAr+TAk)*100d0
+    write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc*100d0
+    write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5*KK/YY
+    write(*,'(a, f10.4)')    '  + corp. sector:      ', 5*KC/YC
+    write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5*KE/max(YE, 1d-4)
+    write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r)**0.2d0-1d0)*100d0
+    write(*,'(a, f10.4)')    '- bequests (%):        ', BQ/YY*100d0
+    write(*,*)
 
-    end subroutine
+    ! write(*,'(a, f10.4)')'KK:', KK
+    ! write(*,'(a, f10.4)')'AA:', AA
+    ! write(*,'(a, f10.4)')'LC:', LC
+    ! write(*,'(a, f10.4)')'YY:', YY
+    ! write(*,'(a, f10.4)')'CC:', CC
+    ! write(*,'(a, f10.4)')'II:', II
+    ! write(*,'(a, f10.4)')'GG:', GG
+    ! write(*,'(a, f10.4)')'BB:', BB
+    ! write(*,'(a, f10.4)')'r: ', r
+    ! write(*,'(a, f10.4)')'w: ', w
+
+  end subroutine
 
 end program
