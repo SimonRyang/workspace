@@ -116,12 +116,12 @@ module globals
 
   ! demographic and other model parameters
   real*8 :: eff(NS, JJ)
-  real*8 :: pen(0:NP, JJ), ann(0:NX, NS, JJ), ans(0:NX, NS, JJ)
+  real*8 :: pen(0:NP, JJ, 0:TT)), ann(0:NX, NS, JJ), ans(0:NX, NS, JJ)
   real*8 :: psi(NS, JJ+1), rpop(NS, JJ)
-  real*8 :: beq(NS, JJ), Gama(JJ)
+  real*8 :: beq(NS, JJ, 0:TT), Gama(JJ)
 
   ! government variables
-  real*8 :: mu, phi, lambda
+  real*8 :: mu(0:TT), phi(0:TT), lambda(0:TT)
   real*8 :: tauc(0:TT), taup(0:TT)
 
   ! progressive income tax
@@ -406,7 +406,7 @@ contains
     p_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = p_plus_com
     inctax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = inctax_com
     captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = captax_com
-    penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pen(ip, ij)
+    penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pen(ip, ij, it)
     pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pencon_com
     c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) =  (aas_com - x_in(1))*pinv(it)
     l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = lab_com
@@ -595,7 +595,7 @@ contains
              ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*lab_com)**nu2
 
     ! calculate pension contribution
-    pencon_com = (1d0-(1d0-phi)*ind_o)*min(income, 2d0*ybar(it_com))
+    pencon_com = (1d0-(1d0-phi(it_com))*ind_o)*min(income, 2d0*ybar(it_com))
 
     ! calculate income tax
     inctax_com = tarif(max(income - taup(it_com)*pencon_com - d_w*ybar(0), 0d0))
@@ -604,14 +604,14 @@ contains
     captax_com = taur*1.055d0*max(r*(a(ia_com)-xi*k(ik_com)) - d_s*ybar(0), 0d0)
 
     ! available assets
-    aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com) &
+    aas_com = (1d0+r)*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com, it_com) &
                - inctax_com - captax_com - taup(it_com)*pencon_com
 
     ! calculate consumption
     cons_com = (aas_com - Q_plus)*pinv(it_com)
 
     ! calculate future earning points
-    p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi)*ind_o)*mu*(lambda + (1d0-lambda)*min(income/ybar(it_com), 2d0)))/dble(ij_com)
+    p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi(it_com))*ind_o)*mu(it_com)*(lambda(it_com) + (1d0-lambda(it_com))*min(income/ybar(it_com), 2d0)))/dble(ij_com)
 
     ! derive interpolation weights
     call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
@@ -681,13 +681,13 @@ contains
     pencon_com = 0d0
 
     ! calculate income tax
-    inctax_com = tarif(pen(ip_com, ij_com))
+    inctax_com = tarif(pen(ip_com, ij_com, it_com))
 
     ! calculate capital tax
     captax_com = taur*1.055d0*max(r*a(ia_com) - d_s*ybar(0), 0d0)
 
     ! available assets
-    aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com) + ann(ix_com, is_com, ij_com) &
+    aas_com = (1d0+r)*a(ia_com) + pen(ip_com, ij_com, it_com) + ann(ix_com, is_com, ij_com) &
               - inctax_com - captax_com
 
     ! calculate consumption

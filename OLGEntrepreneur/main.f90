@@ -241,9 +241,9 @@ contains
     pinv(it) = 1d0/(1d0+tauc(it))
 
     ! calculate individual bequests
-    beq(1, :) = Gama(:)*bqs(1, it)/rpop(1, :)
-    beq(2, :) = Gama(:)*bqs(2, it)/rpop(2, :)
-    beq(3, :) = Gama(:)*bqs(3, it)/rpop(3, :)
+    beq(1, :, it) = Gama(:)*bqs(1, it)/rpop(1, :)
+    beq(2, :, it) = Gama(:)*bqs(2, it)/rpop(2, :)
+    beq(3, :, it) = Gama(:)*bqs(3, it)/rpop(3, :)
 
     ! determine the income tax system
     r1 = 0.278d0*ybar(0)*2d0 !  8,354.00 Euro
@@ -275,7 +275,7 @@ contains
     ! calculate old-age transfers
     pen = 0d0
     do ip = 0, NP
-      pen(ip, JR:JJ) = p(ip)*kappa*ybar(it)
+      pen(ip, JR:JJ, it) = p(ip)*kappa*ybar(it)
     enddo
 
   end subroutine
