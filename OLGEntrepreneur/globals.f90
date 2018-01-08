@@ -174,7 +174,7 @@ module globals
   integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
   real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
   real*8 :: inctax_com, captax_com, pencon_com, aas_com
-  real*8 :: DIFF
+  real*8 :: DIFF(0:TT)
 
   !$omp threadprivate(iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ij_com, it_com)
   !$omp threadprivate(iq_p_com, ia_p_com, ip_p_com, io_p_com)
