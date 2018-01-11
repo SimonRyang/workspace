@@ -127,12 +127,6 @@ contains
         call get_distribution(it)
       enddo
 
-      write(*,*) sum(m(:, :, :, :, :, :, :, :, 0))
-      write(*,*) sum(m(:, :, :, :, :, :, :, :, 1))
-      write(*,*) sum(m(:, :, :, :, :, :, :, :, 2))
-      write(*,*) sum(m(:, :, :, :, :, :, :, :, 3))
-      write(*,*) sum(m(:, :, :, :, :, :, :, :, TT))
-
       ! aggregate individual decisions
       do it = 1, TT
         call aggregation(it)
@@ -142,6 +136,12 @@ contains
       do it = 1, TT
         call government(it)
       enddo
+
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 0))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 1))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 2))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 3))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, TT))
 
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
