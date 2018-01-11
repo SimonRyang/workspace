@@ -180,7 +180,7 @@ contains
     ! initial guesses for macro variables
     KC(0) = 3.400d0
     LC(0) = 3.604d0
-    bqs(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
+    BQS(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
     BB(0) = 2.964d0
     ybar(0) = 0.555d0
 
@@ -225,7 +225,7 @@ contains
 
     !##### OTHER VARIABLES #####################################################
     real*8 :: ann_tmp(NS)
-    integer :: ix, ip, is, ij, itm, itp
+    integer :: ix, ip, is, ij, iij, itp
 
     ! calculate new prices
     r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
@@ -234,7 +234,7 @@ contains
     ! set prices in case of life-cycle model
     ! r = 0.393280506035032d0
     ! w = 0.877841532937879d0
-    ! bqs = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
+    ! BQS = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
     ! ybar = 0.555719715351030d0
     ! tauc = 0.128579256047982d0
     ! taup = 7.867802841513299d-2
@@ -243,9 +243,9 @@ contains
     pinv(it) = 1d0/(1d0+tauc(it))
 
     ! calculate individual bequests
-    beq(1, :, it) = Gama(:)*bqs(1, it)/rpop(1, :)
-    beq(2, :, it) = Gama(:)*bqs(2, it)/rpop(2, :)
-    beq(3, :, it) = Gama(:)*bqs(3, it)/rpop(3, :)
+    beq(1, :, it) = Gama(:)*BQS(1, it)/rpop(1, :)
+    beq(2, :, it) = Gama(:)*BQS(2, it)/rpop(2, :)
+    beq(3, :, it) = Gama(:)*BQS(3, it)/rpop(3, :)
 
     ! determine the income tax system
     r1 = 0.278d0*ybar(0)*2d0 !  8,354.00 Euro
@@ -254,30 +254,17 @@ contains
 
     ! calculate annuity payments
     ann(:, :, :, it) = 0d0
-    ans(:, :, :, it) = 0d0
-    ann_tmp = 1d0
 
-    do ij = JJ-1, JR, -1
-      itp = year(it, JR, ij+1)
-      ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psi(:, ij+1) + 1d0
-    enddo
-
-    do is = 1, NS
+    do ij = JR, JJ
+      ann_tmp = 1d0
+      do iij = JJ, ij+1, -1
+        itp = year(it, ij, iij)
+        ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psi(:, iij) + 1d0
+      enddo ! iij
       do ix = 0, NX
-        do ij = JR, JJ
-          itp = year(it, JR, ij)
-          ann(ix, is, ij, itp) = (1d0+r(it))/psi(is, JR)*x(ix)/ann_tmp(is)
-        enddo
-      enddo
-
-      do ij = 1, JR
-        ans(:, is, ij, it) = x(:)
-      enddo
-      do ij = JR+1, JJ
-        itm = year(it, 2, 1)
-        ans(:, is, ij, it) = (1d0+r(itm))/psi(is, ij-1)*ans(:, is, ij-1, itm)-ann(:, is, ij-1, itm)
-      enddo
-    enddo
+        ann(ix, :, ij, it) = (1d0+r(it))/psi(:, ij)*x(ix)/ann_tmp(:)
+      enddo ! ix
+    enddo ! ij
 
     ! calculate old-age transfers
     pen = 0d0
@@ -305,6 +292,7 @@ contains
 
     ! solve household problem recursively
 
+    ! solve for oldest cohort
     it = year(it_in, ij_in, JJ)
 
     omega_x_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
@@ -368,7 +356,7 @@ contains
       enddo ! is
       !$omp end parallel do
 
-      !$omp parallel do collapse(2) schedule(dynamic) num_threads(numthreads) shared(ij)
+      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
       do is = 1, NS
         do ip = 0, NP
           do ix = 0, NX
@@ -402,7 +390,8 @@ contains
 
     enddo ! ij
 
-    do ij = JR-1, 1, -1
+    ! solve for working age
+    do ij = JR-1, 2, -1
 
       it = year(it_in, ij_in, ij)
 
@@ -430,7 +419,7 @@ contains
       enddo ! is
       !$omp end parallel do
 
-      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+      !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
       ! solve the consumption savings problem
       do is = 1, NS
         do ie = 1, NE
@@ -448,7 +437,7 @@ contains
 
                     ! decision on whether to be homeowner or renter next period
                     io_p = 0
-                    if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, is, ij, it) > V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)) io_p = 1
+                    if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, is, ij, it) > V_t(0, ia, ik, ix, ip, iw, ie, is, ij, it)) io_p = 1
 
                     ! copy decisions
                     Q_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -474,9 +463,78 @@ contains
       !$omp end parallel do
 
       call interpolate(ij, it)
-      !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
 
     enddo ! ij
+
+    ! solve for youngest cohort
+    it = year(it_in, ij_in, 1)
+
+    !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
+    do is = 1, NS
+      do ie = 1, NE
+        do iw = 1, NW
+          do ip_p = 0, NP
+            do iq_p = 0, NQ
+
+              ! next period worker
+              call solve_worker(iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+
+              ! copy decisions
+              omega_x_t(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_x_t(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+              omega_k_t(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_k_t(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+              S(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = S(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+
+              ! next period entrepreneur
+              call solve_entrepreneur(iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+
+              ! copy decisions
+              omega_x_t(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_x_t(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+              omega_k_t(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_k_t(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+              S(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = S(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+
+            enddo ! iq_p
+          enddo ! ip_p
+        enddo ! iw
+      enddo ! ie
+    enddo ! is
+    !$omp end parallel do
+
+    !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+    ! solve the consumption savings problem
+    do is = 1, NS
+      do ie = 1, NE
+        do iw = 1, NW
+
+          ! next period worker
+          call solve_consumption(0, 0, 0, 0, 0, iw, ie, is, 1, it)
+
+          ! next period entrpreneur
+          if(ij < JR-1) call solve_consumption(1, 0, 0, 0, 0, iw, ie, is, 1, it)
+
+          ! decision on whether to be homeowner or renter next period
+          io_p = 0
+          if(ij < JR-1 .and. V_t(1, 0, 0, 0, 0, iw, ie, is, 1, it) > V_t(0, 0, 0, 0, 0, iw, ie, is, 1, it)) io_p = 1
+
+          ! copy decisions
+          Q_plus(:, :, :, :, iw, ie, is, 1, it) = Q_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          a_plus(:, :, :, :, iw, ie, is, 1, it) = a_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          x_plus(:, :, :, :, iw, ie, is, 1, it) = x_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          p_plus(:, :, :, :, iw, ie, is, 1, it) = p_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          k_plus(:, :, :, :, iw, ie, is, 1, it) = k_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          c(:, :, :, :, iw, ie, is, 1, it) = c_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          l(:, :, :, :, iw, ie, is, 1, it) = l_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          inctax(:, :, :, :, iw, ie, is, 1, it) = inctax_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          captax(:, :, :, :, iw, ie, is, 1, it) = captax_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          penben(:, :, :, :, iw, ie, is, 1, it) = penben_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          pencon(:, :, :, :, iw, ie, is, 1, it) = pencon_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+          V(:, :, :, :, iw, ie, is, 1, it) = V_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+
+        enddo ! iw
+      enddo ! ie
+    enddo ! is
+    !$omp end parallel do
+
+    call interpolate(1, it)
 
   end subroutine
 
@@ -698,7 +756,7 @@ contains
     LC_old = LC(it)
 
     ! reset macroeconomic aggregates in each iteration step
-    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; bqs(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
+    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; BQS(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
     CC(it) = 0d0; LC(it) = 0d0; YE(it) = 0d0; KE(it) = 0d0; TC(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
 
@@ -715,10 +773,10 @@ contains
                     ! skip if there is no household
                     if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
-                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    AX(it) = AX(it) + ans(ix, is, ij, it)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    AX(it) = AX(it) + x_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/(1d0+n_p)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
+                    BQS(is, it) = BQS(is, it) + (1d0+r(it))*(a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TAc(it) = TAc(it) + tauc(it)*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -754,7 +812,7 @@ contains
     LC(it) = damp*LC(it) +(1d0-damp)*LC_old
 
     ! compute total bequests
-    BQ(it) = sum(bqs(:, it))
+    BQ(it) = sum(BQS(:, it))
 
     ! commpute investment
     II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)

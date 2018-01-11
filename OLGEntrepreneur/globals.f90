@@ -5,7 +5,7 @@ module globals
   implicit none
 
   ! number of parallel used cores
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 4
 
   ! number of years the household lives
   integer, parameter :: JJ = 16
@@ -14,25 +14,25 @@ module globals
   integer, parameter :: JR = 10
 
   ! number of transition periods
-  integer, parameter :: TT = 48
+  integer, parameter :: TT = 0
 
   ! number of permanent skill classes
   integer, parameter :: NS = 3
 
   ! number of productivity (eta) shocks
-  integer, parameter :: NW = 5
+  integer, parameter :: NW = 3
 
   ! number of entrepreneurial ability (theta) shocks
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 16
+  integer, parameter :: NQ = 12
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 16
+  integer, parameter :: NA = 12
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 16
+  integer, parameter :: NK = 0
 
   ! number of points on the annuity asset grid
   integer, parameter :: NX = 0
@@ -78,7 +78,7 @@ module globals
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 8d0
+  real*8, parameter :: Q_u    = 6d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
@@ -116,7 +116,7 @@ module globals
 
   ! demographic and other model parameters
   real*8 :: eff(NS, JJ)
-  real*8 :: pen(0:NP, JJ, 0:TT), ann(0:NX, NS, JJ, 0:TT), ans(0:NX, NS, JJ, 0:TT)
+  real*8 :: pen(0:NP, JJ, 0:TT), ann(0:NX, NS, JJ, 0:TT)
   real*8 :: psi(NS, JJ+1), rpop(NS, JJ)
   real*8 :: beq(NS, JJ, 0:TT), Gama(JJ)
 
@@ -135,7 +135,7 @@ module globals
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), BB(0:TT)
   real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAk(0:TT)
-  real*8 :: bqs(NS, 0:TT)
+  real*8 :: BQS(NS, 0:TT)
 
   ! different grids to discretize the state space
   real*8 :: Q(0:NQ), a(0:NA), k(0:NK), x(0:NX), p(0:NP)
@@ -288,25 +288,43 @@ contains
     integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij, it
 
     !##### OTHER VARIABLES #####################################################
-    integer :: ial, iar, itp
-    real*8 :: a_p, EV_temp, S_temp, varphi_a
-
-    ! get next year
-    itp = year(it, ij, ij+1)
+    integer :: ial, iar, ixl, ixr, itp
+    real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
     a_p = Q(iq_p)
+    x_p = (1d0+r(it))/psi(is, ij)*x(ix) - ann(ix, is, ij, it)
 
     ! derive interpolation weights
-    call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+    call linint_Grow(x_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
+    if (NX > 0) then
+      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+    else
+      ixl = 0; ixr = 0; varphi_x = 1d0
+    endif
 
     ! restrict values to grid just in case
     ial = min(ial, NA)
     iar = min(iar, NA)
     varphi_a = max(min(varphi_a, 1d0),0d0)
 
+    ! restrict values to grid just in case
+    ixl = min(ixl, NX)
+    ixr = min(ixr, NX)
+    varphi_x = max(min(varphi_x, 1d0),0d0)
+
+    ! get next year
+    itp = year(it, ij, ij+1)
+
     ! calculate future part of the value function
-    EV_temp = (varphi_a      *(egam*EV(ial, 0, ix, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam) + &
-               (1d0-varphi_a)*(egam*EV(iar, 0, ix, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam))**egam/egam
+    if (varphi_a <= varphi_x) then
+      EV_temp = (varphi_a           *(egam*EV(ial, 0, ixl, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam) + &
+                 (varphi_x-varphi_a)*(egam*EV(iar, 0, ixl, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam) + &
+                 (1d0-varphi_x)     *(egam*EV(iar, 0, ixr, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam))**egam/egam
+    else
+      EV_temp = (varphi_x           *(egam*EV(ial, 0, ixl, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam) + &
+                 (varphi_a-varphi_x)*(egam*EV(ial, 0, ixr, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam) + &
+                 (1d0-varphi_a)     *(egam*EV(iar, 0, ixr, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam))**egam/egam
+    endif
 
     ! calculate bequest part of the value function
     S_temp = (1d0-psi(is, ij+1))*mu_b*max(a_p, 1d-13)**egam/egam
@@ -380,7 +398,7 @@ contains
     endif
 
     ! determine future annuity stock
-    x_p = 0d0
+    x_p = (1d0+r(it))/psi(is, ij)*x(ix)
     mx = 0d0
 
     if (ij < JR) then
@@ -393,9 +411,9 @@ contains
                   (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, is, ij, it) +  &
                   (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij, it))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
       endif
-      x_p = (1d0+r(it))/psi(is, ij)*x(ix)+ mx
+      x_p = x_p + mx
     else
-      x_p = x(ix)
+      x_p = x_p - ann(ix, is, ij, it)
     endif
 
     ! copy decisions
