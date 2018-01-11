@@ -115,11 +115,11 @@ contains
       write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 0))
       write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 1))
       write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 2))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 22))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 23))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 2))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, TT-1))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, TT))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 3))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 4))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 15))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 16))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 17))
 
       ! solve the household problem
       if (TT > 1) then
