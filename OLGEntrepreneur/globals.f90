@@ -78,7 +78,7 @@ module globals
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 6d0
+  real*8, parameter :: Q_u    = 5d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
@@ -88,7 +88,7 @@ module globals
 
   ! size of the capital grid
   real*8, parameter :: k_l    = k_min
-  real*8, parameter :: k_u    = 0.5d0*Q_u/(1d0-xi)
+  real*8, parameter :: k_u    = 0.4d0*Q_u/(1d0-xi)
   real*8, parameter :: k_grow = Q_grow
 
   ! size of the annuity asset grid
