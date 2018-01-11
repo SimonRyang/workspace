@@ -266,7 +266,6 @@ contains
       enddo ! ix
     enddo ! ij
 
-
     ! calculate old-age transfers
     pen = 0d0
     do ip = 0, NP
