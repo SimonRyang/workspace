@@ -300,7 +300,7 @@ contains
     ! derive interpolation weights
     call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
     if (NX > 0) then
-      call linint_Grow(x_plus(ia, ik, ix, ip, iw, ie, is, ij-1, itm), x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
+      call linint_Grow(x_p, x_l, x_u, x_grow, NX, ixl, ixr, varphi_x)
     else
       ixl = 0; ixr = 0; varphi_x = 1d0
     endif
