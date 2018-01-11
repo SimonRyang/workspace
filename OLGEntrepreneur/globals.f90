@@ -20,22 +20,22 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of productivity (eta) shocks
-  integer, parameter :: NW = 5
+  integer, parameter :: NW = 3
 
   ! number of entrepreneurial ability (theta) shocks
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 16
+  integer, parameter :: NQ = 12
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 16
+  integer, parameter :: NA = 12
 
   ! number of points on the capital grid
   integer, parameter :: NK = 0
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 16
+  integer, parameter :: NX = 12
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -207,7 +207,7 @@ contains
     if (Q(iq_p) > 0d0) then
 
       ! get best initial guess from future period
-      x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-4)
+      x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-6)
 
       ! solve the household problem using fminsearch
       call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
@@ -252,8 +252,8 @@ contains
     if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
       ! get best initial guess from future period
-      x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-4)
-      x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-4)
+      x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-6)
+      x_in(2) = max(omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 1d-6)
 
       ! solve the household problem using fminsearch
       call fminsearch(x_in, fret, (/0d0, 0d0/), (/1d0, 1d0/), inv_e)
@@ -358,8 +358,8 @@ contains
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
     ! get best initial guess from future period
-    x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 1d-4)
-    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 1d-4)
+    x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 1d-6)
+    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 1d-6)
 
     ! solve the household problem using fminsearch
     if (ij < JR) then
