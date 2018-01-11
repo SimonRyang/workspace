@@ -117,7 +117,7 @@ contains
       write(*,*)ybar
       write(*,*)pinv
 
-      write(*,*)beq
+      write(*,*)ann
 
       ! solve the household problem
       if (TT > 1) then
