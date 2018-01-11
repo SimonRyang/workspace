@@ -18,7 +18,7 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  mu(1:TT) = 0d0
+  ! mu(1:TT) = 0d0
 
   ! calculate transition path
   call get_transition()
@@ -111,6 +111,9 @@ contains
       do it = 1, TT
         call get_prices(it)
       enddo
+
+      write(*,*)r
+      write(*,*)w
 
       ! solve the household problem
       if (TT > 1) then
