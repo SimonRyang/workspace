@@ -63,7 +63,7 @@ contains
                                       ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), DIFF(0)/YY(0)*100d0
 
       ! check for convergence
-      if(abs(DIFF(0)/YY(0))*100d0 < sig) exit
+      if(abs(DIFF(0)/YY(0))*100d0 < tol) exit
 
     enddo ! iter
 
@@ -142,7 +142,7 @@ contains
     enddo ! iter
 
     ! stop the clock
-    call tock(calc)
+    call tock(time)
 
     ! write output
     do it = 1, TT
@@ -336,6 +336,10 @@ contains
 
       tauc(it) = tauc(0)
       taup(it) = taup(0)
+
+      ann(:, :, :, it) = ann(:, :, :, 0)
+      pen(:, :, it) = pen(:, :, 0)
+      beq(:, :, it) = beq(:, :, 0)
 
       Q_plus(:, :, :, :, :, :, :, :, it) = Q_plus(:, :, :, :, :, :, :, :, 0)
       a_plus(:, :, :, :, :, :, :, :, it) = a_plus(:, :, :, :, :, :, :, :, 0)
