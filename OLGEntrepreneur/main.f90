@@ -19,7 +19,7 @@ program main
 
   ! calculate transition path
   call get_transition()
-  
+
   ! close files
   close(21)
 
@@ -136,8 +136,13 @@ contains
 
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
-      write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
-        ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
+      do it = 1, TT
+        write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(it), CC(it), II(it)/)/YY(it)*100d0, &
+          ((1d0+r(it))**0.2d0-1d0)*100d0, w(it), DIFF(it)/YY(it)*100d0
+        enddo
+      ! write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
+      !   ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
+
       check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
 
       ! check for convergence
@@ -372,6 +377,7 @@ contains
 
       omega_x_t(:, :, :, :, :, :, :, :, :, it) = omega_x_t(:, :, :, :, :, :, :, :, :, 0)
       omega_k_t(:, :, :, :, :, :, :, :, :, it) = omega_k_t(:, :, :, :, :, :, :, :, :, 0)
+      S(:, :, :, :, :, :, :, :, :, it) = S(:, :, :, :, :, :, :, :, :, 0)
 
       m(:, :, :, :, :, :, :, :, it) = m(:, :, :, :, :, :, :, :, 0)
       m_Q(:, :, :, :, :, :, :, :, it) = m_Q(:, :, :, :, :, :, :, :, 0)
