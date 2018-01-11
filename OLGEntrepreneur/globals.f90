@@ -32,10 +32,10 @@ module globals
   integer, parameter :: NA = 12
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 12
+  integer, parameter :: NK = 0
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 0
+  integer, parameter :: NX = 12
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -106,7 +106,7 @@ module globals
   ! numerical parameters
   integer, parameter :: itermax = 200
   real*8, parameter :: sig  = 1d-6
-  real*8, parameter :: damp = 0.75d0
+  real*8, parameter :: damp = 0.45d0
 
   ! measure time
   integer :: time
