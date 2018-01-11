@@ -77,6 +77,95 @@ contains
   end subroutine
 
 
+  !##############################################################################
+  ! SUBROUTINE get_transition
+  !
+  ! Computes the transition path of the economy
+  !##############################################################################
+  ! subroutine get_transition()
+  !
+  !   implicit none
+  !
+  !   !##### OTHER VARIABLES ####################################################
+  !   integer :: iter, ij, it, itmax
+  !   logical :: check
+  !
+  !   ! initialize remaining variables
+  !   call initialize_trn()
+  !
+  !   ! start the clock
+  !   call tick(calc)
+  !
+  !   ! iterate until value function converges
+  !   do iter = 1, itermax
+  !
+  !     ! get factor and other prices
+  !     do it = 1, TT
+  !       call get_prices(it)
+  !     enddo
+  !
+  !     ! solve the household problem
+  !     if (TT > 1) then
+  !       do ij = JJ, 2, -1
+  !         call solve_household(ij, 1)
+  !       enddo
+  !     endif
+  !     do it = 1, TT
+  !       call solve_household(1, it)
+  !     enddo
+  !
+  !     ! calculate the distribution of households over state space
+  !     do it = 1, TT
+  !       call get_distribution(it)
+  !     enddo
+  !
+  !     ! calculate lsra transfers if needed
+  !     if (lsra_on) call LSRA()
+  !
+  !     ! aggregate individual decisions
+  !     do it = 1, TT
+  !       call aggregation(it)
+  !     enddo
+  !
+  !     ! determine the government parameters
+  !     do it = 1, TT
+  !       call government(it)
+  !     enddo
+  !
+  !     ! write screen output
+  !     itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
+  !     if(.not. lsra_on)then
+  !       write(*,'(i4,6f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
+  !         ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), sum(pop_e(:, TT))/(sum(pop_w(:, TT))+sum(pop_e(:, TT)))*100d0, DIFF(itmax)/YY(itmax)*100d0
+  !       check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
+  !     else
+  !       write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
+  !         (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
+  !         check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
+  !     endif
+  !
+  !     ! check for convergence
+  !     if(check)then
+  !       call tock(calc)
+  !       do it = 1, TT
+  !         if (.not. lsra_on) call output(it)
+  !       enddo
+  !       call output_summary()
+  !       return
+  !     endif
+  !   enddo
+  !
+  !   call tock(calc)
+  !   do it = 1, TT
+  !     if (.not. lsra_on) call output(it)
+  !   enddo
+  !   call output_summary()
+  !
+  !   write(*,*)'No Convergence'
+  !
+  ! end subroutine
+
+
   !#############################################################################
   ! SUBROUTINE initialize
   !

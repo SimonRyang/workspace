@@ -14,7 +14,7 @@ module globals
   integer, parameter :: JR = 10
 
   ! number of transition periods
-  integer, parameter :: TT = 0
+  integer, parameter :: TT = 48
 
   ! number of permanent skill classes
   integer, parameter :: NS = 3
@@ -35,7 +35,7 @@ module globals
   integer, parameter :: NK = 12
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 12
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -59,7 +59,7 @@ module globals
   real*8, parameter :: egam  = 1d0-1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.995d0**5
-  real*8, parameter :: mu_b  = 0.005d0
+  real*8, parameter :: mu_b  = 0.015d0
 
   ! maximum investment in annuities
   real*8, parameter :: mx_max = 0.07d0! 2,100.00 Euro
