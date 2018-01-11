@@ -112,13 +112,6 @@ contains
         call get_prices(it)
       enddo
 
-      write(*,*)r
-      write(*,*)w
-      write(*,*)ybar
-      write(*,*)pinv
-
-      write(*,*)ann
-
       ! solve the household problem
       if (TT > 1) then
         do ij = JJ, 2, -1
