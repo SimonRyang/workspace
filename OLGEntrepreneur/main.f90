@@ -112,6 +112,12 @@ contains
         call get_prices(it)
       enddo
 
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 0))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 1))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 2))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 3))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, TT))
+
       ! solve the household problem
       if (TT > 1) then
         do ij = JJ, 2, -1
@@ -136,12 +142,6 @@ contains
       do it = 1, TT
         call government(it)
       enddo
-
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 0))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 1))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 2))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 3))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, TT))
 
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
