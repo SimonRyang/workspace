@@ -319,6 +319,7 @@ contains
       EV_temp = (varphi_x           *(egam*EV(ial, 0, ixl, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam) + &
                  (varphi_a-varphi_x)*(egam*EV(ial, 0, ixr, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam) + &
                  (1d0-varphi_a)     *(egam*EV(iar, 0, ixr, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam))**egam/egam
+    endif
 
     ! calculate bequest part of the value function
     S_temp = (1d0-psi(is, ij+1))*mu_b*max(a_p, 1d-13)**egam/egam
