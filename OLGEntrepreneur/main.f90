@@ -225,7 +225,7 @@ contains
 
     !##### OTHER VARIABLES #####################################################
     real*8 :: ann_tmp(NS)
-    integer :: ix, ip, is, ij, itm, itp
+    integer :: ix, ip, is, ij, iij, itm, itp
 
     ! calculate new prices
     r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
@@ -254,30 +254,18 @@ contains
 
     ! calculate annuity payments
     ann(:, :, :, it) = 0d0
-    ans(:, :, :, it) = 0d0
-    ann_tmp = 1d0
 
-    do ij = JJ-1, JR, -1
-      itp = year(it, JR, ij+1)
-      ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psi(:, ij+1) + 1d0
-    enddo
-
-    do is = 1, NS
+    do ij = JR, JJ
+      ann_tmp = 1d0
+      do iij = JJ, ij+1, -1
+        itp = year(it, ij, iij)
+        ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psi(:, iij) + 1d0
+      enddo ! iij
       do ix = 0, NX
-        do ij = JR, JJ
-          itp = year(it, JR, ij)
-          ann(ix, is, ij, itp) = (1d0+r(it))/psi(is, JR)*x(ix)/ann_tmp(is)
-        enddo
-      enddo
+        ann(ix, :, ij, it) = (1d0+r(it))/psi(:, ij)*x(ix)/ann_tmp(:)
+      enddo ! ix
+    enddo ! ij
 
-      do ij = 1, JR
-        ans(:, is, ij, it) = x(:)
-      enddo
-      do ij = JR+1, JJ
-        itm = year(it, 2, 1)
-        ans(:, is, ij, it) = (1d0+r(itm))/psi(is, ij-1)*ans(:, is, ij-1, itm)-ann(:, is, ij-1, itm)
-      enddo
-    enddo
 
     ! calculate old-age transfers
     pen = 0d0
@@ -787,7 +775,7 @@ contains
                     if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
                     AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    AX(it) = AX(it) + ans(ix, is, ij, it)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     BQS(is, it) = BQS(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
