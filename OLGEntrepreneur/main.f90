@@ -62,9 +62,10 @@ contains
                                       (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
                                       ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), DIFF(0)/YY(0)*100d0
 
+      ! check for convergence
       if(abs(DIFF(0)/YY(0))*100d0 < sig) exit
 
-    enddo
+    enddo ! iter
 
     ! stop the clock
     call tock(time)
@@ -77,93 +78,80 @@ contains
   end subroutine
 
 
-  !##############################################################################
+  !#############################################################################
   ! SUBROUTINE get_transition
   !
-  ! Computes the transition path of the economy
-  !##############################################################################
-  ! subroutine get_transition()
-  !
-  !   implicit none
-  !
-  !   !##### OTHER VARIABLES ####################################################
-  !   integer :: iter, ij, it, itmax
-  !   logical :: check
-  !
-  !   ! initialize remaining variables
-  !   call initialize_trn()
-  !
-  !   ! start the clock
-  !   call tick(calc)
-  !
-  !   ! iterate until value function converges
-  !   do iter = 1, itermax
-  !
-  !     ! get factor and other prices
-  !     do it = 1, TT
-  !       call get_prices(it)
-  !     enddo
-  !
-  !     ! solve the household problem
-  !     if (TT > 1) then
-  !       do ij = JJ, 2, -1
-  !         call solve_household(ij, 1)
-  !       enddo
-  !     endif
-  !     do it = 1, TT
-  !       call solve_household(1, it)
-  !     enddo
-  !
-  !     ! calculate the distribution of households over state space
-  !     do it = 1, TT
-  !       call get_distribution(it)
-  !     enddo
-  !
-  !     ! calculate lsra transfers if needed
-  !     if (lsra_on) call LSRA()
-  !
-  !     ! aggregate individual decisions
-  !     do it = 1, TT
-  !       call aggregation(it)
-  !     enddo
-  !
-  !     ! determine the government parameters
-  !     do it = 1, TT
-  !       call government(it)
-  !     enddo
-  !
-  !     ! write screen output
-  !     itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
-  !     if(.not. lsra_on)then
-  !       write(*,'(i4,6f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
-  !         ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), sum(pop_e(:, TT))/(sum(pop_w(:, TT))+sum(pop_e(:, TT)))*100d0, DIFF(itmax)/YY(itmax)*100d0
-  !       check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
-  !     else
-  !       write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
-  !         (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
-  !         check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
-  !     endif
-  !
-  !     ! check for convergence
-  !     if(check)then
-  !       call tock(calc)
-  !       do it = 1, TT
-  !         if (.not. lsra_on) call output(it)
-  !       enddo
-  !       call output_summary()
-  !       return
-  !     endif
-  !   enddo
-  !
-  !   call tock(calc)
-  !   do it = 1, TT
-  !     if (.not. lsra_on) call output(it)
-  !   enddo
-  !   call output_summary()
-  !
-  !   write(*,*)'No Convergence'
-  !
-  ! end subroutine
+  ! computes the transition path of the economy
+  !#############################################################################
+  subroutine get_transition()
+
+    implicit none
+
+    !##### OTHER VARIABLES #####################################################
+    integer :: iter, ij, it, itmax
+    logical :: check
+
+    ! initialize remaining variables
+    call initialize_trn()
+
+    ! start the clock
+    call tick(time)
+
+    ! iterate until value function converges
+    do iter = 1, itermax
+
+      ! get factor and other prices
+      do it = 1, TT
+        call get_prices(it)
+      enddo
+
+      ! solve the household problem
+      if (TT > 1) then
+        do ij = JJ, 2, -1
+          call solve_household(ij, 1)
+        enddo
+      endif
+      do it = 1, TT
+        call solve_household(1, it)
+      enddo
+
+      ! calculate the distribution of households over state space
+      do it = 1, TT
+        call get_distribution(it)
+      enddo
+
+      ! aggregate individual decisions
+      do it = 1, TT
+        call aggregation(it)
+      enddo
+
+      ! determine the government parameters
+      do it = 1, TT
+        call government(it)
+      enddo
+
+      ! write screen output
+      itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
+      write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
+        ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
+      check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0
+
+      ! check for convergence
+      if (check) exit
+
+    enddo ! iter
+
+    ! stop the clock
+    call tock(calc)
+
+    ! write output
+    do it = 1, TT
+      call output(it)
+    enddo
+
+    if (iter > itermax) write(*,*)'No Convergence'
+
+  end subroutine
 
 
   !#############################################################################
@@ -296,6 +284,91 @@ contains
 
     ! open files
     open(21, file='output.out')
+
+  end subroutine
+
+
+  !#############################################################################
+  ! SUBROUTINE initialize_trn
+  !
+  ! initializes transitional variables
+  !#############################################################################
+  subroutine initialize_trn()
+
+    implicit none
+
+    !##### OTHER VARIABLES #####################################################
+    integer :: it
+
+    write(*,'(/a/)')'TRANSITION PATH'
+    write(*,'(a)')'ITER     K/Y     C/Y     I/Y       r       w          DIFF'
+
+    do it = 1, TT
+
+      r(it) = r(0)
+      w(it) = w(0)
+      ybar(it) = ybar(0)
+      pinv(it) = pinv(0)
+
+      AA(it) = AA(0)
+      AX(it) = AX(0)
+      BQ(it) = BQ(0)
+      PBEN(it) = PBEN(0)
+      PCON(it) = PCON(0)
+      KK(it) = KK(0)
+      KC(it) = KC(0)
+      KE(it) = KE(0)
+      LC(it) = LC(0)
+      BB(it) = BB(0)
+      YY(it) = YY(0)
+      YC(it) = YC(0)
+      YE(it) = YE(0)
+      CC(it) = CC(0)
+      II(it) = II(0)
+      TC(it) = TC(0)
+
+      TAc(it) = TAc(0)
+      TAr(it) = TAr(0)
+      TAw(it) = TAw(0)
+      TAk(it) = TAk(0)
+
+      BQS(:, it) = BQS(:, 0)
+
+      tauc(it) = tauc(0)
+      taup(it) = taup(0)
+
+      Q_plus(:, :, :, :, :, :, :, :, it) = Q_plus(:, :, :, :, :, :, :, :, 0)
+      a_plus(:, :, :, :, :, :, :, :, it) = a_plus(:, :, :, :, :, :, :, :, 0)
+      k_plus(:, :, :, :, :, :, :, :, it) = k_plus(:, :, :, :, :, :, :, :, 0)
+      p_plus(:, :, :, :, :, :, :, :, it) = p_plus(:, :, :, :, :, :, :, :, 0)
+      inctax(:, :, :, :, :, :, :, :, it) = inctax(:, :, :, :, :, :, :, :, 0)
+      captax(:, :, :, :, :, :, :, :, it) = captax(:, :, :, :, :, :, :, :, 0)
+      penben(:, :, :, :, :, :, :, :, it) = penben(:, :, :, :, :, :, :, :, 0)
+      pencon(:, :, :, :, :, :, :, :, it) = pencon(:, :, :, :, :, :, :, :, 0)
+      c(:, :, :, :, :, :, :, :, it) = c(:, :, :, :, :, :, :, :, 0)
+      l(:, :, :, :, :, :, :, :, it) = l(:, :, :, :, :, :, :, :, 0)
+      V(:, :, :, :, :, :, :, :, it) = V(:, :, :, :, :, :, :, :, 0)
+      EV(:, :, :, :, :, :, :, :, it) = EV(:, :, :, :, :, :, :, :, 0)
+
+      Q_plus_t(:, :, :, :, :, :, :, :, :, it) = Q_plus_t(:, :, :, :, :, :, :, :, :, 0)
+      a_plus_t(:, :, :, :, :, :, :, :, :, it) = a_plus_t(:, :, :, :, :, :, :, :, :, 0)
+      k_plus_t(:, :, :, :, :, :, :, :, :, it) = k_plus_t(:, :, :, :, :, :, :, :, :, 0)
+      p_plus_t(:, :, :, :, :, :, :, :, :, it) = p_plus_t(:, :, :, :, :, :, :, :, :, 0)
+      inctax_t(:, :, :, :, :, :, :, :, :, it) = inctax_t(:, :, :, :, :, :, :, :, :, 0)
+      captax_t(:, :, :, :, :, :, :, :, :, it) = captax_t(:, :, :, :, :, :, :, :, :, 0)
+      penben_t(:, :, :, :, :, :, :, :, :, it) = penben_t(:, :, :, :, :, :, :, :, :, 0)
+      pencon_t(:, :, :, :, :, :, :, :, :, it) = pencon_t(:, :, :, :, :, :, :, :, :, 0)
+      c_t(:, :, :, :, :, :, :, :, :, it) = c_t(:, :, :, :, :, :, :, :, :, 0)
+      l_t(:, :, :, :, :, :, :, :, :, it) = l_t(:, :, :, :, :, :, :, :, :, 0)
+      V_t(:, :, :, :, :, :, :, :, :, it) = V_t(:, :, :, :, :, :, :, :, :, 0)
+
+      omega_x_t(:, :, :, :, :, :, :, :, :, it) = omega_x_t(:, :, :, :, :, :, :, :, :, 0)
+      omega_k_t(:, :, :, :, :, :, :, :, :, it) = omega_k_t(:, :, :, :, :, :, :, :, :, 0)
+
+      m(:, :, :, :, :, :, :, :, it) = m(:, :, :, :, :, :, :, :, 0)
+      m_Q(:, :, :, :, :, :, :, :, it) = m_Q(:, :, :, :, :, :, :, :, 0)
+
+    enddo
 
   end subroutine
 
