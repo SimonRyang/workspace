@@ -180,7 +180,7 @@ contains
     ! initial guesses for macro variables
     KC(0) = 3.400d0
     LC(0) = 3.604d0
-    BQS(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
+    bqs(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
     BB(0) = 2.964d0
     ybar(0) = 0.555d0
 
@@ -225,7 +225,7 @@ contains
 
     !##### OTHER VARIABLES #####################################################
     real*8 :: ann_tmp(NS)
-    integer :: ix, ip, is, ij, iij, itp
+    integer :: ix, ip, is, ij, itm, itp
 
     ! calculate new prices
     r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
@@ -234,7 +234,7 @@ contains
     ! set prices in case of life-cycle model
     ! r = 0.393280506035032d0
     ! w = 0.877841532937879d0
-    ! BQS = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
+    ! bqs = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
     ! ybar = 0.555719715351030d0
     ! tauc = 0.128579256047982d0
     ! taup = 7.867802841513299d-2
@@ -243,9 +243,9 @@ contains
     pinv(it) = 1d0/(1d0+tauc(it))
 
     ! calculate individual bequests
-    beq(1, :, it) = Gama(:)*BQS(1, it)/rpop(1, :)
-    beq(2, :, it) = Gama(:)*BQS(2, it)/rpop(2, :)
-    beq(3, :, it) = Gama(:)*BQS(3, it)/rpop(3, :)
+    beq(1, :, it) = Gama(:)*bqs(1, it)/rpop(1, :)
+    beq(2, :, it) = Gama(:)*bqs(2, it)/rpop(2, :)
+    beq(3, :, it) = Gama(:)*bqs(3, it)/rpop(3, :)
 
     ! determine the income tax system
     r1 = 0.278d0*ybar(0)*2d0 !  8,354.00 Euro
@@ -254,17 +254,30 @@ contains
 
     ! calculate annuity payments
     ann(:, :, :, it) = 0d0
+    ans(:, :, :, it) = 0d0
+    ann_tmp = 1d0
 
-    do ij = JR, JJ
-      ann_tmp = 1d0
-      do iij = JJ, ij+1, -1
-        itp = year(it, ij, iij)
-        ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psi(:, iij) + 1d0
-      enddo ! iij
+    do ij = JJ-1, JR, -1
+      itp = year(it, JR, ij+1)
+      ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psi(:, ij+1) + 1d0
+    enddo
+
+    do is = 1, NS
       do ix = 0, NX
-        ann(ix, :, ij, it) = (1d0+r(it))/psi(:, ij)*x(ix)/ann_tmp(:)
-      enddo ! ix
-    enddo ! ij
+        do ij = JR, JJ
+          itp = year(it, JR, ij)
+          ann(ix, is, ij, itp) = (1d0+r(it))/psi(is, JR)*x(ix)/ann_tmp(is)
+        enddo
+      enddo
+
+      do ij = 1, JR
+        ans(:, is, ij, it) = x(:)
+      enddo
+      do ij = JR+1, JJ
+        itm = year(it, 2, 1)
+        ans(:, is, ij, it) = (1d0+r(itm))/psi(is, ij-1)*ans(:, is, ij-1, itm)-ann(:, is, ij-1, itm)
+      enddo
+    enddo
 
     ! calculate old-age transfers
     pen = 0d0
@@ -756,7 +769,7 @@ contains
     LC_old = LC(it)
 
     ! reset macroeconomic aggregates in each iteration step
-    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; BQS(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
+    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; bqs(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
     CC(it) = 0d0; LC(it) = 0d0; YE(it) = 0d0; KE(it) = 0d0; TC(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
 
@@ -773,10 +786,10 @@ contains
                     ! skip if there is no household
                     if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
-                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    AX(it) = AX(it) + x_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/(1d0+n_p)
+                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    AX(it) = AX(it) + ans(ix, is, ij, it)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    BQS(is, it) = BQS(is, it) + (1d0+r(it))*(a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    bqs(is, it) = bqs(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TAc(it) = TAc(it) + tauc(it)*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -812,7 +825,7 @@ contains
     LC(it) = damp*LC(it) +(1d0-damp)*LC_old
 
     ! compute total bequests
-    BQ(it) = sum(BQS(:, it))
+    BQ(it) = sum(bqs(:, it))
 
     ! commpute investment
     II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
