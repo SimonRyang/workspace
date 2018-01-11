@@ -17,6 +17,10 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
+  ! calculate transition path
+  call get_transition()
+  
+  ! close files
   close(21)
 
 contains
