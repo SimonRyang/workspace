@@ -127,6 +127,12 @@ contains
         call get_distribution(it)
       enddo
 
+      write(*,*) sum(m(:, :, :, :, :, :, :, :, 0))
+      write(*,*) sum(m(:, :, :, :, :, :, :, :, 1))
+      write(*,*) sum(m(:, :, :, :, :, :, :, :, 2))
+      write(*,*) sum(m(:, :, :, :, :, :, :, :, 3))
+      write(*,*) sum(m(:, :, :, :, :, :, :, :, TT))
+
       ! aggregate individual decisions
       do it = 1, TT
         call aggregation(it)
