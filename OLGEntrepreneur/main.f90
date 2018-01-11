@@ -115,7 +115,10 @@ contains
       write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 0))
       write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 1))
       write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 2))
-      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 3))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 22))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 23))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, 2))
+      write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, TT-1))
       write(*,*) sum(a_plus(:, :, :, :, :, :, :, :, TT))
 
       ! solve the household problem
