@@ -10,12 +10,15 @@ program main
   implicit none
 
   ! set government variables
-  mu     = 0d0
+  mu     = 1d0
   lambda = 0d0
   phi    = 0d0
 
   ! calculate initial equilibrium
   call get_SteadyState()
+
+  ! set reforms
+  mu(1:TT) = 0d0
 
   ! calculate transition path
   call get_transition()
