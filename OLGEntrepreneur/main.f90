@@ -18,7 +18,8 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  mu(1:TT) = 0d0
+  ! mu(1:TT) = 0d0
+  lambda (1:TT) = 0d0
 
   ! calculate transition path
   call get_transition()
@@ -935,9 +936,11 @@ contains
     LC_old = LC(it)
 
     ! reset macroeconomic aggregates in each iteration step
-    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; BQS(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
-    CC(it) = 0d0; LC(it) = 0d0; YE(it) = 0d0; KE(it) = 0d0; TC(it) = 0d0
+    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
+    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0;
+    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0;  II(it) = 0d0; TC(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
+    BQS(:, it) = 0d0;
 
     do ij = 1, JJ
 
@@ -967,7 +970,7 @@ contains
                     if(ik == 0) then
                       LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     else
-                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
 
                   enddo ! ia
@@ -984,11 +987,11 @@ contains
     ybar(it) = w(it)*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
-    KC(it) = damp*(AA(it)+AX(it)-BB(it)) +(1d0-damp)*KC(it)
+    KC(it) = damp*(AA(it) + AX(it) - BB(it)) + (1d0-damp)*KC(it)
     KK(it) = KC(it) + KE(it)
 
     ! update work supply
-    LC(it) = damp*LC(it) +(1d0-damp)*LC_old
+    LC(it) = damp*LC(it) + (1d0-damp)*LC_old
 
     ! compute total bequests
     BQ(it) = sum(BQS(:, it))
@@ -1031,7 +1034,7 @@ contains
     expend = GG(it) + (1d0+r(it))*BB(it) - (1d0+n_p)*BB(itp)
 
     ! calculates consumption tax rate
-    tauc(it) = (expend-TAk(it)-TAw(it)-TAr(it))/CC(it)
+    tauc(it) = (expend - TAk(it) - TAw(it) - TAr(it))/CC(it)
 
     ! get budget balancing pension contribution rate
     taup(it) = PBEN(it)/PCON(it)
