@@ -50,6 +50,13 @@ contains
       ! get new prices
       call get_prices(0)
 
+      write(*,*)sum(r(1:TT))/r(1)
+      write(*,*)sum(w(1:TT))/w(1)
+      write(*,*)sum(pinv(1:TT))/pinv(1)
+      write(*,*)sum(ybar(1:TT))/ybar(1)
+      write(*,*)sum(ann(:, :, :, 1:TT))/ann(:, :, :, 1)
+      write(*,*)sum(pen(:, :, 1:TT))/pen(:, :, 1)
+
       ! solve the household problem
       call solve_household(1, 0)
 
