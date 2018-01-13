@@ -954,7 +954,7 @@ contains
                     AA(it) = AA(it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     !AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    BQS(is, it) = BQS(is, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))
+                    BQS(is, it) = BQS(is, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))*(1d0+n_p)
                     !BQS(is, it) = BQS(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
                     !KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     !TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
