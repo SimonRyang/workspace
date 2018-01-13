@@ -10,7 +10,7 @@ program main
   implicit none
 
   ! set government variables
-  mu     = 0d0
+  mu     = 1d0
   lambda = 0d0
   phi    = 0d0
 
@@ -19,7 +19,7 @@ program main
 
   ! set reforms
 
-  ! mu(1:TT) = 0d0
+  mu(1:TT) = 0d0
   ! lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
