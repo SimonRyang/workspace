@@ -453,7 +453,7 @@ contains
     enddo ! ij
 
     ! calculate old-age transfers
-    pen = 0d0
+    pen(:, :, it) = 0d0
     do ip = 0, NP
       pen(ip, JR:JJ, it) = p(ip)*kappa*ybar(it)
     enddo
