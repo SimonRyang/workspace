@@ -56,6 +56,8 @@ contains
       ! solve the household problem
       call solve_household(1, 0)
 
+      write(*,*)sum(c(:, :, :, :, :, :, :, :, 0))
+
       ! calculate the distribution of households over state space
       call get_distribution(0)
 
@@ -125,6 +127,10 @@ contains
         call solve_household(1, it)
       enddo
 
+      do it = 1, TT
+      write(*,*)sum(c(:, :, :, :, :, :, :, :, it))
+      enddo
+
       ! calculate the distribution of households over state space
       do it = 1, TT
         call get_distribution(it)
@@ -150,7 +156,7 @@ contains
       write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
          ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
 
-      check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 10
+      ! check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol
 
       ! check for convergence
       if (check) exit
