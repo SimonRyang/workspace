@@ -53,12 +53,8 @@ contains
       ! get new prices
       call get_prices(0)
 
-      write(*,*)pinv(0), ybar(0)
-
       ! solve the household problem
       call solve_household(1, 0)
-
-      ! write(*,*)sum(c(:, :, :, :, :, :, :, :, 0))
 
       ! calculate the distribution of households over state space
       call get_distribution(0)
@@ -119,10 +115,6 @@ contains
         call get_prices(it)
       enddo
 
-      do it = 1, TT
-      write(*,*)pinv(it), ybar(it)
-      enddo
-
       ! solve the household problem
       if (TT > 1) then
         do ij = JJ, 2, -1
@@ -133,9 +125,9 @@ contains
         call solve_household(1, it)
       enddo
 
-      ! do it = 1, TT
-      ! write(*,*)sum(c(:, :, :, :, :, :, :, :, it))
-      ! enddo
+      do it = 1, TT
+      write(*,*)it, year(it, 1, JJ), sum(c(:, :, :, :, :, :, :, :, it))
+      enddo
 
       ! calculate the distribution of households over state space
       do it = 1, TT
