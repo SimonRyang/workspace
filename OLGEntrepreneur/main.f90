@@ -471,49 +471,50 @@ contains
     integer :: iq, ia, ik, ix, ip, iw, ie, is, ij, it, iq_p, ip_p, io_p
 
     ! solve household problem recursively
+    do ij = JJ, ij_in, -1
 
     ! solve for oldest cohort
-    it = year(it_in, ij_in, JJ)
+    if (ij == JJ) then
 
-    omega_x_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
-    omega_k_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
+      it = year(it_in, ij_in, JJ)
 
-    do iq_p = 0, NQ
-        S(:, iq_p, :, :, :, :, :, :, JJ, it) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
-    enddo ! iq_p
+      omega_x_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
+      omega_k_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
 
-    !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads)
-    do is = 1, NS
-      do ip = 0, NP
-        do ix = 0, NX
-          do ia = 0, NA
+      do iq_p = 0, NQ
+          S(:, iq_p, :, :, :, :, :, :, JJ, it) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
+      enddo ! iq_p
 
-            call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads)
+      do is = 1, NS
+        do ip = 0, NP
+          do ix = 0, NX
+            do ia = 0, NA
 
-            ! copy decisions
-            Q_plus(ia, :, ix, ip, :, :, is, JJ, it) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            a_plus(ia, :, ix, ip, :, :, is, JJ, it) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            x_plus(ia, :, ix, ip, :, :, is, JJ, it) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            p_plus(ia, :, ix, ip, :, :, is, JJ, it) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            k_plus(ia, :, ix, ip, :, :, is, JJ, it) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            c(ia, :, ix, ip, :, :, is, JJ, it) = c_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            l(ia, :, ix, ip, :, :, is, JJ, it) = l_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            inctax(ia, :, ix, ip, :, :, is, JJ, it) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            captax(ia, :, ix, ip, :, :, is, JJ, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            penben(ia, :, ix, ip, :, :, is, JJ, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            pencon(ia, :, ix, ip, :, :, is, JJ, it) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-            V(ia, :, ix, ip, :, :, is, JJ, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
 
-          enddo ! ia
-        enddo ! ix
-      enddo ! ip
-    enddo ! is
-    !$omp end parallel do
+              ! copy decisions
+              Q_plus(ia, :, ix, ip, :, :, is, JJ, it) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              a_plus(ia, :, ix, ip, :, :, is, JJ, it) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              x_plus(ia, :, ix, ip, :, :, is, JJ, it) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              p_plus(ia, :, ix, ip, :, :, is, JJ, it) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              k_plus(ia, :, ix, ip, :, :, is, JJ, it) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              c(ia, :, ix, ip, :, :, is, JJ, it) = c_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              l(ia, :, ix, ip, :, :, is, JJ, it) = l_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              inctax(ia, :, ix, ip, :, :, is, JJ, it) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              captax(ia, :, ix, ip, :, :, is, JJ, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              penben(ia, :, ix, ip, :, :, is, JJ, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              pencon(ia, :, ix, ip, :, :, is, JJ, it) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+              V(ia, :, ix, ip, :, :, is, JJ, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
 
-    call interpolate(JJ, it)
+            enddo ! ia
+          enddo ! ix
+        enddo ! ip
+      enddo ! is
+      !$omp end parallel do
 
     ! solve for retirement age
-    do ij = JJ-1, JR, -1
+    elseif (ij >= JR) then
 
       it = year(it_in, ij_in, ij)
 
@@ -565,13 +566,8 @@ contains
       enddo ! is
       !$omp end parallel do
 
-      call interpolate(ij, it)
-      !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
-
-    enddo ! ij
-
     ! solve for working age
-    do ij = JR-1, 2, -1
+    elseif (ij >= 2) then
 
       it = year(it_in, ij_in, ij)
 
@@ -642,11 +638,9 @@ contains
       enddo ! is
       !$omp end parallel do
 
-      call interpolate(ij, it)
-
-    enddo ! ij
-
     ! solve for youngest cohort
+    else
+
     it = year(it_in, ij_in, 1)
 
     !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
@@ -714,7 +708,10 @@ contains
     enddo ! is
     !$omp end parallel do
 
-    call interpolate(1, it)
+    call interpolate(ij, it)
+    !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
+
+  enddo ! ij
 
   end subroutine
 
