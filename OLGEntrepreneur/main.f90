@@ -128,6 +128,8 @@ contains
       do it = 1, TT
       write(*,*)it, year(it, 1, JJ), sum(c(:, :, :, :, :, :, :, :, it))
       enddo
+      write(*,*)c(0, 0, 0, 0, 1, 1, 1, 1, 49)
+      write(*,*)c(0, 0, 0, 0, 1, 1, 1, 1, 59)
 
       ! calculate the distribution of households over state space
       do it = 1, TT
