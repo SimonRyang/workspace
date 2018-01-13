@@ -112,12 +112,12 @@ contains
         call get_prices(it)
       enddo
 
-      write(*,*)sum(r(1:TT))/r(1)
-      write(*,*)sum(w(1:TT))/w(1)
-      write(*,*)sum(pinv(1:TT))/pinv(1)
-      write(*,*)sum(ybar(1:TT))/ybar(1)
-      write(*,*)sum(ann(:, :, :, 1:TT))/ann(:, :, :, 1)
-      write(*,*)sum(pen(:, :, 1:TT))/pen(:, :, 1)
+      write(*,*)r(0), sum(r(1:TT))/dble(TT)
+      write(*,*)w(0), sum(w(1:TT))/dble(TT)
+      write(*,*)pinv(0), sum(pinv(1:TT))/dble(TT)
+      write(*,*)ybar(0), sum(ybar(1:TT))/dble(TT)
+      write(*,*)sum(ann(:, :, :, 0)), sum(ann(:, :, :, 1:TT))/dble(TT)
+      write(*,*)sum(pen(:, :, 0)), sum(pen(:, :, 1:TT))/dble(TT)
 
       ! solve the household problem
       if (TT > 1) then
