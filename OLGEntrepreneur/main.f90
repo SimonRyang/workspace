@@ -18,7 +18,7 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  ! mu(1:TT) = 0d0
+  mu(1:TT) = 0d0
 
   ! calculate transition path
   call get_transition()
