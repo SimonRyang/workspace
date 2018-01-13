@@ -19,7 +19,7 @@ program main
 
   ! set reforms
   ! mu(1:TT) = 0d0
-  lambda (1:TT) = 0d0
+  lambda (1:TT) = 1d0
 
   ! calculate transition path
   call get_transition()
@@ -140,12 +140,12 @@ contains
 
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
-      do it = 1, TT
-        write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(it), CC(it), II(it)/)/YY(it)*100d0, &
-          ((1d0+r(it))**0.2d0-1d0)*100d0, w(it), DIFF(it)/YY(it)*100d0
-        enddo
-      ! write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
-      !    ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
+      ! do it = 1, TT
+      !   write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(it), CC(it), II(it)/)/YY(it)*100d0, &
+      !     ((1d0+r(it))**0.2d0-1d0)*100d0, w(it), DIFF(it)/YY(it)*100d0
+      !   enddo
+      write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
+         ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
 
       check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol
 
