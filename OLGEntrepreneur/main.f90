@@ -10,16 +10,19 @@ program main
   implicit none
 
   ! set government variables
-  mu     = 1d0
-  lambda = 1d0
+  mu     = 0d0
+  lambda = 0d0
   phi    = 0d0
 
   ! calculate initial equilibrium
   call get_SteadyState()
 
   ! set reforms
+
   ! mu(1:TT) = 0d0
-  lambda (1:TT) = 0d0
+  ! lambda (1:TT) = 1d0
+  ! phi(1:TT) = 1d0
+  tauk = 0d0
 
   ! calculate transition path
   call get_transition()
@@ -604,11 +607,11 @@ contains
                       call solve_consumption(0, ia, ik, ix, ip, iw, ie, is, ij, it)
 
                       ! next period entrpreneur
-                      if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      if (ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, is, ij, it)
 
                       ! decision on whether to be homeowner or renter next period
                       io_p = 0
-                      if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, is, ij, it) > V_t(0, ia, ik, ix, ip, iw, ie, is, ij, it)) io_p = 1
+                      if (ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, is, ij, it) > V_t(0, ia, ik, ix, ip, iw, ie, is, ij, it)) io_p = 1
 
                       ! copy decisions
                       Q_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
