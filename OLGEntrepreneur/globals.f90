@@ -49,7 +49,7 @@ module globals
   real*8, parameter :: by = 0.60d0/5d0 !
 
   ! government parameters
-  real*8 :: tauk = 0.150d0 !
+  real*8, parameter :: tauk = 0.150d0 !
   real*8, parameter :: taur = 0.250d0 !
   real*8, parameter :: d_w  = 0.033d0 ! 1,000.00 Euro
   real*8, parameter :: d_s  = 0.053d0 ! 1,600.00 Euro
@@ -291,9 +291,6 @@ contains
     integer :: ial, iar, ixl, ixr, itp
     real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
-    ! get next year
-    itp = year(it, 1, 2)
-
     a_p = Q(iq_p)
     x_p = (1d0+r(it))/psi(is, ij)*x(ix) - ann(ix, is, ij, it)
 
@@ -309,6 +306,9 @@ contains
     ial = min(ial, NA)
     iar = min(iar, NA)
     varphi_a = max(min(varphi_a, 1d0),0d0)
+
+    ! get next year
+    itp = year(it, 1, 2)
 
     ! calculate future part of the value function
     if (varphi_a <= varphi_x) then
