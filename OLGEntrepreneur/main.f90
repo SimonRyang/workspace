@@ -800,7 +800,7 @@ contains
                   do ia = 0, NA
 
                     ! skip if there is no household
-                    if (m(ia, ik, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
+                    !if (m(ia, ik, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
 
                     ! derive interpolation weights
                     call linint_Grow(Q_plus(ia, ik, ix, ip, iw, ie, is, ij-1, itm), Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
@@ -948,7 +948,7 @@ contains
                   do ia = 0, NA
 
                     ! skip if there is no household
-                    if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
+                    !if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
                     !AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     AA(it) = AA(it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)

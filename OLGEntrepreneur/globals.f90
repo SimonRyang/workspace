@@ -814,8 +814,9 @@ contains
     year = it + ijj - ij
 
     if(it == 0 .or. year <= 0)year = 0
-    if(it == TT .or. year >= TT)year = TT
-
+    ! if(it == TT .or. year >= TT)year = TT
+    if(year >= TT)year = TT
+    
   end function
 
 
