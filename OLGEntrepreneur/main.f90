@@ -473,240 +473,242 @@ contains
     ! solve household problem recursively
     do ij = JJ, ij_in, -1
 
-    ! solve for oldest cohort
-    if (ij == JJ) then
+      ! solve for oldest cohort
+      if (ij == JJ) then
 
-      it = year(it_in, ij_in, JJ)
+        it = year(it_in, ij_in, JJ)
 
-      omega_x_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
-      omega_k_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
+        omega_x_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
+        omega_k_t(:, :, :, :, :, :, :, :, JJ, it) = 0d0
 
-      do iq_p = 0, NQ
-          S(:, iq_p, :, :, :, :, :, :, JJ, it) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
-      enddo ! iq_p
+        do iq_p = 0, NQ
+            S(:, iq_p, :, :, :, :, :, :, JJ, it) = mu_b*max(Q(iq_p), 1d-13)**egam/egam
+        enddo ! iq_p
 
-      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads)
-      do is = 1, NS
-        do ip = 0, NP
-          do ix = 0, NX
-            do ia = 0, NA
+        !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads)
+        do is = 1, NS
+          do ip = 0, NP
+            do ix = 0, NX
+              do ia = 0, NA
 
-              call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
 
-              ! copy decisions
-              Q_plus(ia, :, ix, ip, :, :, is, JJ, it) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              a_plus(ia, :, ix, ip, :, :, is, JJ, it) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              x_plus(ia, :, ix, ip, :, :, is, JJ, it) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              p_plus(ia, :, ix, ip, :, :, is, JJ, it) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              k_plus(ia, :, ix, ip, :, :, is, JJ, it) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              c(ia, :, ix, ip, :, :, is, JJ, it) = c_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              l(ia, :, ix, ip, :, :, is, JJ, it) = l_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              inctax(ia, :, ix, ip, :, :, is, JJ, it) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              captax(ia, :, ix, ip, :, :, is, JJ, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              penben(ia, :, ix, ip, :, :, is, JJ, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              pencon(ia, :, ix, ip, :, :, is, JJ, it) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
-              V(ia, :, ix, ip, :, :, is, JJ, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                ! copy decisions
+                Q_plus(ia, :, ix, ip, :, :, is, JJ, it) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                a_plus(ia, :, ix, ip, :, :, is, JJ, it) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                x_plus(ia, :, ix, ip, :, :, is, JJ, it) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                p_plus(ia, :, ix, ip, :, :, is, JJ, it) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                k_plus(ia, :, ix, ip, :, :, is, JJ, it) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                c(ia, :, ix, ip, :, :, is, JJ, it) = c_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                l(ia, :, ix, ip, :, :, is, JJ, it) = l_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                inctax(ia, :, ix, ip, :, :, is, JJ, it) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                captax(ia, :, ix, ip, :, :, is, JJ, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                penben(ia, :, ix, ip, :, :, is, JJ, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                pencon(ia, :, ix, ip, :, :, is, JJ, it) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
+                V(ia, :, ix, ip, :, :, is, JJ, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, JJ, it)
 
-            enddo ! ia
-          enddo ! ix
-        enddo ! ip
-      enddo ! is
-      !$omp end parallel do
+              enddo ! ia
+            enddo ! ix
+          enddo ! ip
+        enddo ! is
+        !$omp end parallel do
 
-    ! solve for retirement age
-    elseif (ij >= JR) then
+      ! solve for retirement age
+      elseif (ij >= JR) then
 
-      it = year(it_in, ij_in, ij)
+        it = year(it_in, ij_in, ij)
 
-      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
-      do is = 1, NS
-        do ip_p = 0, NP
-          do ix = 0, NX
-            do iq_p = 0, NQ
+        !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+        do is = 1, NS
+          do ip_p = 0, NP
+            do ix = 0, NX
+              do iq_p = 0, NQ
 
-              ! next period retiree
-              call solve_retiree(iq_p, 0, ix, ip_p, 1, 1, is, ij, it)
+                ! next period retiree
+                call solve_retiree(iq_p, 0, ix, ip_p, 1, 1, is, ij, it)
 
-              omega_x_t(:, iq_p, :, ix, ip_p, :, :, is, ij, it) = omega_x_t(0, iq_p, 0, ix, ip_p, 1, 1, is, ij, it)
-              omega_k_t(:, iq_p, :, ix, ip_p, :, :, is, ij, it) = omega_k_t(0, iq_p, 0, ix, ip_p, 1, 1, is, ij, it)
-              S(:, iq_p, :, ix, ip_p, :, :, is, ij, it) = S(0, iq_p, 0, ix, ip_p, 1, 1, is, ij, it)
+                omega_x_t(:, iq_p, :, ix, ip_p, :, :, is, ij, it) = omega_x_t(0, iq_p, 0, ix, ip_p, 1, 1, is, ij, it)
+                omega_k_t(:, iq_p, :, ix, ip_p, :, :, is, ij, it) = omega_k_t(0, iq_p, 0, ix, ip_p, 1, 1, is, ij, it)
+                S(:, iq_p, :, ix, ip_p, :, :, is, ij, it) = S(0, iq_p, 0, ix, ip_p, 1, 1, is, ij, it)
 
-            enddo ! iq_p
-          enddo ! ix
-        enddo ! ip_p
-      enddo ! is
-      !$omp end parallel do
+              enddo ! iq_p
+            enddo ! ix
+          enddo ! ip_p
+        enddo ! is
+        !$omp end parallel do
 
-      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
-      do is = 1, NS
-        do ip = 0, NP
-          do ix = 0, NX
-            do ia = 0, NA
+        !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
+        do is = 1, NS
+          do ip = 0, NP
+            do ix = 0, NX
+              do ia = 0, NA
 
-              ! next period worker
-              call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                ! next period worker
+                call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, ij, it)
 
-              ! copy decisions
-              Q_plus(ia, :, ix, ip, :, :, is, ij, it) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              a_plus(ia, :, ix, ip, :, :, is, ij, it) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              x_plus(ia, :, ix, ip, :, :, is, ij, it) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              p_plus(ia, :, ix, ip, :, :, is, ij, it) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              k_plus(ia, :, ix, ip, :, :, is, ij, it) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              c(ia, :, ix, ip, :, :, is, ij, it) = c_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              l(ia, :, ix, ip, :, :, is, ij, it) = l_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              inctax(ia, :, ix, ip, :, :, is, ij, it) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              captax(ia, :, ix, ip, :, :, is, ij, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              penben(ia, :, ix, ip, :, :, is, ij, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              pencon(ia, :, ix, ip, :, :, is, ij, it) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-              V(ia, :, ix, ip, :, :, is, ij, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                ! copy decisions
+                Q_plus(ia, :, ix, ip, :, :, is, ij, it) = Q_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                a_plus(ia, :, ix, ip, :, :, is, ij, it) = a_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                x_plus(ia, :, ix, ip, :, :, is, ij, it) = x_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                p_plus(ia, :, ix, ip, :, :, is, ij, it) = p_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                k_plus(ia, :, ix, ip, :, :, is, ij, it) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                c(ia, :, ix, ip, :, :, is, ij, it) = c_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                l(ia, :, ix, ip, :, :, is, ij, it) = l_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                inctax(ia, :, ix, ip, :, :, is, ij, it) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                captax(ia, :, ix, ip, :, :, is, ij, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                penben(ia, :, ix, ip, :, :, is, ij, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                pencon(ia, :, ix, ip, :, :, is, ij, it) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                V(ia, :, ix, ip, :, :, is, ij, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
 
-            enddo ! ia
-          enddo ! ix
-        enddo ! ip
-      enddo ! is
-      !$omp end parallel do
+              enddo ! ia
+            enddo ! ix
+          enddo ! ip
+        enddo ! is
+        !$omp end parallel do
 
-    ! solve for working age
-    elseif (ij >= 2) then
+      ! solve for working age
+      elseif (ij >= 2) then
 
-      it = year(it_in, ij_in, ij)
+        it = year(it_in, ij_in, ij)
+
+        !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
+        do is = 1, NS
+          do ie = 1, NE
+            do iw = 1, NW
+              do ip_p = 0, NP
+                do ix = 0, NX
+                  do ik = 0, NK
+                    do iq_p = 0, NQ
+
+                      ! next period worker
+                      call solve_worker(iq_p, ik, ix, ip_p, iw, ie, is, ij, it)
+
+                      ! next period entrepreneur
+                      call solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, is, ij, it)
+
+                    enddo ! iq_p
+                  enddo ! ik
+                enddo ! ix
+              enddo ! ip_p
+            enddo ! iw
+          enddo ! ie
+        enddo ! is
+        !$omp end parallel do
+
+        !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
+        ! solve the consumption savings problem
+        do is = 1, NS
+          do ie = 1, NE
+            do iw = 1, NW
+              do ip = 0, NP
+                do ix = 0, NX
+                  do ik = 0, NK
+                    do ia = 0, NA
+
+                      ! next period worker
+                      call solve_consumption(0, ia, ik, ix, ip, iw, ie, is, ij, it)
+
+                      ! next period entrpreneur
+                      if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, is, ij, it)
+
+                      ! decision on whether to be homeowner or renter next period
+                      io_p = 0
+                      if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, is, ij, it) > V_t(0, ia, ik, ix, ip, iw, ie, is, ij, it)) io_p = 1
+
+                      ! copy decisions
+                      Q_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      a_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = a_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      x_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = x_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      p_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = p_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = k_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      c(ia, ik, ix, ip, iw, ie, is, ij, it) = c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      l(ia, ik, ix, ip, iw, ie, is, ij, it) = l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      inctax(ia, ik, ix, ip, iw, ie, is, ij, it) = inctax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      captax(ia, ik, ix, ip, iw, ie, is, ij, it) = captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      penben(ia, ik, ix, ip, iw, ie, is, ij, it) = penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      pencon(ia, ik, ix, ip, iw, ie, is, ij, it) = pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      V(ia, ik, ix, ip, iw, ie, is, ij, it) = V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+
+                    enddo ! ia
+                  enddo ! ik
+                enddo ! ix
+              enddo ! ip
+            enddo ! iw
+          enddo ! ie
+        enddo ! is
+        !$omp end parallel do
+
+      ! solve for youngest cohort
+      else
+
+      it = year(it_in, ij_in, 1)
 
       !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
       do is = 1, NS
         do ie = 1, NE
           do iw = 1, NW
             do ip_p = 0, NP
-              do ix = 0, NX
-                do ik = 0, NK
-                  do iq_p = 0, NQ
+              do iq_p = 0, NQ
 
-                    ! next period worker
-                    call solve_worker(iq_p, ik, ix, ip_p, iw, ie, is, ij, it)
+                ! next period worker
+                call solve_worker(iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
 
-                    ! next period entrepreneur
-                    call solve_entrepreneur(iq_p, ik, ix, ip_p, iw, ie, is, ij, it)
+                ! copy decisions
+                omega_x_t(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_x_t(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+                omega_k_t(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_k_t(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+                S(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = S(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
 
-                  enddo ! iq_p
-                enddo ! ik
-              enddo ! ix
+                ! next period entrepreneur
+                call solve_entrepreneur(iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+
+                ! copy decisions
+                omega_x_t(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_x_t(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+                omega_k_t(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_k_t(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+                S(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = S(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
+
+              enddo ! iq_p
             enddo ! ip_p
           enddo ! iw
         enddo ! ie
       enddo ! is
       !$omp end parallel do
 
-      !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
+      !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
       ! solve the consumption savings problem
       do is = 1, NS
         do ie = 1, NE
           do iw = 1, NW
-            do ip = 0, NP
-              do ix = 0, NX
-                do ik = 0, NK
-                  do ia = 0, NA
 
-                    ! next period worker
-                    call solve_consumption(0, ia, ik, ix, ip, iw, ie, is, ij, it)
+            ! next period worker
+            call solve_consumption(0, 0, 0, 0, 0, iw, ie, is, 1, it)
 
-                    ! next period entrpreneur
-                    if(ij < JR-1) call solve_consumption(1, ia, ik, ix, ip, iw, ie, is, ij, it)
+            ! next period entrpreneur
+            if(ij < JR-1) call solve_consumption(1, 0, 0, 0, 0, iw, ie, is, 1, it)
 
-                    ! decision on whether to be homeowner or renter next period
-                    io_p = 0
-                    if(ij < JR-1 .and. V_t(1, ia, ik, ix, ip, iw, ie, is, ij, it) > V_t(0, ia, ik, ix, ip, iw, ie, is, ij, it)) io_p = 1
+            ! decision on whether to be homeowner or renter next period
+            io_p = 0
+            if(ij < JR-1 .and. V_t(1, 0, 0, 0, 0, iw, ie, is, 1, it) > V_t(0, 0, 0, 0, 0, iw, ie, is, 1, it)) io_p = 1
 
-                    ! copy decisions
-                    Q_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    a_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = a_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    x_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = x_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    p_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = p_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = k_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    c(ia, ik, ix, ip, iw, ie, is, ij, it) = c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    l(ia, ik, ix, ip, iw, ie, is, ij, it) = l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    inctax(ia, ik, ix, ip, iw, ie, is, ij, it) = inctax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    captax(ia, ik, ix, ip, iw, ie, is, ij, it) = captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    penben(ia, ik, ix, ip, iw, ie, is, ij, it) = penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    pencon(ia, ik, ix, ip, iw, ie, is, ij, it) = pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                    V(ia, ik, ix, ip, iw, ie, is, ij, it) = V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+            ! copy decisions
+            Q_plus(:, :, :, :, iw, ie, is, 1, it) = Q_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            a_plus(:, :, :, :, iw, ie, is, 1, it) = a_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            x_plus(:, :, :, :, iw, ie, is, 1, it) = x_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            p_plus(:, :, :, :, iw, ie, is, 1, it) = p_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            k_plus(:, :, :, :, iw, ie, is, 1, it) = k_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            c(:, :, :, :, iw, ie, is, 1, it) = c_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            l(:, :, :, :, iw, ie, is, 1, it) = l_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            inctax(:, :, :, :, iw, ie, is, 1, it) = inctax_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            captax(:, :, :, :, iw, ie, is, 1, it) = captax_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            penben(:, :, :, :, iw, ie, is, 1, it) = penben_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            pencon(:, :, :, :, iw, ie, is, 1, it) = pencon_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
+            V(:, :, :, :, iw, ie, is, 1, it) = V_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
 
-                  enddo ! ia
-                enddo ! ik
-              enddo ! ix
-            enddo ! ip
           enddo ! iw
         enddo ! ie
       enddo ! is
       !$omp end parallel do
 
-    ! solve for youngest cohort
-    else
-
-    it = year(it_in, ij_in, 1)
-
-    !$omp parallel do collapse(4) schedule(dynamic) num_threads(numthreads) shared(ij)
-    do is = 1, NS
-      do ie = 1, NE
-        do iw = 1, NW
-          do ip_p = 0, NP
-            do iq_p = 0, NQ
-
-              ! next period worker
-              call solve_worker(iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
-
-              ! copy decisions
-              omega_x_t(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_x_t(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
-              omega_k_t(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_k_t(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
-              S(0, iq_p, :, :, ip_p, iw, ie, is, 1, it) = S(0, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
-
-              ! next period entrepreneur
-              call solve_entrepreneur(iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
-
-              ! copy decisions
-              omega_x_t(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_x_t(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
-              omega_k_t(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = omega_k_t(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
-              S(1, iq_p, :, :, ip_p, iw, ie, is, 1, it) = S(1, iq_p, 0, 0, ip_p, iw, ie, is, 1, it)
-
-            enddo ! iq_p
-          enddo ! ip_p
-        enddo ! iw
-      enddo ! ie
-    enddo ! is
-    !$omp end parallel do
-
-    !$omp parallel do collapse(3) schedule(dynamic) num_threads(numthreads) shared(ij)
-    ! solve the consumption savings problem
-    do is = 1, NS
-      do ie = 1, NE
-        do iw = 1, NW
-
-          ! next period worker
-          call solve_consumption(0, 0, 0, 0, 0, iw, ie, is, 1, it)
-
-          ! next period entrpreneur
-          if(ij < JR-1) call solve_consumption(1, 0, 0, 0, 0, iw, ie, is, 1, it)
-
-          ! decision on whether to be homeowner or renter next period
-          io_p = 0
-          if(ij < JR-1 .and. V_t(1, 0, 0, 0, 0, iw, ie, is, 1, it) > V_t(0, 0, 0, 0, 0, iw, ie, is, 1, it)) io_p = 1
-
-          ! copy decisions
-          Q_plus(:, :, :, :, iw, ie, is, 1, it) = Q_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          a_plus(:, :, :, :, iw, ie, is, 1, it) = a_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          x_plus(:, :, :, :, iw, ie, is, 1, it) = x_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          p_plus(:, :, :, :, iw, ie, is, 1, it) = p_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          k_plus(:, :, :, :, iw, ie, is, 1, it) = k_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          c(:, :, :, :, iw, ie, is, 1, it) = c_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          l(:, :, :, :, iw, ie, is, 1, it) = l_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          inctax(:, :, :, :, iw, ie, is, 1, it) = inctax_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          captax(:, :, :, :, iw, ie, is, 1, it) = captax_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          penben(:, :, :, :, iw, ie, is, 1, it) = penben_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          pencon(:, :, :, :, iw, ie, is, 1, it) = pencon_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-          V(:, :, :, :, iw, ie, is, 1, it) = V_t(io_p, 0, 0, 0, 0, iw, ie, is, 1, it)
-
-        enddo ! iw
-      enddo ! ie
-    enddo ! is
-    !$omp end parallel do
+    endif
 
     call interpolate(ij, it)
     !write(*,'(a,i3,a)')'Age: ',ij,' DONE!'
