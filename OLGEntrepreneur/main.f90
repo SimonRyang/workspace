@@ -53,7 +53,7 @@ contains
       ! get new prices
       call get_prices(0)
 
-      write(*,*) sum(ann(:, :,:,0))
+      write(*,*)r(0), w(0)
 
       ! solve the household problem
       call solve_household(1, 0)
@@ -120,7 +120,7 @@ contains
       enddo
 
       do it = 1, TT
-      write(*,*)sum(ann(:, :, :, it))
+      write(*,*)r(it), w(it)
       enddo
 
       ! solve the household problem
