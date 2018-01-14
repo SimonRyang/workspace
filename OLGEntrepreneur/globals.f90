@@ -505,10 +505,7 @@ contains
     S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p, 1d-13)**egam/egam
 
     ! calculate future part of the value function
-    if (a_temp < 0d0) then    EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
-              varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
-              (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
-              (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp)
+    if (a_temp < 0d0) then 
       inv_w = -1d-13**egam/egam*(1d0+abs(a_temp))
     else
       inv_w = - (psi(is_com, ij_com+1)*beta*EV_temp + S_temp)
@@ -600,7 +597,7 @@ contains
   ! FUNCTION cons_o
   !
   ! calculates the value function of a worker/entrpreneur
-  !##############################################################################
+  !##########################l####################################################
   function cons_o(x_in)
 
     implicit none
