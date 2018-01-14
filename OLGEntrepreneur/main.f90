@@ -1008,8 +1008,6 @@ contains
     ! compute corporate tax incom
     TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
 
-    write(*,'(i4, 5f10.5)')it, YY(it), CC(it), II(it), GG(it), DIFF(it)
-
   end subroutine
 
 
@@ -1051,6 +1049,9 @@ contains
 
   !  write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), DIFF(it)
   !  write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
+
+  write(*,'(i4, 5f10.5)')it, YY(it), CC(it), II(it), GG(it), DIFF(it)
+
 
   end subroutine
 
