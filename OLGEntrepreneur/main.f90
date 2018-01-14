@@ -999,17 +999,12 @@ contains
     ! compute total bequests
     BQ(it) = sum(BQS(:, it))
 
-    ! commpute investment
-    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
-
     ! compute output
     YC(it) = Omega*KC(it)**alpha*LC(it)**(1d0-alpha)
     YY(it) = YC(it) + YE(it)
 
     ! compute corporate tax incom
     TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
-
-    write(*,'(i4, 8f10.5)')it, YY(it), CC(it), II(it), TC(it), GG(it), KC(it), LC(it), KC(itp)-KC(it)
 
   end subroutine
 
@@ -1043,6 +1038,9 @@ contains
 
     ! get budget balancing pension contribution rate
     taup(it) = PBEN(it)/PCON(it)
+
+    ! commpute investment
+    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
