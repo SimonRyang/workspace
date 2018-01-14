@@ -323,6 +323,11 @@ contains
                  (1d0-varphi_a)     *(egam*EV(iar, 0, ixr, ip_p, iw, ie, is, ij+1, itp))**(1d0/egam))**egam/egam
     endif
 
+    EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p, iw, ie, is, ij+1, itp) + &
+              varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p, iw, ie, is, ij+1, itp) + &
+              (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p, iw, ie, is, ij+1, itp) + &
+              (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p, iw, ie, is, ij+1, itp)
+
     ! calculate bequest part of the value function
     S_temp = (1d0-psi(is, ij+1))*mu_b*max(a_p, 1d-13)**egam/egam
 
@@ -574,6 +579,7 @@ contains
 
      ! calculate bequest part of the value function
     S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p + (1d0-xi)*k_p, 1d-13)**egam/egam
+ 10   9.36013   8.61603   0.66733  17.22931   6.64090   0.67344   0.82019
 
     ! calculate future part of the value function
     if (a_temp < 0d0) then
