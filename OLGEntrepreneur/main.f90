@@ -478,7 +478,7 @@ contains
     ! ij_max = JJ
 
     ! solve household problem recursively
-    do ij = ij_max, ij_in, -1
+    do ij = JJ, 1, -1
 
       it = year(it_in, ij_in, ij)
 
@@ -1009,11 +1009,6 @@ contains
     ! commpute investment
     II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
-    ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
-
-
-
   end subroutine
 
 
@@ -1047,7 +1042,10 @@ contains
     ! get budget balancing pension contribution rate
     taup(it) = PBEN(it)/PCON(it)
 
-    write(*,'(i4, 7f10.5)')it, YY(it), CC(it), II(it), PBEN(it), BQ(it), KC(itp)-KC(it), DIFF(it)/YY(it)*100d0
+    ! compute gap on goods market
+    DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
+
+    write(*,'(i4, 7f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), KC(itp)-KC(it), DIFF(it)/YY(it)*100d0
 
   end subroutine
 
