@@ -1036,7 +1036,7 @@ contains
     taup(it) = PBEN(it)/PCON(it)
 
     ! commpute investment
-    II(it) = (1d0+n_p)*KC(itp) - (1d0-delta_k)*KC(it)
+    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-BK(it)
