@@ -1008,7 +1008,7 @@ contains
     !BQ(it) = sum(BQS(:, it))
 
     ! commpute investment
-    !II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
+    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
     ! compute output
     YC(it) = Omega*KC(it)**alpha*LC(it)**(1d0-alpha)
@@ -1052,6 +1052,8 @@ contains
 
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-GG(it) !-II(it)-TC(it)
+
+    write(*,*)it, YY(it), CC(it), GG(it)
 
   end subroutine
 
