@@ -18,7 +18,7 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  mu(1:TT) = 0d0
+  ! mu(1:TT) = 0d0
   !lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
@@ -103,7 +103,7 @@ contains
     logical :: check
 
     ! initialize remaining variables
-    call initialize_trn()
+    !call initialize_trn()
 
     ! start the clock
     call tick(time)
@@ -1052,8 +1052,8 @@ INC_tmp = 0d0
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
 
-    write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), DIFF(it)
-    write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
+  !  write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), DIFF(it)
+  !  write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
 
   end subroutine
 

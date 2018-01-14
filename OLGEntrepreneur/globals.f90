@@ -45,7 +45,7 @@ module globals
   real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/) !
 
   ! macroeconomic parameters
-  real*8, parameter :: gy = 0.19d0 !
+  real*8, parameter :: gy = 0d0 ! 0.19d0 !
   real*8, parameter :: by = 0d0 ! 0.60d0/5d0 !
 
   ! government parameters
@@ -112,7 +112,7 @@ module globals
   integer :: time
 
   real*8 :: tauk = 0d0 !0.15d0
-  real*8 :: taur = 0.25d0
+  real*8 :: taur = 0d0 !0.25d0
 
   ! discretized shocks
   real*8 :: dist_eta(NW, NS), pi_eta(NW, NW, NS), eta(NW, NS), dist_theta(NE, NS), pi_theta(NE, NE, NS), theta(NE, NS)
