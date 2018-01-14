@@ -131,7 +131,9 @@ contains
         call get_distribution(it)
       enddo
 
+      do it = 1, TT
       write(*,*)sum(m(:, :, :, 1:NP, :, :, :, :, it))
+    enddo
 
       ! aggregate individual decisions
       do it = 1, TT
