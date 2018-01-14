@@ -419,6 +419,10 @@ contains
       x_p = (1d0+r(it))/psi(is, ij)*x(ix) - ann(ix, is, ij, it)
     endif
 
+    if((1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(is,ij)*lab_com-x_in(1)-cons_com-tauc(it)*cons_com > 0d0) then
+      write(*,*)'help',(1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(is,ij)*lab_com-x_in(1)-cons_com-tauc(it)*cons_com)
+    endif
+
     ! copy decisions
     Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = x_in(1)
     a_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = x_in(1) - (1d0-xi)*k_p - mx - tr(k(ik), k_p)
