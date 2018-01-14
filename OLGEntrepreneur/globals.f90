@@ -20,16 +20,16 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of productivity (eta) shocks
-  integer, parameter :: NW = 5
+  integer, parameter :: NW = 3
 
   ! number of entrepreneurial ability (theta) shocks
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 16
+  integer, parameter :: NQ = 12
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 16
+  integer, parameter :: NA = 12
 
   ! number of points on the capital grid
   integer, parameter :: NK = 0
@@ -105,7 +105,7 @@ module globals
 
   ! numerical parameters
   integer, parameter :: itermax = 200
-  real*8, parameter :: tol  = 1d-4
+  real*8, parameter :: tol  = 1d-6
   real*8, parameter :: damp = 0.55d0
 
   ! measure time
