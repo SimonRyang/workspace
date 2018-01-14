@@ -197,8 +197,6 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-22d0))
     enddo
 
-    psi(:, 1:JJ) = 1d0
-
     ! set up population structure
     rpop(:, 1) = dist_skill(:)
     do ij = 2, JJ
@@ -1005,8 +1003,6 @@ contains
 
     ! compute corporate tax incom
     TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
-
-    write(*,*) BQ(it), AX(it), TC(it)
 
   end subroutine
 
