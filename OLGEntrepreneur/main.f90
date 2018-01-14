@@ -273,7 +273,10 @@ contains
     ! initial guesses for macro variables
     KC = 3.400d0
     LC = 3.604d0
-    BQS = (/4.610d-2, 0.180d0, 0.106d0/)
+    !BQS = (/4.610d-2, 0.180d0, 0.106d0/)
+    BQS(1, :) = 4.610d-2
+    BQS(2, :) = 0.180d0
+    BQS(3, :) = 0.106d0
     BB = 2.964d0
     ybar = 0.555d0
 
