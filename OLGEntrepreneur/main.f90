@@ -989,7 +989,7 @@ contains
     ybar(it) = w(it)*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
-    KC(it) = damp*(AA(it) + AX(it) - KE(it) - BB(it)) + (1d0-damp)*KC(it)
+    KC(it) = damp*(AA(it) + AX(it) - xi*KE(it) - BB(it)) + (1d0-damp)*KC(it)
     KK(it) = KC(it) + KE(it)
 
     ! update work supply
