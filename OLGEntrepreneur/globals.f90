@@ -598,7 +598,7 @@ contains
     integer :: iql, iqr, ipl, ipr
 
     ! define tomorrow's assets
-    Q_plus  = x_in(1)
+    Q_plus  = x_in
 
     ! define labor supply
     !lab_com = max(x_in(2), 0d0)
