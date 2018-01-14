@@ -267,15 +267,15 @@ contains
     call grid_Cons_Equi(p, p_l, p_u)
 
     ! initialize tax rates
-    tauc(0) = 0.190d0
-    taup(0) = 0.189d0
+    tauc = 0.190d0
+    taup = 0.189d0
 
     ! initial guesses for macro variables
-    KC(0) = 3.400d0
-    LC(0) = 3.604d0
-    BQS(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
-    BB(0) = 2.964d0
-    ybar(0) = 0.555d0
+    KC = 3.400d0
+    LC = 3.604d0
+    BQS = (/4.610d-2, 0.180d0, 0.106d0/)
+    BB = 2.964d0
+    ybar = 0.555d0
 
     ! initialize value functions
     V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
