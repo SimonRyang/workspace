@@ -347,7 +347,10 @@ contains
   subroutine solve_consumption(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
 
     implicit none
-
+    EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp)
     !##### INPUT/OUTPUT VARIABLES ##############################################
     integer, intent(in) :: io_p, ia, ik, ix, ip, iw, ie, is, ij, it
 
@@ -502,7 +505,10 @@ contains
     S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p, 1d-13)**egam/egam
 
     ! calculate future part of the value function
-    if (a_temp < 0d0) then
+    if (a_temp < 0d0) then    EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp)
       inv_w = -1d-13**egam/egam*(1d0+abs(a_temp))
     else
       inv_w = - (psi(is_com, ij_com+1)*beta*EV_temp + S_temp)
@@ -667,6 +673,11 @@ contains
                   (varphi_q-varphi_p)*(egam*S(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com, it_com))**(1d0/egam) +  &
                   (1d0-varphi_q)     *(egam*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com, it_com))**(1d0/egam))**egam/egam
      endif
+
+     tomorrow = varphi_q*varphi_p            *S(io_p_com, iql, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com, it_com) + &
+                varphi_q*(1d0-varphi_p)      *S(io_p_com, iql, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com, it_com) + &
+                (1d0-varphi_q)*varphi_p      *S(io_p_com, iqr, ik_com, ix_com, ipl, iw_com, ie_com, is_com, ij_com, it_com) + &
+                (1d0-varphi_q)*(1d0-varphi_p)*S(io_p_com, iqr, ik_com, ix_com, ipr, iw_com, ie_com, is_com, ij_com, it_com)
 
     ! calculate today's value function
     if(cons_com <= 0d0)then
