@@ -1045,7 +1045,7 @@ contains
     ! get budget balancing pension contribution rate
     taup(it) = PBEN(it)/PCON(it)
 
-    write(*,'(i4, 7f10.5)')it, YY(it), CC(it), II(it), KC(it), LC(it), KC(itp)-KC(it), DIFF(it)/YY(it)*100d0
+    write(*,'(i4, 7f10.5)')it, YY(it), CC(it), II(it), PBEN(it), BQ(it), KC(itp)-KC(it), DIFF(it)/YY(it)*100d0
 
   end subroutine
 
