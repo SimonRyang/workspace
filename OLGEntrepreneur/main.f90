@@ -188,6 +188,7 @@ contains
       read(301,'(f13.8)')psi(2, ij)
     enddo
     close(301)
+    psi(:, 1:JJ) = 1d0
 
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
