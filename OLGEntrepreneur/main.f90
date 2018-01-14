@@ -125,14 +125,14 @@ contains
         call solve_household(1, it)
       enddo
 
-      do it = 1, TT
-      write(*,*)it, year(it, 1, JJ), sum(EV(:, :, :, :, :, :, :, :, it))
-      enddo
-
-
-      do it = 1, TT
-      write(*,*)it, year(it, 1, JJ), sum(V(:, :, :, :, :, :, :, :, it))
-      enddo
+      ! do it = 1, TT
+      ! write(*,*)it, year(it, 1, JJ), sum(EV(:, :, :, :, :, :, :, :, it))
+      ! enddo
+      !
+      !
+      ! do it = 1, TT
+      ! write(*,*)it, year(it, 1, JJ), sum(V(:, :, :, :, :, :, :, :, it))
+      ! enddo
 
       ! calculate the distribution of households over state space
       do it = 1, TT
