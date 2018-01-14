@@ -201,8 +201,6 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-22d0))
     enddo
 
-    psi(:, 1:JJ) = 1d0
-
     ! set up population structure
     rpop(:, 1) = dist_skill(:)
     do ij = 2, JJ
@@ -999,7 +997,7 @@ contains
     LC(it) = damp*LC(it) + (1d0-damp)*LC_old
 
     ! compute total bequests
-    !BQ(it) = sum(BQS(:, it))
+    BQ(it) = sum(BQS(:, it))
 
     ! commpute investment
     II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
