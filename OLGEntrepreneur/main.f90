@@ -126,12 +126,13 @@ contains
       enddo
 
       do it = 1, TT
-      write(*,*)it, year(it, 1, JJ), sum(c(:, :, :, :, :, :, :, :, it))
+      write(*,*)it, year(it, 1, JJ), sum(EV(:, :, :, :, :, :, :, :, it))
       enddo
 
-      write(*,*)c(0, 0, 0, 0, 1, 1, 1, 1, it)
-      it = it+50
-      write(*,*)c(0, 0, 0, 0, 1, 1, 1, 1, it)
+
+      do it = 1, TT
+      write(*,*)it, year(it, 1, JJ), sum(V(:, :, :, :, :, :, :, :, it))
+      enddo
 
       ! calculate the distribution of households over state space
       do it = 1, TT
