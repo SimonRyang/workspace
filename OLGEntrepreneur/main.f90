@@ -11,7 +11,7 @@ program main
 
   ! set government variables
   mu     = 1d0
-  lambda = 1d0
+  lambda = 0d0
   phi    = 0d0
 
   ! calculate initial equilibrium
@@ -19,7 +19,7 @@ program main
 
   ! set reforms
   !mu(1:TT) = 0d0
-   lambda (1:TT) = 0d0
+   lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
   ! tauk = 0d0
