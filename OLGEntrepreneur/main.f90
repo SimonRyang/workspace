@@ -56,6 +56,9 @@ contains
       ! solve the household problem
       call solve_household(1, 0)
 
+      write(*,*)sum(V(:, :, :, :, :, :, :, :, 0))
+      write(*,*)sum(EV(:, :, :, :, :, :, :, :, 0))
+
       ! calculate the distribution of households over state space
       call get_distribution(0)
 
