@@ -22,7 +22,7 @@ program main
   !lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
-  tauk = 0d0
+  taur = 0d0
 
   ! calculate transition path
   call get_transition()
@@ -926,6 +926,7 @@ contains
     !##### OTHER VARIABLES #####################################################
     integer :: ia, ik, ix, ip, iw, ie, is, ij, itm, itp
     real*8 :: LC_old
+    real*8 :: INC_tmp
 
     ! get last and next year
     itm = year(it, 2, 1)
@@ -940,6 +941,8 @@ contains
     YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0;  II(it) = 0d0; TC(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
     BQS(:, it) = 0d0
+
+INC_tmp = 0d0
 
     do ij = 1, JJ
 
@@ -969,6 +972,9 @@ contains
                     !TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+
+                    INC_tmp = INC_tmp + w(it)*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    INC_tmp = INC_tmp + r(it)*a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
 
                     if(ik == 0) then
                       LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)

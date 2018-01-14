@@ -50,7 +50,7 @@ module globals
 
   ! government parameters
   ! real*8, parameter :: tauk = 0.150d0 !
-  real*8, parameter :: taur = 0d0 ! 0.250d0 !
+  ! real*8, parameter :: taur = 0d0 ! 0.250d0 !
   real*8, parameter :: d_w  = 0.033d0 ! 1,000.00 Euro
   real*8, parameter :: d_s  = 0.053d0 ! 1,600.00 Euro
 
@@ -111,7 +111,8 @@ module globals
   ! measure time
   integer :: time
 
-  real*8 :: tauk = 0.15d0
+  real*8 :: tauk = 0d0 !0.15d0
+  real*8 :: taur = 0.25d0
 
   ! discretized shocks
   real*8 :: dist_eta(NW, NS), pi_eta(NW, NW, NS), eta(NW, NS), dist_theta(NE, NS), pi_theta(NE, NE, NS), theta(NE, NS)
@@ -417,10 +418,6 @@ contains
       x_p = (1d0+r(it))/psi(is, ij)*x(ix) + mx
     else
       x_p = (1d0+r(it))/psi(is, ij)*x(ix) - ann(ix, is, ij, it)
-    endif
-
-    if((1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(iw, is)*lab_com+beq(is, ij, it)-x_in(1)-cons_com-tauc(it)*cons_com > 0.05d0) then
-      write(*,*)'help',(1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(iw, is)*lab_com+beq(is, ij, it)-x_in(1)-cons_com-tauc(it)*cons_com
     endif
 
     ! copy decisions
