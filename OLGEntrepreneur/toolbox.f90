@@ -27,19 +27,19 @@ real*8, private :: starttime_cpu
 logical, private :: tbox_seed = .true.
 
 ! Level of tolerance for all routines
-real*8,  private  :: tbox_gftol = 1d-12
+real*8,  private  :: tbox_gftol = 1d-8
 
 ! Maximum number of iterations
-integer, private  :: tbox_itermax_min = 5000
+integer, private  :: tbox_itermax_min = 500
 
 ! Maximum number of iterations for brent_pow
-integer, parameter, private  :: tbox_tbox_itermax_pow_b = 10000
+integer, parameter, private  :: tbox_tbox_itermax_pow_b = 1000
 
 ! Level of tolerance for all routines
-real*8,  private  :: tbox_gftol_root = 1d-12
+real*8,  private  :: tbox_gftol_root = 1d-8
 
 ! Maximum number of iterations for broydn
-integer, private  :: itermax_root = 50000
+integer, private  :: itermax_root = 500
 
 ! control variables for gnuplot
 logical, private :: gnu_addtoplot = .false.
