@@ -1008,12 +1008,6 @@ contains
     ! compute corporate tax incom
     TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
 
-    ! commpute investment
-    II(it) = (1d0+n_p)*KC(itp) - (1d0-delta_k)*KC(it)
-
-    ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)
-
     write(*,'(i4, 5f10.5)')it, YY(it), CC(it), II(it), GG(it), DIFF(it)
 
   end subroutine
@@ -1048,6 +1042,12 @@ contains
 
     ! get budget balancing pension contribution rate
     taup(it) = PBEN(it)/PCON(it)
+
+    ! commpute investment
+    II(it) = (1d0+n_p)*KC(itp) - (1d0-delta_k)*KC(it)
+
+    ! compute gap on goods market
+    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)
 
   !  write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), DIFF(it)
   !  write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
