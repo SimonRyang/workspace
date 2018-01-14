@@ -480,7 +480,7 @@ contains
     ! ij_max = JJ
 
     ! solve household problem recursively
-    do ij = JJ, 1, -1
+    do ij = ij_max, ij_in, -1
 
       it = year(it_in, ij_in, ij)
 
