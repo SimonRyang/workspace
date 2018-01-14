@@ -943,7 +943,7 @@ contains
     KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0
     YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0;  II(it) = 0d0; TC(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
-    BQS(:, it) = 0d0;
+    BQS(:, it) = 0d0
 
     do ij = 1, JJ
 
