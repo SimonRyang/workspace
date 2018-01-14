@@ -145,6 +145,10 @@ contains
         call government(it)
       enddo
 
+      do it = 1, TT
+        write(*,*) DIFF(it)/YY(it)*100d0
+      enddi
+
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
       write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
