@@ -105,7 +105,7 @@ module globals
 
   ! numerical parameters
   integer, parameter :: itermax = 200
-  real*8, parameter :: tol  = 1d-10
+  real*8, parameter :: tol  = 1d-6
   real*8, parameter :: damp = 0.55d0
 
   ! measure time
@@ -268,7 +268,7 @@ contains
       ! wealth share for annuities and firm capital
       omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 0d0
       omega_k_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 0d0
-      S(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 1d-7**egam/egam !-inv_e((/1d0, 1d0/))
+      S(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 1d-13**egam/egam !-inv_e((/1d0, 1d0/))
 
     endif
 
@@ -322,7 +322,7 @@ contains
     endif
 
     ! calculate bequest part of the value function
-    S_temp = (1d0-psi(is, ij+1))*mu_b*max(a_p, 1d-7)**egam/egam
+    S_temp = (1d0-psi(is, ij+1))*mu_b*max(a_p, 1d-13)**egam/egam
 
     ! wealth share for annuities and firm capital
     omega_x_t(:, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = 0d0
@@ -421,7 +421,7 @@ contains
     captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = captax_com
     penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pen(ip, ij, it)
     pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pencon_com
-    c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) =  cons_com !(aas_com - x_in(1))*pinv(it)
+    c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) =  (aas_com - x_in(1))*pinv(it)
     l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = lab_com
     V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = -fret
 
@@ -486,11 +486,11 @@ contains
     endif
 
     ! calculate bequest part of the value function
-    S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p, 1d-7)**egam/egam
+    S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p, 1d-13)**egam/egam
 
     ! calculate future part of the value function
     if (a_temp < 0d0) then
-      inv_w = -1d-7**egam/egam*(1d0+abs(a_temp))
+      inv_w = -1d-13**egam/egam*(1d0+abs(a_temp))
     else
       inv_w = - (psi(is_com, ij_com+1)*beta*EV_temp + S_temp)
     endif
@@ -565,11 +565,11 @@ contains
                (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(egam*EV(iar, ikr, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp))**(1d0/egam))**egam/egam
 
      ! calculate bequest part of the value function
-    S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p + (1d0-xi)*k_p, 1d-7)**egam/egam
+    S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p + (1d0-xi)*k_p, 1d-13)**egam/egam
 
     ! calculate future part of the value function
     if (a_temp < 0d0) then
-      inv_e = -1d-7**egam/egam*(1d0+abs(a_temp))
+      inv_e = -1d-13**egam/egam*(1d0+abs(a_temp))
     else
       inv_e = - (psi(is_com, ij_com+1)*beta*EV_temp + S_temp)
     endif
@@ -655,11 +655,11 @@ contains
 
     ! calculate today's value function
     if(cons_com <= 0d0)then
-      cons_o = -1d-7**egam/egam*(1d0+abs(cons_com))
+      cons_o = -1d-13**egam/egam*(1d0+abs(cons_com))
     elseif(lab_com < 0d0) then
-      cons_o = -1d-7**egam/egam*(1d0+abs(lab_com))
+      cons_o = -1d-13**egam/egam*(1d0+abs(lab_com))
     elseif(lab_com >= 1d0) then
-      cons_o = -1d-7**egam/egam*lab_com
+      cons_o = -1d-13**egam/egam*lab_com
     else
       cons_o = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + tomorrow)
     endif
@@ -726,7 +726,7 @@ contains
 
     ! calculate today's value function
     if(cons_com <= 0d0)then
-       cons_r = -1d-7**egam/egam*(1d0+abs(cons_com))
+       cons_r = -1d-13**egam/egam*(1d0+abs(cons_com))
     else
        cons_r = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + tomorrow)
     endif
