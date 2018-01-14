@@ -470,11 +470,11 @@ contains
     integer :: iq, ia, ik, ix, ip, iw, ie, is, ij, it, iq_p, ip_p, io_p
     integer :: ij_max
 
-    !if (TT>1) ij_max = min(TT-it_in+1, JJ)
-    ij_max = JJ
+    if (TT>1) ij_max = min(TT-it_in+1, JJ)
+    ! ij_max = JJ
 
     ! solve household problem recursively
-    do ij = JJ, 1, -1
+    do ij = ij_max, 1, -1
 
       it = year(it_in, ij_in, ij)
 
