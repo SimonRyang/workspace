@@ -55,7 +55,7 @@ module globals
   real*8, parameter :: d_s  = 0.053d0 ! 1,600.00 Euro
 
   ! household preference parameters
-  real*8, parameter :: gamma = 0.25d0 !
+  real*8, parameter :: gamma = 0.5d0 !
   real*8, parameter :: egam  = 1d0-1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.995d0**5
@@ -742,6 +742,8 @@ contains
     if (ij_com < JJ .or. mu_b /= 0d0) then
       tomorrow = (varphi_q      *(egam*S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com))**(1d0/egam) +  &
                   (1d0-varphi_q)*(egam*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com))**(1d0/egam))**egam/egam
+                  tomorrow = varphi_q      *S(io_p_com, iql, ik_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com) +  &
+                             (1d0-varphi_q)*S(io_p_com, iqr, ik_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
     endif
 
     ! calculate today's value function
