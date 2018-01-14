@@ -1039,7 +1039,7 @@ contains
     expend = GG(it) + (1d0+r(it))*BB(it) - (1d0+n_p)*BB(itp)
 
     ! calculates consumption tax rate
-    tauc(it) = (expend - TAk(it) - TAw(it) - TAr(it))/CC(it)
+    tauc(it) = 0d0 !(expend - TAk(it) - TAw(it) - TAr(it))/CC(it)
 
     ! get budget balancing pension contribution rate
     taup(it) = PBEN(it)/PCON(it)
