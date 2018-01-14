@@ -5,7 +5,7 @@ module globals
   implicit none
 
   ! number of parallel used cores
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 7
 
   ! number of years the household lives
   integer, parameter :: JJ = 16
@@ -26,13 +26,13 @@ module globals
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 16
+  integer, parameter :: NQ = 12
 
   ! number of points on the liquid asset grid
   integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 0
+  integer, parameter :: NK = 16
 
   ! number of points on the annuity asset grid
   integer, parameter :: NX = 0
@@ -41,7 +41,7 @@ module globals
   integer, parameter :: NP = 4
 
   ! demographic parameters
-  real*8, parameter :: n_p = 0d0 !(1d0+0.007d0)**5-1d0 !
+  real*8, parameter :: n_p = (1d0+0.007d0)**5-1d0 !
   real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/) !
 
   ! macroeconomic parameters
@@ -59,13 +59,13 @@ module globals
   real*8, parameter :: egam  = 1d0-1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.995d0**5
-  real*8, parameter :: mu_b  = 0d0 ! 0.005d0
+  real*8, parameter :: mu_b  = 0.005d0
 
   ! maximum investment in annuities
   real*8, parameter :: mx_max = 0.07d0 ! 2,100.00 Euro
 
   ! capital parameters
-  real*8, parameter :: delta_k = 0d0 !1d0-(1d0-0.06d0)**5d0 !
+  real*8, parameter :: delta_k = 1d0-(1d0-0.06d0)**5d0 !
   real*8, parameter :: xi      = 1d0/3d0 !
 
   ! production parameters
@@ -78,7 +78,7 @@ module globals
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 8d0
+  real*8, parameter :: Q_u    = 5d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
@@ -204,7 +204,7 @@ contains
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
-    if (Q(iq_p) > 0d0) then
+    if (Q(iq_p) > 0d0 .and. .false.) then
 
       ! get best initial guess from future period
       x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 0d0)
@@ -249,7 +249,7 @@ contains
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
-    if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
+    if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min) .and. .false.) then
 
       ! get best initial guess from future period
       x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 0d0)
