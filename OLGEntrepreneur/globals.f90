@@ -45,12 +45,12 @@ module globals
   real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/) !
 
   ! macroeconomic parameters
-  real*8, parameter :: gy = 0d0 !0.19d0 !
-  real*8, parameter :: by = 0d0 !0.60d0/5d0 !
+  real*8, parameter :: gy = 0.19d0 !
+  real*8, parameter :: by = 0.60d0/5d0 !
 
   ! government parameters
-  real*8, parameter :: tauk = 0d0 !0.150d0 !
-  real*8, parameter :: taur = 0d0 !0.250d0 !
+  real*8, parameter :: tauk = 0.150d0 !
+  real*8, parameter :: taur = 0.250d0 !
   real*8, parameter :: d_w  = 0.033d0 ! 1,000.00 Euro
   real*8, parameter :: d_s  = 0.053d0 ! 1,600.00 Euro
 
