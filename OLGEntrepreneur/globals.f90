@@ -420,7 +420,7 @@ contains
     endif
 
     if((1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(is,ij)*lab_com-x_in(1)-cons_com-tauc(it)*cons_com > 0d0) then
-      write(*,*)'help',(1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(is,ij)*lab_com-x_in(1)-cons_com-tauc(it)*cons_com)
+      write(*,*)'help',(1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(is,ij)*lab_com-x_in(1)-cons_com-tauc(it)*cons_com
     endif
 
     ! copy decisions
