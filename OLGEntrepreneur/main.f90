@@ -22,7 +22,7 @@ program main
   ! lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
-  tauk = 0d0
+  ! tauk = 0d0
 
   ! calculate transition path
   call get_transition()
@@ -130,10 +130,6 @@ contains
       do it = 1, TT
         call get_distribution(it)
       enddo
-
-      do it = 1, TT
-      write(*,*)sum(m(:, :, :, 1:NP, :, :, :, :, it))
-    enddo
 
       ! aggregate individual decisions
       do it = 1, TT
