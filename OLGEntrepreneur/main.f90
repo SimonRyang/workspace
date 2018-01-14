@@ -482,6 +482,8 @@ contains
 
       it = year(it_in, ij_in, ij)
 
+      if (it_in >=1 .and. it == 0) write(*,*)'help', it_in, it, ij
+
       ! solve for oldest cohort
       if (ij == JJ) then
 
