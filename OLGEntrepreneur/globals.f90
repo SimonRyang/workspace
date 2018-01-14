@@ -356,7 +356,7 @@ contains
 
     ! get best initial guess from future period
     x_in(1) = 0.2d0 !max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
-    x_in(2) = 0.3d0 !max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
+    x_in(2) = 0.33d0 !max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
 
     ! solve the household problem using fminsearch
     if (ij < JR) then
@@ -606,7 +606,8 @@ contains
     Q_plus  = x_in(1)
 
     ! define labor supply
-    lab_com = max(x_in(2), 0d0)
+    lab_com = x_in(2)
+    !lab_com = max(x_in(2), 0d0)
     !lab_com = 0.33d0
 
     ! compute current occupation
