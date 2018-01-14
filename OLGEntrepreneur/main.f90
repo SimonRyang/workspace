@@ -957,7 +957,6 @@ contains
                     AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     BQS(is, it) = BQS(is, it) + (1d0+r(it))*a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    !BQS(is, it) = BQS(is, it) + (1d0+r(it))*a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     BK(it) = BK(it) + (1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -1040,12 +1039,12 @@ contains
     II(it) = (1d0+n_p)*KC(itp) - (1d0-delta_k)*KC(it)
 
     ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-BK(it)
+    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)
 
   !  write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), DIFF(it)
   !  write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
 
-!  write(*,'(i4, 5f10.5)')it, YY(it), CC(it), II(it), GG(it), DIFF(it)
+ write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BK(it), DIFF(it)
 
 
   end subroutine
