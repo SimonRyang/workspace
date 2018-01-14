@@ -1051,7 +1051,7 @@ contains
     taup(it) = PBEN(it)/PCON(it)
 
     ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-GG(it) !-II(it)-TC(it)
+    DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
 
     write(*,*)it, YY(it), CC(it), II(it)
 
