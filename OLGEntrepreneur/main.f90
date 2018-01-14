@@ -188,7 +188,6 @@ contains
       read(301,'(f13.8)')psi(2, ij)
     enddo
     close(301)
-    psi(:, 1:JJ) = 1d0
 
     ! compute survival probabilities for high/low skilled
     psi(:, 1) = psi(2, 1)
@@ -197,6 +196,8 @@ contains
       psi(1, ij) = psi(2, ij) - exp(0.33d0*(dble(ij-1)-22d0))
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-22d0))
     enddo
+
+    psi(:, 1:JJ) = 1d0
 
     ! set up population structure
     rpop(:, 1) = dist_skill(:)
