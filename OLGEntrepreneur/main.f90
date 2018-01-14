@@ -136,12 +136,12 @@ contains
       enddo
 
       ! aggregate individual decisions
-      do it = TT, 1, -1
+      do it = 1, TT
         call aggregation(it)
       enddo
 
       ! determine the government parameters
-      do it = TT, 1, -1
+      do it = 1, TT
         call government(it)
       enddo
 
