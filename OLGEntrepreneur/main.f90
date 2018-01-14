@@ -926,7 +926,6 @@ contains
     !##### OTHER VARIABLES #####################################################
     integer :: ia, ik, ix, ip, iw, ie, is, ij, itm, itp
     real*8 :: LC_old
-    real*8 :: INC_tmp
 
     ! get last and next year
     itm = year(it, 2, 1)
@@ -941,8 +940,6 @@ contains
     YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0;  II(it) = 0d0; TC(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
     BQS(:, it) = 0d0
-
-INC_tmp = 0d0
 
     do ij = 1, JJ
 
@@ -972,9 +969,6 @@ INC_tmp = 0d0
                     TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-
-                    INC_tmp = INC_tmp + w(it)*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    INC_tmp = INC_tmp + r(it)*a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
 
                     if(ik == 0) then
                       LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -1013,8 +1007,10 @@ INC_tmp = 0d0
     TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
 
     ! commpute investment
-    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
-    write(*,*)INC_tmp, YC(it)-r(it)*KC(it)-w(it)*LC(it)
+    II(it) = (1d0+n_p)*KC(itp) - (1d0-delta_k)*KC(it)
+
+    ! compute gap on goods market
+    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)
 
   end subroutine
 
@@ -1048,9 +1044,6 @@ INC_tmp = 0d0
 
     ! get budget balancing pension contribution rate
     taup(it) = PBEN(it)/PCON(it)
-
-    ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
 
   !  write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), DIFF(it)
   !  write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
