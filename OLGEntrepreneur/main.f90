@@ -18,8 +18,8 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  mu(1:TT) = 0d0
-  ! lambda (1:TT) = 1d0
+  !mu(1:TT) = 0d0
+   lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
   ! tauk = 0d0
@@ -125,10 +125,10 @@ contains
       do it = 1, TT
         call solve_household(1, it)
       enddo
-
-      do it = 1, TT
-        write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
-      enddo
+ 
+      ! do it = 1, TT
+      !   write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
+      ! enddo
 
       ! calculate the distribution of households over state space
       do it = 1, TT
