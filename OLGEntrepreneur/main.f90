@@ -111,7 +111,7 @@ contains
     do iter = 1, itermax
 
       ! get factor and other prices
-      do it = TT, 1
+      do it = 1, TT
         call get_prices(it)
       enddo
 
@@ -124,11 +124,6 @@ contains
       do it = 1, TT
         call solve_household(1, it)
       enddo
-
-      do it = 1, TT
-      write(*,*)it, year(it, 1, JJ), sum(a_plus(:, :, :, :, :, :, :, :, it))
-      enddo
-
 
       ! calculate the distribution of households over state space
       do it = 1, TT
@@ -155,10 +150,10 @@ contains
       write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
          ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
 
-      check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol
+      check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 10
 
       ! check for convergence
-      ! if (check) exit
+      if (check) exit
 
     enddo ! iter
 
@@ -347,7 +342,6 @@ contains
       CC(it) = CC(0)
       II(it) = II(0)
       TC(it) = TC(0)
-      GG(it) = GG(0)
 
       TAc(it) = TAc(0)
       TAr(it) = TAr(0)
@@ -366,7 +360,6 @@ contains
       Q_plus(:, :, :, :, :, :, :, :, it) = Q_plus(:, :, :, :, :, :, :, :, 0)
       a_plus(:, :, :, :, :, :, :, :, it) = a_plus(:, :, :, :, :, :, :, :, 0)
       k_plus(:, :, :, :, :, :, :, :, it) = k_plus(:, :, :, :, :, :, :, :, 0)
-      x_plus(:, :, :, :, :, :, :, :, it) = x_plus(:, :, :, :, :, :, :, :, 0)
       p_plus(:, :, :, :, :, :, :, :, it) = p_plus(:, :, :, :, :, :, :, :, 0)
       inctax(:, :, :, :, :, :, :, :, it) = inctax(:, :, :, :, :, :, :, :, 0)
       captax(:, :, :, :, :, :, :, :, it) = captax(:, :, :, :, :, :, :, :, 0)
@@ -380,7 +373,6 @@ contains
       Q_plus_t(:, :, :, :, :, :, :, :, :, it) = Q_plus_t(:, :, :, :, :, :, :, :, :, 0)
       a_plus_t(:, :, :, :, :, :, :, :, :, it) = a_plus_t(:, :, :, :, :, :, :, :, :, 0)
       k_plus_t(:, :, :, :, :, :, :, :, :, it) = k_plus_t(:, :, :, :, :, :, :, :, :, 0)
-      x_plus_t(:, :, :, :, :, :, :, :, :, it) = x_plus_t(:, :, :, :, :, :, :, :, :, 0)
       p_plus_t(:, :, :, :, :, :, :, :, :, it) = p_plus_t(:, :, :, :, :, :, :, :, :, 0)
       inctax_t(:, :, :, :, :, :, :, :, :, it) = inctax_t(:, :, :, :, :, :, :, :, :, 0)
       captax_t(:, :, :, :, :, :, :, :, :, it) = captax_t(:, :, :, :, :, :, :, :, :, 0)
@@ -480,12 +472,9 @@ contains
 
     !##### OTHER VARIABLES #####################################################
     integer :: iq, ia, ik, ix, ip, iw, ie, is, ij, it, iq_p, ip_p, io_p
-    integer :: ij_max
-
-    ij_max = min(TT - it_in + 1, JJ)
 
     ! solve household problem recursively
-    do ij = ij_max, ij_in, -1
+    do ij = JJ, ij_in, -1
 
       it = year(it_in, ij_in, ij)
 
