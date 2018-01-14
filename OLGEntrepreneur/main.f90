@@ -478,7 +478,7 @@ contains
     ! ij_max = JJ
 
     ! solve household problem recursively
-    do ij = ij_max, ij_in, -1
+    do ij = JJ, 1, -1
 
       it = year(it_in, ij_in, ij)
 
@@ -1045,7 +1045,7 @@ contains
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
 
-    write(*,'(5f8.5)')YY(it), CC(it), II(it), TC(it), GG(it)
+    write(*,'(7f8.5)')YY(it), CC(it), II(it), TC(it), GG(it), KC(it), LC(it)
 
   end subroutine
 
