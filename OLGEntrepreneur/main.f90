@@ -951,8 +951,8 @@ contains
                     !if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
                     ! AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*psi(is, ij+1)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                     AA(it) = AA(it) + a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
-                    !AA(it) = AA(it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                     !AA(it) = AA(it) + a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
+                    AA(it) = AA(it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/psi(is, ij)
                     !AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     ! BQS(is, it) = BQS(is, it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
