@@ -206,7 +206,7 @@ contains
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
-    if (Q(iq_p) > 0d0) then
+    if (Q(iq_p) > 0d0 .and. .false.) then
 
       ! get best initial guess from future period
       x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 0d0)
@@ -251,7 +251,7 @@ contains
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
-    if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
+    if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min) .and. .false.) then
 
       ! get best initial guess from future period
       x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 0d0)
@@ -355,8 +355,8 @@ contains
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
     ! get best initial guess from future period
-    x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
-    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
+    x_in(1) = 0.1d0 !max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
+    x_in(2) = 0.3d0 !max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
 
     ! solve the household problem using fminsearch
     if (ij < JR) then
