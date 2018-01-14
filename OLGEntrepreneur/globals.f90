@@ -5,7 +5,7 @@ module globals
   implicit none
 
   ! number of parallel used cores
-  integer, parameter :: numthreads = 28
+  integer, parameter :: numthreads = 1
 
   ! number of years the household lives
   integer, parameter :: JJ = 16
