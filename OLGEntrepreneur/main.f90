@@ -955,10 +955,11 @@ contains
                     ! skip if there is no household
                     !if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
+                    ! AA(it) = AA(it) + a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     AA(it) = AA(it) + a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    BQS(is, it) = BQS(is, it) + (1d0+r(it))*(a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    BQS(is, it) = BQS(is, it) + (1d0+r(it))*(a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     BK(it) = BK(it) + (1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
