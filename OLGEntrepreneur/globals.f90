@@ -356,7 +356,7 @@ contains
 
     ! get best initial guess from future period
     x_in(1) = 0.1d0 !max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
-    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
+    x_in(2) = 0.3d0 !max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
 
     ! solve the household problem using fminsearch
     if (ij < JR) then
@@ -487,6 +487,11 @@ contains
                  (varphi_a-varphi_x)*(egam*EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp))**(1d0/egam) + &
                  (1d0-varphi_a)     *(egam*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp))**(1d0/egam))**egam/egam
     endif
+
+    EV_temp = varphi_a*varphi_x            *EV(ial, 0, ixl, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              varphi_a*(1d0-varphi_x)      *EV(ial, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              (1d0-varphi_a)*varphi_x      *EV(iar, 0, ixl, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp) + &
+              (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
     ! calculate bequest part of the value function
     S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p, 1d-13)**egam/egam
