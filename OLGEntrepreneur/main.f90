@@ -147,7 +147,7 @@ contains
 
       do it = 1, TT
         write(*,*) DIFF(it)/YY(it)*100d0
-      enddi
+      enddo
 
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
