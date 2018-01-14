@@ -467,9 +467,12 @@ contains
 
     !##### OTHER VARIABLES #####################################################
     integer :: iq, ia, ik, ix, ip, iw, ie, is, ij, it, iq_p, ip_p, io_p
+    integer :: ij_max
+
+    if (TT>1) ij_max = min(TT-it_in+1, JJ)
 
     ! solve household problem recursively
-    do ij = JJ, ij_in, -1
+    do ij = ij_max, ij_in, -1
 
       it = year(it_in, ij_in, ij)
 
