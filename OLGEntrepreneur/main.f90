@@ -1014,6 +1014,8 @@ contains
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)
 
+    write(*,'(5f10.5)') YY(it), CC(it), II(it), GG(it), DIFF(it)
+
   end subroutine
 
 
