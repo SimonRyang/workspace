@@ -62,7 +62,7 @@ module globals
   real*8, parameter :: mu_b  = 0.015d0
 
   ! maximum investment in annuities
-  real*8, parameter :: mx_max = 0.07d0! 2,100.00 Euro
+  real*8, parameter :: mx_max = 0.07d0 ! 2,100.00 Euro
 
   ! capital parameters
   real*8, parameter :: delta_k = 1d0-(1d0-0.06d0)**5d0 !
