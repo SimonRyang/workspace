@@ -136,12 +136,12 @@ contains
       enddo
 
       ! aggregate individual decisions
-      do it = 1, TT
+      do it = TT, 1
         call aggregation(it)
       enddo
 
       ! determine the government parameters
-      do it = 1, TT
+      do it = TT, 1
         call government(it)
       enddo
 
@@ -1011,6 +1011,8 @@ contains
 
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
+
+
 
   end subroutine
 
