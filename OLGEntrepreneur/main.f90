@@ -443,7 +443,7 @@ contains
       do ix = 0, NX
         ann(ix, :, ij, it) = (1d0+r(it))/psi(:, ij)*x(ix)/ann_tmp(:)
       enddo ! ix
-    enddo ! ij
+    enddo ! ij6
 
     ! calculate old-age transfers
     pen(:, :, it) = 0d0
