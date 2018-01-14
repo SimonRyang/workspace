@@ -926,7 +926,7 @@ contains
 
     !##### INPUT/OUTPUT VARIABLES ##############################################
     integer, intent(in) :: it
-; BB(it) = 0d0
+
     !##### OTHER VARIABLES #####################################################
     integer :: ia, ik, ix, ip, iw, ie, is, ij, itm, itp
     real*8 :: LC_old
