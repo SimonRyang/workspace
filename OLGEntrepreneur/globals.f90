@@ -204,7 +204,7 @@ contains
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
-    if (Q(iq_p) > 0d0 .and. .false.) then
+    if (Q(iq_p) > 0d0) then
 
       ! get best initial guess from future period
       x_in = max(omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 0d0)
@@ -249,7 +249,7 @@ contains
     iq_p_com = iq_p; ik_com = ik; ix_com = ix; ip_p_com = ip_p
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
-    if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min) .and. .false.) then
+    if (Q(iq_p) > (1d0-xi)*k_min + tr(k(ik), k_min)) then
 
       ! get best initial guess from future period
       x_in(1) = max(omega_x_t(1, iq_p, ik, ix, ip_p, iw, ie, is, ij, it), 0d0)
