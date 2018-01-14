@@ -1046,6 +1046,7 @@ contains
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
 
     write(*,'(i4, 7f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), KC(itp)-KC(it), DIFF(it)/YY(it)*100d0
+    write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
 
   end subroutine
 
