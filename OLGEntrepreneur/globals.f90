@@ -49,7 +49,7 @@ module globals
   real*8, parameter :: by = 0.60d0/5d0 !
 
   ! government parameters
-  real*8, parameter :: tauk = 0.150d0 !
+  parameter :: tauk = 0.150d0 !
   real*8, parameter :: taur = 0.250d0 !
   real*8, parameter :: d_w  = 0.033d0 ! 1,000.00 Euro
   real*8, parameter :: d_s  = 0.053d0 ! 1,600.00 Euro
