@@ -419,7 +419,7 @@ contains
       x_p = (1d0+r(it))/psi(is, ij)*x(ix) - ann(ix, is, ij, it)
     endif
 
-    if((1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(iw, is)*lab_com+beq(is, ij, it)-x_in(1)-cons_com-tauc(it)*cons_com > 0.5d0) then
+    if((1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(iw, is)*lab_com+beq(is, ij, it)-x_in(1)-cons_com-tauc(it)*cons_com > 0.05d0) then
       write(*,*)'help',(1d0+r(it))*a(ia)+eff(is,ij)*w(it)*eta(iw, is)*lab_com+beq(is, ij, it)-x_in(1)-cons_com-tauc(it)*cons_com
     endif
 
