@@ -145,10 +145,6 @@ contains
         call government(it)
       enddo
 
-      do it = 1, TT
-        write(*,*) DIFF(it)/YY(it)*100d0
-      enddo
-
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
       write(*,'(i4,5f8.2,f14.8)')iter, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
@@ -158,8 +154,6 @@ contains
 
       ! check for convergence
       if (check) exit
-
-      call output(TT)
 
     enddo ! iter
 
@@ -1052,8 +1046,6 @@ contains
 
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
-
-    write(*,*)it, YY(it), CC(it), II(it)
 
   end subroutine
 
