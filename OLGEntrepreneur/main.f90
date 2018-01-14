@@ -966,9 +966,9 @@ contains
                     BQS(is, it) = BQS(is, it) + (1d0+r(it))*a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/psi(is, ij)*(1d0-psi(is, ij))
                     !KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     !TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAc(it) = TAc(it) + tauc(it)*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAw(it) = TAw(it) + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    !TAc(it) = TAc(it) + tauc(it)*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    !TAw(it) = TAw(it) + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    !TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
 
@@ -993,23 +993,23 @@ contains
 
     ! compute stock of capital
     KC(it) = damp*(AA(it) + AX(it) - BB(it)) + (1d0-damp)*KC(it)
-    KK(it) = KC(it) + KE(it)
+    KK(it) = KC(it)! + KE(it)
 
     ! update work supply
     LC(it) = damp*LC(it) + (1d0-damp)*LC_old
 
     ! compute total bequests
-    BQ(it) = sum(BQS(:, it))
+    !BQ(it) = sum(BQS(:, it))
 
     ! commpute investment
-    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
+    !II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
     ! compute output
     YC(it) = Omega*KC(it)**alpha*LC(it)**(1d0-alpha)
-    YY(it) = YC(it) + YE(it)
+    YY(it) = YC(it)! + YE(it)
 
     ! compute corporate tax incom
-    TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
+    !TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
 
   end subroutine
 
@@ -1045,7 +1045,7 @@ contains
     taup(it) = PBEN(it)/PCON(it)
 
     ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
+    DIFF(it) = YY(it)-CC(it)-GG(it) !-II(it)-TC(it)
 
   end subroutine
 
