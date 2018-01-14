@@ -22,7 +22,7 @@ program main
   ! lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
-  tauk = 0d0
+  !tauk = 0d0
 
   ! calculate transition path
   call get_transition()
@@ -474,7 +474,7 @@ contains
     ! ij_max = JJ
 
     ! solve household problem recursively
-    do ij = ij_max, ij_in, -1
+    do ij = JJ, ij_in, -1
 
       it = year(it_in, ij_in, ij)
 
