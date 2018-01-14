@@ -126,6 +126,10 @@ contains
         call solve_household(1, it)
       enddo
 
+      do it = 1, TT
+        write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
+      enddo
+
       ! calculate the distribution of households over state space
       do it = 1, TT
         call get_distribution(it)
@@ -474,7 +478,7 @@ contains
     ! ij_max = JJ
 
     ! solve household problem recursively
-    do ij = ij_max, ij_in, -1
+    do ij = JJ, ij_in, -1
 
       it = year(it_in, ij_in, ij)
 
