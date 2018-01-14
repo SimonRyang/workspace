@@ -5,7 +5,7 @@ module globals
   implicit none
 
   ! number of parallel used cores
-  integer, parameter :: numthreads = 1
+  integer, parameter :: numthreads = 28
 
   ! number of years the household lives
   integer, parameter :: JJ = 16
@@ -607,41 +607,39 @@ contains
 
     ! define labor supply
     lab_com = x_in(2)
-
-write(*,*)lab_com
     !lab_com = max(x_in(2), 0d0)
     !lab_com = 0.33d0
-write(*,*)'Shit1'
+
     ! compute current occupation
     ind_o = abs(dble(ik_com > 0))
-write(*,*)'Shit2'
+
     ! calculate current income
     income = (1d0-ind_o)*w(it_com)*eff(is_com, ij_com)*eta(iw_com, is_com)*max(lab_com, 0d0) + &
              ind_o*theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*max(lab_com, 0d0))**nu2
-write(*,*)'Shit3'
+
     ! calculate pension contribution
     pencon_com = (1d0-(1d0-phi(it_com))*ind_o)*min(income, 2d0*ybar(it_com))
-write(*,*)'Shit4'
+
     ! calculate income tax
     inctax_com = tarif(max(income - taup(it_com)*pencon_com - d_w*ybar(0), 0d0))
-write(*,*)'Shit5'
+
     ! calculate capital tax
     captax_com = taur*1.055d0*max(r(it_com)*(a(ia_com)-xi*k(ik_com)) - d_s*ybar(0), 0d0)
-write(*,*)'Shit6'
+
     ! available assets
     aas_com = (1d0+r(it_com))*(a(ia_com)-xi*k(ik_com)) + (1d0-delta_k)*k(ik_com) + income + beq(is_com, ij_com, it_com) &
                - inctax_com - captax_com - taup(it_com)*pencon_com
-write(*,*)'Shit7'
+
     ! calculate consumption
     cons_com = (aas_com - Q_plus)*pinv(it_com)
-write(*,*)'Shit8'
+
     ! calculate future earning points
     p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi(it_com))*ind_o)*mu(it_com)*(lambda(it_com) + (1d0-lambda(it_com))*min(income/ybar(it_com), 2d0)))/dble(ij_com)
-write(*,*)'Shit9'
+
     ! derive interpolation weights
     call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
     call linint_Equi(p_plus_com, p_l, p_u, NP, ipl, ipr, varphi_p)
-write(*,*)'Shit10'
+
     ! restrict values to grid just in case
     iql = min(iql, NQ)
     iqr = min(iqr, NQ)
