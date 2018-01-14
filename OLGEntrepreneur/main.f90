@@ -121,7 +121,7 @@ contains
           call solve_household(ij, 1)
         enddo
       endif
-      do it = TT, 1, -1
+      do it = 1, TT
         call solve_household(1, it)
       enddo
 
