@@ -41,7 +41,7 @@ module globals
   integer, parameter :: NP = 4
 
   ! demographic parameters
-  real*8, parameter :: n_p = 0d0 !(1d0+0.007d0)**5-1d0 !
+  real*8, parameter :: n_p = (1d0+0.007d0)**5-1d0 !
   real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/) !
 
   ! macroeconomic parameters
@@ -59,7 +59,7 @@ module globals
   real*8, parameter :: egam  = 1d0-1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.995d0**5
-  real*8, parameter :: mu_b  = 0d0 !0.015d0
+  real*8, parameter :: mu_b  = 0.015d0
 
   ! maximum investment in annuities
   real*8, parameter :: mx_max = 0.07d0! 2,100.00 Euro
@@ -353,8 +353,8 @@ contains
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
     ! get best initial guess from future period
-    x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
-    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
+    x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 1d-4)
+    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 1d-4)
 
     ! solve the household problem using fminsearch
     if (ij < JR) then
