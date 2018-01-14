@@ -1045,7 +1045,7 @@ contains
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
 
-    write(*,'(i4, 8f10.5)')it, YY(it), CC(it), II(it), TC(it), GG(it), KC(it), LC(it), KC(itp)-KC(it)
+    write(*,'(i4, 7f10.5)')it, YY(it), CC(it), II(it), KC(it), LC(it), KC(itp)-KC(it), DIFF(it)/YY(it)*100d0
 
   end subroutine
 
