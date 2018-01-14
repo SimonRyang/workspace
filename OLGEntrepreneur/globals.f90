@@ -355,8 +355,8 @@ contains
     iw_com = iw; ie_com = ie; is_com = is; ij_com = ij; it_com = it
 
     ! get best initial guess from future period
-    x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
-    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
+    x_in(1) = max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 1d-4)
+    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 1d-4)
 
     ! solve the household problem using fminsearch
     if (ij < JR) then
@@ -423,7 +423,7 @@ contains
     captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = captax_com
     penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pen(ip, ij, it)
     pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pencon_com
-    c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = cons_com !(aas_com - x_in(1))*pinv(it)
+    c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = (aas_com - x_in(1))*pinv(it)
     l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = lab_com
     V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = -fret
 
