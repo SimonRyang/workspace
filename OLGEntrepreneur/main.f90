@@ -14,6 +14,9 @@ program main
   lambda = 0d0
   phi    = 0d0
 
+
+    tauk = 0d0
+
   ! calculate initial equilibrium
   call get_SteadyState()
 
