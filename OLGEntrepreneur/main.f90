@@ -1009,6 +1009,8 @@ contains
     ! compute corporate tax incom
     TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
 
+    write(*,'(i4, 8f10.5)')it, YY(it), CC(it), II(it), TC(it), GG(it), KC(it), LC(it), KC(itp)-KC(it)
+
   end subroutine
 
 
@@ -1045,7 +1047,7 @@ contains
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-TC(it)-GG(it)
 
-    write(*,'(7f8.5)')YY(it), CC(it), II(it), TC(it), GG(it), KC(it), LC(it), KC(it)-KC(itp)
+    write(*,'(i4, 8f10.5)')it, YY(it), CC(it), II(it), TC(it), GG(it), KC(it), LC(it), KC(itp)-KC(it)
 
   end subroutine
 
