@@ -32,7 +32,7 @@ module globals
   integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 0
+  integer, parameter :: NK = 16
 
   ! number of points on the annuity asset grid
   integer, parameter :: NX = 0
@@ -131,7 +131,7 @@ module globals
   ! macroeconomic variables
   real*8 :: r(0:TT), w(0:TT)
   real*8 :: ybar(0:TT), pinv(0:TT)
-  real*8 :: AA(0:TT), AX(0:TT), BQ(0:TT), PBEN(0:TT), PCON(0:TT)
+  real*8 :: AA(0:TT), AX(0:TT), BQ(0:TT), BK(0:TT), PBEN(0:TT), PCON(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), BB(0:TT)
   real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAk(0:TT)
