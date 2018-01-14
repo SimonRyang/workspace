@@ -59,7 +59,7 @@ module globals
   real*8, parameter :: egam  = 1d0-1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.995d0**5
-  real*8, parameter :: mu_b  = 0.15d0
+  real*8, parameter :: mu_b  = 0d0 !0.15d0
 
   ! maximum investment in annuities
   real*8, parameter :: mx_max = 0.07d0 ! 2,100.00 Euro
@@ -356,7 +356,7 @@ contains
 
     ! get best initial guess from future period
     x_in(1) = 0.1d0 !max(Q_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
-    x_in(2) = 0.3d0 !max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
+    x_in(2) = max(l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it), 0d0)
 
     ! solve the household problem using fminsearch
     if (ij < JR) then

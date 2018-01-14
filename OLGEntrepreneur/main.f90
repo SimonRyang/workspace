@@ -25,7 +25,7 @@ program main
   ! tauk = 0d0
 
   ! calculate transition path
-  call get_transition()
+  !call get_transition()
 
   ! close files
   close(21)
