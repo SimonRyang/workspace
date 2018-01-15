@@ -327,7 +327,6 @@ contains
       AA(it) = AA(0)
       AX(it) = AX(0)
       BQ(it) = BQ(0)
-      BK(it) = BK(0)
       PBEN(it) = PBEN(0)
       PCON(it) = PCON(0)
       KK(it) = KK(0)
@@ -934,7 +933,7 @@ contains
     LC_old = LC(it)
 
     ! reset macroeconomic aggregates in each iteration step
-    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; BK(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
+    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
     KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0
     YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0;  II(it) = 0d0; TC(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
