@@ -616,7 +616,7 @@ contains
 
     ! calculate current income
     income = (1d0-ind_o)*w(it_com)*eff(is_com, ij_com)*eta(iw_com, is_com)*max(lab_com, 0d0) + &
-             ind_o*(theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*max(lab_com, 0d0))**nu2 - delta_k*k(ik_com) + r(it_com)*min(a(ia_com) - xi*k(ik_com), 0d0))
+             ind_o*(theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*max(lab_com, 0d0))**nu2 - delta_k*k(ik_com))
 
     ! calculate pension contribution
     pencon_com = (1d0-(1d0-phi(it_com))*ind_o)*min(income, 2d0*ybar(it_com))
@@ -628,7 +628,7 @@ contains
     captax_com = taur*1.055d0*max(r(it_com)*(a(ia_com)-xi*k(ik_com)) - d_s*ybar(0), 0d0)
 
     ! available assets
-    aas_com = a(ia_com) - xi*k(ik_com) + k(ik_com) + income + beq(is_com, ij_com, it_com) &
+    aas_com = (1d0+r(it_com))*(a(ia_com)-xi*k(ik_com)) + k(ik_com) + income + beq(is_com, ij_com, it_com) &
                - inctax_com - captax_com - taup(it_com)*pencon_com
 
     ! calculate consumption

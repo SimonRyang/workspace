@@ -1098,6 +1098,7 @@ contains
       enddo ! ij
     enddo ! is
 
+    ! calibration output
     if (it == 0) then
 
       write(*,'(/, a, /)')     '******* CALIBRATION *******'
