@@ -26,7 +26,7 @@ module globals
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 12
+  integer, parameter :: NQ = 16
 
   ! number of points on the liquid asset grid
   integer, parameter :: NA = 16
