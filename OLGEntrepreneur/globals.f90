@@ -35,7 +35,7 @@ module globals
   integer, parameter :: NK = 12
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 12
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -71,7 +71,7 @@ module globals
   ! production parameters
   real*8, parameter :: Omega = 1.0d0
   real*8, parameter :: k_min = 0.10d0 ! ~ 25,000.00 Euro
-  real*8, parameter :: phi_k = 0.0d0 !*
+  real*8, parameter :: phi_k = 0.2d0 !*
   real*8, parameter :: alpha = 0.36d0 !
   real*8, parameter :: nu1   = 0.65d0
   real*8, parameter :: nu2   = 0.88d0
