@@ -88,7 +88,7 @@ module globals
 
   ! size of the capital grid
   real*8, parameter :: k_l    = k_min
-  real*8, parameter :: k_u    = 0.75d0*Q_u/(1d0-xi)
+  real*8, parameter :: k_u    = Q_u/(1d0-xi)
   real*8, parameter :: k_grow = Q_grow
 
   ! size of the annuity asset grid
@@ -619,7 +619,7 @@ contains
              ind_o*(theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*max(lab_com, 0d0))**nu2 - delta_k*k(ik_com) + r(it_com)*min(a(ia_com)-xi*k(ik_com), 0d0))
 
     ! calculate pension contribution
-    pencon_com = (1d0-(1d0-phi(it_com))*ind_o)*min(income, 2d0*ybar(it_com))
+    pencon_com = (1d0-(1d0-phi(it_com))*ind_o)*min(max(income, 0d0), 2d0*ybar(it_com))
 
     ! calculate income tax
     inctax_com = tarif(max(income - taup(it_com)*pencon_com - d_w*ybar(0), 0d0))
@@ -635,7 +635,7 @@ contains
     cons_com = (aas_com - Q_plus)*pinv(it_com)
 
     ! calculate future earning points
-    p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi(it_com))*ind_o)*mu(it_com)*(lambda(it_com) + (1d0-lambda(it_com))*min(income/ybar(it_com), 2d0)))/dble(ij_com)
+    p_plus_com = (p(ip_com)*dble(ij_com-1) + (1d0-(1d0-phi(it_com))*ind_o)*mu(it_com)*(lambda(it_com) + (1d0-lambda(it_com))*min(max(income, 0d0)/ybar(it_com), 2d0)))/dble(ij_com)
 
     ! derive interpolation weights
     call linint_Grow(Q_plus, Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
