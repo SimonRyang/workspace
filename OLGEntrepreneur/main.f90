@@ -1098,7 +1098,7 @@ contains
       enddo ! ij
     enddo ! is
 
-    if (it == 0 .or. it == TT) then
+    if (it == 0) then
 
       write(*,'(/, a, /)')     '******* CALIBRATION *******'
       write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
