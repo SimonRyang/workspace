@@ -628,7 +628,7 @@ contains
     captax_com = taur*1.055d0*max(r(it_com)*(a(ia_com)-xi*k(ik_com)) - d_s*ybar(0), 0d0)
 
     ! available assets
-    aas_com = a(ia_com) - xi*k(ik_com) + r(it_com)*max(a(ia_com)-xi*k(ik_com), 0d0)) + k(ik_com) + income + beq(is_com, ij_com, it_com) &
+    aas_com = a(ia_com) - xi*k(ik_com) + r(it_com)*max(a(ia_com)-xi*k(ik_com), 0d0) + k(ik_com) + income + beq(is_com, ij_com, it_com) &
                - inctax_com - captax_com - taup(it_com)*pencon_com
 
     ! calculate consumption
