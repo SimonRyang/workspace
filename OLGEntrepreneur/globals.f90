@@ -32,10 +32,10 @@ module globals
   integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 16
+  integer, parameter :: NK = 0
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 0
+  integer, parameter :: NX = 16
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
