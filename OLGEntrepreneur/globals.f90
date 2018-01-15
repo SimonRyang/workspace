@@ -616,7 +616,7 @@ contains
 
     ! calculate current income
     income = (1d0-ind_o)*w(it_com)*eff(is_com, ij_com)*eta(iw_com, is_com)*max(lab_com, 0d0) + &
-             ind_o*(theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*max(lab_com, 0d0))**nu2 - delta_k*k(ik_com) + r(it)*min(a(ia_com) - xi*k(ik_com), 0d0))
+             ind_o*(theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*max(lab_com, 0d0))**nu2 - delta_k*k(ik_com) + r(it_com)*min(a(ia_com) - xi*k(ik_com), 0d0))
 
     ! calculate pension contribution
     pencon_com = (1d0-(1d0-phi(it_com))*ind_o)*min(income, 2d0*ybar(it_com))
