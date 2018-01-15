@@ -18,9 +18,9 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  mu(1:TT) = 0d0
+  ! mu(1:TT) = 0d0
   ! lambda (1:TT) = 1d0
-  ! phi(1:TT) = 1d0
+  phi(1:TT) = 1d0
 
   ! calculate transition path
   call get_transition()
@@ -67,7 +67,7 @@ contains
       ! check maximum grid points used
       call check_grid(iqmax, iamax, ikmax, ixmax, 0)
 
-      write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+      write(*,'(i4,4i5,5f8.2,f16.8)')iter, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax), &
                                       (/5d0*KK(0), CC(0), II(0)/)/YY(0)*100d0, &
                                       ((1d0+r(0))**0.2d0-1d0)*100d0, w(0), DIFF(0)/YY(0)*100d0
 
@@ -143,10 +143,13 @@ contains
         call government(it)
       enddo
 
+      ! check maximum grid points used
+      call check_grid(iqmax, iamax, ikmax, ixmax, TT)
+
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
-      write(*,'(i4,i6,5f8.2,f14.8)')iter, itmax, (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, &
-         ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
+      write(*,'(i4,5i5,5f8.2,f14.8)')iter, itmax, , maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+         (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
 
       check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 20
 
@@ -315,7 +318,7 @@ contains
     integer :: it
 
     write(*,'(/a/)')'TRANSITION PATH'
-    write(*,'(a)')'ITER    IT     K/Y     C/Y     I/Y       r       w          DIFF'
+    write(*,'(a)')'ITER   IT   IQ   IA   IK   IX     K/Y     C/Y     I/Y       r       w          DIFF'
 
     do it = 1, TT
 
