@@ -20,22 +20,22 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of productivity (eta) shocks
-  integer, parameter :: NW = 2
+  integer, parameter :: NW = 3
 
   ! number of entrepreneurial ability (theta) shocks
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 12
+  integer, parameter :: NQ = 16
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 12
+  integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 12
+  integer, parameter :: NK = 16
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 12
+  integer, parameter :: NX = 16
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
