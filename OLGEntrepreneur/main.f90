@@ -148,7 +148,7 @@ contains
 
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
-      write(*,'(i4,5i5,5f8.2,f14.8)')iter, itmax, , maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+      write(*,'(i4,5i5,5f8.2,f14.8)')iter, itmax, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
          (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
 
       check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 20
