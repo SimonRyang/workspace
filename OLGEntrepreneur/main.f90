@@ -199,8 +199,6 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-22d0))
     enddo
 
-    psi(:, 1:JJ) = 1d0
-
     ! set up population structure
     rpop(:, 1) = dist_skill(:)
     do ij = 2, JJ
@@ -1046,7 +1044,7 @@ contains
   !  write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), DIFF(it)
   !  write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
 
- write(*,'(i4, 7f10.5)')it, YY(it), CC(it), II(it), GG(it), BK(it), TC(it), DIFF(it)
+    ! write(*,'(i4, 7f10.5)')it, YY(it), CC(it), II(it), GG(it), BK(it), TC(it), DIFF(it)
 
 
   end subroutine
