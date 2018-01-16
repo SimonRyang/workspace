@@ -150,6 +150,7 @@ module globals
 
   ! variables to store the value function
   real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: vv_coh(JJ, 0:TT)
 
   ! variables for temporary policy and value functions
   real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
