@@ -1064,7 +1064,7 @@ contains
     !##### INPUT/OUTPUT VARIABLES #############################################
     integer, intent(in) :: it
 
-    integer :: is, ij
+    integer :: ia, ik, ix, ip, iw, ie, is, ij
     real*8 :: life_exp(NS), punb(NS, JJ)
     real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
     real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
