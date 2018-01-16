@@ -1152,20 +1152,20 @@ contains
                   do ia = 0, NA
 
                     if (ik == 0) then
-                      c_coh(0, ij, it) = c_coh(0, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      a_coh(0, ij, it) = a_coh(0, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      ax_coh(0, ij, it) = ax_coh(0, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      inc_coh(0, ij, it) = inc_coh(0, ij, it) + w(it)*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      c_coh(0, ij, it) = c_coh(0, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
+                      a_coh(0, ij, it) = a_coh(0, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
+                      ax_coh(0, ij, it) = ax_coh(0, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
+                      inc_coh(0, ij, it) = inc_coh(0, ij, it) + w(it)*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
                     else
-                      c_coh(1, ij, it) = c_coh(1, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      ax_coh(1, ij, it) = ax_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      k_coh(ij, it) = k_coh(ij, it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      c_coh(1, ij, it) = c_coh(1, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
+                      a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
+                      ax_coh(1, ij, it) = ax_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
+                      k_coh(ij, it) = k_coh(ij, it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
+                      inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
                     endif
 
                     if (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) <= 1d-10) then
-                      flc_coh(ij, it) = flc_coh(ij, it) + m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      flc_coh(ij, it) = flc_coh(ij, it) + m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
                     endif
 
                   enddo ! ia
@@ -1230,8 +1230,9 @@ contains
         '    ENTn    WORn     FLC      VALUE  IQMAX  IAMAX  IKMAX  IXMAX'
     write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     do ij = 1, JJ
-      write(21, '(i3, 16f8.3, f11.3, 2i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), inc_coh(0, ij, it), inc_coh(1, ij, it), &
-                                           k_coh(ij, it), sum(m(:, 1:NK, :, :, :, :, :, ij, it))/sum(m(:, :, :, :, :, :, :, ij, it)), &
+      write(21, '(i3, 1f8.3, f11.3, 4i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), &
+                                           inc_coh(0, ij, it), inc_coh(1, ij, it), k_coh(ij, it), &
+                                           sum(m(:, 1:NK, :, :, :, :, :, ij, it))/sum(m(:, :, :, :, :, :, :, ij, it)), &
                                            sum(m(:, 1:NK, :, :, :, :, 1, ij, it))/sum(m(:, :, :, :, :, :, 1, ij, it)), &
                                            sum(m(:, 1:NK, :, :, :, :, 2, ij, it))/sum(m(:, :, :, :, :, :, 2, ij, it)), &
                                            sum(m(:, 1:NK, :, :, :, :, 3, ij, it))/sum(m(:, :, :, :, :, :, 3, ij, it)), &
