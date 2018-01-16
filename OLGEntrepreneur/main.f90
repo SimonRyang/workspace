@@ -1235,7 +1235,7 @@ contains
                                            sum(m(:, 1:NK, :, :, :, :, 1, ij, it))/sum(m(:, :, :, :, :, :, 1, ij, it)), &
                                            sum(m(:, 1:NK, :, :, :, :, 2, ij, it))/sum(m(:, :, :, :, :, :, 2, ij, it)), &
                                            sum(m(:, 1:NK, :, :, :, :, 3, ij, it))/sum(m(:, :, :, :, :, :, 3, ij, it)), &
-                                           flc_coh(ij, it), vv_coh(ij, it), iqmax(ij, iamax(ij), ikmax(ij), ixmax(ij)
+                                           flc_coh(ij, it), vv_coh(ij, it), iqmax(ij), iamax(ij), ikmax(ij), ixmax(ij)
       if (ij == JR-1) write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     enddo
 
