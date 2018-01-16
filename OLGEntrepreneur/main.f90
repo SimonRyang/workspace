@@ -217,7 +217,7 @@ contains
     eff(1, 1:JR-1) = (/1.2987778d0, 1.5794954d0, 1.6404434d0, 1.6908550d0, 1.7507724d0, &
                        1.7586790d0, 1.7611338d0, 1.8054554d0, 1.7423268d0/)
     eff(2, 1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
-                      2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)
+                       2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)
     eff(3, 1:JR-1) = (/1.3882564d0, 2.1841104d0, 2.9655702d0, 3.3290738d0, 3.4171474d0, &
                        3.4497238d0, 3.4046532d0, 3.3062074d0, 3.1235630d0/)
 
@@ -272,11 +272,11 @@ contains
     taup(0) = 0.189d0
 
     ! initial guesses for macro variables
-    KC(0) = 3.400d0
-    LC(0) = 3.604d0
+    KC(0) = 4.700d0
+    LC(0) = 5.470d0
     BQS(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
-    BB(0) = 2.964d0
-    ybar(0) = 0.555d0
+    BB(0) =   0.660d0
+    ybar(0) = 0.460d0
 
     ! initialize value functions
     V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
@@ -1155,7 +1155,7 @@ contains
                       c_coh(0, ij, it) = c_coh(0, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       a_coh(0, ij, it) = a_coh(0, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       ax_coh(0, ij, it) = ax_coh(0, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      inc_coh(0, ij, it) = inc_coh(0, ij, it) + w(it)*eff(ij, is)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      inc_coh(0, ij, it) = inc_coh(0, ij, it) + w(it)*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     else
                       c_coh(1, ij, it) = c_coh(1, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
