@@ -1148,7 +1148,7 @@ contains
     write(21,'(8x,8f8.2)')TAc(it), TAr(it), TAw(it), TAk(it), TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it), BF(it)
     write(21,'(a,8f8.2)')'(in %)  ',(/TAc(it), TAr(it), TAw(it), TAk(it)/)/(TAc(it)+TAr(it)+TAw(it)+TAk(it))*100d0, &
                (/TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
-    write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur, 0d0, tauk/)*100d0
+    write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur, TAw(it)/(w(it)*LC(it) + PRO(it)), tauk/)*100d0
 
     write(21,'(a)')'PENS        TAUP     PEN    PBEN    PCON      BQ'
     write(21,'(8x,5f8.2)')taup(it)*PCON(it), PBEN(it)/sum(m(:, :, :, :, :, :, :, JR:JJ, it)), PBEN(it), PCON(it), BQ(it)
