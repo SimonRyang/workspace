@@ -1157,11 +1157,11 @@ contains
                       ax_coh(0, ij, it) = ax_coh(0, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
                       inc_coh(0, ij, it) = inc_coh(0, ij, it) + w(it)*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
                     else
-                      c_coh(1, ij, it) = c_coh(1, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
-                      a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
-                      ax_coh(1, ij, it) = ax_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
-                      k_coh(ij, it) = k_coh(ij, it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
-                      inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))
+                      c_coh(1, ij, it) = c_coh(1, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      ax_coh(1, ij, it) = ax_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      k_coh(ij, it) = k_coh(ij, it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
                     endif
 
                     if (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) <= 1d-10) then
@@ -1185,7 +1185,7 @@ contains
     write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*500d0
 
     write(21,'(a)')'LABOR         LC      LE      hc      he       w    ybar'
-    write(21,'(8x,6f8.2/)')LC(it), LE(it), HC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), HE(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)),  w(it), ybar(it)
+    write(21,'(8x,6f8.2/)')LC(it), LE(it), HC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), HE(it)/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 0d0), w(it), ybar(it)
 
     write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX          DIFF'
     write(21,'(8x,6f8.2,f14.8)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)
