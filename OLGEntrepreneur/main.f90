@@ -938,7 +938,7 @@ contains
     ! reset macroeconomic aggregates in each iteration step
     AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
     KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0; BF = 0d0
-    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; NEX(it) = 0d0
+    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; NEX(it) = 0d0; PRO(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
     BQS(:, it) = 0d0
 
@@ -989,7 +989,7 @@ contains
     enddo ! ij
 
     ! get average income
-    ybar(it) = (w(it)*LC(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
     KC(it) = damp*(AA(it) + AX(it) - BB(it)) + (1d0-damp)*KC(it)
@@ -1147,7 +1147,7 @@ contains
     write(21,'(a)')'GOV         TAUC    TAUR    TAUW    TAUK   TOTAL      GG      BB      BF'
     write(21,'(8x,8f8.2)')TAc(it), TAr(it), TAw(it), TAk(it), TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it), BF(it)
     write(21,'(a,8f8.2)')'(in %)  ',(/TAc(it), TAr(it), TAw(it), TAk(it)/)/(TAc(it)+TAr(it)+TAw(it)+TAk(it))*100d0, &
-               (/TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
+                         (/TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
     write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur, TAw(it)/(w(it)*LC(it) + PRO(it)), tauk/)*100d0
 
     write(21,'(a)')'PENS        TAUP     PEN    PBEN    PCON      BQ'
@@ -1161,7 +1161,7 @@ contains
     write(21,'(a)')'POP        TOTAL     65-     65+ 65+/65-'
     write(21,'(8x,3f8.2)')sum(m(:, :, :, :, :, :, :, :, it)), sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, :, :, :, :, :, :, JR:JJ, it))
     write(21,'(a,4f8.2/)')'(in %)  ',(/sum(m(:, :, :, :, :, :, :, :, it)), sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, :, :, :, :, :, :, JR:, it))/)/sum(m(:, :, :, :, :, :, :, :, it))*100d0, &
-                sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+                          sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
 
   end subroutine
 
