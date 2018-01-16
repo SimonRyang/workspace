@@ -936,11 +936,11 @@ contains
     LC_old = LC(it)
 
     ! reset macroeconomic aggregates in each iteration step
-    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
+    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; BQS(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
     KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0; BF = 0d0
     YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; NEX(it) = 0d0; PRO(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
-    BQS(:, it) = 0d0
+    vv_coh(:, it) = 0d0
 
     do ij = 1, JJ
 
@@ -967,7 +967,6 @@ contains
                     TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-
                     if(ik == 0) then
                       LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       HC(it) = HC(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -977,7 +976,8 @@ contains
                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       PRO(it) = PRO(it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
-
+                    vv_coh(ij, it) = vv_coh(ij, it) + VV(ia, ik, ix, ip, iw, ie, is, ij, it) &
+                                    *m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
                   enddo ! ia
                 enddo ! ik
               enddo ! ix
@@ -1224,8 +1224,20 @@ contains
     write(21,'(8x,4f8.2/)')sum(life_exp*dist_skill), life_exp(:)
 
     ! check for the maximium grid point used
-
     call check_grid(iqmax, iamax, ikmax, ixmax, it)
+
+    write(21, '(a,a)')' IJ   CONSw   CONSe   ASSw     ASSe   ASSxw   ASSxe    INCw    INCe    INVe     ENT    ENTs1  ENTs2   ENTs3', &
+        '    ENTn    WORn     FLC      VALUE  IQMAX  IAMAX  IKMAX  IXMAX'
+    write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
+    do ij = 1, JJ
+      write(21, '(i3, 16f8.3, f11.3, 2i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), inc_coh(0, ij, it), inc_coh(1, ij, it), &
+                                           k_coh(ij, it), sum(m(:, 1:NK, :, :, :, :, :, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it))), &
+                                           sum(m(:, 1:NK, :, :, :, :, 1, ij, it)/sum(m(:, 1:NK, :, :, :, :, 1, ij, it))), &
+                                           sum(m(:, 1:NK, :, :, :, :, 2, ij, it)/sum(m(:, 1:NK, :, :, :, :, 2, ij, it))), &
+                                           sum(m(:, 1:NK, :, :, :, :, 3, ij, it)/sum(m(:, 1:NK, :, :, :, :, 3, ij, it))), &
+                                           flc_coh(ij, it), vv_coh(ij, it), iqmax(ij, iamax(ij), ikmax(ij), ixmax(ij)
+      if (ij == JR-1) write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
+    enddo
 
   end subroutine
 
