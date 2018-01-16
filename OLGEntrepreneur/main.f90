@@ -1140,9 +1140,9 @@ contains
     write(21,'(a)')'LABOR         LC      LE      hc      he       w    ybar'
     write(21,'(8x,6f8.2/)')LC(it), LE(it), HC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), HE(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)),  w(it), ybar(it)
 
-    write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX    DIFF'
-    write(21,'(8x,6f8.2,f10.6)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)
-    write(21,'(a,6f8.2,f10.6/)')'(in %)  ',(/YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)/)/YY(it)*100d0
+    write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX          DIFF'
+    write(21,'(8x,6f8.2,f14.8)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)
+    write(21,'(a,6f8.2,f14.8/)')'(in %)  ',(/YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)/)/YY(it)*100d0
 
     write(21,'(a)')'GOV         TAUC    TAUR    TAUW    TAUK   TOTAL      GG      BB      BF'
     write(21,'(8x,8f8.2)')TAc(it), TAr(it), TAw(it), TAk(it), TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it), BF(it)
@@ -1162,6 +1162,19 @@ contains
     write(21,'(8x,3f8.2)')sum(m(:, :, :, :, :, :, :, :, it)), sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, :, :, :, :, :, :, JR:JJ, it))
     write(21,'(a,4f8.2/)')'(in %)  ',(/sum(m(:, :, :, :, :, :, :, :, it)), sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, :, :, :, :, :, :, JR:, it))/)/sum(m(:, :, :, :, :, :, :, :, it))*100d0, &
                           sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+
+    write(21,'(a)')'           WORFO     WOR     ENT    WOR1    ENT1    WOR2    ENT2    WOR3    ENT3'
+    write(21,'(8x,9f8.2)')sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), &
+                          sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
+                          sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
+                          sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))
+    write(21, '(a, 9f8.2/)')'(in %)  ',(/sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0, &
+                                       sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, &
+                                       sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, &
+                                       sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
+
+    write(21,'(a)')'LIFE       j_bar  j_bar1  j_bar2  j_bar3'
+    write(21,'(8x,4f8.2/)')sum(life_exp*dist_skill), life_exp(:)
 
   end subroutine
 
