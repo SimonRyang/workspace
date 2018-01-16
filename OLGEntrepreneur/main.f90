@@ -1165,7 +1165,7 @@ contains
                     endif
 
                     if (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) <= 1d-10) then
-                      flc_coh(ij, it) = flc_coh(ij, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
+                      flc_coh(ij, it) = flc_coh(ij, it) + m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
 
                   enddo ! ia
