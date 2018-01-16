@@ -1230,7 +1230,7 @@ contains
         '    ENTn    WORn     FLC      VALUE  IQMAX  IAMAX  IKMAX  IXMAX'
     write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     do ij = 1, JJ
-      write(21, '(i3, 1f8.3, f11.3, 4i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), &
+      write(21, '(i3, 15f8.3, f11.3, 4i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), &
                                            inc_coh(0, ij, it), inc_coh(1, ij, it), k_coh(ij, it), &
                                            sum(m(:, 1:NK, :, :, :, :, :, ij, it))/sum(m(:, :, :, :, :, :, :, ij, it)), &
                                            sum(m(:, 1:NK, :, :, :, :, 1, ij, it))/sum(m(:, :, :, :, :, :, 1, ij, it)), &
