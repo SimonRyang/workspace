@@ -938,7 +938,7 @@ contains
     ! reset macroeconomic aggregates in each iteration step
     AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
     KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0
-    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0;  II(it) = 0d0; TC(it) = 0d0
+    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; NEX(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
     BQS(:, it) = 0d0
 
@@ -1137,7 +1137,11 @@ contains
     write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*500d0
 
     write(21,'(a)')'LABOR         LC      LE      hc      he       w    ybar'
-    write(21,'(8x,4f8.2/)')LC(it), LE(it),  w(it), ybar(it), HC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), HE(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
+    write(21,'(8x,6f8.2/)')LC(it), LE(it), HC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), HE(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)),  w(it), ybar(it)
+
+    write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX    DIFF'
+    write(21,'(8x,6f8.2,f8.3)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), diff(it)
+    write(21,'(a,6f8.2,f8.3/)')'(in %)  ',(/YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), diff(it)/)/YY(it)*100d0
 
   end subroutine
 

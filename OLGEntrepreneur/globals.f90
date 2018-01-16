@@ -133,7 +133,7 @@ module globals
   real*8 :: ybar(0:TT), pinv(0:TT)
   real*8 :: AA(0:TT), AX(0:TT), BQ(0:TT), PBEN(0:TT), PCON(0:TT)
   real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), LE(0:TT), HC(0:TT), HE(0:TT), BB(0:TT)
-  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT)
+  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT), NEX(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAk(0:TT)
   real*8 :: BQS(NS, 0:TT)
 
