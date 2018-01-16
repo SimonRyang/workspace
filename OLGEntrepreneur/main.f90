@@ -976,7 +976,7 @@ contains
                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       PRO(it) = PRO(it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
-                    vv_coh(ij, it) = vv_coh(ij, it) + VV(ia, ik, ix, ip, iw, ie, is, ij, it) &
+                    vv_coh(ij, it) = vv_coh(ij, it) + V(ia, ik, ix, ip, iw, ie, is, ij, it) &
                                     *m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
                   enddo ! ia
                 enddo ! ik
