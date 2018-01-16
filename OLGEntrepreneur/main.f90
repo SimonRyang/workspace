@@ -988,8 +988,10 @@ contains
 
     enddo ! ij
 
+    write(*,*)PRO(it)
+
     ! get average income
-    ybar(it) = (w(it)*LC(it) + PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    ybar(it) = (w(it)*LC(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
     KC(it) = damp*(AA(it) + AX(it) - BB(it)) + (1d0-damp)*KC(it)
