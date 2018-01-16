@@ -1067,7 +1067,7 @@ contains
     integer :: ia, ik, ix, ip, iw, ie, is, ij
     real*8 :: life_exp(NS), punb(NS, JJ)
     real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
-    real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
+    real*8 :: inc_coh(0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
 
     ! integer :: ij, ages(JJ)
     ! ! set up age variable
@@ -1134,6 +1134,15 @@ contains
     endif
 
     ! compute cohort specific aggregates
+    c_coh(:, :, it) = 0d0
+    a_coh(:, :, it) = 0d0
+    ax_coh(:, :, it) = 0d0
+    k_coh(:, it) = 0d0
+    inc_coh(:, :, it) = 0d0
+    o_coh(:, :, :, it) = 0d0
+    os_coh(:, :, :, :, it) = 0d0
+    flc_coh(:, it) = 0d0
+
     do ij = 1, JJ
 
       do is = 1, NS
@@ -1144,6 +1153,22 @@ contains
                 do ik = 0, NK
                   do ia = 0, NA
 
+                    if (ik == 0) then
+                      c_coh(0, ij, it) = c_coh(0, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      a_coh(0, ij, it) = a_coh(0, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      ax_coh(0, ij, it) = ax_coh(0, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      inc_coh(0, ij, it) = inc_coh(0, ij, it) + w(it)*eff(ij, is)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    else
+                      c_coh(1, ij, it) = c_coh(1, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      ax_coh(1, ij, it) = ax_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      k_coh(ij, it) = k_coh(ij, it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    endif
+
+                    if (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) <= 1d-10) then
+                      flc_coh(ij, it) = flc_coh(ij, it) + m(io, ia, ix, ip, iw, ie, is, ij, it)
+                    endif
 
                   enddo ! ia
                 enddo ! ik
