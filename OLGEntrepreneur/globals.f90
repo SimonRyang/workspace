@@ -35,7 +35,7 @@ module globals
   integer, parameter :: NK = 12
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 12
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -106,7 +106,7 @@ module globals
   ! numerical parameters
   integer, parameter :: itermax = 200
   real*8, parameter :: tol  = 1d-6
-  real*8, parameter :: damp = 0.65d0
+  real*8, parameter :: damp = 0.45d0
 
   ! measure time
   integer :: time
@@ -132,7 +132,7 @@ module globals
   real*8 :: r(0:TT), w(0:TT)
   real*8 :: ybar(0:TT), pinv(0:TT)
   real*8 :: AA(0:TT), AX(0:TT), BQ(0:TT), PBEN(0:TT), PCON(0:TT)
-  real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), BB(0:TT)
+  real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), LE(0:TT), HC(0:TT), HE(0:TT), BB(0:TT)
   real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAk(0:TT)
   real*8 :: BQS(NS, 0:TT)

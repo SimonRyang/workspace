@@ -937,7 +937,7 @@ contains
 
     ! reset macroeconomic aggregates in each iteration step
     AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
-    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0
+    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0
     YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0;  II(it) = 0d0; TC(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
     BQS(:, it) = 0d0
@@ -970,7 +970,10 @@ contains
 
                     if(ik == 0) then
                       LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      HC(it) = HC(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     else
+                      LE(it) = LE(it) + eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      HE(it) = HE(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
 
@@ -1126,6 +1129,15 @@ contains
       write(*,*)
 
     endif
+
+    ! Output
+    write(21,'(a, i3/)')'EQUILIBRIUM YEAR ', it
+    write(21,'(a)')'CAPITAL       KK      KC      KE      AA      AX       r    p.a.'
+    write(21,'(8x,7f8.2)')KK(it), KC(it), KE(it), AA(it), AX(it), r(it), ((1d0+r(it))**(1d0/5d0)-1d0)*100d0
+    write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*500d0
+
+    write(21,'(a)')'LABOR         LC      LE      hc      he       w    ybar'
+    write(21,'(8x,4f8.2/)')LC(it), LE(it),  w(it), ybar(it), HC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), HE(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
 
   end subroutine
 
