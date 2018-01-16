@@ -975,6 +975,7 @@ contains
                       LE(it) = LE(it) + eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       HE(it) = HE(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      PRO(it) = PRO(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))
                     endif
 
                   enddo ! ia
@@ -988,7 +989,7 @@ contains
     enddo ! ij
 
     ! get average income
-    ybar(it) = w(it)*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    ybar(it) = (w(it)*LC(it) + PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
     KC(it) = damp*(AA(it) + AX(it) - BB(it)) + (1d0-damp)*KC(it)
@@ -1140,8 +1141,8 @@ contains
     write(21,'(8x,6f8.2/)')LC(it), LE(it), HC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), HE(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)),  w(it), ybar(it)
 
     write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX    DIFF'
-    write(21,'(8x,6f8.2,f8.3)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), diff(it)
-    write(21,'(a,6f8.2,f8.3/)')'(in %)  ',(/YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), diff(it)/)/YY(it)*100d0
+    write(21,'(8x,6f8.2,f10.6)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)
+    write(21,'(a,6f8.2,f10.6/)')'(in %)  ',(/YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)/)/YY(it)*100d0
 
     write(21,'(a)')'GOV         TAUC    TAUR    TAUW    TAUK   TOTAL      GG      BB      BF'
     write(21,'(8x,8f8.2)')TAc(it), TAr(it), TAw(it), TAk(it), TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it), BF(it)
@@ -1152,6 +1153,10 @@ contains
     write(21,'(a)')'PENS        TAUP     PEN    PBEN    PCON      BQ'
     write(21,'(8x,5f8.2)')taup(it)*PCON(it), PBEN(it)/sum(m(:, :, :, :, :, :, :, JR:JJ, it)), PBEN(it), PCON(it), BQ(it)
     write(21,'(a,5f8.2/)')'(in %)  ',(/taup(it), kappa, PBEN(it)/YY(it), PCON(it)/YY(it), BQ(it)/YY(it)/)*100d0
+
+    write(21,'(a)')'INCOME     TOTAL     WOR     ENT ENT/WOR     y_w     y_e y_e/y_w'
+    write(21, '(8x,7f8.2)')w(it)*LC(it) + PRO(it), w(it)*LC(it), PRO(it), PRO(it)/(w(it)*LC(it)), w(it)*LC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), PROE(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), PRO(it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/(w(it)*LC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
+    write(21, '(a,4f8.2/)')'(in %)  ',(/w(it)*LC(it) PRO(it), w(it)*LC(it), PRO(it)/)/(w(it)*LC(it) PRO(it))*100d0, PRO(it)/(w(it)*LC(it))*100d0
 
   end subroutine
 
