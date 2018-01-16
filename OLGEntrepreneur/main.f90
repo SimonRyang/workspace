@@ -989,7 +989,7 @@ contains
     enddo ! ij
 
     ! get average income
-    ybar(it) = (w(it)*LC(it) + PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    ybar(it) = (w(it)*LC(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
     KC(it) = damp*(AA(it) + AX(it) - BB(it)) + (1d0-damp)*KC(it)
@@ -1157,6 +1157,11 @@ contains
     write(21,'(a)')'INCOME     TOTAL     WOR     ENT ENT/WOR     y_w     y_e y_e/y_w'
     write(21, '(8x,7f8.2)')w(it)*LC(it) + PRO(it), w(it)*LC(it), PRO(it), PRO(it)/(w(it)*LC(it)), w(it)*LC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), PRO(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), PRO(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/(w(it)*LC(it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
     write(21, '(a,4f8.2/)')'(in %)  ',(/w(it)*LC(it) + PRO(it), w(it)*LC(it), PRO(it)/)/(w(it)*LC(it) + PRO(it))*100d0, PRO(it)/(w(it)*LC(it))*100d0
+
+    write(21,'(a)')'POP        TOTAL     65-     65+ 65+/65-'
+    write(21,'(8x,3f8.2)')sum(m(:, :, :, :, :, :, :, :, it)), sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, :, :, :, :, :, :, JR:JJ, it))
+    write(21,'(a,4f8.2/)')'(in %)  ',(/sum(m(:, :, :, :, :, :, :, :, it)), sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, :, :, :, :, :, :, JR:, it))/)sum(m(:, :, :, :, :, :, :, :, it))*100d0, &
+                sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
 
   end subroutine
 
