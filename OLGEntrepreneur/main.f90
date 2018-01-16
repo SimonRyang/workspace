@@ -805,7 +805,7 @@ contains
                   do ia = 0, NA
 
                     ! skip if there is no household
-                    !if (m(ia, ik, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
+                    if (m(ia, ik, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
 
                     ! derive interpolation weights
                     call linint_Grow(Q_plus(ia, ik, ix, ip, iw, ie, is, ij-1, itm), Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
@@ -953,7 +953,7 @@ contains
                   do ia = 0, NA
 
                     ! skip if there is no household
-                    !if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
+                    if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
                     AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     AA(it) = AA(it) + k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
@@ -1066,6 +1066,8 @@ contains
 
     integer :: is, ij
     real*8 :: life_exp(NS), punb(NS, JJ)
+    real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
+    real*8 :: inc_coh(0:1, JJ, 0:TT), o_coh(0:1, 0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
 
     ! integer :: ij, ages(JJ)
     ! ! set up age variable
@@ -1102,7 +1104,7 @@ contains
       enddo ! ij
     enddo ! is
 
-    ! calibration output
+    ! write calibration output
     if (it == 0) then
 
       write(*,'(/, a, /)')     '******* CALIBRATION *******'
@@ -1131,7 +1133,29 @@ contains
 
     endif
 
-    ! Output
+    ! compute cohort specific aggregates
+    do ij = 1, JJ
+
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ik = 0, NK
+                  do ia = 0, NA
+
+
+                  enddo ! ia
+                enddo ! ik
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
+
+    enddo ! ij
+
+    ! write equilibrium output
     write(21,'(a, i3/)')'EQUILIBRIUM YEAR ', it
     write(21,'(a)')'CAPITAL       KK      KC      KE      AA      AX       r    p.a.'
     write(21,'(8x,7f8.2)')KK(it), KC(it), KE(it), AA(it), AX(it), r(it), ((1d0+r(it))**(1d0/5d0)-1d0)*100d0
@@ -1169,12 +1193,16 @@ contains
                           sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
                           sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))
     write(21, '(a, 9f8.2/)')'(in %)  ',(/sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0, &
-                                       sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, &
-                                       sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, &
-                                       sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
+                                       (/sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, &
+                                       (/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, &
+                                       (/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
 
     write(21,'(a)')'LIFE       j_bar  j_bar1  j_bar2  j_bar3'
     write(21,'(8x,4f8.2/)')sum(life_exp*dist_skill), life_exp(:)
+
+    ! check for the maximium grid point used
+
+    call check_grid(iqmax, iamax, ikmax, ixmax, it)
 
   end subroutine
 
