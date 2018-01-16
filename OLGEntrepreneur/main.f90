@@ -1161,7 +1161,7 @@ contains
                       a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
                       ax_coh(1, ij, it) = ax_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
                       k_coh(ij, it) = k_coh(ij, it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
-                      inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
                     endif
 
                     if (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) <= 1d-10) then
