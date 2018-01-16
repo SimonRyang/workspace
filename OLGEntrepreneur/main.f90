@@ -1149,9 +1149,9 @@ contains
                (/TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
     write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur, 0d0, tauk/)*100d0
 
-    write(21,'(a)')'PENS        TAUP     PEN  PENBEN  PENCON      BQ'
-    write(21,'(8x,5f8.2)')taup(it)*PENCON(it), PENBEN(it)/sum(m(:, :, :, :, :, :, :, JR:JJ, it)), PENBEN(it), PENCON(it), BQ(it)
-    write(21,'(a,5f8.2/)')'(in %)  ',(/taup(it), kappa(it), PENBEN(it)/YY(it), PENCON(it)/YY(it), BQ(it)/YY(it)/)*100d0
+    write(21,'(a)')'PENS        TAUP     PEN    PBEN    PCON      BQ'
+    write(21,'(8x,5f8.2)')taup(it)*PENCON(it), PBEN(it)/sum(m(:, :, :, :, :, :, :, JR:JJ, it)), PBEN(it), PCON(it), BQ(it)
+    write(21,'(a,5f8.2/)')'(in %)  ',(/taup(it), kappa(it), PBEN(it)/YY(it), PCON(it)/YY(it), BQ(it)/YY(it)/)*100d0
 
   end subroutine
 
