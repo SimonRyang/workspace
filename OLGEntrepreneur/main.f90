@@ -1139,8 +1139,6 @@ contains
     ax_coh(:, :, it) = 0d0
     k_coh(:, it) = 0d0
     inc_coh(:, :, it) = 0d0
-    o_coh(:, :, :, it) = 0d0
-    os_coh(:, :, :, :, it) = 0d0
     flc_coh(:, it) = 0d0
 
     do ij = 1, JJ
