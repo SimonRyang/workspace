@@ -937,7 +937,7 @@ contains
 
     ! reset macroeconomic aggregates in each iteration step
     AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
-    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0
+    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0; BF = 0d0
     YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; NEX(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
     BQS(:, it) = 0d0
@@ -1142,6 +1142,12 @@ contains
     write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX    DIFF'
     write(21,'(8x,6f8.2,f8.3)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), diff(it)
     write(21,'(a,6f8.2,f8.3/)')'(in %)  ',(/YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), diff(it)/)/YY(it)*100d0
+
+    write(21,'(a)')'GOV         TAUC    TAUR    TAUW    TAUK   TOTAL      GG      BB      BF'
+    write(21,'(8x,8f8.2)')TAc(it), TAr(it), TAw(it), TAk(it), TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it), BF(it)
+    write(21,'(a,8f8.2)')'(in %)  ',(/TAc(it), TAr(it), TAw(it), TAk(it)/)/(TAc(it)+TAr(it)+TAw(it)+TAk(it))*100d0, &
+               (/TAc(it)+TAr(it)+TAw(it)+TAy(it), GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
+    write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur(it), 0d0, tauk(it)/)*100d0    
 
   end subroutine
 
