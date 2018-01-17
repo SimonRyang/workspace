@@ -42,7 +42,7 @@ module globals
 
   ! demographic parameters
   real*8, parameter :: n_p = (1d0+0.007d0)**5-1d0 !
-  real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/) !
+  real*8, parameter :: dist_skill(NS) = (/0.1513d0, 0.5404d0, 0.3083d0/) !
 
   ! macroeconomic parameters
   real*8, parameter :: gy = 0.19d0 !
