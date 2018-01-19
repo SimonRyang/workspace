@@ -35,7 +35,7 @@ module globals
   integer, parameter :: NK = 12
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 12
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -93,7 +93,7 @@ module globals
 
   ! size of the annuity asset grid
   real*8, parameter :: x_l    = Q_l
-  real*8, parameter :: x_u    = 4d0*Q_u
+  real*8, parameter :: x_u    = 2d0*Q_u
   real*8, parameter :: x_grow = Q_grow
 
   ! size of the pension claim grid

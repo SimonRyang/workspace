@@ -243,11 +243,11 @@ contains
     dist_theta(:, 3) = (/0d0, 1d0/)
     pi_theta(1, 1, :) = 1d0
     pi_theta(1, 2, :) = 0d0
-    pi_theta(2, 1, 1) = 0.005d0
+    pi_theta(2, 1, 1) = 0.14986d0
     pi_theta(2, 2, 1) = 1d0-pi_theta(2, 1, 1)
-    pi_theta(2, 1, 2) = 0.012d0
+    pi_theta(2, 1, 2) = 0.14993d0
     pi_theta(2, 2, 2) = 1d0-pi_theta(2, 1, 2)
-    pi_theta(2, 1, 3) = 0.017d0
+    pi_theta(2, 1, 3) = 0.09682d0
     pi_theta(2, 2, 3) = 1d0-pi_theta(2, 1, 3)
 
     ! initialize asset grid
