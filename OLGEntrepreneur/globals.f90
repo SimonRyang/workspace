@@ -5,7 +5,7 @@ module globals
   implicit none
 
   ! number of parallel used cores
-  integer, parameter :: numthreads = 14
+  integer, parameter :: numthreads = 28
 
   ! number of years the household lives
   integer, parameter :: JJ = 16
@@ -14,35 +14,35 @@ module globals
   integer, parameter :: JR = 10
 
   ! number of transition periods
-  integer, parameter :: TT = 48
+  integer, parameter :: TT = 1
 
   ! number of permanent skill classes
   integer, parameter :: NS = 3
 
   ! number of productivity (eta) shocks
-  integer, parameter :: NW = 3
+  integer, parameter :: NW = 5
 
   ! number of entrepreneurial ability (theta) shocks
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 12
+  integer, parameter :: NQ = 16
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 12
+  integer, parameter :: NA = 16
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 12
+  integer, parameter :: NK = 16
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 12
+  integer, parameter :: NX = 0
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
 
   ! demographic parameters
   real*8, parameter :: n_p = (1d0+0.007d0)**5-1d0 !
-  real*8, parameter :: dist_skill(NS) = (/0.1520d0, 0.5547d0, 0.2933d0/) !
+  real*8, parameter :: dist_skill(NS) = (/0.1513d0, 0.5404d0, 0.3083d0/) !
 
   ! macroeconomic parameters
   real*8, parameter :: gy = 0.19d0 !
@@ -71,7 +71,7 @@ module globals
   ! production parameters
   real*8, parameter :: Omega = 1.0d0
   real*8, parameter :: k_min = 0.10d0 ! ~ 25,000.00 Euro
-  real*8, parameter :: phi_k = 0.2d0 !*
+  real*8, parameter :: phi_k = 0.10d0 !*
   real*8, parameter :: alpha = 0.36d0 !
   real*8, parameter :: nu1   = 0.65d0
   real*8, parameter :: nu2   = 0.88d0
