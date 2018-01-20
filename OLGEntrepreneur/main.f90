@@ -124,10 +124,6 @@ contains
         call solve_household(1, it)
       enddo
 
-      ! do it = 1, TT
-      !   write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
-      ! enddo
-
       ! calculate the distribution of households over state space
       do it = 1, TT
         call get_distribution(it)
