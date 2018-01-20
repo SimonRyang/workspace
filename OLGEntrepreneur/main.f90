@@ -505,6 +505,8 @@ contains
                 k_plus(ia, :, ix, ip, :, :, is, ij, it) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 c(ia, :, ix, ip, :, :, is, ij, it) = c_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 l(ia, :, ix, ip, :, :, is, ij, it) = l_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                grossinc(ia, :, ix, ip, :, :, is, ij, it) = grossinc_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                netinc(ia, :, ix, ip, :, :, is, ij, it) = netinc_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 inctax(ia, :, ix, ip, :, :, is, ij, it) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 captax(ia, :, ix, ip, :, :, is, ij, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 penben(ia, :, ix, ip, :, :, is, ij, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
@@ -556,6 +558,8 @@ contains
                 k_plus(ia, :, ix, ip, :, :, is, ij, it) = k_plus_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 c(ia, :, ix, ip, :, :, is, ij, it) = c_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 l(ia, :, ix, ip, :, :, is, ij, it) = l_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                grossinc(ia, :, ix, ip, :, :, is, ij, it) = grossinc_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                netinc(ia, :, ix, ip, :, :, is, ij, it) = netinc_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 inctax(ia, :, ix, ip, :, :, is, ij, it) = inctax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 captax(ia, :, ix, ip, :, :, is, ij, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 penben(ia, :, ix, ip, :, :, is, ij, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
@@ -622,6 +626,8 @@ contains
                       k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) = k_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
                       c(ia, ik, ix, ip, iw, ie, is, ij, it) = c_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
                       l(ia, ik, ix, ip, iw, ie, is, ij, it) = l_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      grossinc(ia, ik, ix, ip, iw, ie, is, ij, it) = grossinc_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      netinc(ia, ik, ix, ip, iw, ie, is, ij, it) = netinc_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
                       inctax(ia, ik, ix, ip, iw, ie, is, ij, it) = inctax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
                       captax(ia, ik, ix, ip, iw, ie, is, ij, it) = captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
                       penben(ia, ik, ix, ip, iw, ie, is, ij, it) = penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -694,11 +700,14 @@ contains
               k_plus(:, :, :, :, iw, ie, is, ij, it) = k_plus_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               c(:, :, :, :, iw, ie, is, ij, it) = c_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               l(:, :, :, :, iw, ie, is, ij, it) = l_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
+              grossinc(:, :, :, :, iw, ie, is, ij, it) = grossinc_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
+              netinc(:, :, :, :, iw, ie, is, ij, it) = netinc_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               inctax(:, :, :, :, iw, ie, is, ij, it) = inctax_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               captax(:, :, :, :, iw, ie, is, ij, it) = captax_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               penben(:, :, :, :, iw, ie, is, ij, it) = penben_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               pencon(:, :, :, :, iw, ie, is, ij, it) = pencon_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               V(:, :, :, :, iw, ie, is, ij, it) = V_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
+
 
             enddo ! iw
           enddo ! ie
@@ -1098,14 +1107,36 @@ contains
     if (it == 0) then
 
       write(*,'(/, a, /)')     '******* CALIBRATION *******'
-      write(*,'(a, 3f10.4)')   '- life_exp:            ', life_exp
-      write(*,'(a, f10.4)')    '  + (total):           ', sum(life_exp*dist_skill)
+      write(*,'(a, 4f10.4)')   '- life_exp:            ', life_exp, sum(life_exp*dist_skill)
       write(*,'(a, f10.4, /)') '- dep. ratio:          ', sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
-      write(*,'(a, 3f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
-      write(*,'(a, f10.4)')    '  + (total):           ', sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
-      write(*,'(a, f10.4)')    '- avg. lab. supply (h):', sum(l(:, :, :, :, :, :, :, 1:JR-1, it)*m(:, :, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
-      write(*,'(a, f10.4)')    '  + corp. sector:      ', sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
-      write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
+      write(*,'(a, 4f10.4)')   '- fraction of ent. (%):', sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, &
+                                                          sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, &
+                                                          sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0, &
+                                                          sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+      write(*,'(a, 4f10.4)')   '- avg. lab. supply (w):', sum(l(:, 0, :, :, :, :, 1, 1:JR-1, it)*m(:, 0, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), &
+                                                          sum(l(:, 0, :, :, :, :, 2, 1:JR-1, it)*m(:, 0, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), &
+                                                          sum(l(:, 0, :, :, :, :, 3, 1:JR-1, it)*m(:, 0, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), &
+                                                          sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, 4f10.4)')   '-                  (e):', sum(l(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
+                                                          sum(l(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
+                                                          sum(l(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), &
+                                                          sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, 4f10.4)')   '- gross income (w):    ', sum(grossinc:, 0, :, :, :, :, 1, 1:JR-1, it)*m(:, 0, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), &
+                                                          sum(grossinc:, 0, :, :, :, :, 2, 1:JR-1, it)*m(:, 0, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), &
+                                                          sum(grossinc:, 0, :, :, :, :, 3, 1:JR-1, it)*m(:, 0, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), &
+                                                          sum(grossinc:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, 4f10.4)')   '- gross income (e):    ', sum(grossinc:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
+                                                          sum(grossinc:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
+                                                          sum(grossinc:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), &
+                                                          sum(grossinc:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, 4f10.4)')   '- net income (w):      ', sum(netinc:, 0, :, :, :, :, 1, 1:JR-1, it)*m(:, 0, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), &
+                                                          sum(netinc:, 0, :, :, :, :, 2, 1:JR-1, it)*m(:, 0, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), &
+                                                          sum(netinc:, 0, :, :, :, :, 3, 1:JR-1, it)*m(:, 0, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), &
+                                                          sum(netinc:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, 4f10.4, /)')   '- net income (e):   ', sum(netinc:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
+                                                          sum(netinc:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
+                                                          sum(netinc:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), &
+                                                          sum(netinc:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
       write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN(it)/YY(it)*100d0
       write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup(it)*100d0
       write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc(it)+TAw(it)+TAr(it)+TAk(it))/YY(it)*100d0
