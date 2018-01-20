@@ -124,10 +124,6 @@ contains
         call solve_household(1, it)
       enddo
 
-      ! do it = 1, TT
-      !   write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
-      ! enddo
-
       ! calculate the distribution of households over state space
       do it = 1, TT
         call get_distribution(it)
@@ -475,8 +471,8 @@ contains
     integer :: iq, ia, ik, ix, ip, iw, ie, is, ij, it, iq_p, ip_p, io_p
     integer :: ij_max
 
+    ij_max = JJ
     if (TT>1) ij_max = min(TT-it_in+1, JJ)
-    ! ij_max = JJ
 
     ! solve household problem recursively
     do ij = ij_max, ij_in, -1
