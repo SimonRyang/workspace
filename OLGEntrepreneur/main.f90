@@ -1149,7 +1149,7 @@ contains
       write(*,'(a, f10.4)')    '  + corp. sector:      ', 5d0*KC(it)/YC(it)
       write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5d0*KE(it)/max(YE(it), 1d-4)
       write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r(it))**0.2d0-1d0)*100d0
-      write(*,'(a, f10.4)')    '- avg. gross income:   ', ybar(it)
+      write(*,'(a, f10.4)')    '- avg. labor income:   ', ybar(it)
       write(*,'(a, f10.4)')    '- bequests (%):        ', BQ(it)/YY(it)*100d0
       write(*,*)
 

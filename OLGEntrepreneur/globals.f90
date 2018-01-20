@@ -41,7 +41,7 @@ module globals
   integer, parameter :: NP = 4
 
   ! demographic parameters
-  real*8, parameter :: n_p = (1d0+0.0075d0)**5-1d0 !
+  real*8, parameter :: n_p = (1d0+0.0071d0)**5-1d0 !
   real*8, parameter :: dist_skill(NS) = (/0.1513d0, 0.5404d0, 0.3083d0/) !
 
   ! macroeconomic parameters
