@@ -69,16 +69,16 @@ module globals
   real*8, parameter :: xi      = 1d0/3d0 !
 
   ! production parameters
-  real*8, parameter :: Omega = 1.0d0
+  real*8, parameter :: Omega = 1.45d0
   real*8, parameter :: k_min = 0.10d0 ! ~ 25,000.00 Euro
   real*8, parameter :: phi_k = 0.10d0 !*
   real*8, parameter :: alpha = 0.36d0 !
-  real*8, parameter :: nu1   = 0.65d0
+  real*8, parameter :: nu1   = 0.88d0
   real*8, parameter :: nu2   = 0.88d0
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 6d0
+  real*8, parameter :: Q_u    = 10d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
@@ -93,7 +93,7 @@ module globals
 
   ! size of the annuity asset grid
   real*8, parameter :: x_l    = Q_l
-  real*8, parameter :: x_u    = 4d0*Q_u
+  real*8, parameter :: x_u    = 2d0*Q_u
   real*8, parameter :: x_grow = Q_grow
 
   ! size of the pension claim grid
@@ -132,8 +132,8 @@ module globals
   real*8 :: r(0:TT), w(0:TT)
   real*8 :: ybar(0:TT), pinv(0:TT)
   real*8 :: AA(0:TT), AX(0:TT), BQ(0:TT), PBEN(0:TT), PCON(0:TT)
-  real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), BB(0:TT)
-  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT)
+  real*8 :: KK(0:TT), KC(0:TT), KE(0:TT), LC(0:TT), LE(0:TT), HC(0:TT), HE(0:TT), BB(0:TT), BF(0:TT)
+  real*8 :: YY(0:TT), YC(0:TT), YE(0:TT), CC(0:TT), II(0:TT), TC(0:TT), GG(0:TT), NEX(0:TT), PRO(0:TT)
   real*8 :: TAc(0:TT), TAr(0:TT), TAw(0:TT), TAk(0:TT)
   real*8 :: BQS(NS, 0:TT)
 
@@ -150,6 +150,7 @@ module globals
 
   ! variables to store the value function
   real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: vv_coh(JJ, 0:TT)
 
   ! variables for temporary policy and value functions
   real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)

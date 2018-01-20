@@ -217,7 +217,7 @@ contains
     eff(1, 1:JR-1) = (/1.2987778d0, 1.5794954d0, 1.6404434d0, 1.6908550d0, 1.7507724d0, &
                        1.7586790d0, 1.7611338d0, 1.8054554d0, 1.7423268d0/)
     eff(2, 1:JR-1) = (/1.4327164d0, 1.8210024d0, 1.9747812d0, 2.0647004d0, 2.1559744d0, &
-                      2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)
+                       2.2020510d0, 2.2484878d0, 2.2359332d0, 2.1737906d0/)
     eff(3, 1:JR-1) = (/1.3882564d0, 2.1841104d0, 2.9655702d0, 3.3290738d0, 3.4171474d0, &
                        3.4497238d0, 3.4046532d0, 3.3062074d0, 3.1235630d0/)
 
@@ -235,19 +235,19 @@ contains
     eta(:, 3) = exp(eta(:, 3))/sum(dist_eta(:, 3)*exp(eta(:, 3)))
 
     ! initialize entrepreneurial ability process
-    theta(:, 1) = (/0d0, 0.79d0/)
-    theta(:, 2) = (/0d0, 0.79d0/)
-    theta(:, 3) = (/0d0, 0.98d0/)
+    theta(:, 1) = (/0d0, 1.25d0/)
+    theta(:, 2) = (/0d0, 1.25d0/)
+    theta(:, 3) = (/0d0, 1.25d0/)
     dist_theta(:, 1) = (/0d0, 1d0/)
     dist_theta(:, 2) = (/0d0, 1d0/)
     dist_theta(:, 3) = (/0d0, 1d0/)
     pi_theta(1, 1, :) = 1d0
     pi_theta(1, 2, :) = 0d0
-    pi_theta(2, 1, 1) = 0.005d0
+    pi_theta(2, 1, 1) = 0.14986d0
     pi_theta(2, 2, 1) = 1d0-pi_theta(2, 1, 1)
-    pi_theta(2, 1, 2) = 0.012d0
+    pi_theta(2, 1, 2) = 0.14993d0
     pi_theta(2, 2, 2) = 1d0-pi_theta(2, 1, 2)
-    pi_theta(2, 1, 3) = 0.017d0
+    pi_theta(2, 1, 3) = 0.09682d0
     pi_theta(2, 2, 3) = 1d0-pi_theta(2, 1, 3)
 
     ! initialize asset grid
@@ -272,11 +272,11 @@ contains
     taup(0) = 0.189d0
 
     ! initial guesses for macro variables
-    KC(0) = 3.400d0
-    LC(0) = 3.604d0
+    KC(0) = 4.700d0
+    LC(0) = 5.470d0
     BQS(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
-    BB(0) = 2.964d0
-    ybar(0) = 0.555d0
+    BB(0) =   0.660d0
+    ybar(0) = 0.460d0
 
     ! initialize value functions
     V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
@@ -805,7 +805,7 @@ contains
                   do ia = 0, NA
 
                     ! skip if there is no household
-                    !if (m(ia, ik, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
+                    if (m(ia, ik, ix, ip, iw, ie, is, ij-1, itm) <= 0d0) cycle
 
                     ! derive interpolation weights
                     call linint_Grow(Q_plus(ia, ik, ix, ip, iw, ie, is, ij-1, itm), Q_l, Q_u, Q_grow, NQ, iql, iqr, varphi_q)
@@ -936,11 +936,11 @@ contains
     LC_old = LC(it)
 
     ! reset macroeconomic aggregates in each iteration step
-    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
-    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0
-    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0;  II(it) = 0d0; TC(it) = 0d0
+    AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; BQS(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
+    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0; BF = 0d0
+    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; NEX(it) = 0d0; PRO(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
-    BQS(:, it) = 0d0
+    vv_coh(:, it) = 0d0
 
     do ij = 1, JJ
 
@@ -953,7 +953,7 @@ contains
                   do ia = 0, NA
 
                     ! skip if there is no household
-                    !if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
+                    if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
                     AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     AA(it) = AA(it) + k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
@@ -967,13 +967,17 @@ contains
                     TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-
                     if(ik == 0) then
                       LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      HC(it) = HC(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     else
+                      LE(it) = LE(it) + eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      HE(it) = HE(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      PRO(it) = PRO(it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
-
+                    vv_coh(ij, it) = vv_coh(ij, it) + V(ia, ik, ix, ip, iw, ie, is, ij, it) &
+                                    *m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
                   enddo ! ia
                 enddo ! ik
               enddo ! ix
@@ -985,7 +989,7 @@ contains
     enddo ! ij
 
     ! get average income
-    ybar(it) = w(it)*LC(it)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+    ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
     KC(it) = damp*(AA(it) + AX(it) - BB(it)) + (1d0-damp)*KC(it)
@@ -1043,12 +1047,6 @@ contains
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)
 
-  !  write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), BQ(it), DIFF(it)
-  !  write(*,*)sum(a_plus(:, :, :, :, :, :, :, :, it))
-
-    ! write(*,'(i4, 6f10.5)')it, YY(it), CC(it), II(it), GG(it), TC(it), DIFF(it)
-
-
   end subroutine
 
 
@@ -1060,8 +1058,10 @@ contains
     !##### INPUT/OUTPUT VARIABLES #############################################
     integer, intent(in) :: it
 
-    integer :: is, ij
+    integer :: ia, ik, ix, ip, iw, ie, is, ij
     real*8 :: life_exp(NS), punb(NS, JJ)
+    real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
+    real*8 :: inc_coh(0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
 
     ! integer :: ij, ages(JJ)
     ! ! set up age variable
@@ -1098,7 +1098,7 @@ contains
       enddo ! ij
     enddo ! is
 
-    ! calibration output
+    ! write calibration output
     if (it == 0) then
 
       write(*,'(/, a, /)')     '******* CALIBRATION *******'
@@ -1126,6 +1126,113 @@ contains
       write(*,*)
 
     endif
+
+    ! compute cohort specific aggregates
+    c_coh(:, :, it) = 0d0
+    a_coh(:, :, it) = 0d0
+    ax_coh(:, :, it) = 0d0
+    k_coh(:, it) = 0d0
+    inc_coh(:, :, it) = 0d0
+    flc_coh(:, it) = 0d0
+
+    do ij = 1, JJ
+
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ik = 0, NK
+                  do ia = 0, NA
+
+                    if (ik == 0) then
+                      c_coh(0, ij, it) = c_coh(0, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
+                      a_coh(0, ij, it) = a_coh(0, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
+                      ax_coh(0, ij, it) = ax_coh(0, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
+                      inc_coh(0, ij, it) = inc_coh(0, ij, it) + w(it)*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
+                    else
+                      c_coh(1, ij, it) = c_coh(1, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      ax_coh(1, ij, it) = ax_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      k_coh(ij, it) = k_coh(ij, it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                    endif
+
+                    if (a_plus(ia, ik, ix, ip, iw, ie, is, ij, it)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, it) <= 1d-10) then
+                      flc_coh(ij, it) = flc_coh(ij, it) + m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
+                    endif
+
+                  enddo ! ia
+                enddo ! ik
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
+
+    enddo ! ij
+
+    ! write equilibrium output
+    write(21,'(a, i3/)')'EQUILIBRIUM YEAR ', it
+    write(21,'(a)')'CAPITAL       KK      KC      KE      AA      AX       r    p.a.'
+    write(21,'(8x,7f8.2)')KK(it), KC(it), KE(it), AA(it), AX(it), r(it), ((1d0+r(it))**(1d0/5d0)-1d0)*100d0
+    write(21,'(a,5f8.2/)')'(in %)  ',(/KK(it), KC(it), KE(it), AA(it), AX(it)/)/YY(it)*500d0
+
+    write(21,'(a)')'LABOR         LC      LE      hc      he       w    ybar'
+    write(21,'(8x,6f8.2/)')LC(it), LE(it), HC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), HE(it)/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 0d0), w(it), ybar(it)
+
+    write(21,'(a)')'GOODS         YY      YC      YE      CC      II      NX          DIFF'
+    write(21,'(8x,6f8.2,f14.8)')YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)
+    write(21,'(a,6f8.2,f14.8/)')'(in %)  ',(/YY(it), YC(it), YE(it), CC(it), II(it), NEX(it), DIFF(it)/)/YY(it)*100d0
+
+    write(21,'(a)')'GOV         TAUC    TAUR    TAUW    TAUK   TOTAL      GG      BB      BF'
+    write(21,'(8x,8f8.2)')TAc(it), TAr(it), TAw(it), TAk(it), TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it), BF(it)
+    write(21,'(a,8f8.2)')'(in %)  ',(/TAc(it), TAr(it), TAw(it), TAk(it)/)/(TAc(it)+TAr(it)+TAw(it)+TAk(it))*100d0, &
+                         (/TAc(it)+TAr(it)+TAw(it)+TAk(it), GG(it), BB(it)*5d0, BF(it)*5d0/)/YY(it)*100d0
+    write(21,'(a,4f8.2/)')'(rate)  ',(/tauc(it), taur, TAw(it)/(w(it)*LC(it) + PRO(it)), tauk/)*100d0
+
+    write(21,'(a)')'PENS        TAUP     PEN    PBEN    PCON      BQ'
+    write(21,'(8x,5f8.2)')taup(it)*PCON(it), PBEN(it)/sum(m(:, :, :, :, :, :, :, JR:JJ, it)), PBEN(it), PCON(it), BQ(it)
+    write(21,'(a,5f8.2/)')'(in %)  ',(/taup(it), kappa, PBEN(it)/YY(it), PCON(it)/YY(it), BQ(it)/YY(it)/)*100d0
+
+    write(21,'(a)')'INCOME     TOTAL     WOR     ENT ENT/WOR     y_w     y_e y_e/y_w'
+    write(21, '(8x,7f8.2)')w(it)*LC(it) + PRO(it), w(it)*LC(it), PRO(it), PRO(it)/(w(it)*LC(it)), w(it)*LC(it)/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), PRO(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), PRO(it)/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/(w(it)*LC(it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
+    write(21, '(a,4f8.2/)')'(in %)  ',(/w(it)*LC(it) + PRO(it), w(it)*LC(it), PRO(it)/)/(w(it)*LC(it) + PRO(it))*100d0, PRO(it)/(w(it)*LC(it))*100d0
+
+    write(21,'(a)')'POP        TOTAL     65-     65+ 65+/65-'
+    write(21,'(8x,3f8.2)')sum(m(:, :, :, :, :, :, :, :, it)), sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, :, :, :, :, :, :, JR:JJ, it))
+    write(21,'(a,4f8.2/)')'(in %)  ',(/sum(m(:, :, :, :, :, :, :, :, it)), sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, :, :, :, :, :, :, JR:, it))/)/sum(m(:, :, :, :, :, :, :, :, it))*100d0, &
+                          sum(m(:, :, :, :, :, :, :, JR:JJ, it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0
+
+    write(21,'(a)')'           WORFO     WOR     ENT    WOR1    ENT1    WOR2    ENT2    WOR3    ENT3'
+    write(21,'(8x,9f8.2)')sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), &
+                          sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
+                          sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
+                          sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))
+    write(21, '(a, 9f8.2/)')'(in %)  ',(/sum(m(:, :, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 0, :, :, :, :, :, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))*100d0, &
+                                       (/sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, 1, 1:JR-1, it))*100d0, &
+                                       (/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, 2, 1:JR-1, it))*100d0, &
+                                       (/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/)/sum(m(:, :, :, :, :, :, 3, 1:JR-1, it))*100d0
+
+    write(21,'(a)')'LIFE       j_bar  j_bar1  j_bar2  j_bar3'
+    write(21,'(8x,4f8.2/)')sum(life_exp*dist_skill), life_exp(:)
+
+    ! check for the maximium grid point used
+    call check_grid(iqmax, iamax, ikmax, ixmax, it)
+
+    write(21, '(a,a)')' IJ   CONSw   CONSe   ASSw     ASSe   ASSxw   ASSxe    INCw    INCe    INVe     ENT    ENTs1  ENTs2   ENTs3', &
+        '    ENTn    WORn     FLC      VALUE  IQMAX  IAMAX  IKMAX  IXMAX'
+    write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
+    do ij = 1, JJ
+      write(21, '(i3, 14f8.3, f11.3, 4i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), &
+                                           inc_coh(0, ij, it), inc_coh(1, ij, it), k_coh(ij, it), &
+                                           sum(m(:, 1:NK, :, :, :, :, :, ij, it))/sum(m(:, :, :, :, :, :, :, ij, it)), &
+                                           sum(m(:, 1:NK, :, :, :, :, 1, ij, it))/sum(m(:, :, :, :, :, :, 1, ij, it)), &
+                                           sum(m(:, 1:NK, :, :, :, :, 2, ij, it))/sum(m(:, :, :, :, :, :, 2, ij, it)), &
+                                           sum(m(:, 1:NK, :, :, :, :, 3, ij, it))/sum(m(:, :, :, :, :, :, 3, ij, it)), &
+                                           flc_coh(ij, it), vv_coh(ij, it), iqmax(ij), iamax(ij), ikmax(ij), ixmax(ij)
+      if (ij == JR-1) write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
+    enddo
 
   end subroutine
 
