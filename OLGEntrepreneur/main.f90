@@ -1125,7 +1125,7 @@ contains
                                                           sum(grossinc(:, 0, :, :, :, :, 2, 1:JR-1, it)*m(:, 0, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), &
                                                           sum(grossinc(:, 0, :, :, :, :, 3, 1:JR-1, it)*m(:, 0, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), &
                                                           sum(grossinc(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
-      write(*,'(a, 4f10.4)')   '- gross income (e):    ', sum(grossinc(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
+      write(*,'(a, 4f10.4)')   '-              (e):    ', sum(grossinc(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
                                                           sum(grossinc(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
                                                           sum(grossinc(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), &
                                                           sum(grossinc(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
@@ -1133,7 +1133,7 @@ contains
                                                           sum(netinc(:, 0, :, :, :, :, 2, 1:JR-1, it)*m(:, 0, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), &
                                                           sum(netinc(:, 0, :, :, :, :, 3, 1:JR-1, it)*m(:, 0, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), &
                                                           sum(netinc(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
-      write(*,'(a, 4f10.4, /)')   '- net income (e):   ', sum(netinc(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
+      write(*,'(a, 4f10.4, /)')'-            (e):      ', sum(netinc(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
                                                           sum(netinc(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
                                                           sum(netinc(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), &
                                                           sum(netinc(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
@@ -1149,6 +1149,7 @@ contains
       write(*,'(a, f10.4)')    '  + corp. sector:      ', 5d0*KC(it)/YC(it)
       write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5d0*KE(it)/max(YE(it), 1d-4)
       write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r(it))**0.2d0-1d0)*100d0
+      write(*,'(a, f10.4)')    '- avg. gross income:   ', ybar(it)
       write(*,'(a, f10.4)')    '- bequests (%):        ', BQ(it)/YY(it)*100d0
       write(*,*)
 
