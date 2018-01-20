@@ -144,6 +144,7 @@ module globals
   real*8 :: Q_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: a_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), k_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: x_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), p_plus(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: grossinc(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), netinc(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: inctax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), captax(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: penben(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), pencon(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
@@ -156,6 +157,7 @@ module globals
   real*8 :: Q_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: a_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), k_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: x_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), p_plus_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: grossinc_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), netinc_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: inctax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), captax_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: penben_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), pencon_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: c_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), l_t(0:1, 0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
@@ -174,13 +176,13 @@ module globals
   integer :: iq_p_com, ia_p_com, ip_p_com, io_p_com
   integer :: iqmax(JJ), iamax(JJ), ixmax(JJ), ikmax(JJ)
   real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
-  real*8 :: inctax_com, captax_com, pencon_com, aas_com
+  real*8 :: grossinc_com, netinc_com, inctax_com, captax_com, pencon_com, aas_com
   real*8 :: DIFF(0:TT)
 
   !$omp threadprivate(iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ij_com, it_com)
   !$omp threadprivate(iq_p_com, ia_p_com, ip_p_com, io_p_com)
   !$omp threadprivate(cons_com, lab_com, x_plus_com, p_plus_com)
-  !$omp threadprivate(inctax_com, captax_com, pencon_com, aas_com)
+  !$omp threadprivate(grossinc_com, netinc_com, inctax_com, captax_com, pencon_com, aas_com)
 
 contains
 
@@ -424,6 +426,8 @@ contains
     k_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = k_p
     x_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = x_p
     p_plus_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = p_plus_com
+    grossinc_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = grossinc_com
+    netinc_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = netinc_com
     inctax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = inctax_com
     captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = captax_com
     penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it) = pen(ip, ij, it)
@@ -619,6 +623,9 @@ contains
     income = (1d0-ind_o)*w(it_com)*eff(is_com, ij_com)*eta(iw_com, is_com)*max(lab_com, 0d0) + &
              ind_o*(theta(ie_com, is_com)*k(ik_com)**nu1*(eff(is_com, ij_com)*max(lab_com, 0d0))**nu2 - delta_k*k(ik_com) + r(it_com)*min(a(ia_com)-xi*k(ik_com), 0d0))
 
+    ! calcutate gross income
+    grossinc_com = income + r(it_com)*max(a(ia_com)-xi*k(ik_com), 0d0)
+
     ! calculate pension contribution
     pencon_com = (1d0-(1d0-phi(it_com))*ind_o)*min(max(income, 0d0), 2d0*ybar(it_com))
 
@@ -628,9 +635,11 @@ contains
     ! calculate capital tax
     captax_com = taur*1.055d0*max(r(it_com)*(a(ia_com)-xi*k(ik_com)) - d_s*ybar(0), 0d0)
 
+    ! calculate net income
+    netinc_com = grossinc_com - inctax_com - captax_com - taup(it_com)*pencon_com
+
     ! available assets
-    aas_com = a(ia_com) - xi*k(ik_com) + r(it_com)*max(a(ia_com)-xi*k(ik_com), 0d0) + k(ik_com) + income + beq(is_com, ij_com, it_com) &
-               - inctax_com - captax_com - taup(it_com)*pencon_com
+    aas_com = a(ia_com) - xi*k(ik_com) + k(ik_com) + netinc_com + beq(is_com, ij_com, it_com)
 
     ! calculate consumption
     cons_com = (aas_com - Q_plus)*pinv(it_com)
@@ -707,6 +716,9 @@ contains
     ! define labor supply
     lab_com = 0d0
 
+    ! calculate gross income
+    grossinc_com = r(it_com)*a(ia_com) + pen(ip_com, ij_com, it_com)
+
     ! pension contribution
     pencon_com = 0d0
 
@@ -716,9 +728,11 @@ contains
     ! calculate capital tax
     captax_com = taur*1.055d0*max(r(it_com)*a(ia_com) - d_s*ybar(0), 0d0)
 
+    ! calcutate net income
+    netinc_com = grossinc_com - inctax_com - captax_com
+
     ! available assets
-    aas_com = (1d0+r(it_com))*a(ia_com) + pen(ip_com, ij_com, it_com) + ann(ix_com, is_com, ij_com, it_com) &
-              - inctax_com - captax_com
+    aas_com = a(ia_com) + netinc_com + ann(ix_com, is_com, ij_com, it_com)
 
     ! calculate consumption
     cons_com = (aas_com - Q_plus)*pinv(it_com)
