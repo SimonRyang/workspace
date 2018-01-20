@@ -73,7 +73,7 @@ module globals
   real*8, parameter :: k_min = 0.10d0 ! ~ 25,000.00 Euro
   real*8, parameter :: phi_k = 0.10d0 !*
   real*8, parameter :: alpha = 0.36d0 !
-  real*8, parameter :: nu1   = 0.88d0
+  real*8, parameter :: nu1   = 0.48d0
   real*8, parameter :: nu2   = 0.88d0
 
   ! size of the total asset grid
