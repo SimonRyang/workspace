@@ -14,7 +14,7 @@ module globals
   integer, parameter :: JR = 10
 
   ! number of transition periods
-  integer, parameter :: TT = 1
+  integer, parameter :: TT = 64
 
   ! number of permanent skill classes
   integer, parameter :: NS = 3
