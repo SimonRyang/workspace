@@ -22,7 +22,12 @@ program main
   ! lambda (1:TT) = 1d0
   phi(1:TT) = 1d0
 
-  ! calculate transition path
+  ! calculate transition path without lsra
+  lsra_on = .false.
+  call get_transition()
+
+  ! calculate transition path with lsra
+  lsra_on = .true.
   call get_transition()
 
   ! close files
@@ -101,7 +106,11 @@ contains
     logical :: check
 
     ! initialize remaining variables
-    call initialize_trn()
+    if(.not. lsra_on)then
+      call initialize_trn()
+    else
+      write(*,'(/a/)')'ITER    COMP_OLD  EFFICIENCY          DIFF'
+    endif
 
     ! start the clock
     call tick(time)
@@ -129,6 +138,9 @@ contains
         call get_distribution(it)
       enddo
 
+      ! calculate lsra transfers if needed
+      if (lsra_on) call LSRA()
+
       ! aggregate individual decisions
       do it = 1, TT
         call aggregation(it)
@@ -144,10 +156,15 @@ contains
 
       ! write screen output
       itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
-      write(*,'(i4,5i5,5f8.2,f14.8)')iter, itmax, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
-         (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
-
-      check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 20
+      if(.not. lsra_on)then
+        write(*,'(i4,5i5,5f8.2,f14.8)')iter, itmax, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
+                                      (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
+        check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 20
+      else
+        write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
+          (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
+          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
+      endif
 
       ! check for convergence
       if (check) exit
@@ -159,7 +176,7 @@ contains
 
     ! write output
     do it = 1, TT
-      call output(it)
+      if (.not. lsra_on) call output(it)
     enddo
 
     if (iter > itermax) write(*,*)'No Convergence'
@@ -286,6 +303,9 @@ contains
     inctax_t = 0d0; captax_t = 0d0; penben_t = 0d0; pencon_t = 0d0; c_t = 0d0; l_t = 0d0
     omega_x_t = 0d0; omega_k_t = 0d0
     V_t = 0d0
+
+    ! set compensating payments to zero
+    v = 0d0
 
     ! get initial guess for household decisions
     omega_x_t(:, :, :, :, :, :, :, :, 1:JR-1, 0) = 0.05d0
@@ -997,7 +1017,7 @@ contains
     ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
-    KC(it) = damp*(AA(it) + AX(it) - BB(it)) + (1d0-damp)*KC(it)
+    KC(it) = damp*(AA(it) + AX(it) - BB(it) - BA(it)) + (1d0-damp)*KC(it)
     KK(it) = KC(it) + KE(it)
 
     ! update work supply
@@ -1051,6 +1071,157 @@ contains
 
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)
+
+  end subroutine
+
+
+  !##############################################################################
+  ! SUBROUTINE LSRA
+  !
+  ! Calculates LSRA payments
+  !##############################################################################
+  subroutine LSRA()
+
+    implicit none
+
+    !##### OTHER VARIABLES ####################################################
+    integer :: io, ia, ix, ip, iw, ie, is, ij, it
+    real*8 :: VV_today, VV_target, dVV_da, v_tilde
+    real*8 :: pv_today, pv_target, pv_trans
+
+    ! initialize variables
+    SV(:) = 0d0
+
+    ! initialize counters
+    lsra_comp   = 0d0
+    lsra_all    = 0d0
+
+    do ij = 2, JJ
+      do is = 1, NS
+        do ie = 1, NE
+          do iw = 1, NW
+            do ip = 0, NP
+              do ix = 0, NX
+                do ik = 0, NK
+                  do ia = 0, NA
+
+                    if (m(ia, ik, ix, ip, iw, ie, is, ij, 1) <= 0d0) then
+                      v(ia, ik, ix, ip, iw, ie, is, ij, 1) = 0d0
+                      cycle
+                    endif
+
+                    ! do not do anything for an agent at retirement without pension and savings
+                    if(ij >= JR .and. ia == 0 .and. ix == 0 .and. ip == 0)then
+                      v(ia, ik, ix, ip, iw, ie, is, ij, 1) = 0d0
+                      cycle
+                    endif
+
+                    ! get today's utility
+                    VV_today = VV(ia, ik, ix, ip, iw, ie, is, ij, 1)
+
+                    ! get target utility
+                    VV_target = (ia, ik, ix, ip, iw, ie, is, ij, 0)
+
+                    ! get derivative of the value function
+                    dVV_da = margu(c(ia, ik, ix, ip, iw, ie, is, ij, 1), l(ia, ik, ix, ip, iw, ie, is, ij, 1), 1)
+
+                    ! calculate change in transfers
+                    v_tilde = (VV_target-VV_today)/dVV_da
+
+                    ! check whether individual is already compensated
+                    lsra_all = lsra_all + m(ia, ik, ix, ip, iw, ie, is, ij, 1)
+                    if(abs((VV_today-VV_target)/VV_target) < tol) &
+                      lsra_comp = lsra_comp + m(ia, ik, ix, ip, iw, ie, is, ij, 1)
+
+                    ! calculate total transfer
+                    v(ia, ik, ix, ip, iw, ie, is, ij, 1) = v(ia, ik, ix, ip, iw, ie, is, ij, 1) + v_tilde
+
+                    ! aggregate transfers by cohort
+                    SV(1) = SV(1) + v(ia, ik, ix, ip, iw, ie, is, ij, 1)*m(ia, ik, ix, ip, iw, ie, is, ij, 1)
+
+                  enddo ! ia
+                enddo ! ik
+              enddo ! ix
+            enddo ! ip
+          enddo ! iw
+        enddo ! ie
+      enddo ! is
+    enddo ! ij
+
+    ! initialize present value variables
+    pv_today = 0d0
+    pv_target = 0d0
+    pv_trans = 0d0
+
+    ! calculate present value of utility changes (in monetary values)
+    do it = TT, 1, -1
+
+      ! get today's ex ante utility
+      VV_today = damp*vv_coh(1, it)
+
+      ! get damped target utility
+      VV_target = damp*vv_coh(1, 0)
+
+      ! get derivative of expected utility function
+      dVV_da = 0d0
+      do iw = 1, NW
+        do ie = 1, NE
+          do is = 1, NS
+            dVV_da = dVV_da + margu(c(0, 0, 0, 0, iw, ie, is, 1, it), l(0, 0, 0, 0, iw, ie, is, 1, it), it)*m(0, 0, 0, 0, iw, ie, is, 1, it)
+          enddo ! is
+        enddo ! ie
+      enddo ! iw
+
+      ! calculate present values
+      if(it == TT)then
+        pv_today  = VV_today/dVV_da  *(1d0+r(it))/(r(it)-n_p)
+        pv_target = VV_target/dVV_da   *(1d0+r(it))/(r(it)-n_p)
+        pv_trans  = v(0, 0, 0, 0, 1, 1, 1, 1, it)*(1d0+r(it))/(r(it)-n_p)
+      else
+        pv_today  = pv_today *(1d0+n_p)/(1d0+r(it+1)) + VV_today/dVV_da
+        pv_target = pv_target*(1d0+n_p)/(1d0+r(it+1)) + VV_target/dVV_da
+        pv_trans  = pv_trans *(1d0+n_p)/(1d0+r(it+1)) + v(0, 0, 0, 0, 1, 1, 1, 1, it)
+      endif
+    enddo
+
+    ! calculate the constant utility gain/loss for future generations
+    Vstar = (pv_today-pv_trans-SV(1))/pv_target
+
+    ! calculate compensation payments for future cohorts
+    do it = TT, 1, -1
+
+      ! get today's ex ante utility
+      VV_today = damp*vv_coh(1, it)
+
+      ! get target utility
+      VV_target = damp*vv_coh(1, 0)*Vstar
+
+      ! get derivative of expected utility function
+      dVV_da = 0d0
+      do iw = 1, NW
+        do ie = 1, NE
+          do is = 1, NS
+            dVV_da = dVV_da + margu(c(0, 0, 0, 0, iw, ie, is, 1, it), l(0, 0, 0, 0, iw, ie, is, 1, it), it)*m(0, 0, 0, 0, iw, ie, is, 1, it)
+          enddo ! is
+        enddo ! ie
+      enddo ! iw
+
+      ! compute change in transfers (restricted)
+      v_tilde = (VV_target-VV_today)/dVV_da
+
+      ! calculate cohort transfer level
+      v(0, 0, 0, 0, :, :, :, 1, it) = v(0, 0, 0, 0, :, :, :, 1, it) + v_tilde
+
+      ! aggregate transfers
+      SV(it) = SV(it) + v(0, 0, 0, 0, 1, 1, 1, 1, it)
+
+    enddo
+
+    ! determine sequence of LSRA debt/savings
+    BA(2) = SV(1)/(1d0+n_p)
+    do it = 3, TT
+      BA(it) = ((1d0+r(it-1))*BA(it-1) + SV(it-1))/(1d0+n_p)
+    enddo
 
   end subroutine
 

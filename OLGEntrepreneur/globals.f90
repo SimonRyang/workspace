@@ -78,7 +78,7 @@ module globals
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 16d0
+  real*8, parameter :: Q_u    = 12d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
@@ -172,6 +172,10 @@ module globals
 
   ! LSRA payments
   real*8 :: v(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+
+  ! LSRA variables
+  real*8 :: BA(0:TT) = 0d0, SV(0:TT) = 0d0, lsra_comp, lsra_all, Vstar
+  logical :: lsra_on
 
   ! numerical variables
   integer :: iter
@@ -610,7 +614,7 @@ contains
     real*8 :: cons_o
 
     !##### OTHER VARIABLES ######################################################
-    real*8 :: Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p
+    real*8 :: Q_plus, ind_o, income, tomorrow, varphi_q, varphi_p, v_ind
     integer :: iql, iqr, ipl, ipr
 
     ! define tomorrow's assets
@@ -641,8 +645,11 @@ contains
     ! calculate net income
     netinc_com = grossinc_com - inctax_com - captax_com - taup(it_com)*pencon_com
 
+    ! get lsra transfer payment
+    v_ind = v(ia_com, ik_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
+
     ! available assets
-    aas_com = a(ia_com) - xi*k(ik_com) + k(ik_com) + netinc_com + beq(is_com, ij_com, it_com)
+    aas_com = a(ia_com) - xi*k(ik_com) + k(ik_com) + netinc_com + beq(is_com, ij_com, it_com) + v_ind
 
     ! calculate consumption
     cons_com = (aas_com - Q_plus)*pinv(it_com)
@@ -710,7 +717,7 @@ contains
     real*8 :: cons_r
 
     !##### OTHER VARIABLES ######################################################
-    real*8 :: Q_plus, tomorrow, varphi_q
+    real*8 :: Q_plus, tomorrow, varphi_q, v_ind
     integer :: iql, iqr
 
     ! define tomorrow's assets
@@ -734,8 +741,11 @@ contains
     ! calcutate net income
     netinc_com = grossinc_com - inctax_com - captax_com
 
+    ! get lsra transfer payment
+    v_ind = v(ia_com, ik_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
+
     ! available assets
-    aas_com = a(ia_com) + netinc_com + ann(ix_com, is_com, ij_com, it_com)
+    aas_com = a(ia_com) + netinc_com + ann(ix_com, is_com, ij_com, it_com) + v_ind
 
     ! calculate consumption
     cons_com = (aas_com - Q_plus)*pinv(it_com)
@@ -766,6 +776,24 @@ contains
     else
        cons_r = -((cons_com**sigma*(1d0-lab_com)**(1d0-sigma))**egam/egam + tomorrow)
     endif
+
+  end function
+
+
+  !##############################################################################
+  ! FUNCTION margu
+  !
+  ! determines marginal utility
+  !##############################################################################
+  function margu(cons, lab, it)
+
+    !##### INPUT/OUTPUT VARIABLES #############################################
+    real*8, intent(in) :: cons, lab
+    integer, intent(in) :: it
+    real*8 :: margu
+
+    ! determine marginal utility
+    margu = sigma*(cons**sigma*(1d0-lab)**(1d0-sigma))**(1d0-gamma)/((1d0+tauc(it))*cons)
 
   end function
 
