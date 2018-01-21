@@ -26,16 +26,16 @@ module globals
   integer, parameter :: NE = 2
 
   ! number of points on the total asset grid
-  integer, parameter :: NQ = 16
+  integer, parameter :: NQ = 12
 
   ! number of points on the liquid asset grid
-  integer, parameter :: NA = 16
+  integer, parameter :: NA = 12
 
   ! number of points on the capital grid
-  integer, parameter :: NK = 16
+  integer, parameter :: NK = 10
 
   ! number of points on the annuity asset grid
-  integer, parameter :: NX = 0
+  integer, parameter :: NX = 12
 
   ! number of points on the pension claim grid
   integer, parameter :: NP = 4
@@ -88,7 +88,7 @@ module globals
 
   ! size of the capital grid
   real*8, parameter :: k_l    = k_min
-  real*8, parameter :: k_u    = Q_u/(1d0-xi)
+  real*8, parameter :: k_u    = 0.75d0*Q_u/(1d0-xi)
   real*8, parameter :: k_grow = Q_grow
 
   ! size of the annuity asset grid
@@ -150,7 +150,7 @@ module globals
   real*8 :: c(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), l(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
 
   ! variables to store the value function
-  real*8 :: V(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+  real*8 :: VV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), EV(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
   real*8 :: vv_coh(JJ, 0:TT)
 
   ! variables for temporary policy and value functions

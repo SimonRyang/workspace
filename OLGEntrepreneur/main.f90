@@ -364,7 +364,7 @@ contains
       pencon(:, :, :, :, :, :, :, :, it) = pencon(:, :, :, :, :, :, :, :, 0)
       c(:, :, :, :, :, :, :, :, it) = c(:, :, :, :, :, :, :, :, 0)
       l(:, :, :, :, :, :, :, :, it) = l(:, :, :, :, :, :, :, :, 0)
-      V(:, :, :, :, :, :, :, :, it) = V(:, :, :, :, :, :, :, :, 0)
+      VV(:, :, :, :, :, :, :, :, it) = VV(:, :, :, :, :, :, :, :, 0)
       EV(:, :, :, :, :, :, :, :, it) = EV(:, :, :, :, :, :, :, :, 0)
 
       Q_plus_t(:, :, :, :, :, :, :, :, :, it) = Q_plus_t(:, :, :, :, :, :, :, :, :, 0)
@@ -511,7 +511,7 @@ contains
                 captax(ia, :, ix, ip, :, :, is, ij, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 penben(ia, :, ix, ip, :, :, is, ij, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 pencon(ia, :, ix, ip, :, :, is, ij, it) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-                V(ia, :, ix, ip, :, :, is, ij, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                VV(ia, :, ix, ip, :, :, is, ij, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
 
               enddo ! ia
             enddo ! ix
@@ -564,7 +564,7 @@ contains
                 captax(ia, :, ix, ip, :, :, is, ij, it) = captax_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 penben(ia, :, ix, ip, :, :, is, ij, it) = penben_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
                 pencon(ia, :, ix, ip, :, :, is, ij, it) = pencon_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
-                V(ia, :, ix, ip, :, :, is, ij, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
+                VV(ia, :, ix, ip, :, :, is, ij, it) = V_t(0, ia, 0, ix, ip, 1, 1, is, ij, it)
 
               enddo ! ia
             enddo ! ix
@@ -632,7 +632,7 @@ contains
                       captax(ia, ik, ix, ip, iw, ie, is, ij, it) = captax_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
                       penben(ia, ik, ix, ip, iw, ie, is, ij, it) = penben_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
                       pencon(ia, ik, ix, ip, iw, ie, is, ij, it) = pencon_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
-                      V(ia, ik, ix, ip, iw, ie, is, ij, it) = V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
+                      VV(ia, ik, ix, ip, iw, ie, is, ij, it) = V_t(io_p, ia, ik, ix, ip, iw, ie, is, ij, it)
 
                     enddo ! ia
                   enddo ! ik
@@ -706,7 +706,7 @@ contains
               captax(:, :, :, :, iw, ie, is, ij, it) = captax_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               penben(:, :, :, :, iw, ie, is, ij, it) = penben_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
               pencon(:, :, :, :, iw, ie, is, ij, it) = pencon_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
-              V(:, :, :, :, iw, ie, is, ij, it) = V_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
+              VV(:, :, :, :, iw, ie, is, ij, it) = V_t(io_p, 0, 0, 0, 0, iw, ie, is, ij, it)
 
 
             enddo ! iw
@@ -752,7 +752,7 @@ contains
                   do ie_p = 1, NE
                     do iw_p = 1, NW
                       EV(ia, ik, ix, ip, iw, ie, is, ij, it) = EV(ia, ik, ix, ip, iw, ie, is, ij, it) &
-                        + pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*V(ia, ik, ix, ip, iw, ie, is, ij, it)
+                        + pi_eta(iw, iw_p, is)*pi_theta(ie, ie_p, is)*VV(ia, ik, ix, ip, iw, ie, is, ij, it)
                     enddo ! iw_p
                   enddo ! ie_p
 
@@ -981,7 +981,7 @@ contains
                       YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       PRO(it) = PRO(it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
-                    vv_coh(ij, it) = vv_coh(ij, it) + V(ia, ik, ix, ip, iw, ie, is, ij, it) &
+                    vv_coh(ij, it) = vv_coh(ij, it) + VV(ia, ik, ix, ip, iw, ie, is, ij, it) &
                                     *m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
                   enddo ! ia
                 enddo ! ik
