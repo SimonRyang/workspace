@@ -20,7 +20,7 @@ module globals
   integer, parameter :: NS = 3
 
   ! number of productivity (eta) shocks
-  integer, parameter :: NW = 5
+  integer, parameter :: NW = 3
 
   ! number of entrepreneurial ability (theta) shocks
   integer, parameter :: NE = 2
@@ -88,7 +88,7 @@ module globals
 
   ! size of the capital grid
   real*8, parameter :: k_l    = k_min
-  real*8, parameter :: k_u    = 0.75d0*Q_u/(1d0-xi)
+  real*8, parameter :: k_u    = 0.65d0*Q_u/(1d0-xi)
   real*8, parameter :: k_grow = Q_grow
 
   ! size of the annuity asset grid
