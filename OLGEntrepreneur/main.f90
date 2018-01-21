@@ -275,7 +275,7 @@ contains
     ybar(0) = 0.460d0
 
     ! initialize value functions
-    V = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
+    VV = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
 
     ! initialize policy functions
     Q_plus = 0d0; a_plus = 0d0; k_plus = 0d0; x_plus = 0d0; p_plus = 0d0

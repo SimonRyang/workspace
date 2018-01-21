@@ -170,6 +170,9 @@ module globals
   ! weights for the different gridpoints on the discretized state space
   real*8 :: m(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT), m_Q(0:NQ, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
 
+  ! LSRA payments
+  real*8 :: v(0:NA, 0:NK, 0:NX, 0:NP, NW, NE, NS, JJ, 0:TT)
+
   ! numerical variables
   integer :: iter
   integer :: iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ij_com, it_com
