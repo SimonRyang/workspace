@@ -1085,7 +1085,7 @@ contains
     implicit none
 
     !##### OTHER VARIABLES ####################################################
-    integer :: io, ia, ix, ip, iw, ie, is, ij, it
+    integer :: ia, ix, ik, ip, iw, ie, is, ij, it
     real*8 :: VV_today, VV_target, dVV_da, v_tilde
     real*8 :: pv_today, pv_target, pv_trans
 
