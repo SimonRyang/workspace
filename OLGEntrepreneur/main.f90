@@ -1120,7 +1120,7 @@ contains
                     VV_today = VV(ia, ik, ix, ip, iw, ie, is, ij, 1)
 
                     ! get target utility
-                    VV_target = (ia, ik, ix, ip, iw, ie, is, ij, 0)
+                    VV_target = VV(ia, ik, ix, ip, iw, ie, is, ij, 0)
 
                     ! get derivative of the value function
                     dVV_da = margu(c(ia, ik, ix, ip, iw, ie, is, ij, 1), l(ia, ik, ix, ip, iw, ie, is, ij, 1), 1)
