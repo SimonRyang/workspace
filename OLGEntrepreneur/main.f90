@@ -18,17 +18,17 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  mu(1:TT) = 0d0
+  ! mu(1:TT) = 0d0
   ! lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
   ! calculate transition path without lsra
   lsra_on = .false.
-  call get_transition()
+  !call get_transition()
 
   ! calculate transition path with lsra
   lsra_on = .true.
-  call get_transition()
+  !call get_transition()
 
   ! close files
   close(21)
@@ -285,6 +285,7 @@ contains
     taup(0) = 0.189d0
 
     ! initial guesses for macro variables
+    psix(:, :, 0) = psi(:, :)
     KC(0) = 4.700d0
     LC(0) = 5.470d0
     BQS(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
@@ -461,10 +462,10 @@ contains
       ann_tmp = 1d0
       do iij = JJ, ij+1, -1
         itp = year(it, ij, iij)
-        ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psi(:, iij) + 1d0
+        ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psix(:, iij, it) + 1d0
       enddo ! iij
       do ix = 0, NX
-        ann(ix, :, ij, it) = (1d0+r(it))/psi(:, ij)*x(ix)/ann_tmp(:)
+        ann(ix, :, ij, it) = (1d0+r(it))/psi(:, ij, it)*x(ix)/ann_tmp(:)
       enddo ! ix
     enddo ! ij6
 
