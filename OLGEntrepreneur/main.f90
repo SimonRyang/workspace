@@ -10,7 +10,7 @@ program main
   implicit none
 
   ! set government variables
-  mu     = 1d0
+  mu     = 0d0
   lambda = 0d0
   phi    = 0d0
 
@@ -18,8 +18,8 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  ! mu(1:TT) = 0d0
-  lambda (1:TT) = 1d0
+  mu(1:TT) = 1d0
+  ! lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
   ! calculate transition path without lsra
@@ -1138,7 +1138,7 @@ contains
                       lsra_comp = lsra_comp + m(ia, ik, ix, ip, iw, ie, is, ij, 1)
 
                     ! calculate total transfer
-                    v(ia, ik, ix, ip, iw, ie, is, ij, 1) = (1d0-damp)*v(ia, ik, ix, ip, iw, ie, is, ij, 1) + damp*v_tilde
+                    v(ia, ik, ix, ip, iw, ie, is, ij, 1) = v(ia, ik, ix, ip, iw, ie, is, ij, 1) + damp*v_tilde
 
                     ! aggregate transfers by cohort
                     SV(1) = SV(1) + v(ia, ik, ix, ip, iw, ie, is, ij, 1)*m(ia, ik, ix, ip, iw, ie, is, ij, 1)
@@ -1227,7 +1227,7 @@ contains
       BA(it) = ((1d0+r(it-1))*BA(it-1) + SV(it-1))/(1d0+n_p)
     enddo
 
-
+        write(*,*) Vstar
           write(*,*) SV
           write(*,*) BA
 
