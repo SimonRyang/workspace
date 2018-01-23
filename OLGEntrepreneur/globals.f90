@@ -116,7 +116,7 @@ module globals
 
   ! demographic and other model parameters
   real*8 :: eff(NS, JJ)
-  real*8 :: pen(0:NP, JJ, 0:TT), psix(NS, JJ+1, 0:TT), ann(0:NX, NS, JJ, 0:TT)
+  real*8 :: pen(0:NP, JJ, 0:TT), psix(NS, JJ+1, 0:TT)
   real*8 :: psi(NS, JJ+1), rpop(NS, JJ)
   real*8 :: beq(NS, JJ, 0:TT), Gama(JJ)
 
@@ -298,11 +298,18 @@ contains
     integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij, it
 
     !##### OTHER VARIABLES #####################################################
-    integer :: ial, iar, ixl, ixr, itp
-    real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
+    integer :: ii, ial, iar, ixl, ixr, itp
+    real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x, p_hat, p_tmp
+
+    p_tmp = 1d0
+    do iij = JJ, ij+1, -1
+      itp = year(it, ij, iij)
+      p_tmp = p_tmp/(1d0+r(itp))*psix(is, iij, itp) + 1d0
+    enddo ! iij
+    p_hat = (1d0+r(it))/psix(is, ij, it)*x(ix)/p_tmp
 
     a_p = Q(iq_p)
-    x_p = (1d0+r(it))/psix(is, ij, it)*x(ix) - ann(ix, is, ij, it)
+    x_p = (1d0+r(it))/psix(is, ij, it)*x(ix) - p_hat
 
     ! derive interpolation weights
     call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
@@ -360,8 +367,8 @@ contains
     integer, intent(in) :: io_p, ia, ik, ix, ip, iw, ie, is, ij, it
 
     !##### OTHER VARIABLES #####################################################
-    real*8 :: x_in(2), fret, x_p, mx, k_p, varphi_q, varphi_p
-    integer :: iql, iqr, ipl, ipr
+    real*8 :: x_in(2), fret, x_p, mx, k_p, varphi_q, varphi_p, p_hat, p_tmp
+    integer :: iql, iqr, ipl, ipr, iij, itp
 
     ! set up communication variables
     io_p_com = io_p; ia_com = ia; ik_com = ik; ix_com = ix; ip_com = ip
@@ -413,6 +420,7 @@ contains
     mx = 0d0
 
     if (ij < JR) then
+
       if (varphi_q <= varphi_p) then
         mx = min((varphi_q           *omega_x_t(io_p, iql, ik, ix, ipl, iw, ie, is, ij, it) +  &
                   (varphi_p-varphi_q)*omega_x_t(io_p, iqr, ik, ix, ipl, iw, ie, is, ij, it) +  &
@@ -423,8 +431,20 @@ contains
                   (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij, it))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
       endif
       x_p = (1d0+r(it))/psix(is, ij, it)*x(ix) + mx
+
     else
-      x_p = (1d0+r(it))/psix(is, ij, it)*x(ix) - ann(ix, is, ij, it)
+
+      ! calculate annuity payment
+      p_tmp = 1d0
+      do iij = JJ, ij+1, -1
+        itp = year(it, ij, iij)
+        p_tmp = p_tmp/(1d0+r(itp))*psix(is, iij, itp) + 1d0
+      enddo ! iij
+      p_hat = (1d0+r(it))/psix(is, ij, it)*x(ix)/p_tmp
+
+      ! calculate next period's annuity stock
+      x_p = (1d0+r(it))/psix(is, ij, it)*x(ix) - p_hat
+
     endif
 
     ! copy decisions
@@ -717,8 +737,8 @@ contains
     real*8 :: cons_r
 
     !##### OTHER VARIABLES ######################################################
-    real*8 :: Q_plus, tomorrow, varphi_q, v_ind
-    integer :: iql, iqr
+    real*8 :: Q_plus, tomorrow, varphi_q, v_ind, p_hat, p_tmp
+    integer :: iql, iqr, iij, itp
 
     ! define tomorrow's assets
     Q_plus  = x_in
@@ -744,8 +764,16 @@ contains
     ! get lsra transfer payment
     v_ind = v(ia_com, ik_com, ix_com, ip_com, iw_com, ie_com, is_com, ij_com, it_com)
 
+    ! calculate annuity payment
+    p_tmp = 1d0
+    do iij = JJ, ij_com+1, -1
+      itp = year(it_com, ij_com, iij)
+      p_tmp = p_tmp/(1d0+r(itp))*psix(is_com, iij, itp) + 1d0
+    enddo ! iij
+    p_hat = (1d0+r(it_com))/psix(is_com, ij_com, it_com)*x(ix_com)/p_tmp
+
     ! available assets
-    aas_com = a(ia_com) + netinc_com + ann(ix_com, is_com, ij_com, it_com) + v_ind
+    aas_com = a(ia_com) + netinc_com + p_hat + v_ind
 
     ! calculate consumption
     cons_com = (aas_com - Q_plus)*pinv(it_com)

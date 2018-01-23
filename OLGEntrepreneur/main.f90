@@ -371,7 +371,6 @@ contains
       tauc(it) = tauc(0)
       taup(it) = taup(0)
 
-      ann(:, :, :, it) = ann(:, :, :, 0)
       psix(:, :, it) = psix(:, :, 0)
       pen(:, :, it) = pen(:, :, 0)
       beq(:, :, it) = beq(:, :, 0)
@@ -428,7 +427,6 @@ contains
     integer, intent(in) :: it
 
     !##### OTHER VARIABLES #####################################################
-    real*8 :: ann_tmp(NS)
     integer :: ix, ip, is, ij, iij, itm, itp
 
     ! calculate new prices
@@ -456,21 +454,8 @@ contains
     r2 = 0.449d0*ybar(0)*2d0 ! 13,469.00 Euro
     r3 = 1.763d0*ybar(0)*2d0 ! 52,881.00 Euro
 
-    ! calculate annuity payments
-    ann(:, :, :, it) = 0d0
-
+    ! calculate annuity interests
     psix(:, :, it) = psi(:, :)
-
-    do ij = JR, JJ
-      ann_tmp = 1d0
-      do iij = JJ, ij+1, -1
-        itp = year(it, ij, iij)
-        ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psix(:, iij, it) + 1d0
-      enddo ! iij
-      do ix = 0, NX
-        ann(ix, :, ij, it) = (1d0+r(it))/psix(:, ij, it)*x(ix)/ann_tmp(:)
-      enddo ! ix
-    enddo ! ij6
 
     ! calculate old-age transfers
     pen(:, :, it) = 0d0
