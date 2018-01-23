@@ -162,7 +162,7 @@ contains
         check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol
       else
         write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
-          (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
+          (Vstar**(1d0/egam)-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
           check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. lsra_comp/lsra_all > 0.99999d0
       endif
 

@@ -78,7 +78,7 @@ module globals
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 12d0
+  real*8, parameter :: Q_u    = 10d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
@@ -793,7 +793,7 @@ contains
     real*8 :: margu
 
     ! determine marginal utility
-    margu = sigma*(cons**sigma*(1d0-lab)**(1d0-sigma))**(1d0-gamma)/((1d0+tauc(it))*cons)
+    margu = sigma*(cons**sigma*(1d0-lab)**(1d0-sigma))**egam/((1d0+tauc(it))*cons)
 
   end function
 
