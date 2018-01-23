@@ -298,7 +298,7 @@ contains
     integer, intent(in) :: iq_p, ik, ix, ip_p, iw, ie, is, ij, it
 
     !##### OTHER VARIABLES #####################################################
-    integer :: ii, ial, iar, ixl, ixr, itp
+    integer :: iij, ial, iar, ixl, ixr, itp
     real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x, p_hat, p_tmp
 
     p_tmp = 1d0
