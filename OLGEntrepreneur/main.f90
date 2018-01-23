@@ -460,7 +460,7 @@ contains
     ! calculate annuity interests
     psix(:, :, it) = psi(:, :)
     do ij = 1, JJ
-      psix(:, ij, it) = axs_coh(ij, it)/ax_coh(ij, it)
+      if (axs_coh(ij, it) > 0d0) psix(:, ij, it) = axs_coh(ij, it)/ax_coh(ij, it)
     enddo
 
     ! calculate old-age transfers
