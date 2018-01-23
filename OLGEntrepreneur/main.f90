@@ -18,13 +18,13 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  ! mu(1:TT) = 0d0
+  mu(1:TT) = 0d0
   ! lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
   ! calculate transition path without lsra
   lsra_on = .false.
-  !call get_transition()
+  call get_transition()
 
   ! calculate transition path with lsra
   lsra_on = .true.
@@ -372,6 +372,7 @@ contains
       taup(it) = taup(0)
 
       ann(:, :, :, it) = ann(:, :, :, 0)
+      psix(:, :, it) = psix(:, :, 0)
       pen(:, :, it) = pen(:, :, 0)
       beq(:, :, it) = beq(:, :, 0)
 
@@ -1297,26 +1298,26 @@ contains
                                                           sum(l(:, 0, :, :, :, :, 2, 1:JR-1, it)*m(:, 0, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), &
                                                           sum(l(:, 0, :, :, :, :, 3, 1:JR-1, it)*m(:, 0, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), &
                                                           sum(l(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
-      write(*,'(a, 4f10.4)')   '-                  (e):', sum(l(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
-                                                          sum(l(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
-                                                          sum(l(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), &
-                                                          sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, 4f10.4)')   '                   (e):', sum(l(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), 1d-4), &
+                                                          sum(l(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), 1d-4), &
+                                                          sum(l(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), 1d-4), &
+                                                          sum(l(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
       write(*,'(a, 4f10.4)')   '- gross income (w):    ', sum(grossinc(:, 0, :, :, :, :, 1, 1:JR-1, it)*m(:, 0, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), &
                                                           sum(grossinc(:, 0, :, :, :, :, 2, 1:JR-1, it)*m(:, 0, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), &
                                                           sum(grossinc(:, 0, :, :, :, :, 3, 1:JR-1, it)*m(:, 0, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), &
                                                           sum(grossinc(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
-      write(*,'(a, 4f10.4)')   '-              (e):    ', sum(grossinc(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
-                                                          sum(grossinc(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
-                                                          sum(grossinc(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), &
-                                                          sum(grossinc(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, 4f10.4)')   '               (e):    ', sum(grossinc(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), 1d-4), &
+                                                          sum(grossinc(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), 1d-4), &
+                                                          sum(grossinc(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), 1d-4), &
+                                                          sum(grossinc(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
       write(*,'(a, 4f10.4)')   '- net income (w):      ', sum(netinc(:, 0, :, :, :, :, 1, 1:JR-1, it)*m(:, 0, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 1, 1:JR-1, it)), &
                                                           sum(netinc(:, 0, :, :, :, :, 2, 1:JR-1, it)*m(:, 0, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 2, 1:JR-1, it)), &
                                                           sum(netinc(:, 0, :, :, :, :, 3, 1:JR-1, it)*m(:, 0, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, 3, 1:JR-1, it)), &
                                                           sum(netinc(:, 0, :, :, :, :, :, 1:JR-1, it)*m(:, 0, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 0, :, :, :, :, :, 1:JR-1, it))
-      write(*,'(a, 4f10.4, /)')'-            (e):      ', sum(netinc(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), &
-                                                          sum(netinc(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), &
-                                                          sum(netinc(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), &
-                                                          sum(netinc(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))
+      write(*,'(a, 4f10.4, /)')'             (e):      ', sum(netinc(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 1, 1:JR-1, it)), 1d-4), &
+                                                          sum(netinc(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 2, 1:JR-1, it)), 1d-4), &
+                                                          sum(netinc(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, 3, 1:JR-1, it)), 1d-4), &
+                                                          sum(netinc(:, 1:NK, :, :, :, :, :, 1:JR-1, it)*m(:, 1:NK, :, :, :, :, :, 1:JR-1, it))/max(sum(m(:, 1:NK, :, :, :, :, :, 1:JR-1, it)), 1d-4)
       write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN(it)/YY(it)*100d0
       write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup(it)*100d0
       write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc(it)+TAw(it)+TAr(it)+TAk(it))/YY(it)*100d0
@@ -1329,6 +1330,7 @@ contains
       write(*,'(a, f10.4)')    '  + corp. sector:      ', 5d0*KC(it)/YC(it)
       write(*,'(a, f10.4, /)') '  + non-corp. sector:  ', 5d0*KE(it)/max(YE(it), 1d-4)
       write(*,'(a, f10.4)')    '- int. rate p.a. (%):  ', ((1d0+r(it))**0.2d0-1d0)*100d0
+      write(*,'(a, f10.4)')    '- hourly wage:         ', w(it)
       write(*,'(a, f10.4)')    '- avg. labor income:   ', ybar(it)
       write(*,'(a, f10.4)')    '- bequests (%):        ', BQ(it)/YY(it)*100d0
       write(*,*)
