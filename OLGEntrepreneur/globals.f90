@@ -301,6 +301,7 @@ contains
     integer :: iij, ial, iar, ixl, ixr, itp
     real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x, p_hat, p_tmp
 
+    ! calculate annuity payments
     p_tmp = 1d0
     do iij = JJ, ij+1, -1
       itp = year(it, ij, iij)
