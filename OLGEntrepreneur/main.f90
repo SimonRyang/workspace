@@ -459,6 +459,8 @@ contains
     ! calculate annuity payments
     ann(:, :, :, it) = 0d0
 
+    psix(:, :, it) = psi(:, :)*0.90d0
+
     do ij = JR, JJ
       ann_tmp = 1d0
       do iij = JJ, ij+1, -1
