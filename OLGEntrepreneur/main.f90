@@ -18,7 +18,7 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  mu(1:TT) = 0d0
+  ! mu(1:TT) = 0d0
   ! lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
@@ -1134,7 +1134,7 @@ contains
                       lsra_comp = lsra_comp + m(ia, ik, ix, ip, iw, ie, is, ij, 1)
 
                     ! calculate total transfer
-                    v(ia, ik, ix, ip, iw, ie, is, ij, 1) = v(ia, ik, ix, ip, iw, ie, is, ij, 1) + v_tilde
+                    v(ia, ik, ix, ip, iw, ie, is, ij, 1) = (1d0-damp)*v(ia, ik, ix, ip, iw, ie, is, ij, 1) + damp*v_tilde
 
                     ! aggregate transfers by cohort
                     SV(1) = SV(1) + v(ia, ik, ix, ip, iw, ie, is, ij, 1)*m(ia, ik, ix, ip, iw, ie, is, ij, 1)
