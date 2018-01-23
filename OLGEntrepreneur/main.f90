@@ -18,9 +18,9 @@ program main
   call get_SteadyState()
 
   ! set reforms
-  mu(1:TT) = 1d0
+  ! mu(1:TT) = 1d0
   ! lambda (1:TT) = 1d0
-  ! phi(1:TT) = 1d0
+  phi(1:TT) = 1d0
 
   ! calculate transition path without lsra
   lsra_on = .false.
