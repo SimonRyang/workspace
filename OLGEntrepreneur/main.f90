@@ -19,7 +19,7 @@ program main
 
   ! set reforms
   ! mu(1:TT) = 0d0
-  ! lambda (1:TT) = 1d0
+  lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
   ! calculate transition path without lsra
@@ -159,11 +159,11 @@ contains
       if(.not. lsra_on)then
         write(*,'(i4,5i5,5f8.2,f14.8)')iter, itmax, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                       (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
-        check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 20
+        check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol
       else
         write(*,'(i4,2f12.6,f14.8)')iter, lsra_comp/lsra_all*100d0, &
           (Vstar**(1d0/(1d0-gamma))-1d0)*100d0,DIFF(itmax)/YY(itmax)*100d0
-          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. iter > 0 .and. lsra_comp/lsra_all > 0.99999d0
+          check = abs(DIFF(itmax)/YY(itmax))*100d0 < tol .and. lsra_comp/lsra_all > 0.99999d0
       endif
 
       ! check for convergence
@@ -402,6 +402,8 @@ contains
       omega_x_t(:, :, :, :, :, :, :, :, :, it) = omega_x_t(:, :, :, :, :, :, :, :, :, 0)
       omega_k_t(:, :, :, :, :, :, :, :, :, it) = omega_k_t(:, :, :, :, :, :, :, :, :, 0)
       S(:, :, :, :, :, :, :, :, :, it) = S(:, :, :, :, :, :, :, :, :, 0)
+
+      vv_coh(:, it) = vv_coh(:, 0)
 
       m(:, :, :, :, :, :, :, :, it) = m(:, :, :, :, :, :, :, :, 0)
       m_Q(:, :, :, :, :, :, :, :, it) = m_Q(:, :, :, :, :, :, :, :, 0)
@@ -1002,7 +1004,7 @@ contains
                       PRO(it) = PRO(it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
                     vv_coh(ij, it) = vv_coh(ij, it) + VV(ia, ik, ix, ip, iw, ie, is, ij, it) &
-                                    *m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
+                                    *m(ia, ik, ix, ip, iw, ie, is, ij, it)
                   enddo ! ia
                 enddo ! ik
               enddo ! ix
@@ -1010,6 +1012,8 @@ contains
           enddo ! iw
         enddo ! ie
       enddo ! is
+
+      vv_coh(ij, it) = vv_coh(ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
 
     enddo ! ij
 
