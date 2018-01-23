@@ -375,6 +375,9 @@ contains
       pen(:, :, it) = pen(:, :, 0)
       beq(:, :, it) = beq(:, :, 0)
 
+      ax_coh(:, it) = ax_coh(:, 0)
+      axs_coh(:, it) = axs_coh(:, 0)
+
       Q_plus(:, :, :, :, :, :, :, :, it) = Q_plus(:, :, :, :, :, :, :, :, 0)
       a_plus(:, :, :, :, :, :, :, :, it) = a_plus(:, :, :, :, :, :, :, :, 0)
       k_plus(:, :, :, :, :, :, :, :, it) = k_plus(:, :, :, :, :, :, :, :, 0)
@@ -456,6 +459,9 @@ contains
 
     ! calculate annuity interests
     psix(:, :, it) = psi(:, :)
+    do ij = 1, JJ
+      psix(:, ij, it) = axs_coh(ij, it)/ax_coh(ij, it)
+    enddo
 
     ! calculate old-age transfers
     pen(:, :, it) = 0d0
@@ -956,6 +962,7 @@ contains
     KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0; BF = 0d0
     YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; NEX(it) = 0d0; PRO(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
+    ax_coh(:, it) = 0d0; axs_coh(:, it) = 0d0
     vv_coh(:, it) = 0d0
 
     do ij = 1, JJ
@@ -974,6 +981,8 @@ contains
                     AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     AA(it) = AA(it) + k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    ax_coh(ij, it) = ax_coh(ij, it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    axs_coh(ij, it) = axs_coh(ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     BQS(is, it) = BQS(is, it) + (1d0+r(it))*(a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -1233,7 +1242,7 @@ contains
 
     integer :: ia, ik, ix, ip, iw, ie, is, ij
     real*8 :: life_exp(NS), punb(NS, JJ)
-    real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), ax_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
+    real*8 :: c_coh(0:1, JJ, 0:TT), a_coh(0:1, JJ, 0:TT), x_coh(0:1, JJ, 0:TT), k_coh(JJ, 0:TT)
     real*8 :: inc_coh(0:1, JJ, 0:TT), flc_coh(JJ, 0:TT)
 
     ! integer :: ij, ages(JJ)
@@ -1327,7 +1336,7 @@ contains
     ! compute cohort specific aggregates
     c_coh(:, :, it) = 0d0
     a_coh(:, :, it) = 0d0
-    ax_coh(:, :, it) = 0d0
+    x_coh(:, :, it) = 0d0
     k_coh(:, it) = 0d0
     inc_coh(:, :, it) = 0d0
     flc_coh(:, it) = 0d0
@@ -1345,12 +1354,12 @@ contains
                     if (ik == 0) then
                       c_coh(0, ij, it) = c_coh(0, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
                       a_coh(0, ij, it) = a_coh(0, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
-                      ax_coh(0, ij, it) = ax_coh(0, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
+                      x_coh(0, ij, it) = x_coh(0, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
                       inc_coh(0, ij, it) = inc_coh(0, ij, it) + w(it)*eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/sum(m(:, 0, :, :, :, :, :, ij, it))
                     else
                       c_coh(1, ij, it) = c_coh(1, ij, it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
                       a_coh(1, ij, it) = a_coh(1, ij, it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
-                      ax_coh(1, ij, it) = ax_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
+                      x_coh(1, ij, it) = x_coh(1, ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
                       k_coh(ij, it) = k_coh(ij, it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
                       inc_coh(1, ij, it) = inc_coh(1, ij, it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)/max(sum(m(:, 1:NK, :, :, :, :, :, ij, it)), 1d-16)
                     endif
@@ -1421,7 +1430,7 @@ contains
         '    ENTn    WORn     FLC      VALUE  IQMAX  IAMAX  IKMAX  IXMAX'
     write(21,'(a)')'------------------------------------------------------------------------------------------------------------------------------------------------------------'
     do ij = 1, JJ
-      write(21, '(i3, 14f8.3, f11.3, 4i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), ax_coh(0, ij, it), ax_coh(1, ij, it), &
+      write(21, '(i3, 14f8.3, f11.3, 4i7)')ij, c_coh(0, ij, it), c_coh(1, ij, it), a_coh(0, ij, it), a_coh(1, ij, it), x_coh(0, ij, it), x_coh(1, ij, it), &
                                            inc_coh(0, ij, it), inc_coh(1, ij, it), k_coh(ij, it), &
                                            sum(m(:, 1:NK, :, :, :, :, :, ij, it))/sum(m(:, :, :, :, :, :, :, ij, it)), &
                                            sum(m(:, 1:NK, :, :, :, :, 1, ij, it))/sum(m(:, :, :, :, :, :, 1, ij, it)), &

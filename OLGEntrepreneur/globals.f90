@@ -116,9 +116,10 @@ module globals
 
   ! demographic and other model parameters
   real*8 :: eff(NS, JJ)
-  real*8 :: pen(0:NP, JJ, 0:TT), psix(NS, JJ+1, 0:TT)
   real*8 :: psi(NS, JJ+1), rpop(NS, JJ)
   real*8 :: beq(NS, JJ, 0:TT), Gama(JJ)
+  real*8 :: pen(0:NP, JJ, 0:TT), psix(NS, JJ+1, 0:TT)
+  real*8 :: ax_coh(JJ, 0:TT), axs_coh(JJ, 0:TT)
 
   ! government variables
   real*8 :: mu(0:TT), phi(0:TT), lambda(0:TT)
