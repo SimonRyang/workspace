@@ -462,6 +462,7 @@ contains
     do ij = 1, JJ
       if (axs_coh(ij, it) > 0d0) psix(:, ij, it) = axs_coh(ij, it)/ax_coh(ij, it)
       write(*,*)axs_coh(ij, it), ax_coh(ij, it)
+      write(*,*)psi(:, ij), psix(:, ij, it)
     enddo
 
     ! calculate old-age transfers
