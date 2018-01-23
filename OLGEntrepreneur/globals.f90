@@ -302,7 +302,7 @@ contains
     real*8 :: a_p, x_p, EV_temp, S_temp, varphi_a, varphi_x
 
     a_p = Q(iq_p)
-    x_p = (1d0+r(it))/psi(is, ij)*x(ix) - ann(ix, is, ij, it)
+    x_p = (1d0+r(it))/psix(is, ij, it)*x(ix) - ann(ix, is, ij, it)
 
     ! derive interpolation weights
     call linint_Grow(a_p, a_l, a_u, a_grow, NA, ial, iar, varphi_a)
@@ -422,9 +422,9 @@ contains
                   (varphi_q-varphi_p)*omega_x_t(io_p, iql, ik, ix, ipr, iw, ie, is, ij, it) +  &
                   (1d0-varphi_q)     *omega_x_t(io_p, iqr, ik, ix, ipr, iw, ie, is, ij, it))*x_in(1), x_in(1) - (1d0-xi)*k_p - tr(k(ik), k_p))
       endif
-      x_p = (1d0+r(it))/psi(is, ij)*x(ix) + mx
+      x_p = (1d0+r(it))/psix(is, ij, it)*x(ix) + mx
     else
-      x_p = (1d0+r(it))/psi(is, ij)*x(ix) - ann(ix, is, ij, it)
+      x_p = (1d0+r(it))/psix(is, ij, it)*x(ix) - ann(ix, is, ij, it)
     endif
 
     ! copy decisions
@@ -467,7 +467,7 @@ contains
     omega_x  = x_in
 
     ! determine future liquid wealth and future annuity asset stock
-    x_p = (1d0+r(it_com))/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
+    x_p = (1d0+r(it_com))/psix(is_com, ij_com, it_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
     a_temp = (1d0-omega_x)*Q(iq_p_com)
     a_p = max(a_temp, 0d0)
 
@@ -543,7 +543,7 @@ contains
     omega_k  = x_in(2)
 
     ! determine future liquid wealth, future firm capital and future annuity asset stock
-    x_p = (1d0+r(it_com))/psi(is_com, ij_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
+    x_p = (1d0+r(it_com))/psix(is_com, ij_com, it_com)*x(ix_com) + min(omega_x*Q(iq_p_com), mx_max*ybar(0))
     k_p = ((1d0-xi)*k_min + omega_k*(Q(iq_p_com) - (1d0-xi)*k_min))/(1d0-xi)
     a_temp = Q(iq_p_com) - omega_x*Q(iq_p_com) - (1d0-xi)*k_p - tr(k(ik_com), k_p)
     a_p = max(a_temp, 0d0)
