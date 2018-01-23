@@ -461,7 +461,8 @@ contains
     psix(:, :, it) = psi(:, :)
     do ij = 1, JJ
       if (axs_coh(ij, it) > 0d0) psix(:, ij, it) = axs_coh(ij, it)/ax_coh(ij, it)
-      write(*,*)axs_coh(ij, it), ax_coh(ij, it), psix(:, ij, it)
+      write(*,*)axs_coh(ij, it), ax_coh(ij, it)
+      write(*,*)psix(:, ij, it)
       write(*,*)psi(:, ij)
     enddo
 
