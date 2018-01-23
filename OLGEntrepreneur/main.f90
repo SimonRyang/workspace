@@ -465,7 +465,7 @@ contains
         ann_tmp(:) = ann_tmp(:)/(1d0+r(itp))*psix(:, iij, it) + 1d0
       enddo ! iij
       do ix = 0, NX
-        ann(ix, :, ij, it) = (1d0+r(it))/psi(:, ij, it)*x(ix)/ann_tmp(:)
+        ann(ix, :, ij, it) = (1d0+r(it))/psix(:, ij, it)*x(ix)/ann_tmp(:)
       enddo ! ix
     enddo ! ij6
 
