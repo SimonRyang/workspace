@@ -1227,6 +1227,10 @@ contains
       BA(it) = ((1d0+r(it-1))*BA(it-1) + SV(it-1))/(1d0+n_p)
     enddo
 
+
+          write(*,*) SV
+          write(*,*) BA
+
   end subroutine
 
 
