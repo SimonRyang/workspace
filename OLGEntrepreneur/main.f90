@@ -14,7 +14,10 @@ program main
   lambda = 0d0
   phi    = 0d0
 
-  smopec = .true.
+  r = 0.19d0
+  w = 1d0
+
+  !smopec = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -444,14 +447,6 @@ contains
       r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
       w(it) = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
     endif
-
-    ! set prices in case of life-cycle model
-    r = 0.19d0
-    w = 1d0
-    ! BQS = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
-    ! ybar = 0.555719715351030d0
-    ! tauc = 0.128579256047982d0
-    ! taup = 7.867802841513299d-2
 
     ! calculate gross price of consumption (inverse)
     pinv(it) = 1d0/(1d0+tauc(it))
