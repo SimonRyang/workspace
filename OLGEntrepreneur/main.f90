@@ -1031,7 +1031,7 @@ contains
       BF(it) = 0d0
       NEX(it) = 0d0
     else
-      KC(it) = LC(it)*((r(it)/(1d0-tauk)+delta_k)/Omega/alpha)**(1d0/(alpha-1d0)))
+      KC(it) = LC(it)*((r(it)/(1d0-tauk)+delta_k)/Omega/alpha)**(1d0/(alpha-1d0))
       BF(it) = AA(it) + AX(it) - KC(it) - BB(it) - BA(it)
       NEX(it) = (n_p-r(it))*BF(it)
     endif
@@ -1092,6 +1092,7 @@ contains
 
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)-NEX(it)
+    write(*,*)YY(it)-CC(it)-II(it)-GG(it)-TC(it), NEX(it)
 
   end subroutine
 
