@@ -14,21 +14,20 @@ program main
   lambda = 0d0
   phi    = 0d0
 
+  smopec = .true.
+
   ! calculate initial equilibrium
   call get_SteadyState()
-
 
   ! set reforms
   ! mu(1:TT) = 0d0
   lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
+stop
 
-
-    !smopec = .true.
   ! calculate transition path without lsra
   lsra_on = .false.
   call get_transition()
-stop
 
   ! calculate transition path with lsra
   lsra_on = .true.
@@ -447,8 +446,8 @@ contains
     endif
 
     ! set prices in case of life-cycle model
-    ! r = 0.19d0
-    ! w = 1d0
+    r = 0.19d0
+    w = 1d0
     ! BQS = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
     ! ybar = 0.555719715351030d0
     ! tauc = 0.128579256047982d0
@@ -1037,7 +1036,7 @@ contains
       BF(it) = 0d0
       NEX(it) = 0d0
     else
-      KC(it) = damp*(LC(it)*((r(it)/(1d0-tauk)+delta_k)/alpha)**(1d0/(alpha-1d0))) + (1d0-damp)*KC(it)
+      KC(it) = damp*(LC(it)*((r(it)/Omega/(1d0-tauk)+delta_k)/alpha)**(1d0/(alpha-1d0))) + (1d0-damp)*KC(it)
       BF(it) = AA(it) + AX(it) - KC(it) - BB(it) - BA(it)
       NEX(it) = (n_p-r(it))*BF(it)
     endif
