@@ -55,7 +55,7 @@ module globals
   real*8, parameter :: d_s  = 0.053d0 ! 1,600.00 Euro
 
   ! household preference parameters
-  real*8, parameter :: gamma = 0.2d0 !
+  real*8, parameter :: gamma = 0.5d0 !
   real*8, parameter :: egam  = 1d0-1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.995d0**5
@@ -534,7 +534,7 @@ contains
               (1d0-varphi_a)*(1d0-varphi_x)*EV(iar, 0, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp)
 
     ! calculate bequest part of the value function
-    S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p, 1d-13)**egam/egam
+    S_temp = (1d0-psi(is_com, ij_com+1))*mu_b*max(a_p, 1d-13)**egam/egam
 
     ! calculate future part of the value function
     if (a_temp < 0d0) then
@@ -613,7 +613,7 @@ contains
                (1d0-varphi_a)*(1d0-varphi_k)*(1d0-varphi_x)*(egam*EV(iar, ikr, ixr, ip_p_com, iw_com, ie_com, is_com, ij_com+1, itp))**(1d0/egam))**egam/egam
 
      ! calculate bequest part of the value function
-    S_temp = 0d0 !(1d0-psi(is_com, ij_com+1))*mu_b*max(a_p + (1d0-xi)*k_p, 1d-13)**egam/egam
+    S_temp = (1d0-psi(is_com, ij_com+1))*mu_b*max(a_p + (1d0-xi)*k_p, 1d-13)**egam/egam
 
     ! calculate future part of the value function
     if (a_temp < 0d0) then
