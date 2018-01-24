@@ -101,7 +101,7 @@ module globals
   real*8, parameter :: p_u    = 2d0
 
   ! pension fraction of average income
-  real*8, parameter :: kappa = 0.55d0
+  real*8, parameter :: kappa = 0d0 !0.55d0
 
   ! numerical parameters
   integer, parameter :: itermax = 200
