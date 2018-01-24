@@ -56,12 +56,15 @@ contains
 
       ! get new prices
       call get_prices(0)
+      write(*,*)1
 
       ! solve the household problem
       call solve_household(1, 0)
+      write(*,*)2
 
       ! calculate the distribution of households over state space
       call get_distribution(0)
+      write(*,*)3
 
       ! aggregate individual decisions
       call aggregation(0)
