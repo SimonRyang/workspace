@@ -24,6 +24,8 @@ program main
 
   write(*,*)r(0), w(0), alpha/r(0)*5d0, KC(0), LC(0), AA(0), YY(0), BB(0)
 
+  stop
+
   ! set reforms
   ! mu(1:TT) = 0d0
   ! lambda (1:TT) = 1d0
@@ -1022,6 +1024,8 @@ contains
       vv_coh(ij, it) = vv_coh(ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
 
     enddo ! ij
+
+    write(*,*)CC(it), AA(it)
 
     ! update work supply
     LC(it) = damp*LC(it) + (1d0-damp)*LC_old
