@@ -1022,9 +1022,6 @@ contains
 
     enddo ! ij
 
-    ! get average income
-    ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
-
     ! update work supply
     LC(it) = damp*LC(it) + (1d0-damp)*LC_old
 
@@ -1051,6 +1048,11 @@ contains
 
     ! compute corporate tax incom
     TAk(it) = tauk*(YC(it)-delta_k*KC(it)-w(it)*LC(it))
+
+    ! get average income
+    ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
+
+    write(*,*) KC(it), BF(it), NEX(it)
 
   end subroutine
 
