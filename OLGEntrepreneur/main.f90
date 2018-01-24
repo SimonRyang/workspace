@@ -14,8 +14,8 @@ program main
   lambda = 0d0
   phi    = 0d0
 
-  r = 0.218131801667548d0
-  w = 0.848341476605828d0
+  r(0) = 0.218131801667548d0
+  w(0) = 0.848341476605828d0
   smopec = .true.
 
   ! calculate initial equilibrium
