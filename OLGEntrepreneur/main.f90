@@ -14,14 +14,14 @@ program main
   lambda = 0d0
   phi    = 0d0
 
-  ! r = 0.1d0
-  ! w = 1d0
+  r = 0.218131801667548d0
+  w = 0.848341476605828d0
   ! smopec = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  write(*,*)r(0), w(0), KC(0), LC(0)
+  write(*,*)r(0), w(0), KC(0), LC(0), AA(0), YY(0), BB(0)
 
   stop
 
