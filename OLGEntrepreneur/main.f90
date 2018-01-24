@@ -17,7 +17,7 @@ program main
   r(0) = 0.108697521022459d0
   w(0) = 1.25523946005521d0
 
-!  smopec = .true.
+  smopec = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
