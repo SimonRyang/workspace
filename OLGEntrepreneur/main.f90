@@ -443,7 +443,7 @@ contains
     endif
 
     ! set prices in case of life-cycle model
-    r = 0.393280506035032d0
+    r = 0.19d0
     w = 1d0
     ! BQS = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
     ! ybar = 0.555719715351030d0
