@@ -1085,6 +1085,8 @@ contains
     BB(it) = by*YY(0)
     expend = GG(it) + (1d0+r(it))*BB(it) - (1d0+n_p)*BB(itp)
 
+    write(*,*) TAk(it), TAw(it), TAr(it)
+
     ! calculates consumption tax rate
     tauc(it) = (expend - TAk(it) - TAw(it) - TAr(it))/CC(it)
 
@@ -1338,10 +1340,10 @@ contains
       write(*,'(a, f10.4)')    '- pen. ben. (%):       ', PBEN(it)/YY(it)*100d0
       write(*,'(a, f10.4)')    '- pen. con. rate (%):  ', taup(it)*100d0
       write(*,'(a, f10.4)')    '- tax rev. (%):        ', (TAc(it)+TAw(it)+TAr(it)+TAk(it))/YY(it)*100d0
-      write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc(it)/max(TAc(it)+TAw(it)+TAr(it)+TAk(it), 0d0)*100d0
-      write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw(it)/max(TAc(it)+TAw(it)+TAr(it)+TAk(it), 0d0)*100d0
-      write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk(it)/max(TAc(it)+TAw(it)+TAr(it)+TAk(it), 0d0)*100d0
-      write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr(it)/max(TAc(it)+TAw(it)+TAr(it)+TAk(it), 0d0)*100d0
+      write(*,'(a, f10.4)')    '  + cons. tax (%):     ', TAc(it)/max(TAc(it)+TAw(it)+TAr(it)+TAk(it), 1d-4)*100d0
+      write(*,'(a, f10.4)')    '  + inc. tax (%):      ', TAw(it)/max(TAc(it)+TAw(it)+TAr(it)+TAk(it), 1d-4)*100d0
+      write(*,'(a, f10.4)')    '  + corp. tax (%):     ', TAk(it)/max(TAc(it)+TAw(it)+TAr(it)+TAk(it), 1d-4)*100d0
+      write(*,'(a, f10.4)')    '  + cap. tax (%):      ', TAr(it)/max(TAc(it)+TAw(it)+TAr(it)+TAk(it), 1d-4)*100d0
       write(*,'(a, f10.4)')    '- cons. tax rate (%):  ', tauc(it)*100d0
       write(*,'(a, f10.4)')    '- cap.-output ratio:   ', 5d0*KK(it)/YY(it)
       write(*,'(a, f10.4)')    '  + corp. sector:      ', 5d0*KC(it)/YC(it)
