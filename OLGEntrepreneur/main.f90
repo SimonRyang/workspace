@@ -21,7 +21,7 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  write(*,*)r(it), w(it), KC(it)
+  write(*,*)r(0), w(0), KC(0), LC(0)
 
   stop
 
