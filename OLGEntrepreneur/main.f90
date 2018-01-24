@@ -16,6 +16,10 @@ program main
 
   r = 0.19d0
   w = 1d0
+
+
+    smopec = .true.
+
   ! calculate initial equilibrium
   call get_SteadyState()
 
@@ -23,10 +27,6 @@ program main
   ! mu(1:TT) = 0d0
   lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
-
-
-  smopec = .true.
-
 
   ! calculate transition path without lsra
   lsra_on = .false.
