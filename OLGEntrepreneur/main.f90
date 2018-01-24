@@ -1088,7 +1088,7 @@ contains
     II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
     ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)
+    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)-NEX(it)
 
   end subroutine
 
@@ -1240,10 +1240,6 @@ contains
     do it = 3, TT
       BA(it) = ((1d0+r(it-1))*BA(it-1) + SV(it-1))/(1d0+n_p)
     enddo
-
-        ! write(*,*) Vstar
-        !   write(*,*) SV
-        !   write(*,*) BA
 
   end subroutine
 
