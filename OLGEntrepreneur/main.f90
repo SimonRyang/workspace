@@ -14,18 +14,20 @@ program main
   lambda = 0d0
   phi    = 0d0
 
-  r = 0.1d0
-  w = 1d0
-
-
-    smopec = .true.
+  ! r = 0.1d0
+  ! w = 1d0
+  ! smopec = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
 
+  write(*,*)r(it), w(it), KC(it)
+
+  stop
+
   ! set reforms
   ! mu(1:TT) = 0d0
-  lambda (1:TT) = 1d0
+  ! lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
   ! calculate transition path without lsra
@@ -495,7 +497,6 @@ contains
     integer :: iq, ia, ik, ix, ip, iw, ie, is, ij, it, iq_p, ip_p, io_p
     integer :: ij_max
 
-    write(*,*)r(it), w(it)
     ij_max = JJ
     if (TT>1) ij_max = min(TT-it_in+1, JJ)
 
