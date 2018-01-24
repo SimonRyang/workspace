@@ -1044,6 +1044,8 @@ contains
     ! compute total bequests
     BQ(it) = sum(BQS(:, it))
 
+    write(*,*)AA(it), AX(it), BQ(it), KE(it)
+
     ! compute output
     YC(it) = Omega*KC(it)**alpha*LC(it)**(1d0-alpha)
     YY(it) = YC(it) + YE(it)
