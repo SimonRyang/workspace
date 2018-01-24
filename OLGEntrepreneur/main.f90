@@ -45,26 +45,30 @@ contains
 
     implicit none
 
+          write(*,*)1
+
     ! initialize remaining variables
     call initialize()
+
+          write(*,*)2
 
     ! start the clock
     call tick(time)
 
     ! iterate until value function converges
     do iter = 1, itermax
-      write(*,*)1
+      write(*,*)3
       ! get new prices
       call get_prices(0)
-      write(*,*)1
+      write(*,*)4
 
       ! solve the household problem
       call solve_household(1, 0)
-      write(*,*)2
+      write(*,*)5
 
       ! calculate the distribution of households over state space
       call get_distribution(0)
-      write(*,*)3
+      write(*,*)6
 
       ! aggregate individual decisions
       call aggregation(0)
