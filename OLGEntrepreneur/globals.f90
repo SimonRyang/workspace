@@ -71,7 +71,7 @@ module globals
   ! production parameters
   real*8, parameter :: Omega = 1.45d0
   real*8, parameter :: k_min = 0.10d0 ! ~ 25,000.00 Euro
-  real*8, parameter :: phi_k = 0.10d0 !*
+  real*8, parameter :: phi_k = 0.05d0
   real*8, parameter :: alpha = 0.36d0 !
   real*8, parameter :: nu1   = 0.48d0
   real*8, parameter :: nu2   = 0.88d0
@@ -186,6 +186,9 @@ module globals
   real*8 :: cons_com, lab_com, x_plus_com, p_plus_com
   real*8 :: grossinc_com, netinc_com, inctax_com, captax_com, pencon_com, aas_com
   real*8 :: DIFF(0:TT)
+
+  ! switches
+  logical :: smopec = .false.   ! .true. = economy is smopec
 
   !$omp threadprivate(iq_com, ia_com, ix_com, ip_com, ik_com, iw_com, ie_com, is_com, ij_com, it_com)
   !$omp threadprivate(iq_p_com, ia_p_com, ip_p_com, io_p_com)

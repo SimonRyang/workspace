@@ -14,8 +14,11 @@ program main
   lambda = 0d0
   phi    = 0d0
 
+  smopec = .true.
   ! calculate initial equilibrium
   call get_SteadyState()
+
+  stop
 
   ! set reforms
   ! mu(1:TT) = 0d0
@@ -434,12 +437,14 @@ contains
     integer :: ix, ip, is, ij, iij, itm, itp
 
     ! calculate new prices
-    r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
-    w(it) = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
+    if (.not. smopec) then
+      r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
+      w(it) = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
+    endif
 
     ! set prices in case of life-cycle model
-    ! r = 0.393280506035032d0
-    ! w = 0.877841532937879d0
+    r = 0.393280506035032d0
+    w = 1d0
     ! BQS = (/4.608543623547606d-2, 0.181029882698876d0, 0.106845332164835d0/)
     ! ybar = 0.555719715351030d0
     ! tauc = 0.128579256047982d0
@@ -1020,7 +1025,17 @@ contains
     ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
     ! compute stock of capital
-    KC(it) = damp*(AA(it) + AX(it) - BB(it) - BA(it)) + (1d0-damp)*KC(it)
+    if (.not. smopec) then
+      KC(it) = damp*(AA(it) + AX(it) - BB(it) - BA(it)) + (1d0-damp)*KC(it)
+      BF(it) = 0d0
+      NEX(it) = 0d0
+    else
+      KC(it) = damp*(LC(it)*((r(it)/(1d0-tauk(it))+delta)/alpha)**(1d0/(alpha-1d0))) + (1d0-damp)*KC(it)
+      BF(it) = AA(it) + AX(it) - KC(it) - BB(it) - - BA(it)
+      NEX(it) = (n_p-r(it))*BF(it)
+    endif
+
+    ! aggregate corporate and non-corporate sector
     KK(it) = KC(it) + KE(it)
 
     ! update work supply
