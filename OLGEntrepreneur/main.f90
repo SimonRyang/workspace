@@ -155,7 +155,8 @@ contains
       call check_grid(iqmax, iamax, ikmax, ixmax, TT)
 
       ! write screen output
-      itmax = maxloc(abs(DIFF(1:TT)/YY(1:TT)), 1)
+      write(*,*)'ACHTUNG!'
+      itmax = maxloc(abs(DIFF(1:TT-2)/YY(1:TT-2)), 1)
       if(.not. lsra_on)then
         write(*,'(i4,5i5,5f8.2,f14.8)')iter, itmax, maxval(iqmax), maxval(iamax), maxval(ikmax), maxval(ixmax),&
                                       (/5d0*KK(TT), CC(TT), II(TT)/)/YY(TT)*100d0, ((1d0+r(TT))**0.2d0-1d0)*100d0, w(TT), DIFF(itmax)/YY(itmax)*100d0
@@ -292,8 +293,6 @@ contains
     BB(0) =   0.660d0
     ybar(0) = 0.460d0
 
-              write(*,*)1
-
     ! initialize value functions
     VV = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
 
@@ -301,7 +300,6 @@ contains
     Q_plus = 0d0; a_plus = 0d0; k_plus = 0d0; x_plus = 0d0; p_plus = 0d0
     inctax = 0d0; captax = 0d0; penben = 0d0; pencon = 0d0; c = 0d0; l = 0d0
 
-              write(*,*)1
     ! initialize temporary policy and value functions
     Q_plus_t = 0d0; a_plus_t = 0d0; k_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0
     inctax_t = 0d0; captax_t = 0d0; penben_t = 0d0; pencon_t = 0d0; c_t = 0d0; l_t = 0d0
@@ -310,9 +308,6 @@ contains
 
     ! set compensating payments to zero
     v = 0d0
-
-
-              write(*,*)1
 
     ! get initial guess for household decisions
     omega_x_t(:, :, :, :, :, :, :, :, 1:JR-1, 0) = 0.05d0
