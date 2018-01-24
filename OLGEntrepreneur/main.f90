@@ -366,6 +366,9 @@ contains
       II(it) = II(0)
       TC(it) = TC(0)
 
+      BF(it) = BF(0)
+      NEX(it) = NEX(0)
+
       TAc(it) = TAc(0)
       TAr(it) = TAr(0)
       TAw(it) = TAw(0)
@@ -966,8 +969,8 @@ contains
 
     ! reset macroeconomic aggregates in each iteration step
     AA(it) = 0d0; AX(it) = 0d0; BQ(it) = 0d0; BQS(:, it) = 0d0; PBEN(it) = 0d0; PCON(it) = 0d0
-    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0; BF(it) = 0d0
-    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; NEX(it) = 0d0; PRO(it) = 0d0
+    KK(it) = 0d0; KE(it) = 0d0; LC(it) = 0d0; LE(it) = 0d0; HC(it) = 0d0; HE(it) = 0d0
+    YY(it) = 0d0; YC(it) = 0d0; YE(it) = 0d0; CC(it) = 0d0; II(it) = 0d0; TC(it) = 0d0; PRO(it) = 0d0
     TAc(it) = 0d0; TAr(it) = 0d0; TAw(it) = 0d0; TAk(it) = 0d0
     ax_coh(:, it) = 0d0; axs_coh(:, it) = 0d0
     vv_coh(:, it) = 0d0
