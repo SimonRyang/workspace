@@ -1091,7 +1091,7 @@ contains
     II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
     ! compute gap on goods market
-    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)-NEX(it)
+    DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)
     write(*,*)DIFF(it), NEX(it)
     write(*,*)r(it), w(it)
 
