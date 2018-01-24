@@ -1030,7 +1030,7 @@ contains
       BF(it) = 0d0
       NEX(it) = 0d0
     else
-      KC(it) = damp*(LC(it)*((r(it)/(1d0-tauk(it))+delta)/alpha)**(1d0/(alpha-1d0))) + (1d0-damp)*KC(it)
+      KC(it) = damp*(LC(it)*((r(it)/(1d0-tauk+delta)/alpha)**(1d0/(alpha-1d0))) + (1d0-damp)*KC(it)
       BF(it) = AA(it) + AX(it) - KC(it) - BB(it) - - BA(it)
       NEX(it) = (n_p-r(it))*BF(it)
     endif
