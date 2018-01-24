@@ -16,7 +16,7 @@ program main
 
   r(0) = 0.21d0
   w(0) = 0.84d0
- smopec = .true.
+ !smopec = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -1084,8 +1084,6 @@ contains
     GG(it) = gy*YY(0)
     BB(it) = by*YY(0)
     expend = GG(it) + (1d0+r(it))*BB(it) - (1d0+n_p)*BB(itp)
-
-    write(*,*) TAk(it), TAw(it), TAr(it)
 
     ! calculates consumption tax rate
     tauc(it) = (expend - TAk(it) - TAw(it) - TAr(it))/CC(it)
