@@ -1024,6 +1024,9 @@ contains
     ! get average income
     ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
+    ! update work supply
+    LC(it) = damp*LC(it) + (1d0-damp)*LC_old
+
     ! compute stock of capital
     if (.not. smopec) then
       KC(it) = damp*(AA(it) + AX(it) - BB(it) - BA(it)) + (1d0-damp)*KC(it)
@@ -1031,15 +1034,12 @@ contains
       NEX(it) = 0d0
     else
       KC(it) = damp*(LC(it)*((r(it)/(1d0-tauk)+delta_k)/alpha)**(1d0/(alpha-1d0))) + (1d0-damp)*KC(it)
-      BF(it) = AA(it) + AX(it) - KC(it) - BB(it) - - BA(it)
+      BF(it) = AA(it) + AX(it) - KC(it) - BB(it) - BA(it)
       NEX(it) = (n_p-r(it))*BF(it)
     endif
 
     ! aggregate corporate and non-corporate sector
     KK(it) = KC(it) + KE(it)
-
-    ! update work supply
-    LC(it) = damp*LC(it) + (1d0-damp)*LC_old
 
     ! compute total bequests
     BQ(it) = sum(BQS(:, it))
