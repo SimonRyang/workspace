@@ -53,7 +53,7 @@ contains
 
     ! iterate until value function converges
     do iter = 1, itermax
-
+      write(*,*)1
       ! get new prices
       call get_prices(0)
       write(*,*)1
