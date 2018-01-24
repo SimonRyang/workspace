@@ -45,30 +45,23 @@ contains
 
     implicit none
 
-          write(*,*)1
-
     ! initialize remaining variables
     call initialize()
-
-          write(*,*)2
 
     ! start the clock
     call tick(time)
 
     ! iterate until value function converges
     do iter = 1, itermax
-      write(*,*)3
+
       ! get new prices
       call get_prices(0)
-      write(*,*)4
 
       ! solve the household problem
       call solve_household(1, 0)
-      write(*,*)5
 
       ! calculate the distribution of households over state space
       call get_distribution(0)
-      write(*,*)6
 
       ! aggregate individual decisions
       call aggregation(0)
@@ -299,6 +292,8 @@ contains
     BB(0) =   0.660d0
     ybar(0) = 0.460d0
 
+              write(*,*)1
+
     ! initialize value functions
     VV = 1d-13**egam/egam; EV = 1d-13**egam/egam; S = 1d-13**egam/egam
 
@@ -306,6 +301,7 @@ contains
     Q_plus = 0d0; a_plus = 0d0; k_plus = 0d0; x_plus = 0d0; p_plus = 0d0
     inctax = 0d0; captax = 0d0; penben = 0d0; pencon = 0d0; c = 0d0; l = 0d0
 
+              write(*,*)1
     ! initialize temporary policy and value functions
     Q_plus_t = 0d0; a_plus_t = 0d0; k_plus_t = 0d0; x_plus_t = 0d0; p_plus_t = 0d0
     inctax_t = 0d0; captax_t = 0d0; penben_t = 0d0; pencon_t = 0d0; c_t = 0d0; l_t = 0d0
@@ -314,6 +310,9 @@ contains
 
     ! set compensating payments to zero
     v = 0d0
+
+
+              write(*,*)1
 
     ! get initial guess for household decisions
     omega_x_t(:, :, :, :, :, :, :, :, 1:JR-1, 0) = 0.05d0
