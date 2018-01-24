@@ -14,8 +14,8 @@ program main
   lambda = 0d0
   phi    = 0d0
 
-  r(0) = 0.21d0
-  w(0) = 0.84d0
+  r(0) = 0.108697521022459d0
+  w(0) = 1.25523946005521d0
 
 !  smopec = .true.
 
