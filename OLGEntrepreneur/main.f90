@@ -1052,7 +1052,7 @@ contains
     ! get average income
     ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
-    write(*,*) KC(it), BF(it), NEX(it), AA(it), AX(it), BB(it), BA(it)
+    write(*,*) KC(it), BF(it), NEX(it), AA(it), AX(it), BB(it), BA(it), LC(it)
 
   end subroutine
 
