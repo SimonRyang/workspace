@@ -14,7 +14,7 @@ program main
   lambda = 0d0
   phi    = 0d0
 
-  r = 0.19d0
+  r = 0.1d0
   w = 1d0
 
 
