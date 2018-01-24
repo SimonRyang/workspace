@@ -988,9 +988,9 @@ contains
                     ! skip if there is no household
                     if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
-                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    !AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
                     !AA(it) = AA(it) + k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    !AA(it) = AA(it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    AA(it) = AA(it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     !AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     !ax_coh(ij, it) = ax_coh(ij, it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     !axs_coh(ij, it) = axs_coh(ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
