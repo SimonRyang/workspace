@@ -22,7 +22,7 @@ program main
   lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
-  ! smopec = .true.
+  smopec = .true.
 
   ! calculate transition path without lsra
   lsra_on = .false.
@@ -444,8 +444,8 @@ contains
     ! calculate new prices
     if (.not. smopec) then
       r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
+      w(it) = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
     endif
-    w(it) = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
 
     ! calculate gross price of consumption (inverse)
     pinv(it) = 1d0/(1d0+tauc(it))
