@@ -41,7 +41,7 @@ module globals
   integer, parameter :: NP = 4
 
   ! demographic parameters
-  real*8, parameter :: n_p = 0d0 !(1d0+0.0071d0)**5-1d0 !
+  real*8, parameter :: n_p = (1d0+0.0071d0)**5-1d0 !
   real*8, parameter :: dist_skill(NS) = (/0.1513d0, 0.5404d0, 0.3083d0/) !
 
   ! macroeconomic parameters
@@ -69,7 +69,7 @@ module globals
   real*8, parameter :: xi      = 1d0/3d0 !
 
   ! production parameters
-  real*8, parameter :: Omega = 1d0 !1.45d0
+  real*8, parameter :: Omega = 1.45d0
   real*8, parameter :: k_min = 0.10d0 ! ~ 25,000.00 Euro
   real*8, parameter :: phi_k = 0.05d0
   real*8, parameter :: alpha = 0.36d0 !
@@ -78,7 +78,7 @@ module globals
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 8d0
+  real*8, parameter :: Q_u    = 6d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
@@ -101,7 +101,7 @@ module globals
   real*8, parameter :: p_u    = 2d0
 
   ! pension fraction of average income
-  real*8, parameter :: kappa = 0d0 !0.55d0
+  real*8, parameter :: kappa = 0.55d0
 
   ! numerical parameters
   integer, parameter :: itermax = 200
