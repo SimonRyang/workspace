@@ -16,7 +16,7 @@ program main
 
   r(0) = 0.10d0 !0.108697521022459d0
 
-  smopec = .true.
+  !smopec = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -1022,7 +1022,7 @@ contains
       vv_coh(ij, it) = vv_coh(ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
 
     enddo ! ij
-    
+
     ! update work supply
     LC(it) = damp*LC(it) + (1d0-damp)*LC_old
 
@@ -1042,8 +1042,6 @@ contains
 
     ! compute total bequests
     BQ(it) = sum(BQS(:, it))
-
-    write(*,*)AA(it), AX(it), BQ(it), KE(it)
 
     ! compute output
     YC(it) = Omega*KC(it)**alpha*LC(it)**(1d0-alpha)
