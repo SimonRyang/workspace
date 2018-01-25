@@ -235,7 +235,7 @@ contains
     enddo
 
     ! set distribution of bequests
-    Gamm(1:4) = 0d0
+    Gama(1:4) = 0d0
     Gama(5:10) = 1d0
     Gama(11:JJ) = 0d0
     Gama = Gama/sum(Gama)
