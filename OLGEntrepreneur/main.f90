@@ -17,7 +17,7 @@ program main
   r(0) = 0.10d0 !0.108697521022459d0
   w(0) = 1.25523946005521d0
 
-  smopec = .true.
+  ! smopec = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -235,8 +235,9 @@ contains
     enddo
 
     ! set distribution of bequests
-    Gama(1:JR-1) = 1d0
-    Gama(JR:JJ) = 0d0
+    Gamm(1:4) = 0d0
+    Gama(5:10) = 1d0
+    Gama(11:JJ) = 0d0
     Gama = Gama/sum(Gama)
 
     ! initialize age earnings process
