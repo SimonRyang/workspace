@@ -1029,7 +1029,7 @@ contains
       BF(it) = 0d0
       NEX(it) = 0d0
     else
-      KC(it) = LC(it)*((r(it)/(1d0-tauk)+delta_k)/Omega/alpha)**(1d0/(alpha-1d0))
+      KC(it) = damp*LC(it)*((r(it)/(1d0-tauk)+delta_k)/Omega/alpha)**(1d0/(alpha-1d0)) + (1d0-damp)*KC(it)
       BF(it) = AA(it) + AX(it) - KC(it) - BB(it) - BA(it)
       NEX(it) = (n_p-r(it))*BF(it)
     endif
