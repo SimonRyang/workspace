@@ -15,9 +15,8 @@ program main
   phi    = 0d0
 
   r(0) = 0.10d0 !0.108697521022459d0
-  w(0) = 1.25523946005521d0
 
-  ! smopec = .true.
+  smopec = .true.
 
   ! calculate initial equilibrium
   call get_SteadyState()
@@ -452,8 +451,8 @@ contains
     ! calculate new prices
     if (.not. smopec) then
       r(it) = (1d0-tauk)*(Omega*alpha*(KC(it)/LC(it))**(alpha-1d0)-delta_k)
-      w(it) = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
     endif
+    w(it) = Omega*(1d0-alpha)*(KC(it)/LC(it))**alpha
 
     ! calculate gross price of consumption (inverse)
     pinv(it) = 1d0/(1d0+tauc(it))
