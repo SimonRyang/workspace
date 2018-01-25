@@ -41,35 +41,35 @@ module globals
   integer, parameter :: NP = 4
 
   ! demographic parameters
-  real*8, parameter :: n_p = 0d0 !1d0+0.0071d0)**5-1d0 !
+  real*8, parameter :: n_p = (1d0+0.0071d0)**5-1d0 !
   real*8, parameter :: dist_skill(NS) = (/0.1513d0, 0.5404d0, 0.3083d0/) !
 
   ! macroeconomic parameters
-  real*8, parameter :: gy = 0d0 !0.19d0 !
-  real*8, parameter :: by = 0d0 !0.60d0/5d0 !
+  real*8, parameter :: gy = 0.19d0 !
+  real*8, parameter :: by = 0.60d0/5d0 !
 
   ! government parameters
-  real*8, parameter :: tauk = 0d0 !0.150d0 !
+  real*8, parameter :: tauk = 0.150d0 !
   real*8, parameter :: taur = 0.250d0 !
-  real*8, parameter :: d_w  = 100d0 ! 0.033d0 ! 1,000.00 Euro
-  real*8, parameter :: d_s  = 100d0 !0.053d0 ! 1,600.00 Euro
+  real*8, parameter :: d_w  = 0.033d0 ! 1,000.00 Euro
+  real*8, parameter :: d_s  = 0.053d0 ! 1,600.00 Euro
 
   ! household preference parameters
   real*8, parameter :: gamma = 0.5d0 !
   real*8, parameter :: egam  = 1d0-1d0/gamma !
   real*8, parameter :: sigma = 0.320d0
   real*8, parameter :: beta  = 0.995d0**5
-  real*8, parameter :: mu_b  = 0d0 !0.005d0
+  real*8, parameter :: mu_b  = 0.005d0
 
   ! maximum investment in annuities
   real*8, parameter :: mx_max = 0.07d0 ! 2,100.00 Euro
 
   ! capital parameters
-  real*8, parameter :: delta_k = 0d0 !1d0-(1d0-0.06d0)**5d0 !
+  real*8, parameter :: delta_k = 1d0-(1d0-0.06d0)**5d0 !
   real*8, parameter :: xi      = 1d0/3d0 !
 
   ! production parameters
-  real*8, parameter :: Omega = 1d0 !1.45d0
+  real*8, parameter :: Omega = 1.45d0
   real*8, parameter :: k_min = 0.10d0 ! ~ 25,000.00 Euro
   real*8, parameter :: phi_k = 0.05d0
   real*8, parameter :: alpha = 0.36d0 !
@@ -78,7 +78,7 @@ module globals
 
   ! size of the total asset grid
   real*8, parameter :: Q_l    = 0d0
-  real*8, parameter :: Q_u    = 32d0
+  real*8, parameter :: Q_u    = 8d0
   real*8, parameter :: Q_grow = 0.05d0
 
   ! size of the liquid asset grid
