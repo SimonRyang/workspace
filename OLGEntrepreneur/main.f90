@@ -1029,7 +1029,7 @@ contains
     else
       KC(it) = LC(it)*((r(it)/(1d0-tauk)+delta_k)/Omega/alpha)**(1d0/(alpha-1d0))
       BF(it) = AA(it) + AX(it) - KC(it) - BB(it) - BA(it)
-      NEX(it) = (n_p-r(it))*BF(it)
+      NEX(it) = (1d0+n_p)*BF(itp) - (1d0+r(it))*BF(it)
     endif
 
     ! aggregate corporate and non-corporate sector
