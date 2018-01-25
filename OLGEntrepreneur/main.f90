@@ -14,23 +14,21 @@ program main
   lambda = 0d0
   phi    = 0d0
 
-  r(0) = 0.10d0 !0.108697521022459d0
-
-  smopec = .true.
-
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  stop
-
   ! set reforms
   ! mu(1:TT) = 0d0
-  ! lambda (1:TT) = 1d0
+  lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
+
+  smopec = .true.
 
   ! calculate transition path without lsra
   lsra_on = .false.
   call get_transition()
+
+  stop
 
   ! calculate transition path with lsra
   lsra_on = .true.
