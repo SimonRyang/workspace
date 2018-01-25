@@ -1065,7 +1065,7 @@ contains
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)-NEX(it)
 
-    write(*,*)'Profit:'(1d0-tauk)*(YY(it)-delta_k*KC(it)-w(it)*LC(it))-r(it)*KC(it)
+    write(*,*)'Profit:',(1d0-tauk)*(YY(it)-delta_k*KC(it)-w(it)*LC(it))-r(it)*KC(it)
 
         write(*,*)DIFF(it), NEX(it)
         write(*,*)r(it), w(it)
