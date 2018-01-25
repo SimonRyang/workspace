@@ -22,7 +22,7 @@ program main
   lambda (1:TT) = 1d0
   ! phi(1:TT) = 1d0
 
-  smopec = .true.
+  ! smopec = .true.
 
   ! calculate transition path without lsra
   lsra_on = .false.
