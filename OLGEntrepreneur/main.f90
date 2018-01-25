@@ -21,8 +21,6 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
-  write(*,*)r(0), w(0), alpha/r(0)*5d0, KC(0), LC(0), AA(0), YY(0), BB(0)
-
   stop
 
   ! set reforms
@@ -988,29 +986,28 @@ contains
                     ! skip if there is no household
                     if (m(ia, ik, ix, ip, iw, ie, is, ij, it) <= 0d0 .and. m(ia, ik, ix, ip, iw, ie, is, ij, itm) <= 0d0) cycle
 
-                    !AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    !AA(it) = AA(it) + k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    AA(it) = AA(it) + a(ia)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !ax_coh(ij, it) = ax_coh(ij, it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !axs_coh(ij, it) = axs_coh(ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    AA(it) = AA(it) + (a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)-xi*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    AA(it) = AA(it) + k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    AX(it) = AX(it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    ax_coh(ij, it) = ax_coh(ij, it) + x(ix)/psi(is, ij)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    axs_coh(ij, it) = axs_coh(ij, it) + x(ix)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     CC(it) = CC(it) + c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !BQS(is, it) = BQS(is, it) + (1d0+r(it))*(a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
-                    !KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !TAc(it) = TAc(it) + tauc(it)*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !TAw(it) = TAw(it) + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                    !PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    BQS(is, it) = BQS(is, it) + (1d0+r(it))*(a_plus(ia, ik, ix, ip, iw, ie, is, ij, itm)+(1d0-xi)*k_plus(ia, ik, ix, ip, iw, ie, is, ij, itm))*(1d0-psi(is, ij+1))*m(ia, ik, ix, ip, iw, ie, is, ij, itm)/(1d0+n_p)
+                    KE(it) = KE(it) + k(ik)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TC(it) = TC(it) + tr(k(ik), k_plus(ia, ik, ix, ip, iw, ie, is, ij, it))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAc(it) = TAc(it) + tauc(it)*c(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAw(it) = TAw(it) + inctax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    TAr(it) = TAr(it) + captax(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                    PBEN(it) = PBEN(it) + penben(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     PCON(it) = PCON(it) + pencon(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     if(ik == 0) then
                       LC(it) = LC(it) + eff(is, ij)*eta(iw, is)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                       HC(it) = HC(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     else
-                      !LE(it) = LE(it) + eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      !HE(it) = HE(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      !YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
-                      !PRO(it) = PRO(it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      LE(it) = LE(it) + eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      HE(it) = HE(it) + l(ia, ik, ix, ip, iw, ie, is, ij, it)*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      YE(it) = YE(it) + theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2*m(ia, ik, ix, ip, iw, ie, is, ij, it)
+                      PRO(it) = PRO(it) + (theta(ie, is)*k(ik)**nu1*(eff(is, ij)*l(ia, ik, ix, ip, iw, ie, is, ij, it))**nu2 - delta_k*k(ik) + r(it)*min(a(ia)-xi*k(ik), 0d0))*m(ia, ik, ix, ip, iw, ie, is, ij, it)
                     endif
                     vv_coh(ij, it) = vv_coh(ij, it) + VV(ia, ik, ix, ip, iw, ie, is, ij, it) &
                                     *m(ia, ik, ix, ip, iw, ie, is, ij, it)
@@ -1025,9 +1022,7 @@ contains
       vv_coh(ij, it) = vv_coh(ij, it)/sum(m(:, :, :, :, :, :, :, ij, it))
 
     enddo ! ij
-
-    write(*,*)CC(it), AA(it)
-
+    
     ! update work supply
     LC(it) = damp*LC(it) + (1d0-damp)*LC_old
 
@@ -1060,15 +1055,8 @@ contains
     ! get average income
     ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
-    write(*,*) KC(it), BF(it), NEX(it), AA(it), AX(it), BB(it), BA(it), LC(it)
-
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)-NEX(it)
-
-    write(*,*)'Profit:',(1d0-tauk)*(YY(it)-delta_k*KC(it)-w(it)*LC(it))-r(it)*KC(it)
-
-        write(*,*)DIFF(it), NEX(it)
-        write(*,*)r(it), w(it)
 
   end subroutine
 
