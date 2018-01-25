@@ -222,9 +222,6 @@ contains
       psi(3, ij) = psi(2, ij) + exp(0.33d0*(dble(ij-1)-22d0))
     enddo
 
-    psi = 1d0
-    psi(:, JJ+1) = 0d0
-
     ! set up population structure
     rpop(:, 1) = dist_skill(:)
     do ij = 2, JJ
@@ -1053,6 +1050,9 @@ contains
     ! get average income
     ybar(it) = (w(it)*LC(it)+PRO(it))/sum(m(:, :, :, :, :, :, :, 1:JR-1, it))
 
+    ! commpute investment
+    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
+
     ! compute gap on goods market
     DIFF(it) = YY(it)-CC(it)-II(it)-GG(it)-TC(it)-NEX(it)
 
@@ -1088,9 +1088,6 @@ contains
 
     ! get budget balancing pension contribution rate
     taup(it) = PBEN(it)/max(PCON(it), 1d-4)
-
-    ! commpute investment
-    II(it) = (1d0+n_p)*KK(itp) - (1d0-delta_k)*KK(it)
 
   end subroutine
 
