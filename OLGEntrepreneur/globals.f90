@@ -225,6 +225,7 @@ contains
 
       ! solve the household problem using fminsearch
       call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
+      call fminsearch(x_in, fret, 0d0, 1d0, inv_w)
 
       ! wealth share for annuities and firm capital
       omega_x_t(0, iq_p, ik, ix, ip_p, iw, ie, is, ij, it) = x_in
@@ -386,8 +387,10 @@ contains
     ! solve the household problem using fminsearch
     if (ij < JR) then
       call fminsearch(x_in, fret, (/Q_l, 0d0/), (/Q_u, 0.99d0/), cons_o)
+      call fminsearch(x_in, fret, (/Q_l, 0d0/), (/Q_u, 0.99d0/), cons_o)
       !call fminsearch(x_in(1), fret, Q_l, Q_u, cons_o)
     else
+      call fminsearch(x_in(1), fret, Q_l, Q_u, cons_r)
       call fminsearch(x_in(1), fret, Q_l, Q_u, cons_r)
     endif
 
