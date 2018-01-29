@@ -294,7 +294,7 @@ contains
     ! initial guesses for macro variables
     psix(:, :, 0) = psi(:, :)
     KC(0) = 4.700d0
-    LC(0) = 7.470d0
+    LC(0) = 3.470d0
     BQS(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
     BB(0) =   0.660d0
     ybar(0) = 0.460d0
