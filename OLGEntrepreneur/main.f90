@@ -17,15 +17,14 @@ program main
   ! calculate initial equilibrium
   call get_SteadyState()
 
+  stop
+
   ! set reforms
   ! mu(1:TT) = 0d0
   ! lambda (1:TT) = 1d0
-  phi(1:TT) = 1d0
+  ! phi(1:TT) = 1d0
 
-
-  stop
-
-  smopec = .true.
+  ! smopec = .true.
 
   ! calculate transition path without lsra
   lsra_on = .false.
@@ -294,7 +293,7 @@ contains
     ! initial guesses for macro variables
     psix(:, :, 0) = psi(:, :)
     KC(0) = 4.700d0
-    LC(0) = 3.470d0
+    LC(0) = 5.470d0
     BQS(:, 0) = (/4.610d-2, 0.180d0, 0.106d0/)
     BB(0) =   0.660d0
     ybar(0) = 0.460d0
@@ -322,9 +321,6 @@ contains
     do ia = 0, NA
       Q_plus_t(:, ia, :, :, :, :, :, :, :, 0) = a(ia)/2d0
     enddo ! ia
-
-    ! set max counters
-    iamax(:) = NA
 
     ! open files
     open(21, file='output.out')
@@ -517,7 +513,7 @@ contains
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NX
-              do ia = 0, iamax(ij)
+              do ia = 0, NA
 
                 call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, ij, it)
 
@@ -569,7 +565,7 @@ contains
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NX
-              do ia = 0, iamax(ij)
+              do ia = 0, NA
 
                 ! next period worker
                 call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, ij, it)
@@ -630,7 +626,7 @@ contains
               do ip = 0, NP
                 do ix = 0, NX
                   do ik = 0, NK
-                    do ia = 0, iamax(ij)
+                    do ia = 0, NA
 
                       ! next period worker
                       call solve_consumption(0, ia, ik, ix, ip, iw, ie, is, ij, it)
