@@ -513,7 +513,7 @@ contains
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NX
-              do ia = 0, NA
+              do ia = 0, iamax(ij)
 
                 call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, ij, it)
 
@@ -565,7 +565,7 @@ contains
         do is = 1, NS
           do ip = 0, NP
             do ix = 0, NX
-              do ia = 0, NA
+              do ia = 0, iamax(ij)
 
                 ! next period worker
                 call solve_consumption(0, ia, 0, ix, ip, 1, 1, is, ij, it)
@@ -626,7 +626,7 @@ contains
               do ip = 0, NP
                 do ix = 0, NX
                   do ik = 0, NK
-                    do ia = 0, NA
+                    do ia = 0, iamax(ij)
 
                       ! next period worker
                       call solve_consumption(0, ia, ik, ix, ip, iw, ie, is, ij, it)
