@@ -22,13 +22,14 @@ program main
   ! lambda (1:TT) = 1d0
   phi(1:TT) = 1d0
 
+
+  stop
+
   smopec = .true.
 
   ! calculate transition path without lsra
   lsra_on = .false.
   call get_transition()
-
-  stop
 
   ! calculate transition path with lsra
   lsra_on = .true.
@@ -321,6 +322,9 @@ contains
     do ia = 0, NA
       Q_plus_t(:, ia, :, :, :, :, :, :, :, 0) = a(ia)/2d0
     enddo ! ia
+
+    ! set max counters
+    iamax(:) = NA
 
     ! open files
     open(21, file='output.out')
